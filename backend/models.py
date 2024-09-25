@@ -1,4 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
+
+bcrypt = Bcrypt()
 
 db = SQLAlchemy()
 
@@ -13,11 +16,20 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     phone_number = db.Column(db.String(20))
 
+    def set_password(self, password):
+        """Hashes the password using Flask-Bcrypt"""
+        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password(self, password):
+        """Checks if the password matches the hashed password"""
+        return bcrypt.check_password_hash(self.password_hash, password)
+
 
 
 class Expert(db.Model):
     __tablename__ = 'experts'
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
     title = db.Column(db.String(100), nullable=False)
     expertise = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text)
