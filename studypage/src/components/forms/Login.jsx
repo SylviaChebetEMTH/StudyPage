@@ -20,7 +20,7 @@ export default function Login() {
       const user = await login(email, password);
       if (user) {
         if (user.is_admin === true) {
-          navigate("/");
+          navigate("/admin/*");
         } else {
           navigate("/"); 
         }

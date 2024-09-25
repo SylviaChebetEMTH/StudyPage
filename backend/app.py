@@ -101,6 +101,13 @@ def logout():
     return jsonify({"success":"Logged out successfully"}), 200
 
 
+@app.route('/users', methods=['GET'])
+@jwt_required()
+def get_users():
+    users = User.query.all()
+    return jsonify([{'id': user.id, 'username': user.username, 'email': user.email, 'phone_number': user.phone_number} for user in users])
+
+
 # Route to get experts (viewable by normal users and admins)
 @app.route('/experts', methods=['GET'])
 @jwt_required()
