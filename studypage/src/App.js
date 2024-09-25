@@ -9,10 +9,10 @@ import Experts from './components/Experts';
 import Services from './components/Services';
 import Login from './components/forms/Login';
 import SignUp from './components/forms/Signup';
-import AdminPanel from './components/admin/AdminPanel';
-import { UserList } from "./components/admin/users";
-import { ExpertList } from "./components/admin/experts";
-import { ServiceList } from "./components/admin/services";
+// import AdminPanel from './components/admin/AdminPanel';
+// import { UserList } from "./components/admin/users";
+// import { ExpertList } from "./components/admin/experts";
+// import { ServiceList } from "./components/admin/services";
 
 function AppContent() {
   const { currentUser } = useContext(UserContext);
@@ -22,22 +22,22 @@ function AppContent() {
       <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/services" element={<Services />} />
+        <Route path="/servicespage" element={<Services />} />
         <Route path="/about" element={<About />} />
-        <Route path="/experts" element={<Experts />} />
+        <Route path="/expertspage" element={<Experts />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         
         {/* Only render admin routes if the user is an admin */}
-        {currentUser?.is_admin && (
-          <Route path="/admin/*" element={<AdminPanel />}>
-            <Route path="users" element={<UserList />} />
+        {/* {currentUser?.is_admin && (
+          <Route path="/admin" element={<AdminPanel />}> */}
+            {/* <Route path="users" element={<UserList />} />
             <Route path="experts" element={<ExpertList />} />
-            <Route path="services" element={<ServiceList />} />
+            <Route path="services" element={<ServiceList />} /> */}
 
 
-          </Route>
-        )}
+          {/* </Route> */}
+        {/* )} */}
       </Routes>
     </div>
   );

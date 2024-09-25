@@ -108,33 +108,34 @@ export const UserProvider = ({ children }) => {
       });
   };
 
-  const login = (email, password) => {
-    fetch("http://127.0.0.1:5000/login", {
+  const login = async (email, password) => {
+    const response = await fetch("http://127.0.0.1:5000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.access_token) {
-          setAuthToken(res.access_token);
-          localStorage.setItem("token", res.access_token);
-          localStorage.setItem("refresh_token", res.refresh_token);
-          console.log("Logged in token:", res.access_token);
-          nav("/");
-          alert("Login success");
-        } else if (res.error) {
-          alert(res.error);
-        } else {
-          alert("Invalid password or username");
-        }
-      });
+      body: JSON.stringify({ email, password }),
+    });
+  
+    const data = await response.json();
+  
+    // Check if access_token is returned
+    if (data.access_token) {
+      // Make sure the user object exists
+      const user = data.user || {}; // Fallback to an empty object if user is undefined
+      user.email = email; // Add email to user object
+  
+      // Save tokens and return user object
+      setAuthToken(data.access_token);
+      localStorage.setItem("token", data.access_token);
+      localStorage.setItem("refresh_token", data.refresh_token);
+  
+      return user; // Return the user object
+    } else {
+      throw new Error(data.error || "Login failed");
+    }
   };
+  
   
 
   const handleLogout = () => {
