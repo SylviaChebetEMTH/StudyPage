@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { NavBar } from './components/NavBar';
+import Home from './components/Home';
+import About from './components/About';
+import Experts from './components/Experts';
+import Services from './components/Services';
+import Login from './components/forms/Login';
+import SignUp from './components/forms/Signup';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+
+function AppContent(){
+  return(
+    <div className="flex-grow">
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/experts" element={<Experts />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
     </div>
-  );
+  )
 }
 
-export default App;
+const App = () => {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  )
+}
+
+export default App
+
