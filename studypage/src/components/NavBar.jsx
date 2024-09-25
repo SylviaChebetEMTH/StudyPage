@@ -6,7 +6,12 @@ export const NavBar = () => {
         <nav className=" top-0 left-0 right-0 bg-gray-300 shadow-md p-4 z-50">
             <div className="container mx-auto flex justify-between items-center">
                 <div className="container mx-auto flex justify-between items-center">
-                    <h1>StudyPage</h1>
+                    <Link
+                        to="/"
+                        className="text-xl font-semibold text-black"
+                    >
+                        StudyPage
+                    </Link>
                     <div className="flex items-center">
                         <Link
                             to="/home"

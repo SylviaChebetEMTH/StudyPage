@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { UserProvider } from './components/contexts/userContext';
 import { NavBar } from './components/NavBar';
 import Home from './components/Home';
 import About from './components/About';
@@ -10,8 +11,8 @@ import SignUp from './components/forms/Signup';
 
 
 
-function AppContent(){
-  return(
+function AppContent() {
+  return (
     <div className="flex-grow">
       <NavBar />
       <Routes>
@@ -29,7 +30,9 @@ function AppContent(){
 const App = () => {
   return (
     <Router>
-      <AppContent />
+      <UserProvider>
+        <AppContent />
+      </UserProvider>
     </Router>
   )
 }
