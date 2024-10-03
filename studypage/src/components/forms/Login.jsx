@@ -14,40 +14,24 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const user = await login(email, password);
-  //     if (user) {
-  //       if (user.is_admin === true) {
-  //         navigate("/admin/*");
-  //       } else {
-  //         navigate("/"); 
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Login failed:", error);
-      
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const user = await login(email, password);
       if (user) {
-        // Check if user.is_admin is defined
         if (user.is_admin === true) {
           navigate("/admin");
         } else {
-          navigate("/");
+          navigate("/"); 
         }
       }
     } catch (error) {
       console.error("Login failed:", error);
-      alert("Login failed. Please check your credentials.");
+      
     }
   };
+
   
 
   const handleGoHome = () => {

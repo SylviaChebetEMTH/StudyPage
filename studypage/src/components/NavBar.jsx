@@ -9,7 +9,7 @@ export const NavBar = () => {
 
     const accountLink = authToken
         ? currentUser?.is_admin
-            ? "/admin/dashboardAdmin"
+            ? "/admin"
             : "/userprofile/dashboarduser"
         : "/login";
 

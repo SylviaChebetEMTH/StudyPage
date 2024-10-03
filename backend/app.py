@@ -20,6 +20,17 @@ jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 CORS(app)
 
+
+def admin_required(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        current_user = get_jwt_identity()
+        user = User.query.filter_by(id=current_user).first()
+        if not user.is_admin:
+            return jsonify({'message': 'Admin access required'}), 403
+        return fn(*args, **kwargs)
+    return wrapper
+
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
