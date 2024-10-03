@@ -13,6 +13,7 @@ import AdminNav from "./components/admin/AdminNav";
 // import Dashboard from "./components/admin/AdminDashboard";
 import AdminDashboardSidebar from "./components/admin/AdminDashboard";
 import AdminUsers from "./components/admin/AdminUsers";
+import AdminDasboardStats from "./components/admin/AdminDashboardStats";
 
 
 function AppContent() {
@@ -39,6 +40,7 @@ function AppContent() {
           {/* Only render admin routes if the user is an admin */}
           {currentUser?.is_admin && (
           <Route path="/admin" element={<AdminDashboardSidebar />}>
+            <Route path="dashboard" element={<AdminDasboardStats />} />
             <Route path="users" element={<AdminUsers />} />
           {/* <Route path="users" element={<UserList />} />
             <Route path="experts" element={<ExpertList />} />

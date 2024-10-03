@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
+from functools import wraps
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, create_refresh_token, get_jwt
 from models import db, User, Expert, Service, ProjectRequest
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -112,11 +113,48 @@ def logout():
     return jsonify({"success":"Logged out successfully"}), 200
 
 
-@app.route('/users', methods=['GET'])
+@app.route('/admin/users', methods=['GET'])
 @jwt_required()
+@admin_required
 def get_users():
     users = User.query.all()
-    return jsonify([{'id': user.id, 'username': user.username, 'email': user.email, 'phone_number': user.phone_number} for user in users])
+    users_list = [{'id': user.id, 'username': user.username, 'email': user.email, 'is_admin': user.is_admin} for user in users]
+    return jsonify({'users': users_list})
+
+@app.route('/admin/users/<int:id>', methods=['PATCH'])
+@jwt_required()
+@admin_required
+def update_user(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+    
+    data = request.get_json()
+    is_admin = data.get('is_admin')
+    
+    if is_admin is not None:
+        user.is_admin = is_admin
+        db.session.commit()
+        return jsonify({'message': 'User updated successfully'})
+    return jsonify({'message': 'No updates provided'}), 400
+
+@app.route('/admin/users/<int:user_id>', methods=['DELETE'])
+@jwt_required()
+def delete_user(user_id):
+    current_user = get_jwt_identity()
+    if not current_user['is_admin']:
+        return jsonify({'message': 'Admin access required'}), 403
+
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({'message': 'User deleted successfully'})
+
+
 
 
 # Route to get experts (viewable by normal users and admins)
