@@ -16,6 +16,7 @@ import AdminUsers from "./components/admin/AdminUsers";
 import AdminDasboardStats from "./components/admin/AdminDashboardStats";
 import AllExperts from "./components/admin/AllExperts";
 import AddExpertPage from "./components/admin/AddExpert";
+import AllServices from "./components/admin/AllServices";
 
 
 function AppContent() {
@@ -46,6 +47,7 @@ function AppContent() {
             <Route path="users" element={<AdminUsers />} />
             <Route path="allexperts" element={<AllExperts />} />
             <Route path="addexpert" element={<AddExpertPage />} />
+            <Route path="allservices" element={<AllServices />} />
           {/* <Route path="users" element={<UserList />} />
             <Route path="experts" element={<ExpertList />} />
             <Route path="services" element={<ServiceList />} /> */}

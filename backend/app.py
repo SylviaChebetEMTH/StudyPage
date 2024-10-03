@@ -218,40 +218,6 @@ def get_expert(id):
     }
     return jsonify({'expert': expert_data})
 
-# @app.route('/experts', methods=['POST'])
-# @jwt_required()
-# def add_expert():
-#     current_user_id = get_jwt_identity()
-    
-#     # Check if the user is an admin
-#     user = User.query.get(current_user_id)
-#     if not user or not user.is_admin:
-#         return jsonify({'message': 'Permission denied'}), 403
-
-#     data = request.get_json() or {}
-    
-#     # Provide default values where necessary
-#     new_expert = Expert(
-#         name=data.get('name', ''),
-#         title=data.get('title', ''),
-#         expertise=data.get('expertise', ''),
-#         description=data.get('description', ''),
-#         biography=data.get('biography', ''),
-#         education=data.get('education', ''),
-#         languages=data.get('languages', ''),
-#         project_types=data.get('projectTypes', ''),
-#         subjects=data.get('subjects', ''),
-#         profile_picture=data.get('profilePicture', '')
-#     )
-    
-#     try:
-#         db.session.add(new_expert)
-#         db.session.commit()
-#     except Exception as e:
-#         db.session.rollback()
-#         return jsonify({'message': 'Failed to create expert', 'error': str(e)}), 500
-
-#     return jsonify({'message': 'Expert created successfully'}), 201
 
 @app.route("/experts", methods=["POST"])
 def add_expert():
@@ -347,7 +313,7 @@ def delete_expert(id):
 
 # Route to get all services (viewable by both users and admins)
 @app.route('/services', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def get_services():
     services = Service.query.all()
     service_list = [{'id': service.id, 'title': service.title, 'description': service.description, 'price': service.price} for service in services]
@@ -371,6 +337,51 @@ def update_service(id):
         service.price = data['price']
         db.session.commit()
         return jsonify({'message': 'Service updated successfully!'})
+    return jsonify({'message': 'Service not found!'}), 404
+
+@app.route('/services/<int:service_id>', methods=['DELETE'])
+def delete_service(service_id):
+    # Find the service by ID
+    service = Service.query.get(service_id)
+    
+    # If service is not found, return a 404 error
+    if not service:
+        return jsonify({"error": "Service not found"}), 404
+    
+    try:
+        # Delete the service
+        db.session.delete(service)
+        db.session.commit()
+        return jsonify({"message": "Service deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()  # Rollback the session in case of error
+        print(f"Error deleting service: {e}")
+        return jsonify({"error": "Could not delete service"}), 500
+
+# Route for admin to partially update services
+@app.route('/services/<int:id>', methods=['PATCH'])
+@jwt_required()
+def patch_service(id):
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+
+    if not user.is_admin:
+        return jsonify({'message': 'Admin privileges required!'}), 403
+
+    service = Service.query.get(id)
+    if service:
+        data = request.json
+        # Only update fields that are provided in the request
+        if 'title' in data:
+            service.title = data['title']
+        if 'description' in data:
+            service.description = data['description']
+        if 'price' in data:
+            service.price = data['price']
+        
+        db.session.commit()
+        return jsonify({'message': 'Service updated successfully!'})
+    
     return jsonify({'message': 'Service not found!'}), 404
 
 if __name__ == '__main__':

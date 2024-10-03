@@ -47,6 +47,14 @@ class Service(db.Model):
     description = db.Column(db.Text)
     price = db.Column(db.Float)
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "price": self.price
+        }
+
 class ProjectRequest(db.Model):
     __tablename__ = 'project_requests'
     id = db.Column(db.Integer, primary_key=True)
