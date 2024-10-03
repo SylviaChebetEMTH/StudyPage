@@ -15,11 +15,12 @@ export default function AllServices() {
     const { currentUser, authToken } = useContext(UserContext);
 
     const fetchData = () => {
-        fetch("http://127.0.0.1:5000/services")
+        fetch("http://127.0.0.1:5000/services") // Ensure the correct backend route is used
             .then((response) => response.json())
             .then((data) => {
-                if (Array.isArray(data)) {
-                    setServices(data);
+                // Adjusted the data handling to extract the services array from the response object
+                if (Array.isArray(data.services)) {
+                    setServices(data.services);
                 } else {
                     console.error("Expected 'services' to be an array:", data);
                     setServices([]);
@@ -63,6 +64,7 @@ export default function AllServices() {
                         service.id === serviceId ? updatedService : service
                     )
                 );
+                fetchData();
                 setNotification(`Service description updated to ${updateValue}`);
                 setEditingService(null);
                 setUpdateValue("");
@@ -92,6 +94,7 @@ export default function AllServices() {
                         service.id === serviceId ? updatedService : service
                     )
                 );
+                fetchData();
                 setNotification(`Service title updated to "${updateTitle}"`);
                 setEditingService(null);
                 setUpdateTitle(""); // Reset title input
@@ -121,6 +124,7 @@ export default function AllServices() {
                         service.id === serviceId ? updatedService : service
                     )
                 );
+                fetchData();
                 setNotification(`Service price updated to $${updatePrice}`);
                 setEditingService(null);
                 setUpdatePrice("");

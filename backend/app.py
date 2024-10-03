@@ -310,14 +310,23 @@ def delete_expert(id):
     return jsonify({'message': 'Expert deleted successfully'})
 
 
-
-# Route to get all services (viewable by both users and admins)
 @app.route('/services', methods=['GET'])
-# @jwt_required()
 def get_services():
-    services = Service.query.all()
-    service_list = [{'id': service.id, 'title': service.title, 'description': service.description, 'price': service.price} for service in services]
-    return jsonify(service_list)
+    services = Service.query.all()  # Fetch all services from the database
+    service_list = []
+
+    for service in services:
+        service_data = {
+            'id': service.id,
+            'title': service.title,
+            'description': service.description,
+            'price': service.price,
+            
+        }
+        service_list.append(service_data)
+
+    return jsonify({'services': service_list})  # Return a structured JSON response
+
 
 # Route for admin to update services
 @app.route('/services/<int:id>', methods=['PUT'])

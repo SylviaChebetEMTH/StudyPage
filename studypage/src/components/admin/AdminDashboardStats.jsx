@@ -27,7 +27,7 @@ function AdminDashboard() {
                     throw new Error("Failed to fetch users");
                 }
                 const usersData = await usersResponse.json();
-                setUsers(usersData?.users || []);  // Ensure a fallback empty array
+                setUsers(usersData?.users || []);  
 
                 // Fetch services
                 const servicesResponse = await fetch("http://127.0.0.1:5000/services", {
@@ -39,7 +39,7 @@ function AdminDashboard() {
                     throw new Error("Failed to fetch services");
                 }
                 const servicesData = await servicesResponse.json();
-                setServices(servicesData?.services || []); // Ensure a fallback empty array
+                setServices(servicesData?.services || []); 
 
                 // Fetch experts
                 const expertsResponse = await fetch("http://127.0.0.1:5000/experts", {
@@ -51,7 +51,7 @@ function AdminDashboard() {
                     throw new Error("Failed to fetch experts");
                 }
                 const expertsData = await expertsResponse.json();
-                setExperts(expertsData?.experts || []); // Ensure a fallback empty array
+                setExperts(expertsData?.experts || []); 
 
                 setLoading(false);
             } catch (error) {
@@ -127,7 +127,7 @@ function AdminDashboard() {
                         <thead className="bg-gray-50">
                             <tr>
                                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
                                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
                             </tr>
                         </thead>
@@ -135,7 +135,7 @@ function AdminDashboard() {
                             {services.map((service) => (
                                 <tr key={service.id}>
                                     <td className="px-4 py-3 text-sm text-gray-500">{service.id}</td>
-                                    <td className="px-4 py-3 text-sm text-gray-500">{service.name}</td>
+                                    <td className="px-4 py-3 text-sm text-gray-500">{service.title}</td>
                                     <td className="px-4 py-3 text-sm text-gray-500">{service.description}</td>
                                 </tr>
                             ))}
