@@ -40,12 +40,20 @@ function AddExpertPage() {
     }
   };
 
+ 
+
   const handleAddExpertSubmit = async (values) => {
     if (currentUser.username !== "admin_user") {
       alert("You do not have permission to add experts.");
       return;
     }
-
+  
+    // Ensure profile picture is not null
+    if (!profilePicture) {
+      alert("Please upload a profile picture.");
+      return;
+    }
+  
     const data = {
       name: values.name,
       title: values.title,
@@ -56,9 +64,9 @@ function AddExpertPage() {
       languages: values.languages,
       project_types: values.projectTypes,
       subjects: values.subjects,
-      profile_picture: profilePicture,
+      profile_picture: profilePicture,  
     };
-
+  
     try {
       const response = await fetch("http://127.0.0.1:5000/experts", {
         method: "POST",
@@ -68,16 +76,16 @@ function AddExpertPage() {
         },
         body: JSON.stringify(data),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error response:", errorData);
         throw new Error(errorData.message || "Unknown error");
       }
-
+  
       const result = await response.json();
       alert(result.message);
-
+  
       // Reset the form after successful submission
       values.name = "";
       values.title = "";
@@ -94,6 +102,7 @@ function AddExpertPage() {
       alert("Failed to add expert. Please try again.");
     }
   };
+  
 
   return (
     <div className="w-full relative bg-aliceblue min-h-screen overflow-hidden text-left text-base text-black font-poppins p-4 sm:p-6 md:p-8">
