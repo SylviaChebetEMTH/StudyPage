@@ -203,11 +203,11 @@ export default function Login() {
             >
               <div className="absolute inset-0 opacity-50"></div>
               <div className="relative z-10">
-                <h2 className="text-3xl font-semibold text-black text-center">
-                  Welcome to UrbanBazaar
+                <h2 className="text-3xl font-semibold text-gray-300 text-center">
+                Welcome to StudyPage! 🎓
                 </h2>
                 <p className="text-black mt-4 text-center">
-                  Your one stop shop for all you need.
+                Empowering Experts and Students to Achieve More
                 </p>
               </div>
             </div>

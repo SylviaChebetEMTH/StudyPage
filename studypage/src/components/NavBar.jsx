@@ -1,7 +1,18 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { UserContext } from './contexts/userContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 export const NavBar = () => {
+    const { authToken, currentUser } = useContext(UserContext);
+
+    const accountLink = authToken
+        ? currentUser?.is_admin
+            ? "/admin/dashboardAdmin"
+            : "/userprofile/dashboarduser"
+        : "/login";
+
     return (
         <nav className=" top-0 left-0 right-0 bg-gray-300 shadow-md p-4 z-50">
             <div className="container mx-auto flex justify-between items-center">
@@ -39,22 +50,10 @@ export const NavBar = () => {
                         </Link>
                     </div>
                     <div className="flex gap-4">
-                        <div>
-                            <Link
-                                to="/login"
-                                className="bg-blue-400 hover:bg-blue-300/90 py-1 px-2 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 border rounded"
-                            >
-                                Login
-                            </Link>
-                        </div>
-                        <div>
-                            <Link
-                                to="/signup"
-                                className="bg-blue-400 hover:bg-blue-300/90 py-1 px-2 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 border rounded"
-                            >
-                                Signup
-                            </Link>
-                        </div>
+                        <Link to={accountLink} className="text-gray-700 hover:text-blue-700 flex items-center text-xs">
+                            <FontAwesomeIcon icon={faUser} className="text-lg" />
+                            <span className="ml-1">{authToken ? 'My Account' : 'Login'}</span>
+                        </Link>
                     </div>
                 </div>
             </div>

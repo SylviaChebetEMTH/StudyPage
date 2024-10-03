@@ -12,6 +12,7 @@ import SignUp from './components/forms/Signup';
 import AdminNav from "./components/admin/AdminNav";
 // import Dashboard from "./components/admin/AdminDashboard";
 import AdminDashboardSidebar from "./components/admin/AdminDashboard";
+import AdminUsers from "./components/admin/AdminUsers";
 
 
 function AppContent() {
@@ -24,7 +25,7 @@ function AppContent() {
 
   return (
     <div className = "min-h-screen flex flex-col">
-      {!isAuthPage && (isAdminPage ? <NavBar /> : <AdminNav />)}
+      {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)}
       <div className="flex-grow">
         {/* <NavBar /> */}
         <Routes>
@@ -38,6 +39,7 @@ function AppContent() {
           {/* Only render admin routes if the user is an admin */}
           {currentUser?.is_admin && (
           <Route path="/admin" element={<AdminDashboardSidebar />}>
+            <Route path="users" element={<AdminUsers />} />
           {/* <Route path="users" element={<UserList />} />
             <Route path="experts" element={<ExpertList />} />
             <Route path="services" element={<ServiceList />} /> */}
