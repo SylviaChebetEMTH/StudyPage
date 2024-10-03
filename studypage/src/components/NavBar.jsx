@@ -37,7 +37,7 @@ export const NavBar = () => {
                             Services
                         </Link>
                         <Link
-                            to="/experts"
+                            to="/expertspage"
                             className="bg-transparent py-1 px-2 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 hover:underline"
                         >
                             Our Experts

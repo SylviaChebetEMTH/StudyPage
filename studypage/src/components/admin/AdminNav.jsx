@@ -5,7 +5,7 @@ const AdminNav = () => {
     return (
         <nav className="bg-gray-300 p-4">
             <div className="container mx-auto flex justify-between items-center">
-                <Link to="/admin" className="text-black hover:text-gray-400">
+                <Link to="/" className="text-black hover:text-gray-400">
                     ScoreGrade
                 </Link>
                 <ul className="flex space-x-4">

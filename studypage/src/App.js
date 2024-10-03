@@ -5,7 +5,7 @@ import { UserContext } from "./components/contexts/userContext";
 import { NavBar } from './components/NavBar';
 import Home from './components/Home';
 import About from './components/About';
-import Experts from './components/Experts';
+import ExpertPage from "./components/Experts";
 import Services from './components/Services';
 import Login from './components/forms/Login';
 import SignUp from './components/forms/Signup';
@@ -14,6 +14,8 @@ import AdminNav from "./components/admin/AdminNav";
 import AdminDashboardSidebar from "./components/admin/AdminDashboard";
 import AdminUsers from "./components/admin/AdminUsers";
 import AdminDasboardStats from "./components/admin/AdminDashboardStats";
+import AllExperts from "./components/admin/AllExperts";
+import AddExpertPage from "./components/admin/AddExpert";
 
 
 function AppContent() {
@@ -33,7 +35,7 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/servicespage" element={<Services />} />
           <Route path="/about" element={<About />} />
-          <Route path="/expertspage" element={<Experts />} />
+          <Route path="/expertspage" element={<ExpertPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
 
@@ -42,6 +44,8 @@ function AppContent() {
           <Route path="/admin" element={<AdminDashboardSidebar />}>
             <Route path="dashboard" element={<AdminDasboardStats />} />
             <Route path="users" element={<AdminUsers />} />
+            <Route path="allexperts" element={<AllExperts />} />
+            <Route path="addexpert" element={<AddExpertPage />} />
           {/* <Route path="users" element={<UserList />} />
             <Route path="experts" element={<ExpertList />} />
             <Route path="services" element={<ServiceList />} /> */}

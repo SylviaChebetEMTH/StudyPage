@@ -159,11 +159,28 @@ def delete_user(user_id):
 
 # Route to get experts (viewable by normal users and admins)
 @app.route('/experts', methods=['GET'])
-@jwt_required()
 def get_experts():
-    experts = Expert.query.all()
-    expert_list = [{'id': expert.id, 'name': expert.name, 'expertise': expert.expertise, 'description': expert.description} for expert in experts]
-    return jsonify(expert_list)
+    experts = Expert.query.all()  # Fetch all experts from the database
+    output = []
+
+    for expert in experts:
+        expert_data = {
+            'id': expert.id,
+            'name': expert.name,
+            'title': expert.title,
+            'expertise': expert.expertise,
+            'description': expert.description,
+            'biography': expert.biography,
+            'education': expert.education,
+            'languages': expert.languages,
+            'projecTypes': expert.project_types,
+            'subjects': expert.subjects,
+            'profilePicture': expert.profile_picture  
+        }
+        output.append(expert_data)
+
+    return jsonify({'experts': output})
+
 
 # Route to request an expert
 @app.route('/request_expert', methods=['POST'])
@@ -179,6 +196,154 @@ def request_expert():
     db.session.commit()
 
     return jsonify({'message': 'Request submitted successfully!'}), 201
+
+@app.route('/experts/<int:id>', methods=['GET'])
+def get_expert(id):
+    expert = Expert.query.get(id)
+    if not expert:
+        return jsonify({'message': 'Expert not found'}), 404
+
+    expert_data = {
+        'id': expert.id,
+        'name': expert.name,
+        'title': expert.title,
+        'expertise': expert.expertise,
+        'description': expert.description,
+        'biography': expert.biography,
+        'education': expert.education,
+        'languages': expert.languages,
+        'projectTypes': expert.project_types,
+        'subjects': expert.subjects,
+        'profilePicture': expert.profile_picture  
+    }
+    return jsonify({'expert': expert_data})
+
+# @app.route('/experts', methods=['POST'])
+# @jwt_required()
+# def add_expert():
+#     current_user_id = get_jwt_identity()
+    
+#     # Check if the user is an admin
+#     user = User.query.get(current_user_id)
+#     if not user or not user.is_admin:
+#         return jsonify({'message': 'Permission denied'}), 403
+
+#     data = request.get_json() or {}
+    
+#     # Provide default values where necessary
+#     new_expert = Expert(
+#         name=data.get('name', ''),
+#         title=data.get('title', ''),
+#         expertise=data.get('expertise', ''),
+#         description=data.get('description', ''),
+#         biography=data.get('biography', ''),
+#         education=data.get('education', ''),
+#         languages=data.get('languages', ''),
+#         project_types=data.get('projectTypes', ''),
+#         subjects=data.get('subjects', ''),
+#         profile_picture=data.get('profilePicture', '')
+#     )
+    
+#     try:
+#         db.session.add(new_expert)
+#         db.session.commit()
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({'message': 'Failed to create expert', 'error': str(e)}), 500
+
+#     return jsonify({'message': 'Expert created successfully'}), 201
+
+@app.route("/experts", methods=["POST"])
+def add_expert():
+    data = request.get_json()
+    profile_picture = data.get("profile_picture")  # Ensure you handle this
+    if not profile_picture:
+        return jsonify({"error": "Profile picture is required"}), 400
+    
+    # Save the expert's data, including profile picture
+    new_expert = Expert(
+        name=data["name"],
+        title=data["title"],
+        expertise=data["expertise"],
+        description=data["description"],
+        biography=data["biography"],
+        education=data["education"],
+        languages=data["languages"],
+        project_types=data["project_types"],
+        subjects=data["subjects"],
+        profile_picture=profile_picture  # Save to the database
+    )
+    
+    db.session.add(new_expert)
+    db.session.commit()
+    
+    return jsonify({"message": "Expert added successfully!"}), 201
+
+
+
+@app.route('/experts/<int:id>', methods=['PATCH'])
+@jwt_required()
+def partial_update_expert(id):
+    user_id = get_jwt_identity()
+    
+    # Query the user based on the ID returned by get_jwt_identity()
+    user = User.query.get(user_id)
+    
+    # Check if the user exists and is an admin
+    if not user or not user.is_admin:
+        return jsonify({'message': 'Permission denied'}), 403
+
+    expert = Expert.query.get(id)
+    if not expert:
+        return jsonify({'message': 'Expert not found'}), 404
+
+    data = request.get_json()
+
+    # Update expert fields based on the provided data
+    if 'name' in data:
+        expert.name = data['name']
+    if 'title' in data:
+        expert.title = data['title']
+    if 'expertise' in data:
+        expert.expertise = data['expertise']
+    if 'description' in data:
+        expert.description = data['description']
+    if 'biography' in data:
+        expert.biography = data['biography']
+    if 'education' in data:
+        expert.education = data['education']
+    if 'languages' in data:
+        expert.languages = data['languages']
+    if 'projectTypes' in data:
+        expert.project_types = data['projectTypes']
+    if 'subjects' in data:
+        expert.subjects = data['subjects']
+    if 'profilePicture' in data:
+        expert.profile_picture = data['profilePicture']
+
+    db.session.commit()
+    return jsonify({'message': 'Expert updated successfully'}), 200
+
+
+@app.route('/experts/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_expert(id):
+    current_user = get_jwt_identity()
+
+    # Check if the current user is an admin
+    if not current_user['is_admin']:
+        return jsonify({'message': 'Permission denied'}), 403
+
+    expert = Expert.query.get(id)
+    if not expert:
+        return jsonify({'message': 'Expert not found'}), 404
+
+    db.session.delete(expert)
+    db.session.commit()
+
+    return jsonify({'message': 'Expert deleted successfully'})
+
+
 
 # Route to get all services (viewable by both users and admins)
 @app.route('/services', methods=['GET'])
