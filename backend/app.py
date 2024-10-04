@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from functools import wraps
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, create_refresh_token, get_jwt
-from models import db, User, Expert, Service, ProjectRequest
+from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
 import os
@@ -191,7 +191,30 @@ def add_user():
 
 
 
-# Route to get experts (viewable by normal users and admins)
+# # Route to get experts (viewable by normal users and admins)
+# @app.route('/experts', methods=['GET'])
+# def get_experts():
+#     experts = Expert.query.all()  # Fetch all experts from the database
+#     output = []
+
+#     for expert in experts:
+#         expert_data = {
+#             'id': expert.id,
+#             'name': expert.name,
+#             'title': expert.title,
+#             'expertise': expert.expertise,
+#             'description': expert.description,
+#             'biography': expert.biography,
+#             'education': expert.education,
+#             'languages': expert.languages,
+#             'projecTypes': expert.project_types,
+#             'subjects': expert.subjects,
+#             'profilePicture': expert.profile_picture  
+#         }
+#         output.append(expert_data)
+
+#     return jsonify({'experts': output})
+
 @app.route('/experts', methods=['GET'])
 def get_experts():
     experts = Expert.query.all()  # Fetch all experts from the database
@@ -207,13 +230,14 @@ def get_experts():
             'biography': expert.biography,
             'education': expert.education,
             'languages': expert.languages,
-            'projecTypes': expert.project_types,
-            'subjects': expert.subjects,
-            'profilePicture': expert.profile_picture  
+            'projectType': expert.project_type.name if expert.project_type else None,  # Corrected to use `project_type`
+            'subject': expert.subject.name if expert.subject else None,  # Corrected to use `subject`
+            'profilePicture': expert.profile_picture
         }
         output.append(expert_data)
 
     return jsonify({'experts': output})
+
 
 
 # Route to request an expert
@@ -384,27 +408,64 @@ def get_services():
 
     return jsonify({'services': service_list})  
 
+
+
+# @app.route('/services', methods=['POST'])
+# def add_service():
+#     if not request.is_json:
+#         return jsonify({"message": "Invalid request. JSON data required."}), 400
+
+#     data = request.get_json()
+
+#     title = data.get('title')
+#     description = data.get('description')
+#     price = data.get('price')
+#     project_type_id = data.get('project_type_id')  # Capture project_type_id
+
+#     if not title or not description or price is None or project_type_id is None:
+#         return jsonify({"message": "Title, description, price, and project type are required."}), 400
+
+#     new_service = Service(title=title, description=description, price=price, project_type_id=project_type_id)
+
+#     try:
+#         db.session.add(new_service)
+#         db.session.commit()
+#         return jsonify({"message": "Service added successfully!", "service": {
+#             'id': new_service.id,
+#             'title': new_service.title,
+#             'description': new_service.description,
+#             'price': new_service.price,
+#             'project_type_id': new_service.project_type_id  # Include project_type_id in the response
+#         }}), 201
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({"message": "Failed to add service.", "error": str(e)}), 500
+
+
 @app.route('/services', methods=['POST'])
 def add_service():
-    # Check if the request contains JSON data
     if not request.is_json:
         return jsonify({"message": "Invalid request. JSON data required."}), 400
 
-    # Get service data from the request
     data = request.get_json()
 
     title = data.get('title')
     description = data.get('description')
     price = data.get('price')
+    project_type_id = data.get('project_type_id')  # Capture project_type_id
+    subject_id = data.get('subject_id')  # Capture subject_id
 
-    # Validate required fields
-    if not title or not description or price is None:
-        return jsonify({"message": "Title, description, and price are required."}), 400
+    if not title or not description or price is None or project_type_id is None or subject_id is None:
+        return jsonify({"message": "Title, description, price, project type, and subject are required."}), 400
 
-    # Create a new service instance
-    new_service = Service(title=title, description=description, price=price)
+    new_service = Service(
+        title=title,
+        description=description,
+        price=price,
+        project_type_id=project_type_id,
+        subject_id=subject_id  # Include subject_id
+    )
 
-    # Add the service to the session and commit
     try:
         db.session.add(new_service)
         db.session.commit()
@@ -412,11 +473,37 @@ def add_service():
             'id': new_service.id,
             'title': new_service.title,
             'description': new_service.description,
-            'price': new_service.price
+            'price': new_service.price,
+            'project_type_id': new_service.project_type_id,
+            'subject_id': new_service.subject_id  # Include subject_id in the response
         }}), 201
     except Exception as e:
-        db.session.rollback()  # Rollback in case of an error
+        db.session.rollback()
+        print("Error adding service:", str(e))
         return jsonify({"message": "Failed to add service.", "error": str(e)}), 500
+
+
+
+
+@app.route('/project-types', methods=['GET'])
+def get_project_types():
+    try:
+        project_types = ProjectType.query.all()  # Retrieve all project types from the database
+        return jsonify([project_type.to_dict() for project_type in project_types]), 200
+    except Exception as e:
+        print("Error occurred:", e)  # Log the error to the console
+        return jsonify({'message': str(e)}), 500  # Handle any errors that occur.
+
+
+@app.route('/subjects', methods=['GET'])
+def get_subjects():
+    try:
+        subjects = Subject.query.all()  # Query all subjects from the database
+        return jsonify([subject.to_dict() for subject in subjects]), 200  # Return as JSON
+    except Exception as e:
+        print(f"Error fetching subjects: {e}")
+        return jsonify({'message': 'Failed to fetch subjects'}), 500
+
 
 
 # Route for admin to update services
