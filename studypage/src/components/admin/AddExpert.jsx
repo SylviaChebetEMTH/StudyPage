@@ -1,7 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import { UserContext } from "../contexts/userContext";
 import axios from "axios";
-import { Formik, Field, Form } from "formik";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const CLOUDINARY_UPLOAD_PRESET = "dlp71jbrz"; // Replace with your actual Cloudinary upload preset name
 const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/dlp71jbrz/image/upload`; // Replace with your Cloudinary cloud name
@@ -9,6 +10,60 @@ const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/dlp71jbrz/image/upload`;
 function AddExpertPage() {
   const { currentUser, authToken } = useContext(UserContext);
   const [profilePicture, setProfilePicture] = useState(null);
+  const [projectTypes, setProjectTypes] = useState([]);
+  const [subjects, setSubjects] = useState([]); 
+
+  useEffect(() => {
+    const fetchProjectTypes = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/project-types", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Error response:", errorText);
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        setProjectTypes(data); // Set the fetched project types to the state
+      } catch (error) {
+        console.error("Error fetching project types:", error);
+      }
+    };
+
+    const fetchSubjects = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/subjects", { // Adjust endpoint as needed
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Error response:", errorText);
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        setSubjects(data); // Set the fetched subjects to the state
+      } catch (error) {
+        console.error("Error fetching subjects:", error);
+      }
+    };
+
+    fetchProjectTypes();
+    fetchSubjects(); // Fetch subjects when the component mounts
+  }, [authToken]);
+
+  const validationSchema = Yup.object().shape({
+    project_type_id: Yup.string().required("Project type is required"),
+    subject_id: Yup.string().required("Subject is required"), // Validation for subject
+  });
 
   const uploadImageToCloudinary = async (file) => {
     const formData = new FormData();
@@ -62,8 +117,8 @@ function AddExpertPage() {
       biography: values.biography,
       education: values.education,
       languages: values.languages,
-      project_types: values.projectTypes,
-      subjects: values.subjects,
+      project_type_id: values.project_type_id, // Include project_type_id
+      subject_id: values.subject_id, // Include subject_id
       profile_picture: profilePicture,  
     };
   
@@ -94,8 +149,8 @@ function AddExpertPage() {
       values.biography = "";
       values.education = "";
       values.languages = "";
-      values.projectTypes = "";
-      values.subjects = "";
+      values.project_type_id = "";
+      values.subject_id = "";
       setProfilePicture(null);
     } catch (error) {
       console.error("Error adding expert:", error);
@@ -117,12 +172,13 @@ function AddExpertPage() {
           biography: "",
           education: "",
           languages: "",
-          projectTypes: "",
-          subjects: "",
+          project_type_id: "",
+          subject_id: "",
         }}
+        validationSchema={validationSchema}
         onSubmit={handleAddExpertSubmit}
       >
-        {({ values, handleChange }) => (
+        {({ touched, errors }) => (
           <Form className="space-y-6">
             {/* Name */}
             <div className="mb-4">
@@ -203,25 +259,53 @@ function AddExpertPage() {
             </div>
 
             {/* Project Types */}
+          
             <div className="mb-4">
-              <label className="block mb-2">Project Types:</label>
+              <label className="block mb-2">Project Type:</label>
               <Field
-                name="text"
-                className="border py-2 px-4 border-gray-300 rounded-md w-full"
-                type="text"
-                placeholder="Project Types"
-              />
+                name="project_type_id"
+                as="select"
+                className={`border py-2 px-4 border-gray-300 rounded-md w-full ${
+                  touched.project_type_id && errors.project_type_id ? "border-red-500" : ""
+                }`}
+              >
+                <option value="">Select a project type</option>
+                {projectTypes.length > 0 ? (
+                  projectTypes.map((type) => (
+                    <option key={type.id} value={type.id}>
+                      {type.name}
+                    </option>
+                  ))
+                ) : (
+                  <option disabled>No project types available</option>
+                )}
+              </Field>
+              <ErrorMessage name="project_type_id" component="div" className="text-red-500 text-sm" />
             </div>
 
             {/* Subjects */}
+           
             <div className="mb-4">
-              <label className="block mb-2">Subjects:</label>
+              <label className="block mb-2">Subject:</label>
               <Field
-                name="subjects"
-                className="border py-2 px-4 border-gray-300 rounded-md w-full"
-                type="text"
-                placeholder="Subjects"
-              />
+                name="subject_id"
+                as="select"
+                className={`border py-2 px-4 border-gray-300 rounded-md w-full ${
+                  touched.subject_id && errors.subject_id ? "border-red-500" : ""
+                }`}
+              >
+                <option value="">Select a subject</option>
+                {subjects.length > 0 ? (
+                  subjects.map((subject) => (
+                    <option key={subject.id} value={subject.id}>
+                      {subject.name}
+                    </option>
+                  ))
+                ) : (
+                  <option disabled>No subjects available</option>
+                )}
+              </Field>
+              <ErrorMessage name="subject_id" component="div" className="text-red-500 text-sm" />
             </div>
 
             {/* Profile Picture Upload */}

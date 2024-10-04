@@ -36,7 +36,7 @@ export default function AllServices() {
 
     // Fetch a specific unit of service (if applicable)
     const fetchUnit = (serviceId) => {
-        fetch(`http://127.0.0.1:5000/services/${serviceId}/unit`) // Adjust API endpoint as needed
+        fetch(`http://127.0.0.1:5000/services/${serviceId}/unit`) 
             .then((response) => response.json())
             .then((data) => {
                 // Handle the fetched unit data
@@ -86,6 +86,7 @@ export default function AllServices() {
                         service.id === serviceId ? updatedService : service
                     )
                 );
+                fetchData();
                 setNotification(`Service updated successfully.`);
                 setEditingService(null);
                 setUpdateValues({ title: "", description: "", price: "" });

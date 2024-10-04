@@ -277,14 +277,52 @@ def get_expert(id):
     return jsonify({'expert': expert_data})
 
 
+# @app.route("/experts", methods=["POST"])
+# def add_expert():
+#     data = request.get_json()
+#     profile_picture = data.get("profile_picture")  # Ensure you handle this
+#     if not profile_picture:
+#         return jsonify({"error": "Profile picture is required"}), 400
+    
+#     # Save the expert's data, including profile picture
+#     new_expert = Expert(
+#         name=data["name"],
+#         title=data["title"],
+#         expertise=data["expertise"],
+#         description=data["description"],
+#         biography=data["biography"],
+#         education=data["education"],
+#         languages=data["languages"],
+#         project_types=data["project_types"],
+#         subjects=data["subjects"],
+#         profile_picture=profile_picture  # Save to the database
+#     )
+    
+#     db.session.add(new_expert)
+#     db.session.commit()
+    
+#     return jsonify({"message": "Expert added successfully!"}), 201
+
+
 @app.route("/experts", methods=["POST"])
 def add_expert():
     data = request.get_json()
-    profile_picture = data.get("profile_picture")  # Ensure you handle this
+    project_type_id = data.get("project_type_id")
+    subject_id = data.get("subject_id")
+
+    print(f"Received project_type_id: {project_type_id}, subject_id: {subject_id}")  # Debug log
+
+    profile_picture = data.get("profile_picture")
     if not profile_picture:
         return jsonify({"error": "Profile picture is required"}), 400
+
+    project_type = ProjectType.query.get(project_type_id)
+    subject = Subject.query.get(subject_id)
+
+    if not project_type or not subject:
+        return jsonify({"error": "Invalid project type or subject"}), 400
     
-    # Save the expert's data, including profile picture
+    # Create and save the expert
     new_expert = Expert(
         name=data["name"],
         title=data["title"],
@@ -293,15 +331,16 @@ def add_expert():
         biography=data["biography"],
         education=data["education"],
         languages=data["languages"],
-        project_types=data["project_types"],
-        subjects=data["subjects"],
-        profile_picture=profile_picture  # Save to the database
+        profile_picture=profile_picture,
+        project_type=project_type,
+        subject=subject
     )
-    
+
     db.session.add(new_expert)
     db.session.commit()
-    
+
     return jsonify({"message": "Expert added successfully!"}), 201
+
 
 
 
@@ -349,24 +388,6 @@ def partial_update_expert(id):
     return jsonify({'message': 'Expert updated successfully'}), 200
 
 
-# @app.route('/experts/<int:id>', methods=['DELETE'])
-# @jwt_required()
-# def delete_expert(id):
-#     current_user = get_jwt_identity()
-#     user = User.query.get(current_user)
-
-#     # Check if the current user is an admin
-#     if not current_user['is_admin']:
-#         return jsonify({'message': 'Permission denied'}), 403
-
-#     expert = Expert.query.get(id)
-#     if not expert:
-#         return jsonify({'message': 'Expert not found'}), 404
-
-#     db.session.delete(expert)
-#     db.session.commit()
-
-#     return jsonify({'message': 'Expert deleted successfully'})
 
 @app.route('/experts/<int:id>', methods=['DELETE'])
 @jwt_required()
@@ -409,37 +430,6 @@ def get_services():
     return jsonify({'services': service_list})  
 
 
-
-# @app.route('/services', methods=['POST'])
-# def add_service():
-#     if not request.is_json:
-#         return jsonify({"message": "Invalid request. JSON data required."}), 400
-
-#     data = request.get_json()
-
-#     title = data.get('title')
-#     description = data.get('description')
-#     price = data.get('price')
-#     project_type_id = data.get('project_type_id')  # Capture project_type_id
-
-#     if not title or not description or price is None or project_type_id is None:
-#         return jsonify({"message": "Title, description, price, and project type are required."}), 400
-
-#     new_service = Service(title=title, description=description, price=price, project_type_id=project_type_id)
-
-#     try:
-#         db.session.add(new_service)
-#         db.session.commit()
-#         return jsonify({"message": "Service added successfully!", "service": {
-#             'id': new_service.id,
-#             'title': new_service.title,
-#             'description': new_service.description,
-#             'price': new_service.price,
-#             'project_type_id': new_service.project_type_id  # Include project_type_id in the response
-#         }}), 201
-#     except Exception as e:
-#         db.session.rollback()
-#         return jsonify({"message": "Failed to add service.", "error": str(e)}), 500
 
 
 @app.route('/services', methods=['POST'])
