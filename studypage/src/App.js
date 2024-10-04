@@ -36,7 +36,7 @@ function AppContent() {
         {/* <NavBar /> */}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/servicespage" element={<Services />} />
+          <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
           <Route path="/expertspage" element={<ExpertPage />} />
           <Route path="/signup" element={<SignUp />} />
