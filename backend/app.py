@@ -325,23 +325,46 @@ def partial_update_expert(id):
     return jsonify({'message': 'Expert updated successfully'}), 200
 
 
+# @app.route('/experts/<int:id>', methods=['DELETE'])
+# @jwt_required()
+# def delete_expert(id):
+#     current_user = get_jwt_identity()
+#     user = User.query.get(current_user)
+
+#     # Check if the current user is an admin
+#     if not current_user['is_admin']:
+#         return jsonify({'message': 'Permission denied'}), 403
+
+#     expert = Expert.query.get(id)
+#     if not expert:
+#         return jsonify({'message': 'Expert not found'}), 404
+
+#     db.session.delete(expert)
+#     db.session.commit()
+
+#     return jsonify({'message': 'Expert deleted successfully'})
+
 @app.route('/experts/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_expert(id):
-    current_user = get_jwt_identity()
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
 
-    # Check if the current user is an admin
-    if not current_user['is_admin']:
+    if not user or not user.is_admin:
         return jsonify({'message': 'Permission denied'}), 403
 
     expert = Expert.query.get(id)
     if not expert:
         return jsonify({'message': 'Expert not found'}), 404
 
-    db.session.delete(expert)
-    db.session.commit()
+    try:
+        db.session.delete(expert)
+        db.session.commit()
+        return jsonify({'message': 'Expert deleted successfully'}), 200
+    except Exception as e:
+        db.session.rollback()  # Rollback the session in case of error
+        return jsonify({'message': 'Error deleting expert', 'error': str(e)}), 500
 
-    return jsonify({'message': 'Expert deleted successfully'})
 
 
 @app.route('/services', methods=['GET'])

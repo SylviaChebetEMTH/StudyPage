@@ -206,7 +206,7 @@ function AddExpertPage() {
             <div className="mb-4">
               <label className="block mb-2">Project Types:</label>
               <Field
-                name="projectTypes"
+                name="text"
                 className="border py-2 px-4 border-gray-300 rounded-md w-full"
                 type="text"
                 placeholder="Project Types"
