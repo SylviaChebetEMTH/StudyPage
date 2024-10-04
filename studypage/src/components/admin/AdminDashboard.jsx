@@ -29,7 +29,7 @@ const AdminDashboardSidebar = () => {
     };
 
     return (
-        <div className="flex h-screen">
+        <div className="flex flex-col md:flex-row min-h-screen bg-[#F0F9FF] pt-10">
             {/* Toggle Button for Mobile */}
             <button
                 className="md:hidden p-4 bg-[#45B1E8] text-white"
@@ -52,7 +52,8 @@ const AdminDashboardSidebar = () => {
             </button>
 
             {/* Sidebar */}
-            <aside className={`w-64 bg-slate-300 mt-10 text-[#747474] shadow-md h-full transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}>
+            <aside className={`fixed md:relative top-0 left-0 w-64 bg-slate-300 text-[#747474] shadow-md transition-transform duration-300 ease-in-out md:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+                } h-full md:h-auto pt-16 z-20`}>
                 <nav className="p-4">
                     <ul>
                         <li className="mb-4">
@@ -72,7 +73,7 @@ const AdminDashboardSidebar = () => {
                         <li className="mb-4">
                             <button
                                 onClick={handleProductsClick}
-                                className="w-full text-left flex items-center px-4 py-6 block bg-[#FFFFFF] hover:bg-[#d1d5db] rounded"
+                                className="w-full text-left flex items-center px-4 py-6 block bg-[#FFFFFF] hover:bg-[#d1d5db] rounded mb-4"
                             >
                                 <FontAwesomeIcon icon={faUserTie} className="mr-3 w-6 h-6" />
                                 Expert Management
@@ -128,7 +129,7 @@ const AdminDashboardSidebar = () => {
                         <li className="mb-4">
                             <button
                                 onClick={handleServiceClick}
-                                className="w-full text-left flex items-center px-4 py-6 block bg-[#FFFFFF] hover:bg-[#d1d5db] rounded"
+                                className="w-full text-left flex items-center px-4 py-6 mb-4 block bg-[#FFFFFF] hover:bg-[#d1d5db] rounded"
                             >
                                 <FontAwesomeIcon icon={faCog} className="mr-3 w-6 h-6" />
                                 Service Management
@@ -208,7 +209,7 @@ const AdminDashboardSidebar = () => {
             </aside>
 
             {/* Main Content Area */}
-            <main className="flex-1 bg-[#F0F9FF] p-4 md:p-8 ml-0 md:ml-64 transition-all duration-300">
+            <main className="flex-1 bg-[#F0F9FF] p-4 md:p-8">
                 <Outlet />
             </main>
         </div>

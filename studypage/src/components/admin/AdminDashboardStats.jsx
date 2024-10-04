@@ -4,12 +4,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCogs, faChalkboardTeacher } from "@fortawesome/free-solid-svg-icons";
 
 function AdminDashboard() {
-    const [users, setUsers] = useState([]); 
-    const [services, setServices] = useState([]); 
-    const [experts, setExperts] = useState([]); 
-    const [loading, setLoading] = useState(true); 
-    const [error, setError] = useState(null); 
-    const { authToken } = useContext(UserContext); 
+    const [users, setUsers] = useState([]);
+    const [services, setServices] = useState([]);
+    const [experts, setExperts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const { authToken } = useContext(UserContext);
     const token = authToken || localStorage.getItem("access_token");
 
     useEffect(() => {
@@ -27,7 +27,7 @@ function AdminDashboard() {
                     throw new Error("Failed to fetch users");
                 }
                 const usersData = await usersResponse.json();
-                setUsers(usersData?.users || []);  
+                setUsers(usersData?.users || []);
 
                 // Fetch services
                 const servicesResponse = await fetch("http://127.0.0.1:5000/services", {
@@ -39,7 +39,7 @@ function AdminDashboard() {
                     throw new Error("Failed to fetch services");
                 }
                 const servicesData = await servicesResponse.json();
-                setServices(servicesData?.services || []); 
+                setServices(servicesData?.services || []);
 
                 // Fetch experts
                 const expertsResponse = await fetch("http://127.0.0.1:5000/experts", {
@@ -51,7 +51,7 @@ function AdminDashboard() {
                     throw new Error("Failed to fetch experts");
                 }
                 const expertsData = await expertsResponse.json();
-                setExperts(expertsData?.experts || []); 
+                setExperts(expertsData?.experts || []);
 
                 setLoading(false);
             } catch (error) {
@@ -69,7 +69,6 @@ function AdminDashboard() {
     return (
         <div className="flex flex-col items-center px-4 sm:px-6 lg:px-8 py-4">
             <h1 className="text-2xl font-bold text-gray-800 mb-4">Study Dashboard</h1>
-
             {/* Users, Services, and Experts Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8 w-full">
                 {/* Users */}
