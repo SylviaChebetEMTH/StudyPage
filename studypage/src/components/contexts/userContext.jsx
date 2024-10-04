@@ -63,7 +63,7 @@ export const UserProvider = ({ children }) => {
         if (response.ok) {
           setCurrentUser(data);
           if (data.is_admin) {
-            nav("/admin");
+            nav("/admin/dashboard");
           } else {
             nav("/");
           }

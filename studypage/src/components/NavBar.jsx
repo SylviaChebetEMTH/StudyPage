@@ -9,7 +9,7 @@ export const NavBar = () => {
 
     const accountLink = authToken
         ? currentUser?.is_admin
-            ? "/admin"
+            ? "/admin/dashboard"
             : "/userprofile/dashboarduser"
         : "/login";
 
@@ -25,7 +25,7 @@ export const NavBar = () => {
                     </Link>
                     <div className="flex items-center">
                         <Link
-                            to="/home"
+                            to="/"
                             className="bg-transparent py-1 px-2 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 hover:underline"
                         >
                             Home

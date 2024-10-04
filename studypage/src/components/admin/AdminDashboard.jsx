@@ -168,7 +168,7 @@ const AdminDashboardSidebar = () => {
                                     </li>
                                     <li className="mb-4">
                                         <NavLink
-                                            to="products/add"
+                                            to="addservice"
                                             className={({ isActive }) =>
                                                 isActive
                                                     ? "block px-4 py-4 bg-[#45B1E8] rounded flex items-center text-white"

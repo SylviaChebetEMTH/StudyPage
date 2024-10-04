@@ -325,7 +325,41 @@ def get_services():
         }
         service_list.append(service_data)
 
-    return jsonify({'services': service_list})  # Return a structured JSON response
+    return jsonify({'services': service_list})  
+
+@app.route('/services', methods=['POST'])
+def add_service():
+    # Check if the request contains JSON data
+    if not request.is_json:
+        return jsonify({"message": "Invalid request. JSON data required."}), 400
+
+    # Get service data from the request
+    data = request.get_json()
+
+    title = data.get('title')
+    description = data.get('description')
+    price = data.get('price')
+
+    # Validate required fields
+    if not title or not description or price is None:
+        return jsonify({"message": "Title, description, and price are required."}), 400
+
+    # Create a new service instance
+    new_service = Service(title=title, description=description, price=price)
+
+    # Add the service to the session and commit
+    try:
+        db.session.add(new_service)
+        db.session.commit()
+        return jsonify({"message": "Service added successfully!", "service": {
+            'id': new_service.id,
+            'title': new_service.title,
+            'description': new_service.description,
+            'price': new_service.price
+        }}), 201
+    except Exception as e:
+        db.session.rollback()  # Rollback in case of an error
+        return jsonify({"message": "Failed to add service.", "error": str(e)}), 500
 
 
 # Route for admin to update services
