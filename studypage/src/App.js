@@ -12,7 +12,8 @@ import SignUp from './components/forms/Signup';
 import AdminNav from "./components/admin/AdminNav";
 // import Dashboard from "./components/admin/AdminDashboard";
 import AdminDashboardSidebar from "./components/admin/AdminDashboard";
-import AdminUsers from "./components/admin/AdminUsers";
+// import AdminUsers from "./components/admin/AdminUsers";
+import AllUsers from "./components/admin/AdminUsers";
 import AdminDasboardStats from "./components/admin/AdminDashboardStats";
 import AllExperts from "./components/admin/AllExperts";
 import AddExpertPage from "./components/admin/AddExpert";
@@ -45,7 +46,7 @@ function AppContent() {
           {currentUser?.is_admin && (
           <Route path="/admin" element={<AdminDashboardSidebar />}>
             <Route path="dashboard" element={<AdminDasboardStats />} />
-            <Route path="users" element={<AdminUsers />} />
+            <Route path="users" element={<AllUsers />} />
             <Route path="allexperts" element={<AllExperts />} />
             <Route path="addexpert" element={<AddExpertPage />} />
             <Route path="allservices" element={<AllServices />} />

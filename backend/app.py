@@ -138,11 +138,15 @@ def update_user(id):
         return jsonify({'message': 'User updated successfully'})
     return jsonify({'message': 'No updates provided'}), 400
 
+
+
 @app.route('/admin/users/<int:user_id>', methods=['DELETE'])
 @jwt_required()
 def delete_user(user_id):
-    current_user = get_jwt_identity()
-    if not current_user['is_admin']:
+    current_user_id = get_jwt_identity()  # This retrieves the user ID
+    current_user = User.query.get(current_user_id)  # Fetch the user object from the database
+
+    if not current_user or not current_user.is_admin:
         return jsonify({'message': 'Admin access required'}), 403
 
     user = User.query.get(user_id)
@@ -153,6 +157,36 @@ def delete_user(user_id):
     db.session.commit()
 
     return jsonify({'message': 'User deleted successfully'})
+
+
+
+@app.route('/admin/users', methods=['POST'])
+@jwt_required()  # Ensure only authenticated users can access this route
+def add_user():
+    data = request.get_json()
+
+    # Validate input data
+    username = data.get('username')
+    email = data.get('email')
+    password = data.get('password')
+    is_admin = data.get('is_admin', False)  # Default to False if not provided
+
+    if not username or not email or not password:
+        return jsonify({'message': 'Username, email, and password are required.'}), 400
+
+    # Check if user already exists
+    existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
+    if existing_user:
+        return jsonify({'message': 'User with this username or email already exists.'}), 400
+
+    # Hash the password before saving
+    hashed_password = generate_password_hash(password)
+
+    new_user = User(username=username, email=email, password=hashed_password, is_admin=is_admin)
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message': 'User created successfully.', 'user_id': new_user.id}), 201
 
 
 
