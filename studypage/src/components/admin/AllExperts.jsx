@@ -178,74 +178,89 @@ export default function AllExperts() {
           </select>
         </div>
       </header>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {currentExperts.length === 0 ? (
           <div className="col-span-3 p-4 text-center">No experts available.</div>
         ) : (
           currentExperts.map((expert) => (
-            <div key={expert.id} className="bg-white border rounded-md shadow-md p-4 hover:shadow-lg transition-shadow">
-              <img src={expert.profilePicture} alt={`${expert.name}'s profile`} className="border py-2 px-4 border-gray-300 rounded-md w-full" />
-              <h2 className="font-bold text-lg mb-1">{expert.name}</h2>
-              <h3 className="text-sm mb-2 text-gray-600">{expert.title}</h3>
-              <p className="mb-2">
-                <span className="font-medium">Expertise:</span> <span className="text-sm">{expert.expertise}</span>
-              </p>
-              <p className="mb-2">
-                <span className="font-medium">Description:</span> <span className="text-sm">{expert.description}</span>
-              </p>
-              <p className="mb-2">
-                <span className="font-medium">Biography:</span> <span className="text-sm">{expert.biography}</span>
-              </p>
-              <p className="mb-2">
-                <span className="font-medium">Education:</span> <span className="text-sm">{expert.education}</span>
-              </p>
-              <p className="mb-2">
-                <span className="font-medium">Languages:</span> <span className="text-sm">{expert.languages}</span>
-              </p>
-              <p className="mb-2">
-                <span className="font-medium">Project Type:</span> <span className="text-sm">{expert.projectTypes}</span>
-              </p>
-              <p className="mb-2">
-                <span className="font-medium">Subjects:</span> <span className="text-sm">{expert.subjects}</span>
-              </p>
+            <div
+              key={expert.id}
+              className="border p-4 flex flex-col justify-between shadow-xl rounded-lg overflow-hidden bg-white aos-init"
+            >
+              <div className="flex-grow">
 
-              <div className="mt-4">
-                {currentUser.username === "admin_user" && (
-                  <>
-                    <div className="flex flex-row justify-between mb-2">
-                      <button
-                        onClick={() => {
-                          setEditingExpert(expert.id);
-                          setUpdatedValues({
-                            name: expert.name,
-                            description: expert.description,
-                            biography: expert.biography,
-                            education: expert.education,
-                            languages: expert.languages,
-                            project_types: expert.project_types,
-                            subjects: expert.subjects,
-                            profile_picture: expert.profile_picture,
-                          });
-                        }}
-                        className="p-2 bg-blue-500 text-white rounded-md"
-                      >
-                        Edit Details
-                      </button>
-                      <button
-                        onClick={() => handleDeleteExpert(expert.id)}
-                        className="p-2 bg-red-500 text-white rounded-md"
-                      >
-                        Delete
-                      </button>
+                <div className="flex-grow border border-[#e4e4e4] h-[300px] mb-4 relative overflow-hidden group transition">
+                  <div className="w-full h-full flex justify-center items-center">
+                    <div className="w-full h-full mx-auto flex justify-center items-center">
+                      <img
+                        src={expert.profilePicture}
+                        alt={`${expert.name}'s profile`}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                  </>
-                )}
+                  </div>
+                </div>
+
+
+                <h2 className="font-bold text-lg mb-1 text-center">{expert.name}</h2>
+                <h3 className="text-sm mb-2 text-gray-600 text-center">{expert.title}</h3>
+                <p className="mb-2 text-sm">
+                  <span className="font-medium">Expertise:</span> {expert.expertise}
+                </p>
+                <p className="mb-2 text-sm">
+                  <span className="font-medium">Description:</span> {expert.description}
+                </p>
+                <p className="mb-2 text-sm">
+                  <span className="font-medium">Biography:</span> {expert.biography}
+                </p>
+                <p className="mb-2 text-sm">
+                  <span className="font-medium">Education:</span> {expert.education}
+                </p>
+                <p className="mb-2 text-sm">
+                  <span className="font-medium">Languages:</span> {expert.languages}
+                </p>
+                <p className="mb-2 text-sm">
+                  <span className="font-medium">Project Type:</span> {expert.project_types}
+                </p>
+                <p className="mb-2 text-sm">
+                  <span className="font-medium">Subjects:</span> {expert.subject}
+                </p>
               </div>
+              {currentUser.username === "admin_user" && (
+                <div className="mt-4">
+                  <div className="flex flex-row justify-between mb-2">
+                    <button
+                      onClick={() => {
+                        setEditingExpert(expert.id);
+                        setUpdatedValues({
+                          name: expert.name,
+                          description: expert.description,
+                          biography: expert.biography,
+                          education: expert.education,
+                          languages: expert.languages,
+                          project_types: expert.project_types,
+                          subjects: expert.subjects,
+                          profile_picture: expert.profile_picture,
+                        });
+                      }}
+                      className="p-2 bg-[#85C4C2] text-white rounded-md"
+                    >
+                      Edit Details
+                    </button>
+                    <button
+                      onClick={() => handleDeleteExpert(expert.id)}
+                      className="p-2 bg-[#769594] text-white rounded-md"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ))
         )}
       </div>
+
 
       {/* Editing Section */}
       {editingExpert && (
@@ -320,7 +335,7 @@ export default function AllExperts() {
                 <label className="mb-2">Project Types:</label>
                 <input
                   type="text"
-                  value={updatedValues.projectTypes}
+                  value={updatedValues.project_types}
                   onChange={(e) => handleUpdateChange(e, 'project_types')}
                   className="p-2 border rounded-md"
                 />
@@ -337,7 +352,7 @@ export default function AllExperts() {
               </div>
 
               <div className="flex justify-between mt-4">
-                <button type="submit" className="p-2 bg-green-500 text-white rounded-md">Save Changes</button>
+                <button type="submit" className="p-2 bg-[#769594] text-white rounded-md">Save Changes</button>
                 <button type="button" onClick={cancelEdit} className="p-2 bg-gray-400 text-white rounded-md">Cancel</button>
               </div>
             </form>
@@ -345,7 +360,7 @@ export default function AllExperts() {
         </div>
       )}
 
-      {notification && <div className="bg-green-100 p-4 mt-4">{notification}</div>}
+      {notification && <div className="bg-[#85C4C2] p-4 mt-4">{notification}</div>}
     </div>
   );
 }

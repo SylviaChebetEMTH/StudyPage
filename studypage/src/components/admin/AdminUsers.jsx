@@ -125,6 +125,7 @@ function AllUsers() {
       {/* Add User Form */}
       <form onSubmit={handleAddUser} className="mb-4">
         <h3 className="text-lg mb-2">Add New User</h3>
+        <div className="flex flex-col mb-2">
         <input
           type="text"
           name="username"
@@ -132,7 +133,7 @@ function AllUsers() {
           onChange={handleInputChange}
           placeholder="Username"
           required
-          className="border border-gray-300 px-2 py-1 mr-2"
+          className="border border-gray-300 px-2 py-1 mr-2 mb-2 rounded-md"
         />
         <input
           type="email"
@@ -141,7 +142,7 @@ function AllUsers() {
           onChange={handleInputChange}
           placeholder="Email"
           required
-          className="border border-gray-300 px-2 py-1 mr-2"
+          className="border border-gray-300 px-2 py-1 mr-2 mb-2 rounded-md"
         />
         <input
           type="password"
@@ -150,14 +151,17 @@ function AllUsers() {
           onChange={handleInputChange}
           placeholder="Password"
           required
-          className="border border-gray-300 px-2 py-1 mr-2"
+          className="border border-gray-300 px-2 py-1 mr-2 mb-2 rounded-md"
         />
         <button
           type="submit"
-          className="bg-blue-500 text-white py-1 px-4 rounded-md"
+          className="bg-[#769594] text-white py-1 px-4 rounded-md"
         >
           Add User
         </button>
+
+        </div>
+        
       </form>
 
       {/* Users Table */}
@@ -180,7 +184,7 @@ function AllUsers() {
               <td className="border border-gray-300 px-4 py-2">
                 <button
                   onClick={() => handleUpdateUser(user.id, user.is_admin)}
-                  className={`py-1 px-2 rounded-md ${user.is_admin ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}
+                  className={`py-1 px-2 rounded-md ${user.is_admin ? 'bg-[#769594] text-white' : 'bg-[#85C4C2] text-white'}`}
                 >
                   {user.is_admin ? 'Revoke Admin' : 'Make Admin'}
                 </button>
@@ -188,7 +192,7 @@ function AllUsers() {
               <td className="border border-gray-300 px-4 py-2">
                 <button
                   onClick={() => handleDeleteUser(user.id)}
-                  className="bg-red-500 text-white py-1 px-2 rounded-md"
+                  className="bg-[#769594] text-white py-1 px-2 rounded-md"
                 >
                   Delete
                 </button>

@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faEnvelope, faWallet } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faEnvelope, faWallet, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
+import { Link } from 'react-router-dom';
 
 const AdminNav = () => {
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const toggleDropdown = () => {
+    setShowDropdown((prev) => !prev);
+  };
+
   return (
     <div>
       {/* Upper Navigation */}
@@ -11,7 +18,12 @@ const AdminNav = () => {
         {/* Left Section */}
         <div className="flex items-center space-x-6">
           {/* Logo */}
-          <div className="text-white font-bold text-2xl">StudyPage</div>
+          {/* <div className="text-white font-bold text-2xl">StudyPage</div> */}
+          <div className="text-white font-bold text-2xl">
+            <Link to="/">
+              StudyPage
+            </Link>
+          </div>
 
           {/* Notification Icon */}
           <div className="relative text-white">
@@ -30,7 +42,7 @@ const AdminNav = () => {
         </div>
 
         {/* Right Section */}
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-6 relative">
           {/* Wallet/Balance Icon */}
           <div className="text-white">
             <FontAwesomeIcon icon={faWallet} className="text-xl" />
@@ -41,8 +53,24 @@ const AdminNav = () => {
           <button className="bg-[#739B9A] text-white px-3 py-1 rounded">Withdraw Funds</button>
 
           {/* Profile Icon */}
-          <div className="text-white">
-            <FontAwesomeIcon icon={faUserCircle} className="text-2xl" />
+          <div className="text-white relative">
+            <FontAwesomeIcon icon={faUserCircle} className="text-2xl cursor-pointer" onClick={toggleDropdown} />
+            <FontAwesomeIcon icon={faCaretDown} className="ml-2 cursor-pointer" onClick={toggleDropdown} />
+
+            {/* Dropdown Menu */}
+            {showDropdown && (
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
+                <Link to="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                  My Profile
+                </Link>
+                <Link to="/balance" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                  Balance
+                </Link>
+                <Link to="/logout" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                  Exit
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </nav>

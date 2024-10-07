@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faUsers, faCog, faSignOutAlt, faUserTie } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUsers, faCog, faSignOutAlt, faUserTie, faBook, faTasks } from '@fortawesome/free-solid-svg-icons';
 import { UserContext } from '../contexts/userContext';
 
 const AdminDashboardSidebar = () => {
@@ -187,7 +187,7 @@ const AdminDashboardSidebar = () => {
                                 to="/admin/users"
                                 className={({ isActive }) =>
                                     isActive
-                                        ? "block px-4 py-6 bg-[#45B1E8] rounded flex items-center text-white"
+                                        ? "block px-4 py-6 bg-[#769594] rounded flex items-center text-white"
                                         : "block px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                 }
                             >
@@ -204,7 +204,7 @@ const AdminDashboardSidebar = () => {
                                         : "block px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                 }
                             >
-                                <FontAwesomeIcon icon={faUsers} className="mr-3 w-6 h-6" />
+                                <FontAwesomeIcon icon={faTasks} className="mr-3 w-6 h-6" />
                                 Project Types
                             </NavLink>
                         </li>
@@ -217,7 +217,7 @@ const AdminDashboardSidebar = () => {
                                         : "block px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                 }
                             >
-                                <FontAwesomeIcon icon={faUsers} className="mr-3 w-6 h-6" />
+                                <FontAwesomeIcon icon={faBook} className="mr-3 w-6 h-6" />
                                 Subject Area
                             </NavLink>
                         </li>

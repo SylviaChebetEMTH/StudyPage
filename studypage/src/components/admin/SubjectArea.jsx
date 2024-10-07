@@ -82,7 +82,7 @@ function SubjectArea() {
           />
           <button
             onClick={handleCreateSubject}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+            className="bg-[#769594] text-white px-4 py-2 rounded-md"
           >
             Add Subject
           </button>
@@ -120,7 +120,7 @@ function SubjectArea() {
                       setEditingSubject(subject.id);
                       setEditName(subject.name);
                     }}
-                    className="bg-yellow-500 text-white px-4 py-2 rounded-md"
+                    className="bg-[#85C4C2] text-white px-4 py-2 rounded-md"
                   >
                     Edit
                   </button>
@@ -128,7 +128,7 @@ function SubjectArea() {
 
                 <button
                   onClick={() => handleDeleteSubject(subject.id)}
-                  className="bg-red-500 text-white px-4 py-2 rounded-md"
+                  className="bg-[#769594] text-white px-4 py-2 rounded-md"
                 >
                   Delete
                 </button>

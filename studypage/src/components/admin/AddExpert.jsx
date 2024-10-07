@@ -332,7 +332,7 @@ function AddExpertPage() {
             <div className="flex justify-center mt-8">
               <button
                 type="submit"
-                className="bg-blue-500 text-white py-2 px-6 rounded-md"
+                className="bg-[#769594] text-white py-2 px-6 rounded-md"
               >
                 Add Expert
               </button>

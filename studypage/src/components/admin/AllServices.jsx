@@ -246,7 +246,7 @@ export default function AllServices() {
                                                         project_type_name: service.project_type_name,
                                                     });
                                                 }}
-                                                className="bg-blue-500 text-white px-2 py-1 rounded-md"
+                                                className="bg-[#85C4C2] text-white px-2 py-1 rounded-md"
                                             >
                                                 Edit
                                             </button>
@@ -254,7 +254,7 @@ export default function AllServices() {
                                         <td className="py-2 px-4 border">
                                             <button
                                                 onClick={() => handleDeleteService(service.id)}
-                                                className="bg-red-500 text-white px-2 py-1 rounded-md"
+                                                className="bg-[#769594] text-white px-2 py-1 rounded-md"
                                             >
                                                 Delete
                                             </button>
@@ -361,7 +361,7 @@ export default function AllServices() {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                                    className="bg-[#769594] text-white px-4 py-2 rounded-md"
                                 >
                                     Update Service
                                 </button>
@@ -372,7 +372,7 @@ export default function AllServices() {
             )}
 
             {notification && (
-                <div className="fixed top-0 right-0 m-4 bg-red-500 text-white p-2 rounded-md">
+                <div className="fixed top-0 right-0 m-4 bg-[#85C4C2] text-white p-2 rounded-md">
                     {notification}
                 </div>
             )}
