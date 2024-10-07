@@ -384,9 +384,28 @@ def delete_expert(id):
 
 
 
+# @app.route('/services', methods=['GET'])
+# def get_services():
+#     services = Service.query.all()  # Fetch all services from the database
+#     service_list = []
+
+#     for service in services:
+#         service_data = {
+#             'id': service.id,
+#             'title': service.title,
+#             'description': service.description,
+#             'price': service.price,
+#             # 'project_type_name': service.project_type.name,  
+#             # 'subject_area_name': service.subject_area.name,
+            
+#         }
+#         service_list.append(service_data)
+
+#     return jsonify({'services': service_list})  
+
 @app.route('/services', methods=['GET'])
 def get_services():
-    services = Service.query.all()  # Fetch all services from the database
+    services = Service.query.options(db.joinedload(Service.project_type)).all()  # Fetch all services with related project type
     service_list = []
 
     for service in services:
@@ -395,12 +414,12 @@ def get_services():
             'title': service.title,
             'description': service.description,
             'price': service.price,
-            
+            'project_type_name': service.project_type.name if service.project_type else None,  # Get project type name
+            'subject_name': service.subject.name if service.subject else None  # Get subject name, optional
         }
         service_list.append(service_data)
 
-    return jsonify({'services': service_list})  
-
+    return jsonify({'services': service_list})
 
 
 

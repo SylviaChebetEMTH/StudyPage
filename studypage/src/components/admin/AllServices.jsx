@@ -11,8 +11,8 @@ export default function AllServices() {
         title: "",
         description: "",
         price: "",
-        project_type_id: "",
-        subject_id: ""
+        project_type_name: "",
+        subject_name: ""
     });
     const [notification, setNotification] = useState(null);
     const [subjects, setSubjects] = useState([]);
@@ -120,7 +120,7 @@ export default function AllServices() {
                 fetchData();
                 setNotification(`Service updated successfully.`);
                 setEditingService(null);
-                setUpdateValues({ title: "", description: "", price: "", subjectArea: "", projectType: "" });
+                setUpdateValues({ title: "", description: "", price: "", subject_name: "", project_type_name: "" });
             })
             .catch((error) => {
                 console.error("Error updating service:", error);
@@ -154,9 +154,16 @@ export default function AllServices() {
             });
     };
 
+    // const handleUpdateChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setUpdateValues((prevValues) => ({ ...prevValues, [name]: value }));
+    // };
     const handleUpdateChange = (e) => {
         const { name, value } = e.target;
-        setUpdateValues((prevValues) => ({ ...prevValues, [name]: value }));
+        setUpdateValues((prevValues) => ({
+            ...prevValues,
+            [name]: value,
+        }));
     };
 
     const handleUpdateSubmit = (serviceId) => {
@@ -223,8 +230,8 @@ export default function AllServices() {
                                 <td className="py-2 px-4 border">{service.title}</td>
                                 <td className="py-2 px-4 border">{service.description}</td>
                                 <td className="py-2 px-4 border">${service.price.toFixed(2)}</td>
-                                <td className="py-2 px-4 border">{service.subject_id}</td>
-                                <td className="py-2 px-4 border">{service.project_type_id}</td>
+                                <td className="py-2 px-4 border">{service.subject_name}</td>
+                                <td className="py-2 px-4 border">{service.project_type_name}</td>
                                 {currentUser.username === "admin_user" && (
                                     <>
                                         <td className="py-2 px-4 border">
@@ -235,8 +242,8 @@ export default function AllServices() {
                                                         title: service.title,
                                                         description: service.description,
                                                         price: service.price,
-                                                        subjectArea: service.subjectArea,
-                                                        projectType: service.projectType,
+                                                        subject_name: service.subject_name,
+                                                        project_type_name: service.project_type_name,
                                                     });
                                                 }}
                                                 className="bg-blue-500 text-white px-2 py-1 rounded-md"
@@ -305,8 +312,8 @@ export default function AllServices() {
                             <div className="mb-4">
                                 <label className="block text-sm font-medium mb-1">Subject Area</label>
                                 <select
-                                    name="subjectArea"
-                                    value={updateValues.subjectArea}
+                                    name="subject_name"
+                                    value={updateValues.subject_name}
                                     onChange={handleUpdateChange}
                                     required
                                     className="p-2 border rounded-md w-full"
@@ -326,8 +333,8 @@ export default function AllServices() {
                             <div className="mb-4">
                                 <label className="block text-sm font-medium mb-1">Project Type</label>
                                 <select
-                                    name="projectType"
-                                    value={updateValues.projectType}
+                                    name="project_type_name"
+                                    value={updateValues.project_type_name}
                                     onChange={handleUpdateChange}
                                     required
                                     className="p-2 border rounded-md w-full"
