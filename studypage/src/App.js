@@ -21,6 +21,7 @@ import AllServices from "./components/admin/AllServices";
 import AddServicePage from "./components/admin/AddService";
 import ProjectTypes from "./components/admin/ProjectTypes";
 import SubjectArea from "./components/admin/SubjectArea";
+import ProjectRequest from "./components/forms/ProjectRequest";
 
 
 function AppContent() {
@@ -43,6 +44,7 @@ function AppContent() {
           <Route path="/expertspage" element={<ExpertPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/hireexpert" element={<ProjectRequest />} />
 
           {/* Only render admin routes if the user is an admin */}
           {currentUser?.is_admin && (

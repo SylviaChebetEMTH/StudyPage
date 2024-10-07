@@ -1,8 +1,8 @@
-"""Create model classes new
+"""Added project_type and subject relationships to ProjectRequest
 
-Revision ID: 1e5b8e252062
+Revision ID: 95724ab63539
 Revises: 
-Create Date: 2024-10-04 22:57:48.261169
+Create Date: 2024-10-08 01:38:38.946968
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1e5b8e252062'
+revision = '95724ab63539'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -71,9 +71,14 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('expert_id', sa.Integer(), nullable=True),
+    sa.Column('project_title', sa.Text(), nullable=False),
+    sa.Column('project_type_id', sa.Integer(), nullable=True),
+    sa.Column('subject_id', sa.Integer(), nullable=True),
     sa.Column('project_description', sa.Text(), nullable=False),
     sa.Column('status', sa.String(length=50), nullable=True),
     sa.ForeignKeyConstraint(['expert_id'], ['experts.id'], ),
+    sa.ForeignKeyConstraint(['project_type_id'], ['project_types.id'], ),
+    sa.ForeignKeyConstraint(['subject_id'], ['subjects.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

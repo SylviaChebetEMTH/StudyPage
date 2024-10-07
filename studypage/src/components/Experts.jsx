@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { UserContext } from './contexts/userContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Field, Formik, Form, ErrorMessage } from "formik";
 
 const ExpertPage = () => {
@@ -10,6 +10,7 @@ const ExpertPage = () => {
   const [projectTypes, setProjectTypes] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const navigate = useNavigate();
 
   const { currentUser, authToken } = useContext(UserContext);
   const API_URL = 'http://127.0.0.1:5000';
@@ -44,7 +45,7 @@ const ExpertPage = () => {
     if (!currentUser) {
       setShowLoginPrompt(true);
     } else {
-      console.log(`Hiring expert with ID: ${expertId}`);
+      navigate(`/hireexpert`);
     }
   };
 

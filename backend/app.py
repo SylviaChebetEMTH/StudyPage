@@ -244,20 +244,42 @@ def get_experts():
 
 
 
-# Route to request an expert
 @app.route('/request_expert', methods=['POST'])
 @jwt_required()
 def request_expert():
-    data = request.json
+    data = request.form  # Change to .form for FormData
     user_id = get_jwt_identity()
     expert_id = data['expert_id']
-    project_description = data['project_description']
+    project_title = data['project_title']
+    description = data['description']
+    project_type = data['project_type']
+    subject = data['subject']
+    deadline = data['deadline']
+    
+    # Handle attachments (multiple files)
+    attachments = request.files.getlist('attachments')
 
-    new_request = ProjectRequest(user_id=user_id, expert_id=expert_id, project_description=project_description)
+    # Save the attachments and other data to the database
+    new_request = ProjectRequest(
+        user_id=user_id, 
+        expert_id=expert_id, 
+        project_title=project_title,
+        description=description,
+        project_type=project_type,
+        subject=subject,
+        deadline=deadline
+    )
+    
     db.session.add(new_request)
     db.session.commit()
 
+    # Save attachments to the filesystem or database as needed
+    for file in attachments:
+        # Store files as necessary (e.g., save file to disk or database)
+        pass
+    
     return jsonify({'message': 'Request submitted successfully!'}), 201
+
 
 @app.route('/experts/<int:id>', methods=['GET'])
 def get_expert(id):

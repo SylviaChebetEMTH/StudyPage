@@ -97,13 +97,44 @@ class Service(db.Model):
         return self.price * quantity
 
 
+# class ProjectRequest(db.Model):
+#     __tablename__ = 'project_requests'
+#     id = db.Column(db.Integer, primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#     expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'))
+#     project_description = db.Column(db.Text, nullable=False)
+#     status = db.Column(db.String(50), default='Pending')
+
+#     user = db.relationship('User', backref='requests')
+#     expert = db.relationship('Expert', backref='requests')
+
 class ProjectRequest(db.Model):
     __tablename__ = 'project_requests'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'))
+    project_title = db.Column(db.Text, nullable=False)
+    project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'))  # Foreign key to ProjectType
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))  # Foreign key to Subject
     project_description = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(50), default='Pending')
 
+    # Relationships
     user = db.relationship('User', backref='requests')
     expert = db.relationship('Expert', backref='requests')
+    project_type = db.relationship('ProjectType', backref='requests')  # Relationship with ProjectType
+    subject = db.relationship('Subject', backref='requests')  # Relationship with Subject
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'expert_id': self.expert_id,
+            'project_title': self.project_title,
+            'project_type': self.project_type.to_dict() if self.project_type else None,
+            'subject': self.subject.to_dict() if self.subject else None,
+            'project_description': self.project_description,
+            'status': self.status
+        } 
+
+
