@@ -52,7 +52,7 @@ const AdminDashboardSidebar = () => {
             </button>
 
             {/* Sidebar */}
-            <aside className={`fixed md:relative top-0 left-0 w-64 bg-slate-300 text-[#747474] shadow-md transition-transform duration-300 ease-in-out md:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            <aside className={`fixed md:relative top-0 left-0 w-64 bg-[#C2E1E1] text-[#747474] shadow-md transition-transform duration-300 ease-in-out md:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
                 } h-full md:h-auto pt-16 z-20`}>
                 <nav className="p-4">
                     <ul>
@@ -61,7 +61,7 @@ const AdminDashboardSidebar = () => {
                                 to="/admin/dashboard"
                                 className={({ isActive }) =>
                                     isActive
-                                        ? "block px-4 py-6 bg-gray-400 rounded flex items-center text-white"
+                                        ? "block px-4 py-6 bg-[#769594] rounded flex items-center text-white"
                                         : "block px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                 }
                             >
@@ -104,7 +104,7 @@ const AdminDashboardSidebar = () => {
                                             to="allexperts"
                                             className={({ isActive }) =>
                                                 isActive
-                                                    ? "block px-4 py-4 bg-[#45B1E8] rounded flex items-center text-white"
+                                                    ? "block px-4 py-4 bg-[#769594] rounded flex items-center text-white"
                                                     : "block px-4 py-4 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                             }
                                         >
@@ -116,7 +116,7 @@ const AdminDashboardSidebar = () => {
                                             to="addexpert"
                                             className={({ isActive }) =>
                                                 isActive
-                                                    ? "block px-4 py-4 bg-[#45B1E8] rounded flex items-center text-white"
+                                                    ? "block px-4 py-4 bg-[#769594] rounded flex items-center text-white"
                                                     : "block px-4 py-4 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                             }
                                         >
@@ -160,7 +160,7 @@ const AdminDashboardSidebar = () => {
                                             to="allservices"
                                             className={({ isActive }) =>
                                                 isActive
-                                                    ? "block px-4 py-4 bg-[#45B1E8] rounded flex items-center text-white"
+                                                    ? "block px-4 py-4 bg-[#769594] rounded flex items-center text-white"
                                                     : "block px-4 py-4 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                             }
                                         >
@@ -172,7 +172,7 @@ const AdminDashboardSidebar = () => {
                                             to="addservice"
                                             className={({ isActive }) =>
                                                 isActive
-                                                    ? "block px-4 py-4 bg-[#45B1E8] rounded flex items-center text-white"
+                                                    ? "block px-4 py-4 bg-[#769594] rounded flex items-center text-white"
                                                     : "block px-4 py-4 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                             }
                                         >
@@ -200,7 +200,7 @@ const AdminDashboardSidebar = () => {
                                 to="projecttypes"
                                 className={({ isActive }) =>
                                     isActive
-                                        ? "block px-4 py-6 bg-[#45B1E8] rounded flex items-center text-white"
+                                        ? "block px-4 py-6 bg-[#769594] rounded flex items-center text-white"
                                         : "block px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                 }
                             >
@@ -213,7 +213,7 @@ const AdminDashboardSidebar = () => {
                                 to="subjectarea"
                                 className={({ isActive }) =>
                                     isActive
-                                        ? "block px-4 py-6 bg-[#45B1E8] rounded flex items-center text-white"
+                                        ? "block px-4 py-6 bg-[#769594] rounded flex items-center text-white"
                                         : "block px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                 }
                             >
