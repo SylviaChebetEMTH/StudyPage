@@ -276,34 +276,6 @@ def get_expert(id):
     }
     return jsonify({'expert': expert_data})
 
-
-# @app.route("/experts", methods=["POST"])
-# def add_expert():
-#     data = request.get_json()
-#     profile_picture = data.get("profile_picture")  # Ensure you handle this
-#     if not profile_picture:
-#         return jsonify({"error": "Profile picture is required"}), 400
-    
-#     # Save the expert's data, including profile picture
-#     new_expert = Expert(
-#         name=data["name"],
-#         title=data["title"],
-#         expertise=data["expertise"],
-#         description=data["description"],
-#         biography=data["biography"],
-#         education=data["education"],
-#         languages=data["languages"],
-#         project_types=data["project_types"],
-#         subjects=data["subjects"],
-#         profile_picture=profile_picture  # Save to the database
-#     )
-    
-#     db.session.add(new_expert)
-#     db.session.commit()
-    
-#     return jsonify({"message": "Expert added successfully!"}), 201
-
-
 @app.route("/experts", methods=["POST"])
 def add_expert():
     data = request.get_json()
@@ -478,11 +450,52 @@ def add_service():
 @app.route('/project-types', methods=['GET'])
 def get_project_types():
     try:
-        project_types = ProjectType.query.all()  # Retrieve all project types from the database
+        project_types = ProjectType.query.all()  
         return jsonify([project_type.to_dict() for project_type in project_types]), 200
     except Exception as e:
-        print("Error occurred:", e)  # Log the error to the console
-        return jsonify({'message': str(e)}), 500  # Handle any errors that occur.
+        print("Error occurred:", e)  
+        return jsonify({'message': str(e)}), 500  
+
+
+# POST route to create a new project type
+@app.route('/project-types', methods=['POST'])
+def create_project_type():
+    try:
+        data = request.get_json()
+        new_project_type = ProjectType(name=data['name'])
+        db.session.add(new_project_type)
+        db.session.commit()
+        return jsonify(new_project_type.to_dict()), 201
+    except Exception as e:
+        print("Error occurred:", e)
+        return jsonify({'message': str(e)}), 500
+
+
+# PUT route to update a project type
+@app.route('/project-types/<int:id>', methods=['PUT'])
+def update_project_type(id):
+    try:
+        data = request.get_json()
+        project_type = ProjectType.query.get_or_404(id)
+        project_type.name = data['name']
+        db.session.commit()
+        return jsonify(project_type.to_dict()), 200
+    except Exception as e:
+        print("Error occurred:", e)
+        return jsonify({'message': str(e)}), 500
+
+
+# DELETE route to delete a project type
+@app.route('/project-types/<int:id>', methods=['DELETE'])
+def delete_project_type(id):
+    try:
+        project_type = ProjectType.query.get_or_404(id)
+        db.session.delete(project_type)
+        db.session.commit()
+        return jsonify({'message': 'Project type deleted successfully'}), 200
+    except Exception as e:
+        print("Error occurred:", e)
+        return jsonify({'message': str(e)}), 500
 
 
 @app.route('/subjects', methods=['GET'])
@@ -493,6 +506,47 @@ def get_subjects():
     except Exception as e:
         print(f"Error fetching subjects: {e}")
         return jsonify({'message': 'Failed to fetch subjects'}), 500
+
+
+# POST route to create a new subject
+@app.route('/subjects', methods=['POST'])
+def create_subject():
+    try:
+        data = request.get_json()
+        new_subject = Subject(name=data['name'])  # Assuming the Subject model has a 'name' field
+        db.session.add(new_subject)
+        db.session.commit()
+        return jsonify(new_subject.to_dict()), 201  # Return the created subject
+    except Exception as e:
+        print(f"Error creating subject: {e}")
+        return jsonify({'message': 'Failed to create subject'}), 500
+
+
+# PUT route to update a subject by its ID
+@app.route('/subjects/<int:id>', methods=['PUT'])
+def update_subject(id):
+    try:
+        data = request.get_json()
+        subject = Subject.query.get_or_404(id)
+        subject.name = data['name']
+        db.session.commit()
+        return jsonify(subject.to_dict()), 200  # Return the updated subject
+    except Exception as e:
+        print(f"Error updating subject: {e}")
+        return jsonify({'message': 'Failed to update subject'}), 500
+
+
+# DELETE route to delete a subject by its ID
+@app.route('/subjects/<int:id>', methods=['DELETE'])
+def delete_subject(id):
+    try:
+        subject = Subject.query.get_or_404(id)
+        db.session.delete(subject)
+        db.session.commit()
+        return jsonify({'message': 'Subject deleted successfully'}), 200
+    except Exception as e:
+        print(f"Error deleting subject: {e}")
+        return jsonify({'message': 'Failed to delete subject'}), 500
 
 
 

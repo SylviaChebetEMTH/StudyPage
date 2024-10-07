@@ -196,6 +196,32 @@ const AdminDashboardSidebar = () => {
                             </NavLink>
                         </li>
                         <li className="mb-4">
+                            <NavLink
+                                to="projecttypes"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "block px-4 py-6 bg-[#45B1E8] rounded flex items-center text-white"
+                                        : "block px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
+                                }
+                            >
+                                <FontAwesomeIcon icon={faUsers} className="mr-3 w-6 h-6" />
+                                Project Types
+                            </NavLink>
+                        </li>
+                        <li className="mb-4">
+                            <NavLink
+                                to="subjectarea"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "block px-4 py-6 bg-[#45B1E8] rounded flex items-center text-white"
+                                        : "block px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
+                                }
+                            >
+                                <FontAwesomeIcon icon={faUsers} className="mr-3 w-6 h-6" />
+                                Subject Area
+                            </NavLink>
+                        </li>
+                        <li className="mb-4">
                             <button
                                 onClick={handleLogout}
                                 className="w-full text-left flex items-center px-4 py-6 block bg-[#FFFFFF] hover:bg-[#d1d5db] rounded"

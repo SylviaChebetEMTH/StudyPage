@@ -19,6 +19,8 @@ import AllExperts from "./components/admin/AllExperts";
 import AddExpertPage from "./components/admin/AddExpert";
 import AllServices from "./components/admin/AllServices";
 import AddServicePage from "./components/admin/AddService";
+import ProjectTypes from "./components/admin/ProjectTypes";
+import SubjectArea from "./components/admin/SubjectArea";
 
 
 function AppContent() {
@@ -51,6 +53,8 @@ function AppContent() {
             <Route path="addexpert" element={<AddExpertPage />} />
             <Route path="allservices" element={<AllServices />} />
             <Route path="addservice" element={<AddServicePage />} />
+            <Route path="projecttypes" element={<ProjectTypes />} />
+            <Route path="subjectarea" element={<SubjectArea />} />
           {/* <Route path="users" element={<UserList />} />
             <Route path="experts" element={<ExpertList />} />
             <Route path="services" element={<ServiceList />} /> */}
