@@ -14,7 +14,7 @@ export const NavBar = () => {
         : "/login";
 
     return (
-        <nav className=" top-0 left-0 right-0 bg-gray-300 shadow-md p-4 z-50">
+        <nav className=" top-0 left-0 right-0 bg-[#AAC1C0] shadow-md p-4 z-50">
             <div className="container mx-auto flex justify-between items-center">
                 <div className="container mx-auto flex justify-between items-center">
                     <Link

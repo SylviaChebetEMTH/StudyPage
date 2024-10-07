@@ -159,6 +159,34 @@ def delete_user(user_id):
     return jsonify({'message': 'User deleted successfully'})
 
 
+# @app.route('/admin/users', methods=['POST'])
+# @jwt_required()  # Ensure only authenticated users can access this route
+# def add_user():
+#     data = request.get_json()
+
+#     # Validate input data
+#     username = data.get('username')
+#     email = data.get('email')
+#     password = data.get('password')
+#     is_admin = data.get('is_admin', False)  # Default to False if not provided
+
+#     if not username or not email or not password:
+#         return jsonify({'message': 'Username, email, and password are required.'}), 400
+
+#     # Check if user already exists
+#     existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
+#     if existing_user:
+#         return jsonify({'message': 'User with this username or email already exists.'}), 400
+
+#     # Hash the password before saving
+#     hashed_password = generate_password_hash(password)
+
+#     new_user = User(username=username, email=email, password=hashed_password, is_admin=is_admin)
+#     db.session.add(new_user)
+#     db.session.commit()
+
+#     return jsonify({'message': 'User created successfully.', 'user_id': new_user.id}), 201
+
 
 @app.route('/admin/users', methods=['POST'])
 @jwt_required()  # Ensure only authenticated users can access this route
@@ -179,41 +207,17 @@ def add_user():
     if existing_user:
         return jsonify({'message': 'User with this username or email already exists.'}), 400
 
-    # Hash the password before saving
-    hashed_password = generate_password_hash(password)
+    # Hash the password using bcrypt before saving
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
+    # Create the new user with hashed password
     new_user = User(username=username, email=email, password=hashed_password, is_admin=is_admin)
+
+    # Add and commit the new user to the database
     db.session.add(new_user)
     db.session.commit()
 
     return jsonify({'message': 'User created successfully.', 'user_id': new_user.id}), 201
-
-
-
-
-# # Route to get experts (viewable by normal users and admins)
-# @app.route('/experts', methods=['GET'])
-# def get_experts():
-#     experts = Expert.query.all()  # Fetch all experts from the database
-#     output = []
-
-#     for expert in experts:
-#         expert_data = {
-#             'id': expert.id,
-#             'name': expert.name,
-#             'title': expert.title,
-#             'expertise': expert.expertise,
-#             'description': expert.description,
-#             'biography': expert.biography,
-#             'education': expert.education,
-#             'languages': expert.languages,
-#             'projecTypes': expert.project_types,
-#             'subjects': expert.subjects,
-#             'profilePicture': expert.profile_picture  
-#         }
-#         output.append(expert_data)
-
-#     return jsonify({'experts': output})
 
 @app.route('/experts', methods=['GET'])
 def get_experts():
