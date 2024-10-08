@@ -13,6 +13,7 @@ const ProjectRequest = () => {
   const [selectedSubject, setSelectedSubject] = useState('');
   const [attachments, setAttachments] = useState([]);
   const [deadline, setDeadline] = useState('');
+  const [notification, setNotification] = useState(null);
   const [expertId, setExpertId] = useState(state ? state.expertId : ''); // Set the expertId from state
 
   useEffect(() => {
@@ -33,43 +34,15 @@ const ProjectRequest = () => {
   const handleFileChange = (e) => {
     setAttachments(e.target.files);
   };
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => {
+        setNotification(null);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification]);
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   // Create form data to handle file attachments
-  //   const formData = new FormData();
-  //   formData.append('project_title', projectTitle);
-  //   formData.append('project_description', description);
-  //   formData.append('project_type', selectedProjectType);
-  //   formData.append('subject', selectedSubject);
-  //   formData.append('deadline', deadline);
-  //   formData.append('expert_id', expertId); // Include the expertId
-
-  //   // Attach all selected files
-  //   for (let i = 0; i < attachments.length; i++) {
-  //     formData.append('attachments', attachments[i]);
-  //   }
-
-  //   // Retrieve the JWT token from local storage or context
-  //   const token = localStorage.getItem('jwtToken');
-
-  //   // Submit the form data to the server
-  //   fetch('http://127.0.0.1:5000/request_expert', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Authorization': `Bearer ${token}`,
-  //     },
-  //     body: formData, // FormData handles file and text fields
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log('Project request submitted:', data);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error submitting project request:', error);
-  //     });
-  // };
   const handleSubmit = (e) => {
     e.preventDefault();
   
@@ -128,6 +101,7 @@ const ProjectRequest = () => {
         if (data.msg) {
           alert(data.msg);  // Alert message from server
         } else {
+          setNotification(`Expert updated successfully.`);
           alert("Project request submitted successfully.");
         }
       })
@@ -140,11 +114,11 @@ const ProjectRequest = () => {
   
 
   return (
-    <div className="p-4">
+    <div className="container mx-auto p-8 bg-gray-300 shadow-md rounded-lg max-w-4xl m-6">
       <h2 className="text-2xl font-bold mb-4">Request Expert</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="projectTitle" className="block text-sm font-semibold">Project Title</label>
+          <label htmlFor="projectTitle" className="block text-sm font-medium">Project Title</label>
           <input
             type="text"
             id="projectTitle"
@@ -156,7 +130,7 @@ const ProjectRequest = () => {
         </div>
 
         <div>
-          <label htmlFor="description" className="block text-sm font-semibold">Description</label>
+          <label htmlFor="description" className="block text-sm font-medium">Description</label>
           <textarea
             id="description"
             value={description}
@@ -167,12 +141,12 @@ const ProjectRequest = () => {
         </div>
 
         <div>
-          <label htmlFor="projectType" className="block text-sm font-semibold">Project Type</label>
+          <label htmlFor="projectType" className="block text-sm font-medium">Project Type</label>
           <select
             id="projectType"
             value={selectedProjectType}
             onChange={(e) => setSelectedProjectType(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-2 border border-gray-300 rounded text-xs text-gray-700"
             required
           >
             <option value="">Select Project Type</option>
@@ -183,12 +157,12 @@ const ProjectRequest = () => {
         </div>
 
         <div>
-          <label htmlFor="subject" className="block text-sm font-semibold">Subject</label>
+          <label htmlFor="subject" className="block text-sm font-medium">Subject</label>
           <select
             id="subject"
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-2 border border-gray-300 rounded text-xs text-gray-700"
             required
           >
             <option value="">Select Subject</option>
@@ -199,29 +173,29 @@ const ProjectRequest = () => {
         </div>
 
         <div>
-          <label htmlFor="attachments" className="block text-sm font-semibold">Attachments</label>
+          <label htmlFor="attachments" className="block text-sm font-medium">Attachments</label>
           <input
             type="file"
             id="attachments"
             multiple
             onChange={handleFileChange}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-2 border border-gray-300 rounded text-xs text-gray-700"
           />
         </div>
 
         <div>
-          <label htmlFor="deadline" className="block text-sm font-semibold">Deadline</label>
+          <label htmlFor="deadline" className="block text-sm font-medium">Deadline</label>
           <input
             type="date"
             id="deadline"
             value={deadline}
             onChange={(e) => setDeadline(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-2 border border-gray-300 rounded text-xs text-gray-700 font-extralight"
             required
           />
         </div>
 
-        <button type="submit" className="mt-4 bg-blue-500 text-white p-2 rounded">
+        <button type="submit" className="mt-4 bg-[#769594] text-white p-2 rounded">
           Submit Request
         </button>
       </form>
