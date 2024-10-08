@@ -1,5 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
+from sqlalchemy.ext.mutable import MutableList
+from sqlalchemy.types import PickleType
+import json
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
@@ -97,33 +100,25 @@ class Service(db.Model):
         return self.price * quantity
 
 
-# class ProjectRequest(db.Model):
-#     __tablename__ = 'project_requests'
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-#     expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'))
-#     project_description = db.Column(db.Text, nullable=False)
-#     status = db.Column(db.String(50), default='Pending')
-
-#     user = db.relationship('User', backref='requests')
-#     expert = db.relationship('Expert', backref='requests')
-
 class ProjectRequest(db.Model):
     __tablename__ = 'project_requests'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'))
     project_title = db.Column(db.Text, nullable=False)
-    project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'))  # Foreign key to ProjectType
-    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))  # Foreign key to Subject
+    project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'))
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
     project_description = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(50), default='Pending')
+    # deadline = db.Column(db.String(50), nullable=True)
+    deadline = db.Column(db.DateTime, nullable=False)
+    attachments = db.Column(db.String, nullable=True)  
 
     # Relationships
     user = db.relationship('User', backref='requests')
     expert = db.relationship('Expert', backref='requests')
-    project_type = db.relationship('ProjectType', backref='requests')  # Relationship with ProjectType
-    subject = db.relationship('Subject', backref='requests')  # Relationship with Subject
+    project_type = db.relationship('ProjectType', backref='requests')
+    subject = db.relationship('Subject', backref='requests')
 
     def to_dict(self):
         return {
@@ -134,7 +129,7 @@ class ProjectRequest(db.Model):
             'project_type': self.project_type.to_dict() if self.project_type else None,
             'subject': self.subject.to_dict() if self.subject else None,
             'project_description': self.project_description,
-            'status': self.status
-        } 
-
-
+            'status': self.status,
+            'deadline': self.deadline,
+            'attachments': self.attachments
+        }

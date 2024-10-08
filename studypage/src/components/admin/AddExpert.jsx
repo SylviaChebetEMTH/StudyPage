@@ -4,8 +4,8 @@ import axios from "axios";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-const CLOUDINARY_UPLOAD_PRESET = "dlp71jbrz"; // Replace with your actual Cloudinary upload preset name
-const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/dlp71jbrz/image/upload`; // Replace with your Cloudinary cloud name
+const CLOUDINARY_UPLOAD_PRESET = "dlp71jbrz"; 
+const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/dlp71jbrz/image/upload`; 
 
 function AddExpertPage() {
   const { currentUser, authToken } = useContext(UserContext);
