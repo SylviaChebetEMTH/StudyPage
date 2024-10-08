@@ -110,7 +110,6 @@ class ProjectRequest(db.Model):
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
     project_description = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(50), default='Pending')
-    # deadline = db.Column(db.String(50), nullable=True)
     deadline = db.Column(db.DateTime, nullable=False)
     attachments = db.Column(db.String, nullable=True)  
 

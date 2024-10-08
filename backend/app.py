@@ -35,6 +35,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 # Define allowed file extensions (optional)
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx'}
 
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -231,7 +232,94 @@ def get_experts():
     return jsonify({'experts': output})
 
 
+# @app.route('/request_expert', methods=['POST'])
+# def request_expert():
+#     try:
+#         # Retrieve form data
+#         project_title = request.form.get('project_title')
+#         project_description = request.form.get('project_description')
+#         project_type_id = request.form.get('project_type')
+#         subject_id = request.form.get('subject')
+#         deadline = request.form.get('deadline')
+#         expert_id = request.form.get('expert_id')
+        
+#         # Handle file attachments
+#         attachments = []  # Start with an empty list
+#         if 'attachments' in request.files:
+#             files = request.files.getlist('attachments')
+#             print(f"Files received: {len(files)} files")
+#             for file in files:
+#                 if file and allowed_file(file.filename):
+#                     print(f"File received: {file.filename}")
+#                     filename = secure_filename(file.filename)
+#                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+#                     print(f"Saving file to: {file_path}")
+#                     # file.save(file_path)
+#                     try:
+#                         file.save(file_path)
+#                     except Exception as e:
+#                         print(f"Error saving file: {e}")
+#                     attachments.append(filename)  # Store only the filename or file path
+
+#         # Log received values
+#         print(f"Received expert_id: {expert_id}")
+#         print(f"Received project_title: {project_title}")
+#         print(f"Attachments: {attachments}")
+
+#         # Validate input fields
+#         if not all([project_title, project_description, project_type_id, subject_id, deadline]):
+#             return jsonify({'msg': 'Not enough segments'}), 422
+
+#         if not expert_id:
+#             return jsonify({'msg': 'Expert ID is required'}), 400
+
+#         try:
+#             expert_id = int(expert_id)
+#             project_type_id = int(project_type_id)
+#             subject_id = int(subject_id)
+#         except ValueError:
+#             return jsonify({'msg': 'Invalid ID, must be a number'}), 400
+
+#         try:
+#             deadline = datetime.strptime(deadline, '%Y-%m-%d')
+#         except ValueError:
+#             return jsonify({'msg': 'Invalid date format, use YYYY-MM-DD'}), 400
+
+#         # Query the related objects based on the provided IDs
+#         expert = Expert.query.get(expert_id)
+#         project_type = ProjectType.query.get(project_type_id)
+#         subject = Subject.query.get(subject_id)
+
+#         # If any of the objects do not exist, return an error message
+#         if not all([expert, project_type, subject]):
+#             return jsonify({'msg': 'Invalid Expert, Project Type, or Subject ID'}), 400
+
+#         # Create a new project request instance
+#         new_request = ProjectRequest(
+#             project_title=project_title,
+#             project_description=project_description,
+#             project_type=project_type,  
+#             subject=subject,            
+#             expert=expert,              
+#             deadline=deadline,
+#             attachments=','.join(attachments)  # Join the list of filenames as a comma-separated string
+#         )
+
+#         print(f"Project request data: {new_request.__dict__}")
+
+#         # Add to database
+#         db.session.add(new_request)
+#         db.session.commit()
+
+#         return jsonify({'msg': 'Request submitted successfully'}), 200
+
+#     except Exception as e:
+#         db.session.rollback()
+#         print(f"Error occurred: {e}")
+#         return jsonify({'error': str(e)}), 500
+
 @app.route('/request_expert', methods=['POST'])
+@jwt_required()  # Ensure that the user is authenticated
 def request_expert():
     try:
         # Retrieve form data
@@ -241,7 +329,7 @@ def request_expert():
         subject_id = request.form.get('subject')
         deadline = request.form.get('deadline')
         expert_id = request.form.get('expert_id')
-        
+
         # Handle file attachments
         attachments = []  # Start with an empty list
         if 'attachments' in request.files:
@@ -253,16 +341,18 @@ def request_expert():
                     filename = secure_filename(file.filename)
                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                     print(f"Saving file to: {file_path}")
-                    # file.save(file_path)
                     try:
                         file.save(file_path)
                     except Exception as e:
                         print(f"Error saving file: {e}")
                     attachments.append(filename)  # Store only the filename or file path
 
-        # Log received values
-        print(f"Received expert_id: {expert_id}")
+        # Log received values for debugging
         print(f"Received project_title: {project_title}")
+        print(f"Received project_description: {project_description}")
+        print(f"Received project_type_id: {project_type_id}")
+        print(f"Received subject_id: {subject_id}")
+        print(f"Received expert_id: {expert_id}")
         print(f"Attachments: {attachments}")
 
         # Validate input fields
@@ -293,17 +383,25 @@ def request_expert():
         if not all([expert, project_type, subject]):
             return jsonify({'msg': 'Invalid Expert, Project Type, or Subject ID'}), 400
 
+        # Get current user details using JWT identity
+        current_user_id = get_jwt_identity()  # Get the current logged-in user ID
+        current_user = User.query.get(current_user_id)
+        if not current_user:
+            return jsonify({'msg': 'Current user not found'}), 404
+
         # Create a new project request instance
         new_request = ProjectRequest(
             project_title=project_title,
             project_description=project_description,
-            project_type=project_type,  
-            subject=subject,            
-            expert=expert,              
+            project_type=project_type,
+            subject=subject,
+            expert=expert,
             deadline=deadline,
+            user_id=current_user.id,  # Assign current user's ID to the project request
             attachments=','.join(attachments)  # Join the list of filenames as a comma-separated string
         )
 
+        # Log project request data for debugging
         print(f"Project request data: {new_request.__dict__}")
 
         # Add to database
@@ -446,26 +544,6 @@ def delete_expert(id):
         db.session.rollback()  # Rollback the session in case of error
         return jsonify({'message': 'Error deleting expert', 'error': str(e)}), 500
 
-
-
-# @app.route('/services', methods=['GET'])
-# def get_services():
-#     services = Service.query.all()  # Fetch all services from the database
-#     service_list = []
-
-#     for service in services:
-#         service_data = {
-#             'id': service.id,
-#             'title': service.title,
-#             'description': service.description,
-#             'price': service.price,
-#             # 'project_type_name': service.project_type.name,  
-#             # 'subject_area_name': service.subject_area.name,
-            
-#         }
-#         service_list.append(service_data)
-
-#     return jsonify({'services': service_list})  
 
 @app.route('/services', methods=['GET'])
 def get_services():
