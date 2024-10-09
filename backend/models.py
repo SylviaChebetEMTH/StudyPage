@@ -3,6 +3,7 @@ from flask_bcrypt import Bcrypt
 from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.types import PickleType
 import json
+from datetime import datetime
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
@@ -131,4 +132,34 @@ class ProjectRequest(db.Model):
             'status': self.status,
             'deadline': self.deadline,
             'attachments': self.attachments
+        }
+
+
+# Define the Message model
+class Message(db.Model):
+    __tablename__ = 'messages'
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Sender can be a user
+    receiver_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)  # Receiver can be a user (or admin later)
+    expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'), nullable=True)  # Optional receiver if expert is involved
+    content = db.Column(db.Text, nullable=False)  # The message content
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # Timestamp of message
+
+    # Relationships
+    sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages')
+    receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_messages')
+    expert = db.relationship('Expert', backref='messages')  # Optional expert relationship
+
+    def __repr__(self):
+        return f'<Message from {self.sender.username} to {self.receiver.username if self.receiver else self.expert.name}>'
+
+    def to_dict(self):
+        """Method to convert message into a dictionary format."""
+        return {
+            'id': self.id,
+            'sender': self.sender.username,
+            'receiver': self.receiver.username if self.receiver else None,
+            'expert': self.expert.name if self.expert else None,
+            'content': self.content,
+            'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S')
         }

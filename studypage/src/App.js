@@ -22,6 +22,8 @@ import AddServicePage from "./components/admin/AddService";
 import ProjectTypes from "./components/admin/ProjectTypes";
 import SubjectArea from "./components/admin/SubjectArea";
 import ProjectRequest from "./components/forms/ProjectRequest";
+import Chat from "./components/Chat";
+import AdminChat from "./components/admin/AdminChat";
 
 
 function AppContent() {
@@ -45,6 +47,7 @@ function AppContent() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/hireexpert" element={<ProjectRequest />} />
+          <Route path="/chat" element={<Chat />} />
 
           {/* Only render admin routes if the user is an admin */}
           {currentUser?.is_admin && (
@@ -57,6 +60,7 @@ function AppContent() {
             <Route path="addservice" element={<AddServicePage />} />
             <Route path="projecttypes" element={<ProjectTypes />} />
             <Route path="subjectarea" element={<SubjectArea />} />
+            <Route path="adminreply" element={<AdminChat />} />
           {/* <Route path="users" element={<UserList />} />
             <Route path="experts" element={<ExpertList />} />
             <Route path="services" element={<ServiceList />} /> */}

@@ -1,17 +1,29 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from './contexts/userContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faCommentDots, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 export const NavBar = () => {
     const { authToken, currentUser } = useContext(UserContext);
+    const { logout } = useContext(UserContext);
+    const navigate = useNavigate();
 
     const accountLink = authToken
         ? currentUser?.is_admin
             ? "/admin/dashboard"
             : "/userprofile/dashboarduser"
         : "/login";
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            alert("Logged out successfully");
+            navigate("/");
+        } catch (error) {
+            alert("Failed to log out. Please try again.");
+        }
+    };
 
     return (
         <nav className=" top-0 left-0 right-0 bg-[#AAC1C0] shadow-md p-4 z-50">
@@ -53,6 +65,19 @@ export const NavBar = () => {
                         <Link to={accountLink} className="text-gray-700 hover:text-blue-700 flex items-center text-xs">
                             <FontAwesomeIcon icon={faUser} className="text-lg" />
                             <span className="ml-1">{authToken ? 'My Account' : 'Login'}</span>
+                        </Link>
+                        <li className="mb-4">
+                            <button
+                                onClick={handleLogout}
+                                className="text-gray-700 hover:text-blue-700 flex items-center text-xs"
+                            >
+                                <FontAwesomeIcon icon={faSignOutAlt} className="text-lg" />
+                                Logout
+                            </button>
+                        </li>
+                        <Link to='/chat' className="text-gray-700 hover:text-blue-700 flex items-center text-xs">
+                            <FontAwesomeIcon icon={faCommentDots} className="text-lg text-blue-700" />
+                            {/* <span className="ml-1">{authToken ? 'My Account' : 'Login'}</span> */}
                         </Link>
                     </div>
                 </div>

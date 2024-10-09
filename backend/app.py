@@ -1,15 +1,16 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from functools import wraps
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, create_refresh_token, get_jwt
-from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, create_refresh_token, get_jwt, verify_jwt_in_request, decode_token
+from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject, Message
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
 import cloudinary.uploader
 from datetime import datetime
+from flask_socketio import SocketIO, send, emit, join_room, leave_room
 import os
 SECRET_KEY = os.urandom(24)
 
@@ -20,13 +21,167 @@ app.config['JWT_SECRET_KEY'] = SECRET_KEY
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 db.init_app(app)
 migrate = Migrate(app, db)
 jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 CORS(app)
+
+
+unread_messages = 0
+messages = []
+
+@socketio.on('join_admin_room')
+def handle_admin_room(data):
+    admin_room = f"admin_{data['adminId']}"
+    join_room(admin_room)
+    print(f"Admin {data['adminId']} joined room {admin_room}")
+
+
+@socketio.on('user_message')
+def handle_message(data):
+    # Fetch the user sending the message
+    user = User.query.filter_by(username=data['user']).first()
+    
+    if user is None:
+        print(f"User {data['user']} not found")
+        return
+
+    # Fetch the admin (assuming there's only one admin)
+    admin = User.query.filter_by(is_admin=True).first()
+
+    if admin is None:
+        print("No admin found")
+        return
+
+    # Create and save the message in the database
+    new_message = Message(
+        sender_id=user.id,
+        receiver_id=admin.id,
+        content=data['message'],
+        timestamp=datetime.utcnow()
+    )
+    db.session.add(new_message)
+    db.session.commit()
+
+    # Use the fetched admin's ID to create the room name
+    admin_room = f"admin_{admin.id}"
+    print(f"Emitting message to admin's room: {admin_room}")
+    print(f"Sending message from user {data['user']} to room {admin_room}")
+
+    # Emit the message to the admin's room
+    emit('user_message', {'user': new_message.sender.username, 'message': new_message.content}, room=admin_room)
+
+
+@socketio.on('connect')
+def handle_connect():
+    print('Client connected')
+
+    # Get the admin user (assuming only one admin)
+    admin = User.query.filter_by(is_admin=True).first()
+
+    if admin:
+        admin_room = f"admin_{admin.id}"
+        join_room(admin_room)
+        print(f"Admin connected and joined room {admin_room}")
+
+        # Store the admin room in the session to prevent unnecessary re-emission
+        session['admin_room'] = admin_room
+
+        # Optionally, store the initial state (e.g., to ensure only new messages are emitted later)
+        session['messages_emitted'] = set()
+    else:
+        print('No admin found!')
+
+
+# SocketIO event handler for 'admin_reply'
+@socketio.on('admin_reply')
+def handle_admin_reply(data):
+    # Manually extract the JWT token from query params
+    token = request.args.get('token')  # 'token' is the query parameter sent by the client
+
+    if not token:
+        # If the token is missing, emit an error and return
+        emit('error_message', {'message': 'Authorization token is missing!'})
+        return
+
+    try:
+        # Manually decode the JWT token
+        decoded_token = decode_token(token)  # Decode the JWT token without verification
+        
+        # Extract user identity from the decoded token
+        current_user_id = decoded_token.get('sub')  # 'sub' is typically the user identifier
+
+        # Perform your normal logic after verification
+        current_user = User.query.get(current_user_id)
+        if current_user:
+            user = User.query.filter_by(username=data['user']).first()
+            if user:
+                # Save the reply in the database
+                reply_message = Message(sender_id=current_user.id, receiver_id=user.id, content=data['reply'])
+                db.session.add(reply_message)
+                db.session.commit()
+
+                # Emit the reply back to the user
+                emit('user_message', {'user': current_user.username, 'message': data['reply']}, room=f"user_{user.id}")
+                print(f"Admin replied to {user.username}: {data['reply']}")
+        else:
+            print("Admin not found")
+    except Exception as e:
+        print(f"JWT verification failed: {e}")
+        emit('error_message', {'message': 'JWT verification failed, please check your token!'})
+
+
+
+@app.route('/messages', methods=['GET'])
+def get_messages():
+    messages = Message.query.all()  # Get all messages from the database
+    message_list = [{'user': message.sender.username, 'message': message.content} for message in messages]
+    return {'messages': message_list}
+
+
+# Admin Messages Route
+@app.route('/adminmessages', methods=['GET'])
+@jwt_required()  # Ensure the request is coming from a valid user (admin)
+def get_admin_messages():
+    # Get the current logged-in user (admin in this case)
+    current_user_id = get_jwt_identity()
+    current_user = User.query.get(current_user_id)
+
+    if not current_user or not current_user.is_admin:
+        return jsonify({'error': 'Admin user is not authenticated or found'}), 403
+
+    # Fetch messages sent to the admin user
+    messages = Message.query.filter_by(receiver_id=current_user.id).all()
+
+    if not messages:
+        return jsonify({'message': 'No messages for admin'}), 404
+
+    # Format the messages to return them as a list
+    message_list = [{'user': message.sender.username, 'message': message.content} for message in messages]
+
+    return jsonify({'messages': message_list}), 200
+
+@app.route("/usermessages", methods=["GET"])
+@jwt_required()  # Ensure the user is logged in
+def get_user_messages():
+    current_user_id = get_jwt_identity()  # Retrieve the current logged-in user's ID
+    current_user = User.query.get(current_user_id)  # Fetch the user from the database
+
+    if not current_user:
+        return jsonify({"message": "User not found"}), 404
+
+    # Retrieve messages that are sent to the current user
+    messages = Message.query.filter_by(receiver_id=current_user.id).all()
+
+    # Format messages for the response
+    message_list = [{'user': message.sender.username, 'message': message.content} for message in messages]
+
+    return jsonify({'messages': message_list}), 200
+
+
 
 # Create the folder if it doesn't exist
 if not os.path.exists(UPLOAD_FOLDER):
@@ -231,92 +386,6 @@ def get_experts():
 
     return jsonify({'experts': output})
 
-
-# @app.route('/request_expert', methods=['POST'])
-# def request_expert():
-#     try:
-#         # Retrieve form data
-#         project_title = request.form.get('project_title')
-#         project_description = request.form.get('project_description')
-#         project_type_id = request.form.get('project_type')
-#         subject_id = request.form.get('subject')
-#         deadline = request.form.get('deadline')
-#         expert_id = request.form.get('expert_id')
-        
-#         # Handle file attachments
-#         attachments = []  # Start with an empty list
-#         if 'attachments' in request.files:
-#             files = request.files.getlist('attachments')
-#             print(f"Files received: {len(files)} files")
-#             for file in files:
-#                 if file and allowed_file(file.filename):
-#                     print(f"File received: {file.filename}")
-#                     filename = secure_filename(file.filename)
-#                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-#                     print(f"Saving file to: {file_path}")
-#                     # file.save(file_path)
-#                     try:
-#                         file.save(file_path)
-#                     except Exception as e:
-#                         print(f"Error saving file: {e}")
-#                     attachments.append(filename)  # Store only the filename or file path
-
-#         # Log received values
-#         print(f"Received expert_id: {expert_id}")
-#         print(f"Received project_title: {project_title}")
-#         print(f"Attachments: {attachments}")
-
-#         # Validate input fields
-#         if not all([project_title, project_description, project_type_id, subject_id, deadline]):
-#             return jsonify({'msg': 'Not enough segments'}), 422
-
-#         if not expert_id:
-#             return jsonify({'msg': 'Expert ID is required'}), 400
-
-#         try:
-#             expert_id = int(expert_id)
-#             project_type_id = int(project_type_id)
-#             subject_id = int(subject_id)
-#         except ValueError:
-#             return jsonify({'msg': 'Invalid ID, must be a number'}), 400
-
-#         try:
-#             deadline = datetime.strptime(deadline, '%Y-%m-%d')
-#         except ValueError:
-#             return jsonify({'msg': 'Invalid date format, use YYYY-MM-DD'}), 400
-
-#         # Query the related objects based on the provided IDs
-#         expert = Expert.query.get(expert_id)
-#         project_type = ProjectType.query.get(project_type_id)
-#         subject = Subject.query.get(subject_id)
-
-#         # If any of the objects do not exist, return an error message
-#         if not all([expert, project_type, subject]):
-#             return jsonify({'msg': 'Invalid Expert, Project Type, or Subject ID'}), 400
-
-#         # Create a new project request instance
-#         new_request = ProjectRequest(
-#             project_title=project_title,
-#             project_description=project_description,
-#             project_type=project_type,  
-#             subject=subject,            
-#             expert=expert,              
-#             deadline=deadline,
-#             attachments=','.join(attachments)  # Join the list of filenames as a comma-separated string
-#         )
-
-#         print(f"Project request data: {new_request.__dict__}")
-
-#         # Add to database
-#         db.session.add(new_request)
-#         db.session.commit()
-
-#         return jsonify({'msg': 'Request submitted successfully'}), 200
-
-#     except Exception as e:
-#         db.session.rollback()
-#         print(f"Error occurred: {e}")
-#         return jsonify({'error': str(e)}), 500
 
 @app.route('/request_expert', methods=['POST'])
 @jwt_required()  # Ensure that the user is authenticated
@@ -777,4 +846,5 @@ def patch_service(id):
     return jsonify({'message': 'Service not found!'}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    socketio.run(app, debug=True)
