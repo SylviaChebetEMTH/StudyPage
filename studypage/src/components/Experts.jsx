@@ -45,7 +45,7 @@ const ExpertPage = () => {
     if (!currentUser) {
       setShowLoginPrompt(true);
     } else {
-      navigate(`/hireexpert`, { state: { expertId } });
+      navigate(`/userprofile/hireexpert`, { state: { expertId } });
     }
   };
 

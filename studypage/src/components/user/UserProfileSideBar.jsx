@@ -83,7 +83,7 @@ const UserProfile = () => {
                             </li>
                             <li className="mb-4">
                                 <NavLink
-                                    to="courses"
+                                    to="/userprofile/projectsummary"
                                     className={({ isActive }) =>
                                         isActive
                                             ? "px-4 py-6 bg-[#769594] rounded flex items-center"

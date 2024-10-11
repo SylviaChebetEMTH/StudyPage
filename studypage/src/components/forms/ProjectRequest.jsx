@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { UserContext } from '../contexts/userContext';
 
 const ProjectRequest = () => {
-  const { authToken } = useContext(UserContext); 
-  const { state } = useLocation(); // Retrieve the state passed from the ExpertPage
+  const { authToken } = useContext(UserContext);
+  const { state } = useLocation();
+  const navigate = useNavigate();
   const [projectTitle, setProjectTitle] = useState('');
   const [description, setDescription] = useState('');
   const [projectTypes, setProjectTypes] = useState([]);
@@ -14,7 +15,8 @@ const ProjectRequest = () => {
   const [attachments, setAttachments] = useState([]);
   const [deadline, setDeadline] = useState('');
   const [notification, setNotification] = useState(null);
-  const [expertId, setExpertId] = useState(state ? state.expertId : ''); // Set the expertId from state
+  const [expertId, setExpertId] = useState(state ? state.expertId : '');
+  const [numberOfPages, setNumberOfPages] = useState('');
 
   useEffect(() => {
     fetch('http://127.0.0.1:5000/project-types')
@@ -34,6 +36,7 @@ const ProjectRequest = () => {
   const handleFileChange = (e) => {
     setAttachments(e.target.files);
   };
+
   useEffect(() => {
     if (notification) {
       const timer = setTimeout(() => {
@@ -45,18 +48,30 @@ const ProjectRequest = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
+    // Log all form data to verify the state
+    console.log({
+      projectTitle,
+      description,
+      selectedProjectType,
+      selectedSubject,
+      deadline,
+      expertId,
+      numberOfPages,
+      attachments,
+    });
+
     // Validate required fields
-    if (!projectTitle || !description || !selectedProjectType || !selectedSubject || !deadline || !expertId) {
+    if (!projectTitle || !description || !selectedProjectType || !selectedSubject || !deadline || !expertId || !numberOfPages){
       alert("Please fill in all the required fields.");
       return;
     }
-  
+
     if (attachments.length === 0) {
       alert("Please attach at least one file.");
       return;
     }
-  
+
     // Create form data to handle file attachments
     const formData = new FormData();
     formData.append('project_title', projectTitle);
@@ -64,31 +79,31 @@ const ProjectRequest = () => {
     formData.append('project_type', selectedProjectType);
     formData.append('subject', selectedSubject);
     formData.append('deadline', deadline);
-    formData.append('expert_id', expertId); // Include the expertId
-    
+    formData.append('expert_id', expertId);
+    formData.append('number_of_pages', numberOfPages);
+
     // Attach all selected files
     for (let i = 0; i < attachments.length; i++) {
       formData.append('attachments', attachments[i]);
     }
-  
+
     // Log the form data for debugging
     console.log('Form Data:', formData);
-  
+
     // Retrieve the JWT token from context
-     // Access the token from context
     if (!authToken) {
       console.error("No token found in context.");
       alert("You must be logged in to submit a project request.");
       return;
     }
-  
+
     // Submit the form data to the server
     fetch('http://127.0.0.1:5000/request_expert', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${authToken}`,
       },
-      body: formData, // FormData handles file and text fields
+      body: formData,
     })
       .then((response) => {
         if (!response.ok) {
@@ -99,10 +114,29 @@ const ProjectRequest = () => {
       .then((data) => {
         console.log('Project request submitted:', data);
         if (data.msg) {
-          alert(data.msg);  // Alert message from server
+          alert(data.msg); 
         } else {
           setNotification(`Expert updated successfully.`);
           alert("Project request submitted successfully.");
+
+          // Clear form fields
+          setProjectTitle('');
+          setDescription('');
+          setSelectedProjectType('');
+          setSelectedSubject('');
+          setAttachments([]);
+          setDeadline('');
+          setNumberOfPages('');
+
+          navigate('/projectsummary', { 
+            state: {
+              projectTitle,
+              selectedProjectType,
+              selectedSubject,
+              numberOfPages
+            }
+          });
+          
         }
       })
       .catch((error) => {
@@ -110,8 +144,6 @@ const ProjectRequest = () => {
         alert("There was an error submitting the project request. Please try again.");
       });
   };
-  
-  
 
   return (
     <div className="container mx-auto p-8 bg-gray-300 shadow-md rounded-lg max-w-4xl m-6">
@@ -173,6 +205,18 @@ const ProjectRequest = () => {
         </div>
 
         <div>
+          <label htmlFor="numberOfPages" className="block text-sm font-medium">Number of Pages</label>
+          <input
+            type="number"
+            id="numberOfPages"
+            value={numberOfPages}
+            onChange={(e) => setNumberOfPages(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded text-xs text-gray-700"
+            required
+          />
+        </div>
+
+        <div>
           <label htmlFor="attachments" className="block text-sm font-medium">Attachments</label>
           <input
             type="file"
@@ -194,10 +238,16 @@ const ProjectRequest = () => {
             required
           />
         </div>
-
-        <button type="submit" className="mt-4 bg-[#769594] text-white p-2 rounded">
+        <div className="flex justify-between items-center text-center">
+        <button type="submit" className="mt-4 bg-[#769594] text-white p-2 rounded hover:bg-[#5f7a73] transition duration-200 ease-in-out">
           Submit Request
         </button>
+        <Link to="/userprofile/projectsummary" className="mt-4 bg-[#769594] text-white p-2 rounded hover:bg-[#5f7a73] transition duration-200 ease-in-out">
+          Go to Project Summary
+        </Link>
+
+        </div>
+        
       </form>
     </div>
   );

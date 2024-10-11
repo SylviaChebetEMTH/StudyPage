@@ -294,6 +294,7 @@ def request_expert():
         subject_id = request.form.get('subject')
         deadline = request.form.get('deadline')
         expert_id = request.form.get('expert_id')
+        number_of_pages = request.form.get('number_of_pages')
 
         # Handle file attachments
         attachments = []  # Start with an empty list
@@ -363,7 +364,8 @@ def request_expert():
             expert=expert,
             deadline=deadline,
             user_id=current_user.id,  # Assign current user's ID to the project request
-            attachments=','.join(attachments)  # Join the list of filenames as a comma-separated string
+            attachments=','.join(attachments),  # Join the list of filenames as a comma-separated string
+            number_of_pages=number_of_pages
         )
 
         # Log project request data for debugging
@@ -377,6 +379,44 @@ def request_expert():
 
     except Exception as e:
         db.session.rollback()
+        print(f"Error occurred: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/my_requests', methods=['GET'])
+@jwt_required()  # Ensure that the user is authenticated
+def get_user_requests():
+    try:
+        # Get current user details using JWT identity
+        current_user_id = get_jwt_identity()  # Get the current logged-in user ID
+        current_user = User.query.get(current_user_id)
+        
+        if not current_user:
+            return jsonify({'msg': 'User not found'}), 404
+
+        # Query all project requests related to the current user
+        user_requests = ProjectRequest.query.filter_by(user_id=current_user.id).all()
+
+        # If no requests exist, return an empty response with a message
+        if not user_requests:
+            return jsonify({'msg': 'No project requests found for this user'}), 404
+
+        # Prepare the data to return (you can filter fields based on what you need)
+        requests_data = []
+        for request in user_requests:
+            requests_data.append({
+                'project_title': request.project_title,
+                'project_description': request.project_description,
+                'project_type': request.project_type.name if request.project_type else None,
+                'subject': request.subject.name if request.subject else None,
+                'expert': request.expert.name if request.expert else None,
+                'deadline': request.deadline.strftime('%Y-%m-%d'),
+                'attachments': request.attachments.split(','),  # Assuming attachments are stored as a comma-separated string
+                'number_of_pages': request.number_of_pages
+            })
+
+        return jsonify({'msg': 'Project requests fetched successfully', 'data': requests_data}), 200
+
+    except Exception as e:
         print(f"Error occurred: {e}")
         return jsonify({'error': str(e)}), 500
 

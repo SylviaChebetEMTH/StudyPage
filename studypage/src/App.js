@@ -21,6 +21,7 @@ import ProjectTypes from "./components/admin/ProjectTypes";
 import SubjectArea from "./components/admin/SubjectArea";
 import ProjectRequest from "./components/forms/ProjectRequest";
 import UserProfile from "./components/user/UserProfileSideBar";
+import ProjectSummary from "./components/user/ProjectSummary";
 
 
 
@@ -62,9 +63,8 @@ function AppContent() {
           {!currentUser?.is_admin && (
             <Route path="/userprofile" element={<UserProfile />} >
               <Route path="hireexpert" element={<ProjectRequest />} />
+              <Route path="projectsummary" element={<ProjectSummary />} />
             </Route>
-
-            // <Route path="userdashboard" element={<}
 
           )}
         </Routes>

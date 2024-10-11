@@ -113,6 +113,7 @@ class ProjectRequest(db.Model):
     status = db.Column(db.String(50), default='Pending')
     deadline = db.Column(db.DateTime, nullable=False)
     attachments = db.Column(db.String, nullable=True)  
+    number_of_pages = db.Column(db.Integer, nullable=False)
 
     # Relationships
     user = db.relationship('User', backref='requests')
@@ -131,7 +132,8 @@ class ProjectRequest(db.Model):
             'project_description': self.project_description,
             'status': self.status,
             'deadline': self.deadline,
-            'attachments': self.attachments
+            'attachments': self.attachments,
+            'number_of_pages': self.number_of_pages, 
         }
 
 
