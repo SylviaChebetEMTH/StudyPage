@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, session
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
@@ -10,7 +10,6 @@ from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
 import cloudinary.uploader
 from datetime import datetime
-from flask_socketio import SocketIO, send, emit, join_room, leave_room
 import os
 SECRET_KEY = os.urandom(24)
 
@@ -21,7 +20,7 @@ app.config['JWT_SECRET_KEY'] = SECRET_KEY
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-socketio = SocketIO(app, cors_allowed_origins="*")
+
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -29,109 +28,6 @@ jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 CORS(app)
 
-
-unread_messages = 0
-messages = []
-
-@socketio.on('join_admin_room')
-def handle_admin_room(data):
-    admin_room = f"admin_{data['adminId']}"
-    join_room(admin_room)
-    print(f"Admin {data['adminId']} joined room {admin_room}")
-
-
-@socketio.on('user_message')
-def handle_message(data):
-    # Fetch the user sending the message
-    user = User.query.filter_by(username=data['user']).first()
-    
-    if user is None:
-        print(f"User {data['user']} not found")
-        return
-
-    # Fetch the admin (assuming there's only one admin)
-    admin = User.query.filter_by(is_admin=True).first()
-
-    if admin is None:
-        print("No admin found")
-        return
-
-    # Create and save the message in the database
-    new_message = Message(
-        sender_id=user.id,
-        receiver_id=admin.id,
-        content=data['message'],
-        timestamp=datetime.utcnow()
-    )
-    db.session.add(new_message)
-    db.session.commit()
-
-    # Use the fetched admin's ID to create the room name
-    admin_room = f"admin_{admin.id}"
-    print(f"Emitting message to admin's room: {admin_room}")
-    print(f"Sending message from user {data['user']} to room {admin_room}")
-
-    # Emit the message to the admin's room
-    emit('user_message', {'user': new_message.sender.username, 'message': new_message.content}, room=admin_room)
-
-
-@socketio.on('connect')
-def handle_connect():
-    print('Client connected')
-
-    # Get the admin user (assuming only one admin)
-    admin = User.query.filter_by(is_admin=True).first()
-
-    if admin:
-        admin_room = f"admin_{admin.id}"
-        join_room(admin_room)
-        print(f"Admin connected and joined room {admin_room}")
-
-        # Store the admin room in the session to prevent unnecessary re-emission
-        session['admin_room'] = admin_room
-
-        # Optionally, store the initial state (e.g., to ensure only new messages are emitted later)
-        session['messages_emitted'] = set()
-    else:
-        print('No admin found!')
-
-
-# SocketIO event handler for 'admin_reply'
-@socketio.on('admin_reply')
-def handle_admin_reply(data):
-    # Manually extract the JWT token from query params
-    token = request.args.get('token')  # 'token' is the query parameter sent by the client
-
-    if not token:
-        # If the token is missing, emit an error and return
-        emit('error_message', {'message': 'Authorization token is missing!'})
-        return
-
-    try:
-        # Manually decode the JWT token
-        decoded_token = decode_token(token)  # Decode the JWT token without verification
-        
-        # Extract user identity from the decoded token
-        current_user_id = decoded_token.get('sub')  # 'sub' is typically the user identifier
-
-        # Perform your normal logic after verification
-        current_user = User.query.get(current_user_id)
-        if current_user:
-            user = User.query.filter_by(username=data['user']).first()
-            if user:
-                # Save the reply in the database
-                reply_message = Message(sender_id=current_user.id, receiver_id=user.id, content=data['reply'])
-                db.session.add(reply_message)
-                db.session.commit()
-
-                # Emit the reply back to the user
-                emit('user_message', {'user': current_user.username, 'message': data['reply']}, room=f"user_{user.id}")
-                print(f"Admin replied to {user.username}: {data['reply']}")
-        else:
-            print("Admin not found")
-    except Exception as e:
-        print(f"JWT verification failed: {e}")
-        emit('error_message', {'message': 'JWT verification failed, please check your token!'})
 
 
 
@@ -846,5 +742,5 @@ def patch_service(id):
     return jsonify({'message': 'Service not found!'}), 404
 
 if __name__ == '__main__':
-    # app.run(debug=True)
-    socketio.run(app, debug=True)
+    app.run(debug=True)
+    

@@ -1,42 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faEnvelope, faWallet, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
 import { Link } from 'react-router-dom';
-import io from 'socket.io-client';
 
 const AdminNav = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
-  const [newMessage, setNewMessage] = useState(null);
-
-  // Connect to the backend via Socket.IO
-  const socket = io('http://localhost:5000');  // Change to your server URL
-
-  useEffect(() => {
-    // Listen for real-time notifications from the backend
-    socket.on('admin_notification', (data) => {
-      setNotificationCount(data.count);  // Update the notification count for the admin
-    });
-
-    // Listen for new messages from users
-    socket.on('user_message', (data) => {
-      setNewMessage(data.message);
-      console.log("New message received:", data.message);
-    });
-
-    // Clean up on unmount
-    return () => {
-      socket.off('admin_notification');
-      socket.off('user_message');
-    };
-  }, []);
-
-  const handleReply = (reply) => {
-    // Send reply to user
-    socket.emit('admin_reply', { reply, user: 'user1' });
-    setNewMessage(null);  // Clear the message after replying
-  };
+ 
 
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
@@ -116,19 +87,7 @@ const AdminNav = () => {
       </nav>
 
       {/* Admin Chat - Reply Section */}
-      {newMessage && (
-        <div className="fixed bottom-10 right-10 p-4 bg-white shadow-lg rounded-lg border">
-          <div className="text-black mb-2">New Message from User:</div>
-          <div className="text-gray-800">{newMessage}</div>
-          <div className="mt-2">
-            <textarea placeholder="Write a reply..." className="border p-2 w-full rounded"></textarea>
-            <button onClick={() => handleReply('Admin reply text')} className="mt-2 bg-blue-500 text-white px-4 py-2 rounded">
-              Reply
-            </button>
-          </div>
-        </div>
-      )}
-
+      
     </div>
   );
 };

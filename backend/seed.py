@@ -15,7 +15,7 @@ def seed_database():
     user1.set_password('password123')
 
     admin1 = User(
-        username='admin_user',
+        username='Studypage',
         email='admin@example.com',
         phone_number='987-654-3210',
         is_admin=True

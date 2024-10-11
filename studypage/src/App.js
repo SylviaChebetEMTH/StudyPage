@@ -10,9 +10,7 @@ import Services from './components/Services';
 import Login from './components/forms/Login';
 import SignUp from './components/forms/Signup';
 import AdminNav from "./components/admin/AdminNav";
-// import Dashboard from "./components/admin/AdminDashboard";
 import AdminDashboardSidebar from "./components/admin/AdminDashboard";
-// import AdminUsers from "./components/admin/AdminUsers";
 import AllUsers from "./components/admin/AdminUsers";
 import AdminDasboardStats from "./components/admin/AdminDashboardStats";
 import AllExperts from "./components/admin/AllExperts";
@@ -22,8 +20,8 @@ import AddServicePage from "./components/admin/AddService";
 import ProjectTypes from "./components/admin/ProjectTypes";
 import SubjectArea from "./components/admin/SubjectArea";
 import ProjectRequest from "./components/forms/ProjectRequest";
-import Chat from "./components/Chat";
-import AdminChat from "./components/admin/AdminChat";
+import UserProfile from "./components/user/UserProfileSideBar";
+
 
 
 function AppContent() {
@@ -35,7 +33,7 @@ function AppContent() {
 
 
   return (
-    <div className = "min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col">
       {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)}
       <div className="flex-grow">
         {/* <NavBar /> */}
@@ -47,26 +45,27 @@ function AppContent() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/hireexpert" element={<ProjectRequest />} />
-          <Route path="/chat" element={<Chat />} />
 
           {/* Only render admin routes if the user is an admin */}
           {currentUser?.is_admin && (
-          <Route path="/admin" element={<AdminDashboardSidebar />}>
-            <Route path="dashboard" element={<AdminDasboardStats />} />
-            <Route path="users" element={<AllUsers />} />
-            <Route path="allexperts" element={<AllExperts />} />
-            <Route path="addexpert" element={<AddExpertPage />} />
-            <Route path="allservices" element={<AllServices />} />
-            <Route path="addservice" element={<AddServicePage />} />
-            <Route path="projecttypes" element={<ProjectTypes />} />
-            <Route path="subjectarea" element={<SubjectArea />} />
-            <Route path="adminreply" element={<AdminChat />} />
-          {/* <Route path="users" element={<UserList />} />
-            <Route path="experts" element={<ExpertList />} />
-            <Route path="services" element={<ServiceList />} /> */}
+            <Route path="/admin" element={<AdminDashboardSidebar />}>
+              <Route path="dashboard" element={<AdminDasboardStats />} />
+              <Route path="users" element={<AllUsers />} />
+              <Route path="allexperts" element={<AllExperts />} />
+              <Route path="addexpert" element={<AddExpertPage />} />
+              <Route path="allservices" element={<AllServices />} />
+              <Route path="addservice" element={<AddServicePage />} />
+              <Route path="projecttypes" element={<ProjectTypes />} />
+              <Route path="subjectarea" element={<SubjectArea />} />
+            </Route>
+          )}
+          {!currentUser?.is_admin && (
+            <Route path="/userprofile" element={<UserProfile />} >
+              <Route path="hireexpert" element={<ProjectRequest />} />
+            </Route>
 
+            // <Route path="userdashboard" element={<}
 
-          </Route>
           )}
         </Routes>
       </div>
