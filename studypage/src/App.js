@@ -16,12 +16,14 @@ import AdminDasboardStats from "./components/admin/AdminDashboardStats";
 import AllExperts from "./components/admin/AllExperts";
 import AddExpertPage from "./components/admin/AddExpert";
 import AllServices from "./components/admin/AllServices";
+import Projects from "./components/admin/Projects";
 import AddServicePage from "./components/admin/AddService";
 import ProjectTypes from "./components/admin/ProjectTypes";
 import SubjectArea from "./components/admin/SubjectArea";
 import ProjectRequest from "./components/forms/ProjectRequest";
 import UserProfile from "./components/user/UserProfileSideBar";
 import ProjectSummary from "./components/user/ProjectSummary";
+
 
 
 
@@ -56,6 +58,7 @@ function AppContent() {
               <Route path="addservice" element={<AddServicePage />} />
               <Route path="projecttypes" element={<ProjectTypes />} />
               <Route path="subjectarea" element={<SubjectArea />} />
+              <Route path="projects" element={<Projects />} />
             </Route>
           )}
           {!currentUser?.is_admin && (
