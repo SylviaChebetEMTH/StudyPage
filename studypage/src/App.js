@@ -28,10 +28,8 @@ import ProjectSummary from "./components/user/ProjectSummary";
 function AppContent() {
   const { currentUser } = useContext(UserContext);
   const location = useLocation();
-
   const isAdminPage = location.pathname.startsWith('/admin');
   const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
-
 
   return (
     <div className="min-h-screen flex flex-col">

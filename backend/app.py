@@ -26,10 +26,7 @@ db.init_app(app)
 migrate = Migrate(app, db)
 jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
-CORS(app)
-
-
-
+CORS(app,resources={r"/*": {"origins": "http://localhost:3001"}})
 
 @app.route('/messages', methods=['GET'])
 def get_messages():
@@ -282,6 +279,11 @@ def get_experts():
 
     return jsonify({'experts': output})
 
+@app.route('/get_projects', methods=['GET'])
+@jwt_required()
+def get_projects():
+    projects = ProjectRequest.query.all()
+    return jsonify({'projects': [project.to_dict() for project in projects]})
 
 @app.route('/request_expert', methods=['POST'])
 @jwt_required()  # Ensure that the user is authenticated
