@@ -8,13 +8,14 @@ from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subje
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
-from flask_restful import Resource
+from flask_restful import Resource,Api
 import cloudinary.uploader
 from datetime import datetime
 import os
 SECRET_KEY = os.urandom(24)
 
 app = Flask(__name__)
+api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///studypage.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = SECRET_KEY
