@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask,make_request, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
@@ -283,7 +283,11 @@ def get_experts():
 @jwt_required()
 def get_projects():
     projects = ProjectRequest.query.all()
-    return jsonify({'projects': [project.to_dict() for project in projects]})
+    response = make_response(jsonify({
+        'user_id': projects.user_id,
+
+        }), 200)
+    
 
 @app.route('/request_expert', methods=['POST'])
 @jwt_required()  # Ensure that the user is authenticated
