@@ -34,7 +34,7 @@ function AppContent() {
   const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col ">
       {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)}
       <div className="flex-grow">
         {/* <NavBar /> */}
@@ -46,6 +46,7 @@ function AppContent() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/hireexpert" element={<ProjectRequest />} />
+          <Route path="/projects" element={<Projects />} />
 
           {/* Only render admin routes if the user is an admin */}
           {currentUser?.is_admin && (
@@ -58,7 +59,7 @@ function AppContent() {
               <Route path="addservice" element={<AddServicePage />} />
               <Route path="projecttypes" element={<ProjectTypes />} />
               <Route path="subjectarea" element={<SubjectArea />} />
-              <Route path="projects" element={<Projects />} />
+              <Route path="*" element={<div>Page not found</div>} />
             </Route>
           )}
           {!currentUser?.is_admin && (

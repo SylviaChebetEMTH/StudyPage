@@ -307,6 +307,20 @@ class Projects(Resource):
             response = make_response(jsonify({'error': 'No projects found'}), 404)
         return response
 
+@app.route('/projects/<int:project_id>', methods=['GET'])
+@jwt_required()
+def get_project_details(project_id):
+    project = ProjectRequest.query.get_or_404(project_id)
+
+    response = {
+        'project_title': project.project_title,
+        'project_description': project.project_description,
+        'deadline': project.deadline.strftime('%Y-%m-%d'),
+        'attachments': project.attachments,  # Ensure this is a URL or file reference
+        'client_name': project.user.username if project.user else "Unknown",
+    }
+    return jsonify(response)
+
 @app.route('/request_expert', methods=['POST'])
 @jwt_required()  # Ensure that the user is authenticated
 def request_expert():

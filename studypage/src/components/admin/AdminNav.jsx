@@ -79,8 +79,8 @@ const AdminNav = () => {
           <li className="text-gray-500 hover:text-blue-600 cursor-pointer">Messenger</li>
           <li className="text-gray-500 hover:text-blue-600 cursor-pointer">Auction</li>
           <li className="text-gray-500 hover:text-blue-600 cursor-pointer">
-            <NavLink to="projects" > My Projects</NavLink>
-            </li>
+              <NavLink to="/projects">My Projects</NavLink>
+          </li>
           <li className="text-gray-500 hover:text-blue-600 cursor-pointer">Balance</li>
           <li className="text-gray-500 hover:text-blue-600 cursor-pointer">My Profile</li>
           <li className="text-gray-500 hover:text-blue-600 cursor-pointer">Settings</li>
