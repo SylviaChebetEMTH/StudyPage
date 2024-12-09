@@ -286,25 +286,26 @@ class Projects(Resource):
     def get(self):
         projects = ProjectRequest.query.all()
         if projects:
-            response = make_response(
-                jsonify({
+            project_list = []
+            for project in projects:
+                user = User.query.filter_by(id=project.user_id).first()
+                expert = Expert.query.filter_by(id=project.expert_id).first()
 
-                    'user_id': projects.user_id,
-                    'expert_id': projects.expert_id,
-                    'project_title': projects.project_title,
-                    'project_type_id': projects.project_type_id,
-                    'subject_id': projects._subject_id,
-                    'project_description': projects.project_description,
-                    'status': projects.status,
-                    'deadline': projects.deadline,
-                    'attachments': projects.attachments,
-                    'number_of_pages': projects.number_of_pages
+                project_list.append({
+                    'client_name': user.username if user else "Unknown Client",
+                    'expert_name': expert.name if expert else "Unknown Expert",
+                    'project_title': project.project_title,
+                    'project_description': project.project_description,
+                    'status': project.status,
+                    'deadline': project.deadline.strftime('%Y-%m-%d'),
+                    'attachments': project.attachments,
+                    'number_of_pages': project.number_of_pages
                 })
-            )
-            return response
+
+            response = make_response(jsonify(project_list), 200)
         else:
-            response = make_response(jsonify({'error': 'Error fetching projects'}), 404)
-            return response
+            response = make_response(jsonify({'error': 'No projects found'}), 404)
+        return response
 
 @app.route('/request_expert', methods=['POST'])
 @jwt_required()  # Ensure that the user is authenticated
