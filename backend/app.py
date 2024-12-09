@@ -802,7 +802,7 @@ def patch_service(id):
         return jsonify({'message': 'Service updated successfully!'})
     
     return jsonify({'message': 'Service not found!'}), 404
-
+api.add_resource(Projects, '/projects')
 if __name__ == '__main__':
     app.run(debug=True)
     
