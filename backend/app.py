@@ -1,4 +1,4 @@
-from flask import Flask,make_request, jsonify, request
+from flask import Flask,make_response, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
@@ -8,6 +8,7 @@ from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subje
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
+from flask_restful import Resource
 import cloudinary.uploader
 from datetime import datetime
 import os
@@ -279,15 +280,30 @@ def get_experts():
 
     return jsonify({'experts': output})
 
-@app.route('/get_projects', methods=['GET'])
-@jwt_required()
-def get_projects():
-    projects = ProjectRequest.query.all()
-    response = make_response(jsonify({
-        'user_id': projects.user_id,
+class Projects(Resource):
+    @jwt_required()
+    def get(self):
+        projects = ProjectRequest.query.all()
+        if projects:
+            response = make_response(
+                jsonify({
 
-        }), 200)
-    
+                    'user_id': projects.user_id,
+                    'expert_id': projects.expert_id,
+                    'project_title': projects.project_title,
+                    'project_type_id': projects.project_type_id,
+                    'subject_id': projects._subject_id,
+                    'project_description': projects.project_description,
+                    'status': projects.status,
+                    'deadline': projects.deadline,
+                    'attachments': projects.attachments,
+                    'number_of_pages': projects.number_of_pages
+                })
+            )
+            return response
+        else:
+            response = make_response(jsonify({'error': 'Error fetching projects'}), 404)
+            return response
 
 @app.route('/request_expert', methods=['POST'])
 @jwt_required()  # Ensure that the user is authenticated
