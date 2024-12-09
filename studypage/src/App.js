@@ -23,6 +23,7 @@ import SubjectArea from "./components/admin/SubjectArea";
 import ProjectRequest from "./components/forms/ProjectRequest";
 import UserProfile from "./components/user/UserProfileSideBar";
 import ProjectSummary from "./components/user/ProjectSummary";
+import Chat from "./components/user/Messaging";
 
 
 
@@ -47,6 +48,7 @@ function AppContent() {
           <Route path="/login" element={<Login />} />
           <Route path="/hireexpert" element={<ProjectRequest />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/chat" element={<Chat />} />
 
           {/* Only render admin routes if the user is an admin */}
           {currentUser?.is_admin && (

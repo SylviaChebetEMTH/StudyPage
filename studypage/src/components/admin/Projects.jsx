@@ -95,7 +95,7 @@ const Projects = () => {
           <h2>{selectedProject.project_title}</h2>
           <p>{selectedProject.project_description}</p>
           <p>Deadline: {selectedProject.deadline}</p>
-          <a href={selectedProject.attachments} download>
+          <a href={`http://127.0.0.1:5000/uploads/${selectedProject.attachments}`} download>
             Download Attachments
           </a>
           <form
@@ -110,11 +110,12 @@ const Projects = () => {
               placeholder="Enter your comments"
               style={styles.textarea}
             ></textarea>
-            <input type="file" name="files" multiple />
+            <input type="file" name="attachments" multiple />
             <button type="submit" style={styles.submitButton}>
               Submit Work
             </button>
           </form>
+
           <button style={styles.closeButton} onClick={() => setSelectedProject(null)}>
             Close
           </button>
