@@ -434,9 +434,9 @@ def request_expert():
         return jsonify({'error': str(e)}), 500
 
 @app.route('/uploads/<filename>', methods=['GET'])
-def serve_file(filename):
+def download_file(filename):
     try:
-        return send_from_directory('uploads', filename, as_attachment=True)
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
     except FileNotFoundError:
         return jsonify({'error': 'File not found'}), 404
 
