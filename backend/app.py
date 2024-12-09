@@ -20,6 +20,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///studypage.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = SECRET_KEY
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
+if not os.path.exists(UPLOAD_FOLDER):  # Ensure the folder exists
+    os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
@@ -129,7 +131,6 @@ def register():
     db.session.commit()
 
     return jsonify({'success': 'User registered successfully'}), 201
-
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -299,7 +300,8 @@ class Projects(Resource):
                     'status': project.status,
                     'deadline': project.deadline.strftime('%Y-%m-%d'),
                     'attachments': project.attachments,
-                    'number_of_pages': project.number_of_pages
+                    'number_of_pages': project.number_of_pages,
+                    'project_id': project.id
                 })
 
             response = make_response(jsonify(project_list), 200)
@@ -370,14 +372,6 @@ def request_expert():
                         print(f"Error saving file: {e}")
                     attachments.append(filename)  # Store only the filename or file path
 
-        # Log received values for debugging
-        print(f"Received project_title: {project_title}")
-        print(f"Received project_description: {project_description}")
-        print(f"Received project_type_id: {project_type_id}")
-        print(f"Received subject_id: {subject_id}")
-        print(f"Received expert_id: {expert_id}")
-        print(f"Attachments: {attachments}")
-
         # Validate input fields
         if not all([project_title, project_description, project_type_id, subject_id, deadline]):
             return jsonify({'msg': 'Not enough segments'}), 422
@@ -438,6 +432,13 @@ def request_expert():
         db.session.rollback()
         print(f"Error occurred: {e}")
         return jsonify({'error': str(e)}), 500
+
+@app.route('/uploads/<filename>', methods=['GET'])
+def serve_file(filename):
+    try:
+        return send_from_directory('uploads', filename, as_attachment=True)
+    except FileNotFoundError:
+        return jsonify({'error': 'File not found'}), 404
 
 @app.route('/my_requests', methods=['GET'])
 @jwt_required()  # Ensure that the user is authenticated
