@@ -321,6 +321,25 @@ def get_project_details(project_id):
     }
     return jsonify(response)
 
+@app.route('/projects/<int:project_id>/submit', methods=['POST'])
+@jwt_required()
+def submit_project(project_id):
+    project = ProjectRequest.query.get_or_404(project_id)
+
+    # Parse form data for submission
+    files = request.files.getlist('files')  # Multiple file uploads
+    comments = request.form.get('comments')
+
+    # Save files and handle logic
+    for file in files:
+        file.save(f"uploads/{file.filename}")
+
+    # Update project status
+    project.status = 'Completed'
+    db.session.commit()
+
+    return jsonify({'message': 'Project submitted successfully'})
+
 @app.route('/request_expert', methods=['POST'])
 @jwt_required()  # Ensure that the user is authenticated
 def request_expert():
