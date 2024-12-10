@@ -1,8 +1,8 @@
-"""initial migration
+"""Fix backref conflict
 
-Revision ID: 02ab30bef7e6
+Revision ID: 2c838acf0486
 Revises: 
-Create Date: 2024-12-10 09:15:27.464101
+Create Date: 2024-12-10 11:52:20.566431
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '02ab30bef7e6'
+revision = '2c838acf0486'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -111,6 +111,7 @@ def upgrade():
     sa.Column('expert_id', sa.Integer(), nullable=True),
     sa.Column('content', sa.Text(), nullable=False),
     sa.Column('timestamp', sa.DateTime(), nullable=True),
+    sa.Column('attachments', sa.String(), nullable=True),
     sa.ForeignKeyConstraint(['conversation_id'], ['conversations.id'], ),
     sa.ForeignKeyConstraint(['expert_id'], ['experts.id'], ),
     sa.ForeignKeyConstraint(['receiver_id'], ['users.id'], ),

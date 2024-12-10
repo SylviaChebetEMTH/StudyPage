@@ -513,7 +513,7 @@ def send_message(conversation_id):
     )
     db.session.add(message)
     db.session.commit()
-
+    print(message)
     return jsonify(message.to_dict()), 201
 
 
@@ -562,27 +562,48 @@ def get_user_requests():
         print(f"Error occurred: {e}")
         return jsonify({'error': str(e)}), 500
 
+@app.route('/conversations/<int:conversation_id>/messages', methods=['GET'])
+@jwt_required()
+def get_messages(conversation_id):
+    # Validate the conversation exists
+    conversation = Conversation.query.get_or_404(conversation_id)
+
+    # Fetch all messages for the conversation
+    messages = Message.query.filter_by(conversation_id=conversation.id).order_by(Message.timestamp).all()
+
+    # Convert messages to dictionaries for JSON response
+    messages_data = [message.to_dict() for message in messages]
+
+    return jsonify(messages_data), 200
+
+
 @app.route('/conversations', methods=['GET'])
 @jwt_required()
 def get_conversations():
     user_id = get_jwt_identity()
+
+    # Query conversations where the user is either a client or linked to an expert
     conversations = Conversation.query.filter(
         (Conversation.client_id == user_id) | (Conversation.expert_id == user_id)
     ).all()
-    print ('convoconvoconvo',conversations)
 
-    response = [
-        {
+    # Prepare response with related expert details
+    response = []
+    for conv in conversations:
+        expert = Expert.query.get(conv.expert_id)
+        response.append({
             'id': conv.id,
-            'client': conv.client_id,
-            'expert': conv.expert_id,
-            'project': conv.project_id,
-            'created_at': conv.created_at.strftime('%Y-%m-%d %H:%M:%S')
-        }
-        for conv in conversations
-    ]
-    return jsonify(response), 200
+            'client_id': conv.client_id,
+            'expert_id': conv.expert_id,
+            'project_id': conv.project_id,
+            'created_at': conv.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'expert': {
+                'id': expert.id,
+                'name': expert.name
+            } if expert else None
+        })
 
+    return jsonify(response), 200
 
 @app.route('/experts/<int:id>', methods=['GET'])
 def get_expert(id):

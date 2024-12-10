@@ -72,7 +72,8 @@ class Conversation(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey('project_requests.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    messages = db.relationship('Message', lazy=True)
+    # Remove the backref from here and keep it simple
+    messages = db.relationship('Message', lazy=True, backref='conversation')
 
 class Subject(db.Model):
     __tablename__ = 'subjects'
@@ -147,15 +148,14 @@ class Message(db.Model):
     __tablename__ = 'messages'
     id = db.Column(db.Integer, primary_key=True)
     conversation_id = db.Column(db.Integer, db.ForeignKey('conversations.id'), nullable=False)
-    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Sender can be a user
-    receiver_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)  # Receiver can be a user (optional)
-    expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'), nullable=True)  # Optional receiver if expert is involved
-    content = db.Column(db.Text, nullable=False)  # The message content
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # Timestamp of message
-    attachments = db.Column(db.String, nullable=True) 
+    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'), nullable=True)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    attachments = db.Column(db.String, nullable=True)
 
     sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages')
-    conversation = db.relationship('Conversation', backref='messages', lazy=True)
     receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_messages')
     expert = db.relationship('Expert', backref='messages')  # Optional expert relationship
 
