@@ -384,6 +384,8 @@ def request_expert():
         client_id=get_jwt_identity(),
         expert_id=data.get('expert_id')
     ).first()
+    print('wawawaiii',conversation)
+    print('wawawawawawawaaaa',conversation.messages)
 
     # If no existing conversation, create a new one
     if not conversation:
@@ -506,6 +508,10 @@ def send_message(conversation_id):
     data = request.form
     files = request.files.getlist('attachments')
 
+    content = data.get('content')
+    if not content and not files:
+        return jsonify({'error': 'Message content or attachments are required.'}), 400
+    
     attachments = []
     for file in files:
         filename = secure_filename(file.filename)
@@ -516,8 +522,8 @@ def send_message(conversation_id):
     message = Message(
         conversation_id=conversation_id,
         sender_id=get_jwt_identity(),
-        content=data.get('content'),
-        attachments=', '.join(attachments)
+        content='content' if content else None,
+        attachments=', '.join(attachments) if attachments else None
     )
     db.session.add(message)
     db.session.commit()
