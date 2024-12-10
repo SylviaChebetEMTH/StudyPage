@@ -152,8 +152,10 @@ class Message(db.Model):
     expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'), nullable=True)  # Optional receiver if expert is involved
     content = db.Column(db.Text, nullable=False)  # The message content
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # Timestamp of message
+    attachments = db.Column(db.String, nullable=True) 
 
     sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages')
+    conversation = db.relationship('Conversation', backref='messages', lazy=True)
     receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_messages')
     expert = db.relationship('Expert', backref='messages')  # Optional expert relationship
 
@@ -168,5 +170,6 @@ class Message(db.Model):
             'receiver': self.receiver.username if self.receiver else None,
             'expert': self.expert.name if self.expert else None,
             'content': self.content,
+            'attachments': self.attachments,
             'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
         }
