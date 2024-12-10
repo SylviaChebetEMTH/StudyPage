@@ -31,7 +31,6 @@ class User(db.Model):
         """Checks if the password matches the hashed password"""
         return bcrypt.check_password_hash(self.password, password)
 
-
 class Expert(db.Model):
     __tablename__ = 'experts'
     id = db.Column(db.Integer, primary_key=True)
@@ -47,7 +46,6 @@ class Expert(db.Model):
     # Relationships
     project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'))
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
-
     project_type = db.relationship('ProjectType', backref='experts')
     subject = db.relationship('Subject', backref='experts')
 
@@ -66,6 +64,15 @@ class ProjectType(db.Model):
     # Relationship to services
     services = db.relationship('Service', backref='project_type')
 
+class Conversation(db.Model):
+    __tablename__ = 'conversations'
+    id = db.Column(db.Integer, primary_key=True)
+    client_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'), nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey('project_requests.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    messages = db.relationship('Message', backref='parent_conversation', lazy=True)
 
 class Subject(db.Model):
     __tablename__ = 'subjects'
@@ -136,18 +143,16 @@ class ProjectRequest(db.Model):
             'number_of_pages': self.number_of_pages, 
         }
 
-
-# Define the Message model
 class Message(db.Model):
     __tablename__ = 'messages'
     id = db.Column(db.Integer, primary_key=True)
+    conversation_id = db.Column(db.Integer, db.ForeignKey('conversations.id'), nullable=False)
     sender_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Sender can be a user
-    receiver_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)  # Receiver can be a user (or admin later)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)  # Receiver can be a user (optional)
     expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'), nullable=True)  # Optional receiver if expert is involved
     content = db.Column(db.Text, nullable=False)  # The message content
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # Timestamp of message
 
-    # Relationships
     sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages')
     receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_messages')
     expert = db.relationship('Expert', backref='messages')  # Optional expert relationship
@@ -156,12 +161,12 @@ class Message(db.Model):
         return f'<Message from {self.sender.username} to {self.receiver.username if self.receiver else self.expert.name}>'
 
     def to_dict(self):
-        """Method to convert message into a dictionary format."""
         return {
             'id': self.id,
+            'conversation_id': self.conversation_id,
             'sender': self.sender.username,
             'receiver': self.receiver.username if self.receiver else None,
             'expert': self.expert.name if self.expert else None,
             'content': self.content,
-            'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+            'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
         }
