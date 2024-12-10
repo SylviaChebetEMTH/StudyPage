@@ -349,13 +349,19 @@ def request_expert():
     data = request.form
     files = request.files.getlist('attachments')
 
+    deadline_str = data.get('deadline')  # e.g., "2024-12-11"
+    try:
+        deadline = datetime.strptime(deadline_str, "%Y-%m-%d")
+    except ValueError:
+        return jsonify({"error": "Invalid deadline format. Use YYYY-MM-DD."}), 400
+
     # Save the project request
     project = ProjectRequest(
         project_title=data.get('project_title'),
         project_description=data.get('project_description'),
         project_type_id=data.get('project_type'),
         subject_id=data.get('subject'),
-        deadline=data.get('deadline'),
+        deadline=deadline,
         expert_id=data.get('expert_id'),
         user_id=get_jwt_identity(),  # Assuming JWT returns client ID
         number_of_pages=data.get('number_of_pages')
