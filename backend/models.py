@@ -72,7 +72,7 @@ class Conversation(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey('project_requests.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    messages = db.relationship('Message', backref='parent_conversation', lazy=True)
+    messages = db.relationship('Message', lazy=True)
 
 class Subject(db.Model):
     __tablename__ = 'subjects'
