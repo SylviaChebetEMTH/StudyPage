@@ -363,7 +363,7 @@ def request_expert():
         subject_id=data.get('subject'),
         deadline=deadline,
         expert_id=data.get('expert_id'),
-        user_id=get_jwt_identity(),  # Assuming JWT returns client ID
+        user_id=get_jwt_identity(),
         number_of_pages=data.get('number_of_pages')
     )
     db.session.add(project)
@@ -379,14 +379,21 @@ def request_expert():
     project.attachments = ','.join(attachments)
     db.session.commit()
 
-    # Create a conversation
-    conversation = Conversation(
+    # Check for an existing conversation
+    conversation = Conversation.query.filter_by(
         client_id=get_jwt_identity(),
-        expert_id=data.get('expert_id'),
-        project_id=project.id
-    )
-    db.session.add(conversation)
-    db.session.commit()
+        expert_id=data.get('expert_id')
+    ).first()
+
+    # If no existing conversation, create a new one
+    if not conversation:
+        conversation = Conversation(
+            client_id=get_jwt_identity(),
+            expert_id=data.get('expert_id'),
+            project_id=project.id
+        )
+        db.session.add(conversation)
+        db.session.commit()
 
     # Add an initial message
     message = Message(
@@ -399,6 +406,7 @@ def request_expert():
     db.session.commit()
 
     return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
+
 
 
 # @app.route('/request_expert', methods=['POST'])
@@ -569,7 +577,7 @@ def get_messages(conversation_id):
     conversation = Conversation.query.get_or_404(conversation_id)
 
     # Fetch all messages for the conversation
-    messages = Message.query.filter_by(conversation_id=conversation.id).order_by(Message.timestamp).all()
+    messages = Message.query.filter_by(conversation_id=conversation.id).order_by(Message.timestamp.asc()).all()
 
     # Convert messages to dictionaries for JSON response
     messages_data = [message.to_dict() for message in messages]
@@ -577,33 +585,60 @@ def get_messages(conversation_id):
     return jsonify(messages_data), 200
 
 
+# @app.route('/conversations', methods=['GET'])
+# @jwt_required()
+# def get_conversations():
+#     user_id = get_jwt_identity()
+
+#     # Query conversations where the user is either a client or linked to an expert
+#     conversations = Conversation.query.filter(
+#         (Conversation.client_id == user_id) | (Conversation.expert_id == user_id)
+#     ).all()
+
+#     # Prepare response with related expert details
+#     response = []
+#     for conv in conversations:
+#         expert = Expert.query.get(conv.expert_id)
+#         response.append({
+#             'id': conv.id,
+#             'client_id': conv.client_id,
+#             'expert_id': conv.expert_id,
+#             'project_id': conv.project_id,
+#             'created_at': conv.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+#             'expert': {
+#                 'id': expert.id,
+#                 'name': expert.name
+#             } if expert else None
+#         })
+
+#     return jsonify(response), 200
+
 @app.route('/conversations', methods=['GET'])
 @jwt_required()
 def get_conversations():
     user_id = get_jwt_identity()
 
-    # Query conversations where the user is either a client or linked to an expert
     conversations = Conversation.query.filter(
         (Conversation.client_id == user_id) | (Conversation.expert_id == user_id)
     ).all()
 
-    # Prepare response with related expert details
-    response = []
-    for conv in conversations:
-        expert = Expert.query.get(conv.expert_id)
-        response.append({
-            'id': conv.id,
-            'client_id': conv.client_id,
-            'expert_id': conv.expert_id,
-            'project_id': conv.project_id,
-            'created_at': conv.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+    result = []
+    for conversation in conversations:
+        latest_message = Message.query.filter_by(conversation_id=conversation.id).order_by(
+            Message.timestamp.desc()
+        ).first()
+
+        result.append({
+            'id': conversation.id,
             'expert': {
-                'id': expert.id,
-                'name': expert.name
-            } if expert else None
+                'id': conversation.expert_id,
+                'name': Expert.query.get(conversation.expert_id).name
+            },
+            'latest_message': latest_message.content if latest_message else "No messages yet",
         })
 
-    return jsonify(response), 200
+    return jsonify(result)
+
 
 @app.route('/experts/<int:id>', methods=['GET'])
 def get_expert(id):
