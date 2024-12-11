@@ -1,8 +1,8 @@
-"""Fix backref conflict
+"""Initial migration
 
-Revision ID: 2c838acf0486
+Revision ID: 2e28263398e5
 Revises: 
-Create Date: 2024-12-10 11:52:20.566431
+Create Date: 2024-12-10 21:22:22.242943
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '2c838acf0486'
+revision = '2e28263398e5'
 down_revision = None
 branch_labels = None
 depends_on = None

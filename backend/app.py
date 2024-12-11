@@ -36,10 +36,6 @@ CORS(app,resources={r"/*": {"origins": "http://localhost:3001"}})
 #     message_list = [{'user': message.sender.username, 'message': message.content} for message in messages]
 #     return {'messages': message_list}
 
-
-
-
-
 # Admin Messages Route
 @app.route('/adminmessages', methods=['GET'])
 @jwt_required()  # Ensure the request is coming from a valid user (admin)
@@ -384,8 +380,8 @@ def request_expert():
         client_id=get_jwt_identity(),
         expert_id=data.get('expert_id')
     ).first()
-    print('wawawaiii',conversation)
-    print('wawawawawawawaaaa',conversation.messages)
+    # print(conversation)
+    # print(conversation.messages)
 
     # If no existing conversation, create a new one
     if not conversation:
@@ -408,8 +404,6 @@ def request_expert():
     db.session.commit()
 
     return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
-
-
 
 # @app.route('/request_expert', methods=['POST'])
 # @jwt_required()  # Ensure that the user is authenticated
@@ -529,8 +523,7 @@ def send_message(conversation_id):
     db.session.commit()
     print(message)
     return jsonify(message.to_dict()), 201
-
-
+    
 @app.route('/uploads/<filename>', methods=['GET'])
 def download_file(filename):
     try:
@@ -590,7 +583,6 @@ def get_messages(conversation_id):
 
     return jsonify(messages_data), 200
 
-
 # @app.route('/conversations', methods=['GET'])
 # @jwt_required()
 # def get_conversations():
@@ -644,7 +636,6 @@ def get_conversations():
         })
 
     return jsonify(result)
-
 
 @app.route('/experts/<int:id>', methods=['GET'])
 def get_expert(id):
@@ -704,9 +695,6 @@ def add_expert():
 
     return jsonify({"message": "Expert added successfully!"}), 201
 
-
-
-
 @app.route('/experts/<int:id>', methods=['PATCH'])
 @jwt_required()
 def partial_update_expert(id):
@@ -750,8 +738,6 @@ def partial_update_expert(id):
     db.session.commit()
     return jsonify({'message': 'Expert updated successfully'}), 200
 
-
-
 @app.route('/experts/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_expert(id):
@@ -772,7 +758,6 @@ def delete_expert(id):
     except Exception as e:
         db.session.rollback()  # Rollback the session in case of error
         return jsonify({'message': 'Error deleting expert', 'error': str(e)}), 500
-
 
 @app.route('/services', methods=['GET'])
 def get_services():
@@ -834,9 +819,6 @@ def add_service():
         print("Error adding service:", str(e))
         return jsonify({"message": "Failed to add service.", "error": str(e)}), 500
 
-
-
-
 @app.route('/project-types', methods=['GET'])
 def get_project_types():
     try:
@@ -873,7 +855,6 @@ def update_project_type(id):
     except Exception as e:
         print("Error occurred:", e)
         return jsonify({'message': str(e)}), 500
-
 
 # DELETE route to delete a project type
 @app.route('/project-types/<int:id>', methods=['DELETE'])
@@ -937,10 +918,6 @@ def delete_subject(id):
     except Exception as e:
         print(f"Error deleting subject: {e}")
         return jsonify({'message': 'Failed to delete subject'}), 500
-
-
- # Should display all messages for this conversation
-
 
 # Route for admin to update services
 @app.route('/services/<int:id>', methods=['PUT'])
