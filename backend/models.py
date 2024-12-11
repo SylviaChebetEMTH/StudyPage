@@ -154,7 +154,6 @@ class Message(db.Model):
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     attachments = db.Column(db.String, nullable=True)
-
     sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages')
     receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_messages')
     expert = db.relationship('Expert', backref='messages')  # Optional expert relationship

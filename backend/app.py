@@ -380,7 +380,7 @@ def request_expert():
         client_id=get_jwt_identity(),
         expert_id=data.get('expert_id')
     ).first()
-    # print(conversation)
+    # print(expert_id,client_id)
     # print(conversation.messages)
 
     # If no existing conversation, create a new one
@@ -398,7 +398,9 @@ def request_expert():
         conversation_id=conversation.id,
         sender_id=get_jwt_identity(),
         content=f"New project submitted: {project.project_title}",
-        attachments=project.attachments
+        attachments=project.attachments,
+        receiver_id=data.get('expert_id'),
+        expert_id=data.get('expert_id')
     )
     db.session.add(message)
     db.session.commit()
@@ -521,7 +523,7 @@ def send_message(conversation_id):
     )
     db.session.add(message)
     db.session.commit()
-    print(message)
+    # print(message)
     return jsonify(message.to_dict()), 201
     
 @app.route('/uploads/<filename>', methods=['GET'])
@@ -580,6 +582,7 @@ def get_messages(conversation_id):
 
     # Convert messages to dictionaries for JSON response
     messages_data = [message.to_dict() for message in messages]
+    print('datatadatadatad',messages_data)
 
     return jsonify(messages_data), 200
 
