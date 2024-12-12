@@ -133,11 +133,21 @@ def register():
 def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
+
+    # Query the user by email
     user = User.query.filter_by(email=email).first()
+
+    # Check if the user exists and the password is correct
     if user and bcrypt.check_password_hash(user.password, password):
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(identity=user.id)
-        return jsonify({"access_token": access_token, "refresh_token": refresh_token})
+
+        # Return tokens and the user's role
+        return jsonify({
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "is_admin": user.is_admin  # Include the user's role
+        })
     else:
         return jsonify({"message": "Invalid username or password"}), 401
 
@@ -537,7 +547,69 @@ def send_message(conversation_id):
     db.session.commit()
     # print(message)
     return jsonify(message.to_dict()), 201
+
+@app.route('/admin/conversations', methods=['GET'])
+@jwt_required()
+def admin_get_conversations():
+    try:
+        # Fetch all conversations
+        conversations = Conversation.query.all()
+
+        # Prepare the response data
+        data = []
+        for conv in conversations:
+            # Fetch client and expert details
+            client = User.query.get(conv.client_id)
+            expert = User.query.get(conv.expert_id)
+
+            # Construct conversation details
+            conversation_data = {
+                "conversation_id": conv.id,
+                "client": client.username if client else "Unknown",
+                "expert": expert.username if expert else "Unassigned",
+                "last_message": conv.messages[-1].content if conv.messages else None,
+                "last_timestamp": conv.messages[-1].timestamp.strftime('%Y-%m-%d %H:%M:%S') if conv.messages else None,
+                "created_at": conv.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            }
+            data.append(conversation_data)
+
+        return jsonify(data), 200
+    except Exception as e:
+        print("Error fetching conversations:", e)
+        return jsonify({"error": "Unable to fetch conversations"}), 500
+
+
+
+@app.route('/admin/conversations/<int:conversation_id>/messages', methods=['GET'])
+# @jwt_required()
+def get_conversation_messages(conversation_id):
+    conversation = Conversation.query.get_or_404(conversation_id)
+    messages = [
+        message.to_dict() for message in conversation.messages
+    ]
+    return jsonify(messages), 200
+
+@app.route('/admin/conversations/<int:conversation_id>/messages', methods=['POST'])
+@jwt_required()
+def send_admin_message(conversation_id):
+    data = request.json
+    content = data.get('content')
+    attachments = data.get('attachments', [])
     
+    if not content and not attachments:
+        return jsonify({'error': 'Message content or attachments are required.'}), 400
+
+    message = Message(
+        conversation_id=conversation_id,
+        sender_id=get_jwt_identity(),  # Admin's ID
+        content=content,
+        attachments=', '.join(attachments) if attachments else None,
+    )
+    db.session.add(message)
+    db.session.commit()
+    return jsonify(message.to_dict()), 201
+
+
 @app.route('/uploads/<filename>', methods=['GET'])
 def download_file(filename):
     try:

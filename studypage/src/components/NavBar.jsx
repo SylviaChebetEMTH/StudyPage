@@ -8,6 +8,7 @@ export const NavBar = () => {
     const { authToken, currentUser } = useContext(UserContext);
     const { logout } = useContext(UserContext);
     const navigate = useNavigate();
+    console.log('adminauthtoken',authToken  )
 
     const accountLink = authToken
         ? currentUser?.is_admin
@@ -49,7 +50,7 @@ export const NavBar = () => {
                             to="/about"
                             className="bg-transparent py-1 px-2 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 hover:underline"
                         >
-                            About Us
+                            About User
                         </Link>
                     </div>
                     <div className="flex gap-4">
@@ -57,8 +58,14 @@ export const NavBar = () => {
                             <FontAwesomeIcon icon={faUser} className="text-lg" />
                             <span className="ml-1">{authToken ? 'My Account' : 'Login'}</span>
                         </Link>
-                        
-                        <Link to='/chat' className="text-gray-700 hover:text-blue-700 flex items-center text-xs">
+
+                        <Link
+                            to={{
+                                pathname: "/chat",
+                            }}
+                            state={{ authToken }} // Pass authToken in state
+                            className="text-gray-700 hover:text-blue-700 flex items-center text-xs"
+                            >
                             <FontAwesomeIcon icon={faCommentDots} className="text-lg text-blue-700" />
                         </Link>
                     </div>
