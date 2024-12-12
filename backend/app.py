@@ -344,6 +344,8 @@ def submit_project(project_id):
 def request_expert():
     data = request.form
     files = request.files.getlist('attachments')
+    # client_id=get_jwt_identity(),
+    # expert_id=data.get('expert_id')
 
     deadline_str = data.get('deadline')  # e.g., "2024-12-11"
     try:
@@ -377,10 +379,11 @@ def request_expert():
 
     # Check for an existing conversation
     conversation = Conversation.query.filter_by(
+        
         client_id=get_jwt_identity(),
-        expert_id=data.get('expert_id')
+        expert_id=data.get('expert_id'),
     ).first()
-    # print(expert_id,client_id)
+    
     # print(conversation.messages)
 
     # If no existing conversation, create a new one
@@ -397,7 +400,7 @@ def request_expert():
     message = Message(
         conversation_id=conversation.id,
         sender_id=get_jwt_identity(),
-        content=f"New project submitted: {project.project_title}",
+        content=f"New project submitted: {project.project_title}\\nDescription: {project.project_description}\\nDeadline: {project.deadline.strftime('%Y-%m-%d')}",
         attachments=project.attachments,
         receiver_id=data.get('expert_id'),
         expert_id=data.get('expert_id')
@@ -504,16 +507,25 @@ def send_message(conversation_id):
     data = request.form
     files = request.files.getlist('attachments')
 
+    MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
+
+    for file in files:
+        if not allowed_file(file.filename):
+            return jsonify({'error': f"File '{file.filename}' has an invalid type."}), 400
+        if len(file.read()) > MAX_FILE_SIZE:
+            return jsonify({'error': f"File '{file.filename}' exceeds size limit."}), 400
+        file.seek(0)  # Reset file pointer for saving
     content = data.get('content')
     if not content and not files:
         return jsonify({'error': 'Message content or attachments are required.'}), 400
     
     attachments = []
-    for file in files:
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_path)
-        attachments.append(file_path)
+    if files:
+        for file in files:
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+            attachments.append(file_path)
 
     message = Message(
         conversation_id=conversation_id,
@@ -582,7 +594,7 @@ def get_messages(conversation_id):
 
     # Convert messages to dictionaries for JSON response
     messages_data = [message.to_dict() for message in messages]
-    print('datatadatadatad',messages_data)
+    # print('datatadatadatad',messages_data)
 
     return jsonify(messages_data), 200
 

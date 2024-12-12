@@ -4,6 +4,7 @@ import ChatWindow from "../chat-interface/src/components/ChatWindow";
 
 const Messaging = () => {
   const [activeUser, setActiveUser] = useState(null); 
+  // console.log('activeuser',activeUser)
 
   return (
     <div className="flex h-screen bg-gray-900">
