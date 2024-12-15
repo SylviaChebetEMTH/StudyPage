@@ -290,6 +290,8 @@ const ProjectRequest = () => {
   // const [notification, setNotification] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const publicKey = 'YOUR_PAYSTACK_PUBLIC_KEY';
+
   const showError = (message) => {
     setErrorMessage(message);
     setTimeout(() => {
