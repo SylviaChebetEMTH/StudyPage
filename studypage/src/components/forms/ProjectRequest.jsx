@@ -255,334 +255,358 @@
 
 // export default ProjectRequest;
 
+// Above is the fixed one
 
 
 
-import React, { useState, useEffect, useContext } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { UserContext } from '../contexts/userContext';
-import { PaystackButton } from 'react-paystack';
 
-const ProjectRequest = () => {
-  const { authToken } = useContext(UserContext);
-  const { state } = useLocation();
-  const navigate = useNavigate();
+// import React, { useState, useEffect, useContext } from 'react';
+// import { useLocation, useNavigate } from 'react-router-dom';
+// import { UserContext } from '../contexts/userContext';
+// import { PaystackButton } from 'react-paystack';
 
-  // Form Fields
-  const [projectTitle, setProjectTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [projectTypes, setProjectTypes] = useState([]);
-  const [subjects, setSubjects] = useState([]);
-  const [selectedProjectType, setSelectedProjectType] = useState('');
-  const [selectedSubject, setSelectedSubject] = useState('');
-  const [attachments, setAttachments] = useState([]);
-  const [deadline, setDeadline] = useState('');
-  const [expertId, setExpertId] = useState(state ? state.expertId : '');
-  const [numberOfPages, setNumberOfPages] = useState('');
+// const ProjectRequest = () => {
+//   const { authToken } = useContext(UserContext);
+//   const { state } = useLocation();
+//   const navigate = useNavigate();
 
-  // Services and Pricing
-  const [services, setServices] = useState([]);
-  const [selectedService, setSelectedService] = useState(null);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [priceConfirmed, setPriceConfirmed] = useState(false);
+//   // Form Fields
+//   const [projectTitle, setProjectTitle] = useState('');
+//   const [description, setDescription] = useState('');
+//   const [projectTypes, setProjectTypes] = useState([]);
+//   const [subjects, setSubjects] = useState([]);
+//   const [selectedProjectType, setSelectedProjectType] = useState('');
+//   const [selectedSubject, setSelectedSubject] = useState('');
+//   const [attachments, setAttachments] = useState([]);
+//   const [deadline, setDeadline] = useState('');
+//   const [expertId, setExpertId] = useState(state ? state.expertId : '');
+//   const [numberOfPages, setNumberOfPages] = useState('');
 
-  // Notifications and Error Handling
-  // const [notification, setNotification] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
+//   // Services and Pricing
+//   const [services, setServices] = useState([]);
+//   const [selectedService, setSelectedService] = useState(null);
+//   const [totalPrice, setTotalPrice] = useState(0);
+//   const [priceConfirmed, setPriceConfirmed] = useState(false);
 
-  const publicKey = 'YOUR_PAYSTACK_PUBLIC_KEY';
+//   // Notifications and Error Handling
+//   // const [notification, setNotification] = useState(null);
+//   const [errorMessage, setErrorMessage] = useState('');
 
-  const showError = (message) => {
-    setErrorMessage(message);
-    setTimeout(() => {
-      setErrorMessage('');
-    }, 3000);
-  }
-  // Fetch Project Types
-  useEffect(() => {
-    fetch('http://127.0.0.1:5000/project-types')
-      .then((response) => response.json())
-      .then((data) => setProjectTypes(data))
-      .catch((error) => console.error('Error fetching project types:', error));
-  }, []);
+//   const publicKey = 'YOUR_PAYSTACK_PUBLIC_KEY';
 
-  // Fetch Subjects
-  useEffect(() => {
-    fetch('http://127.0.0.1:5000/subjects')
-      .then((response) => response.json())
-      .then((data) => setSubjects(data))
-      .catch((error) => console.error('Error fetching subjects:', error));
-  }, []);
+//   const showError = (message) => {
+//     setErrorMessage(message);
+//     setTimeout(() => {
+//       setErrorMessage('');
+//     }, 3000);
+//   }
+//   // Fetch Project Types
+//   useEffect(() => {
+//     fetch('http://127.0.0.1:5000/project-types')
+//       .then((response) => response.json())
+//       .then((data) => setProjectTypes(data))
+//       .catch((error) => console.error('Error fetching project types:', error));
+//   }, []);
 
-  // Fetch Services Based on Selected Project Type and Subject
-  useEffect(() => {
-    if (selectedProjectType && selectedSubject) {
-      fetch(`http://127.0.0.1:5000/services?project_type=${selectedProjectType}&subject=${selectedSubject}`)
-        .then((response) => response.json())
-        .then((data) => {
-          if (!data.services || data.services.length === 0){
-            console.warn('No services found for the selected project type and subject.');
-            showError('No services found for the selected criteria.');
-            setServices([]);
-          }
-          console.log('Fetched services for requests:', data.services);
-          setServices(data.services || []);
-          setSelectedService(data.services?.length > 0 ? data.services[0] : null); // Default to the first service
-        })
-        .catch((error) => console.error('Error fetching services:', error));
-    } else {
-      setErrorMessage('');
-      setServices([]);
-      setSelectedService(null);
-    }
-  }, [selectedProjectType, selectedSubject]);
+//   // Fetch Subjects
+//   useEffect(() => {
+//     fetch('http://127.0.0.1:5000/subjects')
+//       .then((response) => response.json())
+//       .then((data) => setSubjects(data))
+//       .catch((error) => console.error('Error fetching subjects:', error));
+//   }, []);
 
-  // Recalculate Total Price
-  useEffect(() => {
-    if (selectedService && numberOfPages) {
-      const calculatedPrice = selectedService.base_price + 
-                               (selectedService.price_per_page * parseFloat(numberOfPages));
-      setTotalPrice(calculatedPrice);
-    } else {
-      setTotalPrice(0);
-    }
-  }, [selectedService, numberOfPages]);
+//   // Fetch Services Based on Selected Project Type and Subject
+//   useEffect(() => {
+//     if (selectedProjectType && selectedSubject) {
+//       fetch(`http://127.0.0.1:5000/services?project_type=${selectedProjectType}&subject=${selectedSubject}`)
+//         .then((response) => response.json())
+//         .then((data) => {
+//           if (!data.services || data.services.length === 0){
+//             console.warn('No services found for the selected project type and subject.');
+//             showError('No services found for the selected criteria.');
+//             setServices([]);
+//           }
+//           console.log('Fetched services for requests:', data.services);
+//           setServices(data.services || []);
+//           setSelectedService(data.services?.length > 0 ? data.services[0] : null); // Default to the first service
+//         })
+//         .catch((error) => console.error('Error fetching services:', error));
+//     } else {
+//       setErrorMessage('');
+//       setServices([]);
+//       setSelectedService(null);
+//     }
+//   }, [selectedProjectType, selectedSubject]);
 
-  // Handle Attachments
-  const handleFileChange = (e) => {
-    setAttachments(e.target.files);
-  };
+//   // Recalculate Total Price
+//   useEffect(() => {
+//     if (selectedService && numberOfPages) {
+//       const calculatedPrice = selectedService.base_price + 
+//                                (selectedService.price_per_page * parseFloat(numberOfPages));
+//       setTotalPrice(calculatedPrice);
+//     } else {
+//       setTotalPrice(0);
+//     }
+//   }, [selectedService, numberOfPages]);
 
-  // Handle Submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
+//   // Handle Attachments
+//   const handleFileChange = (e) => {
+//     setAttachments(e.target.files);
+//   };
 
-    if (!priceConfirmed) {
-      // Show price confirmation modal or alert
-      const confirmPrice = window.confirm(`
-        Project Pricing Breakdown:
-        - Base Price: $${selectedService?.base_price.toFixed(2)}
-        - Pages: ${numberOfPages}
-        - Price per Page: $${selectedService?.price_per_page.toFixed(2)}
-        - Total Price: $${totalPrice.toFixed(2)}
+//   // Handle Submit
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+
+//     if (!priceConfirmed) {
+//       // Show price confirmation modal or alert
+//       const confirmPrice = window.confirm(`
+//         Project Pricing Breakdown:
+//         - Base Price: $${selectedService?.base_price.toFixed(2)}
+//         - Pages: ${numberOfPages}
+//         - Price per Page: $${selectedService?.price_per_page.toFixed(2)}
+//         - Total Price: $${totalPrice.toFixed(2)}
         
-        Confirm to proceed with this pricing.
-      `);
+//         Confirm to proceed with this pricing.
+//       `);
 
-      if (confirmPrice) {
-        setPriceConfirmed(true);
-      }
-      return;
-    }
+//       if (confirmPrice) {
+//         setPriceConfirmed(true);
+//       }
+//       return;
+//     }
 
-    // Validate required fields
-    if (!projectTitle || !description || !selectedProjectType || !selectedSubject || !deadline || !expertId || !numberOfPages) {
-      setErrorMessage('Please fill in all required fields.');
-      return;
-    }
+//     // Validate required fields
+//     if (!projectTitle || !description || !selectedProjectType || !selectedSubject || !deadline || !expertId || !numberOfPages) {
+//       setErrorMessage('Please fill in all required fields.');
+//       return;
+//     }
 
-    if (attachments.length === 0) {
-      setErrorMessage('Please attach at least one file.');
-      return;
-    }
+//     if (attachments.length === 0) {
+//       setErrorMessage('Please attach at least one file.');
+//       return;
+//     }
 
-    // Prepare form data for submission
-    const formData = new FormData();
-    formData.append('project_title', projectTitle);
-    formData.append('project_description', description);
-    formData.append('project_type', selectedProjectType);
-    formData.append('subject', selectedSubject);
-    formData.append('deadline', deadline);
-    formData.append('expert_id', expertId);
-    formData.append('number_of_pages', numberOfPages);
-    formData.append('service_id', selectedService.id);
-    formData.append('total_price', totalPrice);
+//   const handleSuccess = () => {
+//       // Prepare form data for submission
+//     const formData = new FormData();
+//     formData.append('project_title', projectTitle);
+//     formData.append('project_description', description);
+//     formData.append('project_type', selectedProjectType);
+//     formData.append('subject', selectedSubject);
+//     formData.append('deadline', deadline);
+//     formData.append('expert_id', expertId);
+//     formData.append('number_of_pages', numberOfPages);
+//     formData.append('service_id', selectedService.id);
+//     formData.append('total_price', totalPrice);
 
-    // Attach all files
-    for (let i = 0; i < attachments.length; i++) {
-      formData.append('attachments', attachments[i]);
-    }
+//     // Attach all files
+//     for (let i = 0; i < attachments.length; i++) {
+//       formData.append('attachments', attachments[i]);
+//     }
 
-    // Submit the form
-    fetch('http://127.0.0.1:5000/request_expert', {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${authToken}` },
-      body: formData,
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error('Failed to submit the project request.');
-        return response.json();
-      })
-      .then(() => {
-        navigate('/payment/success', { state: { totalPrice, paymentRef } });
-      })
-      .catch((error) => {
-        showError('Error submitting project request:', error);
-        setErrorMessage('There was an error submitting the project request. Please try again.');
-      });
-  };
-  const handleClose = () => {
-    showError('Payment cancelled.');
-  };
+//     // Submit the form
+//     fetch('http://127.0.0.1:5000/request_expert', {
+//       method: 'POST',
+//       headers: { 'Authorization': `Bearer ${authToken}` },
+//       body: formData,
+//     })
+//       .then((response) => {
+//         if (!response.ok) throw new Error('Failed to submit the project request.');
+//         return response.json();
+//       })
+//       .then(() => {
+//         navigate('/payment/success', { state: { totalPrice, paymentRef } });
+//       })
+//       .catch((error) => {
+//         showError('Error submitting project request:', error);
+//         setErrorMessage('There was an error submitting the project request. Please try again.');
+//       });
+//     };
+//   }
+//   const handleClose = () => {
+//     showError('Payment cancelled.');
+//   };
 
-  return (
-    <div className="container mx-auto p-8 bg-gray-300 shadow-md rounded-lg max-w-4xl m-6">
-      <h2 className="text-2xl font-bold mb-4">Request Expert</h2>
+//   const componentProps = {
+//     email,
+//     amount: totalPrice * 100, // Paystack processes in kobo (multiply by 100 for naira)
+//     metadata: {
+//       name: projectTitle,
+//       phone: "1234567890", // Replace with user's phone number if available
+//     },
+//     publicKey,
+//     text: 'Pay Now',
+//     onSuccess: handleSuccess,
+//     onClose: handleClose,
+//     reference: paymentRef,
+//   };
 
-      {/* Error Message */}
-      {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
+//   return (
+//     <div className="container mx-auto p-8 bg-gray-300 shadow-md rounded-lg max-w-4xl m-6">
+//       <h2 className="text-2xl font-bold mb-4">Request Expert</h2>
 
-      <form onSubmit={handleSubmit}>
-        {/* Project Title */}
-        <div>
-          <label htmlFor="projectTitle" className="block text-sm font-medium">Project Title</label>
-          <input
-            type="text"
-            id="projectTitle"
-            value={projectTitle}
-            onChange={(e) => setProjectTitle(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          />
-        </div>
+//       {/* Error Message */}
+//       {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
 
-        {/* Description */}
-        <div>
-          <label htmlFor="description" className="block text-sm font-medium">Description</label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          ></textarea>
-        </div>
+//       <form >
+//         {/* Project Title */}
+//         <div>
+//           <label htmlFor="projectTitle" className="block text-sm font-medium">Project Title</label>
+//           <input
+//             type="text"
+//             id="projectTitle"
+//             value={projectTitle}
+//             onChange={(e) => setProjectTitle(e.target.value)}
+//             className="w-full p-2 border border-gray-300 rounded"
+//             required
+//           />
+//         </div>
 
-        {/* Project Type */}
-        <div>
-          <label htmlFor="projectType" className="block text-sm font-medium">Project Type</label>
-          <select
-            id="projectType"
-            value={selectedProjectType}
-            onChange={(e) => setSelectedProjectType(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          >
-            <option value="">Select Project Type</option>
-            {projectTypes.map((type) => (
-              <option key={type.id} value={type.id}>{type.name}</option>
-            ))}
-          </select>
-        </div>
+//         {/* Description */}
+//         <div>
+//           <label htmlFor="description" className="block text-sm font-medium">Description</label>
+//           <textarea
+//             id="description"
+//             value={description}
+//             onChange={(e) => setDescription(e.target.value)}
+//             className="w-full p-2 border border-gray-300 rounded"
+//             required
+//           ></textarea>
+//         </div>
 
-        {/* Subject */}
-        <div>
-          <label htmlFor="subject" className="block text-sm font-medium">Subject</label>
-          <select
-            id="subject"
-            value={selectedSubject}
-            onChange={(e) => setSelectedSubject(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          >
-            <option value="">Select Subject</option>
-            {subjects.map((subject) => (
-              <option key={subject.id} value={subject.id}>{subject.name}</option>
-            ))}
-          </select>
-        </div>
+//         {/* Project Type */}
+//         <div>
+//           <label htmlFor="projectType" className="block text-sm font-medium">Project Type</label>
+//           <select
+//             id="projectType"
+//             value={selectedProjectType}
+//             onChange={(e) => setSelectedProjectType(e.target.value)}
+//             className="w-full p-2 border border-gray-300 rounded"
+//             required
+//           >
+//             <option value="">Select Project Type</option>
+//             {projectTypes.map((type) => (
+//               <option key={type.id} value={type.id}>{type.name}</option>
+//             ))}
+//           </select>
+//         </div>
 
-        {/* Number of Pages */}
-        <div>
-          <label htmlFor="numberOfPages" className="block text-sm font-medium">Number of Pages</label>
-          <input
-            type="number"
-            id="numberOfPages"
-            value={numberOfPages}
-            onChange={(e) => setNumberOfPages(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          />
-        </div>
+//         {/* Subject */}
+//         <div>
+//           <label htmlFor="subject" className="block text-sm font-medium">Subject</label>
+//           <select
+//             id="subject"
+//             value={selectedSubject}
+//             onChange={(e) => setSelectedSubject(e.target.value)}
+//             className="w-full p-2 border border-gray-300 rounded"
+//             required
+//           >
+//             <option value="">Select Subject</option>
+//             {subjects.map((subject) => (
+//               <option key={subject.id} value={subject.id}>{subject.name}</option>
+//             ))}
+//           </select>
+//         </div>
 
-        {/* Attachments */}
-        <div>
-          <label htmlFor="attachments" className="block text-sm font-medium">Attachments</label>
-          <input
-            type="file"
-            id="attachments"
-            multiple
-            onChange={handleFileChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
+//         {/* Number of Pages */}
+//         <div>
+//           <label htmlFor="numberOfPages" className="block text-sm font-medium">Number of Pages</label>
+//           <input
+//             type="number"
+//             id="numberOfPages"
+//             value={numberOfPages}
+//             onChange={(e) => setNumberOfPages(e.target.value)}
+//             className="w-full p-2 border border-gray-300 rounded"
+//             required
+//           />
+//         </div>
 
-        {/* Services */}
-        {services.length > 0 && (
-          <div>
-            <label htmlFor="service" className="block text-sm font-medium">Select Service</label>
-            <select
-              id="service"
-              value={selectedService ? selectedService.id : ''}
-              onChange={(e) => {
-                const service = services.find(s => s.id === parseInt(e.target.value));
-                setSelectedService(service);
-              }}
-              className="w-full p-2 border border-gray-300 rounded"
-              required
-            >
-              <option value="">Select a Service</option>
-              {services.map((service) => (
-                <option key={service.id} value={service.id}>
-                  {service.title} - Base: ${service.base_price.toFixed(2)}, Per Page: ${service.price_per_page.toFixed(2)}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+//         {/* Attachments */}
+//         <div>
+//           <label htmlFor="attachments" className="block text-sm font-medium">Attachments</label>
+//           <input
+//             type="file"
+//             id="attachments"
+//             multiple
+//             onChange={handleFileChange}
+//             className="w-full p-2 border border-gray-300 rounded"
+//           />
+//         </div>
 
-        {/* Pricing Breakdown */}
-        {selectedService && numberOfPages > 0 && (
-          <div className="mt-4 p-3 bg-white rounded shadow">
-            <h3 className="font-bold">Pricing Breakdown</h3>
-            <p>Base Price: ${selectedService.base_price.toFixed(2)}</p>
-            <p>Pages: {numberOfPages}</p>
-            <p>Price per Page: ${selectedService.price_per_page.toFixed(2)}</p>
-            <p className="font-bold text-lg">Total Price: ${totalPrice.toFixed(2)}</p>
-          </div>
-        )}
+//         {/* Services */}
+//         {services.length > 0 && (
+//           <div>
+//             <label htmlFor="service" className="block text-sm font-medium">Select Service</label>
+//             <select
+//               id="service"
+//               value={selectedService ? selectedService.id : ''}
+//               onChange={(e) => {
+//                 const service = services.find(s => s.id === parseInt(e.target.value));
+//                 setSelectedService(service);
+//               }}
+//               className="w-full p-2 border border-gray-300 rounded"
+//               required
+//             >
+//               <option value="">Select a Service</option>
+//               {services.map((service) => (
+//                 <option key={service.id} value={service.id}>
+//                   {service.title} - Base: ${service.base_price.toFixed(2)}, Per Page: ${service.price_per_page.toFixed(2)}
+//                 </option>
+//               ))}
+//             </select>
+//           </div>
+//         )}
 
-        {/* Deadline */}
-        <div>
-          <label htmlFor="deadline" className="block text-sm font-medium">Deadline</label>
-          <input
-            type="date"
-            id="deadline"
-            value={deadline}
-            onChange={(e) => setDeadline(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          />
-        </div>
+//         {/* Pricing Breakdown */}
+//         {selectedService && numberOfPages > 0 && (
+//           <div className="mt-4 p-3 bg-white rounded shadow">
+//             <h3 className="font-bold">Pricing Breakdown</h3>
+//             <p>Base Price: ${selectedService.base_price.toFixed(2)}</p>
+//             <p>Pages: {numberOfPages}</p>
+//             <p>Price per Page: ${selectedService.price_per_page.toFixed(2)}</p>
+//             <p className="font-bold text-lg">Total Price: ${totalPrice.toFixed(2)}</p>
+//           </div>
+//         )}
 
-        {/* Submit Button */}
-        <div className="flex justify-center mt-6">
-          <button
-            type="submit"
-            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200"
-          >
-            {!priceConfirmed ? 'Review Pricing' : 'Submit Request'}
-          </button>
-          {/* <Link
-            to="/userprofile/projectsummary"
-            className="bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition duration-200"
-          >
-            Go to Project Summary
-          </Link> */}
-        </div>
-      </form>
-    </div>
-  );
-};
+//         {/* Deadline */}
+//         <div>
+//           <label htmlFor="deadline" className="block text-sm font-medium">Deadline</label>
+//           <input
+//             type="date"
+//             id="deadline"
+//             value={deadline}
+//             onChange={(e) => setDeadline(e.target.value)}
+//             className="w-full p-2 border border-gray-300 rounded"
+//             required
+//           />
+//         </div>
 
-export default ProjectRequest;
+//         {/* Submit Button */}
+//         <div className="flex justify-center mt-6">
+//           <button
+//             type="submit"
+//             className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200"
+//           >
+//             {!priceConfirmed ? 'Review Pricing' : 'Submit Request'}
+//           </button>
+//           {/* <Link
+//             to="/userprofile/projectsummary"
+//             className="bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition duration-200"
+//           >
+//             Go to Project Summary
+//           </Link> */}
+//         </div>
+//         <div className="flex justify-center mt-6">
+//           <PaystackButton
+//             className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200"
+//             {...componentProps}
+//           />
+//         </div>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default ProjectRequest;
