@@ -417,9 +417,12 @@ const ProjectRequest = () => {
         navigate('/payment/success', { state: { totalPrice, paymentRef } });
       })
       .catch((error) => {
-        console.error('Error submitting project request:', error);
+        showError('Error submitting project request:', error);
         setErrorMessage('There was an error submitting the project request. Please try again.');
       });
+  };
+  const handleClose = () => {
+    showError('Payment cancelled.');
   };
 
   return (
