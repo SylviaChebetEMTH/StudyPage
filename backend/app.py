@@ -1141,6 +1141,8 @@ def get_services():
     if subject_id:
         query = query.filter_by(subject_id=subject_id)
 
+    print(f"Query: {query}")
+
     services = query.all()
     return jsonify({
         "services": [
@@ -1153,8 +1155,7 @@ def get_services():
                 'project_type_id': service.project_type_id,
                 'subject_id': service.subject_id
             } for service in services
-        ]
-        
+        ] 
     }), 200
 
 # @app.route('/services', methods=['POST'])
