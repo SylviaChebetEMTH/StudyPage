@@ -76,7 +76,7 @@ const AdminNav = () => {
       <nav className="bg-white border-t border-gray-300 px-6 py-2 flex justify-center">
         <ul className="flex space-x-6">
           <li className="text-black font-bold hover:text-blue-600 cursor-pointer">Home</li>
-          <li className="text-gray-500 hover:text-blue-600 cursor-pointer">Messenger</li>
+          <li className="text-gray-500 hover:text-blue-600 cursor-pointer"><NavLink to="/adminchat">Messages</NavLink></li>
           <li className="text-gray-500 hover:text-blue-600 cursor-pointer">Auction</li>
           <li className="text-gray-500 hover:text-blue-600 cursor-pointer">
               <NavLink to="/projects">My Projects</NavLink>

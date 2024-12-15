@@ -116,9 +116,31 @@ def seed_database():
         profile_picture='https://example.com/picture2.jpg'
     )
 
+#     services = [
+#     Service(
+#         title='Essays',
+#         description='cool proj',
+#         base_price=5.00,
+#         price_per_page=10.00,
+#         unit='per page',
+#         project_type_id=1,  # Ensure you reference the ID, not the object itself
+#         subject_id=1
+#     ),
+#     Service(
+#         title='Admissions Essay',
+#         description='cool proj',
+#         base_price=15.00,
+#         price_per_page=20.00,
+#         unit='per page',
+#         project_type_id=2,  # Adjust this to the correct project type
+#         subject_id=2
+#     )
+# ]
+
+
     # Create services with pricing per page
     services = [
-        Service(title='Essays', price=10.00, unit='per page', project_type=project_types[0], subject_id=1),
+        Service(title='Essays',price=10.00, unit='per page', project_type=project_types[0], subject_id=1),
         Service(title='Admissions Essay', price=15.00, unit='per page', project_type=project_types[0], subject_id=2),
         Service(title='PowerPoint Presentation', price=8.00, unit='per slide', project_type=project_types[1], subject_id=3),
         Service(title='Research Paper', price=20.00, unit='per page', project_type=project_types[0], subject_id=1),

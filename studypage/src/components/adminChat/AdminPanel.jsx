@@ -7,16 +7,28 @@ const AdminPanel = () => {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const location = useLocation();
   const { authToken } = location.state || {};
-  console.log('AuthToken in AdminPanel:',authToken)
+  console.log("AuthToken in AdminPanel:", authToken);
 
   return (
     <div className="flex h-screen">
-      <AdminSidebar onSelectConversation={setSelectedConversation} authToken={authToken} />
+      {/* Sidebar for selecting conversations */}
+      <AdminSidebar
+        onSelectConversation={setSelectedConversation}
+        authToken={authToken}
+      />
+      {/* Chatbox for the selected conversation */}
       {selectedConversation ? (
-        <AdminChatBox conversationId={selectedConversation} authToken={authToken} />
+        <AdminChatBox
+          conversationId={selectedConversation.conversationId}
+          conversationDetails={{
+            client: selectedConversation.client,
+            expert: selectedConversation.expert,
+          }}
+          authToken={authToken}
+        />
       ) : (
-        <div className="w-3/4 flex items-center justify-center">
-          <p className="text-gray-500">Select a conversation to view messages</p>
+        <div className="w-3/4 flex items-center justify-center bg-gray-900">
+          <p className="text-gray-400">Select a conversation to view messages</p>
         </div>
       )}
     </div>

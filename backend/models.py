@@ -108,6 +108,29 @@ class Service(db.Model):
         """Calculate price based on quantity (e.g., number of pages)"""
         return self.price * quantity
 
+# class Service(db.Model):
+#     __tablename__ = 'services'
+#     id = db.Column(db.Integer, primary_key=True)
+#     title = db.Column(db.String(100), nullable=False)
+#     description = db.Column(db.Text)
+#     base_price = db.Column(db.Float, nullable=False)  # Base price
+#     price_per_page = db.Column(db.Float, nullable=False)  # Price per page
+#     unit = db.Column(db.String(50), nullable=True)
+    
+#     # Foreign key for subject
+#     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)
+
+#     # Relationship to project types
+#     project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'), nullable=False)
+
+    def calculate_total_price(self, number_of_pages):
+        """
+        Calculate total price based on base price and number of pages
+        
+        :param number_of_pages: Number of pages for the project
+        :return: Total price for the project
+        """
+        return self.base_price + (self.price_per_page * number_of_pages)
 
 class ProjectRequest(db.Model):
     __tablename__ = 'project_requests'
@@ -167,7 +190,8 @@ class Message(db.Model):
             'conversation_id': self.conversation_id,
             'sender': self.sender.username,
             'receiver': self.receiver.username if self.receiver else None,
-            'expert': self.expert.name if self.expert else None,
+ 
+           'expert': self.expert.name if self.expert else None,
             'content': self.content,
             'attachments': self.attachments.split(', ') if self.attachments else [],
             'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S'),

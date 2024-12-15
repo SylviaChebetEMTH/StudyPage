@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contexts/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faBook, faTasks, faEnvelope, faCog, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 
-const UserProfile = () => {
+const UserProfile = (authToken) => {
     const { currentUser, logout } = useContext(UserContext);
     const navigate = useNavigate();
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -26,6 +26,14 @@ const UserProfile = () => {
             </div>
         );
     }
+    const accountLink = authToken
+    ? currentUser?.is_admin
+        ? "/admin/dashboard"
+        : "/userprofile"
+    : "/login";
+
+// Determine chat link
+const chatLink = currentUser?.is_admin ? "/adminchat" : "/chat";
 
     return (
         <div className="flex flex-col md:flex-row min-h-screen bg-[#F0F9FF] pt-10">
@@ -121,17 +129,16 @@ const UserProfile = () => {
                                 </NavLink>
                             </li>
                             <li className="mb-4">
-                                <NavLink
-                                    to="settings"
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? "px-4 py-6 bg-[#769594] rounded flex items-center"
-                                            : "px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
-                                    }
-                                >
-                                    <FontAwesomeIcon icon={faCog} className="mr-3" />
-                                    Settings
-                                </NavLink>
+                            <Link
+                        to={{
+                            pathname: chatLink, // Dynamic path based on user role
+                        }}
+                        state={{ authToken }} // Pass authToken in state
+                        className="text-gray-700 hover:text-blue-700 flex items-center text-xs"
+                    >
+                        Messages
+                        {/* <FontAwesomeIcon icon={faCommentDots} className="text-lg text-blue-700" /> */}
+                    </Link>
                             </li>
                             <li className="mb-4">
                                 <button
