@@ -132,7 +132,7 @@ def seed_database():
         base_price=15.00,
         price_per_page=20.00,
         unit='per page',
-        project_type_id=2,  # Adjust this to the correct project type
+        project_type_id=2, 
         subject_id=2
     )
 ]
