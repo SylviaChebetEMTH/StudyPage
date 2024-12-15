@@ -413,19 +413,8 @@ const ProjectRequest = () => {
         if (!response.ok) throw new Error('Failed to submit the project request.');
         return response.json();
       })
-      .then((data) => {
-        // Redirect to payment page or success page
-        navigate('/payment', { 
-          state: {
-            projectDetails: {
-              projectTitle,
-              selectedProjectType,
-              selectedSubject,
-              numberOfPages,
-              totalPrice
-            }
-          }
-        });
+      .then(() => {
+        navigate('/payment/success', { state: { totalPrice, paymentRef } });
       })
       .catch((error) => {
         console.error('Error submitting project request:', error);
