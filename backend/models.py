@@ -31,7 +31,6 @@ class User(db.Model):
         """Checks if the password matches the hashed password"""
         return bcrypt.check_password_hash(self.password, password)
 
-
 class Expert(db.Model):
     __tablename__ = 'experts'
     id = db.Column(db.Integer, primary_key=True)
@@ -47,7 +46,6 @@ class Expert(db.Model):
     # Relationships
     project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'))
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
-
     project_type = db.relationship('ProjectType', backref='experts')
     subject = db.relationship('Subject', backref='experts')
 
@@ -66,6 +64,16 @@ class ProjectType(db.Model):
     # Relationship to services
     services = db.relationship('Service', backref='project_type')
 
+class Conversation(db.Model):
+    __tablename__ = 'conversations'
+    id = db.Column(db.Integer, primary_key=True)
+    client_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'), nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey('project_requests.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Remove the backref from here and keep it simple
+    messages = db.relationship('Message', lazy=True, backref='conversation')
 
 class Subject(db.Model):
     __tablename__ = 'subjects'
@@ -100,6 +108,29 @@ class Service(db.Model):
         """Calculate price based on quantity (e.g., number of pages)"""
         return self.price * quantity
 
+# class Service(db.Model):
+#     __tablename__ = 'services'
+#     id = db.Column(db.Integer, primary_key=True)
+#     title = db.Column(db.String(100), nullable=False)
+#     description = db.Column(db.Text)
+#     base_price = db.Column(db.Float, nullable=False)  # Base price
+#     price_per_page = db.Column(db.Float, nullable=False)  # Price per page
+#     unit = db.Column(db.String(50), nullable=True)
+    
+#     # Foreign key for subject
+#     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)
+
+#     # Relationship to project types
+#     project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'), nullable=False)
+
+    def calculate_total_price(self, number_of_pages):
+        """
+        Calculate total price based on base price and number of pages
+        
+        :param number_of_pages: Number of pages for the project
+        :return: Total price for the project
+        """
+        return self.base_price + (self.price_per_page * number_of_pages)
 
 class ProjectRequest(db.Model):
     __tablename__ = 'project_requests'
@@ -136,18 +167,16 @@ class ProjectRequest(db.Model):
             'number_of_pages': self.number_of_pages, 
         }
 
-
-# Define the Message model
 class Message(db.Model):
     __tablename__ = 'messages'
     id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Sender can be a user
-    receiver_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)  # Receiver can be a user (or admin later)
-    expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'), nullable=True)  # Optional receiver if expert is involved
-    content = db.Column(db.Text, nullable=False)  # The message content
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # Timestamp of message
-
-    # Relationships
+    conversation_id = db.Column(db.Integer, db.ForeignKey('conversations.id'), nullable=False)
+    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'), nullable=True)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    attachments = db.Column(db.String, nullable=True)
     sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages')
     receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_messages')
     expert = db.relationship('Expert', backref='messages')  # Optional expert relationship
@@ -156,12 +185,14 @@ class Message(db.Model):
         return f'<Message from {self.sender.username} to {self.receiver.username if self.receiver else self.expert.name}>'
 
     def to_dict(self):
-        """Method to convert message into a dictionary format."""
         return {
             'id': self.id,
+            'conversation_id': self.conversation_id,
             'sender': self.sender.username,
             'receiver': self.receiver.username if self.receiver else None,
-            'expert': self.expert.name if self.expert else None,
+ 
+           'expert': self.expert.name if self.expert else None,
             'content': self.content,
-            'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+            'attachments': self.attachments.split(', ') if self.attachments else [],
+            'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
         }

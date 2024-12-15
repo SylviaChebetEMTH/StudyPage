@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faEnvelope, faWallet, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const AdminNav = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -76,9 +76,11 @@ const AdminNav = () => {
       <nav className="bg-white border-t border-gray-300 px-6 py-2 flex justify-center">
         <ul className="flex space-x-6">
           <li className="text-black font-bold hover:text-blue-600 cursor-pointer">Home</li>
-          <li className="text-gray-500 hover:text-blue-600 cursor-pointer">Messenger</li>
+          <li className="text-gray-500 hover:text-blue-600 cursor-pointer"><NavLink to="/adminchat">Messages</NavLink></li>
           <li className="text-gray-500 hover:text-blue-600 cursor-pointer">Auction</li>
-          <li className="text-gray-500 hover:text-blue-600 cursor-pointer">My Projects</li>
+          <li className="text-gray-500 hover:text-blue-600 cursor-pointer">
+              <NavLink to="/projects">My Projects</NavLink>
+          </li>
           <li className="text-gray-500 hover:text-blue-600 cursor-pointer">Balance</li>
           <li className="text-gray-500 hover:text-blue-600 cursor-pointer">My Profile</li>
           <li className="text-gray-500 hover:text-blue-600 cursor-pointer">Settings</li>

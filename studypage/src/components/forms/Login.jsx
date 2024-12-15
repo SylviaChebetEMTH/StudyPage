@@ -14,7 +14,6 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -22,6 +21,7 @@ export default function Login() {
       if (user) {
         if (user.is_admin === true) {
           navigate("/admin/dashboard");
+          localStorage.setItem('isAdmin', user.is_admin);
         } else {
           navigate("/"); 
         }

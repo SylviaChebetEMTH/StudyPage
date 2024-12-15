@@ -16,25 +16,27 @@ import AdminDasboardStats from "./components/admin/AdminDashboardStats";
 import AllExperts from "./components/admin/AllExperts";
 import AddExpertPage from "./components/admin/AddExpert";
 import AllServices from "./components/admin/AllServices";
+import Projects from "./components/admin/Projects";
 import AddServicePage from "./components/admin/AddService";
 import ProjectTypes from "./components/admin/ProjectTypes";
 import SubjectArea from "./components/admin/SubjectArea";
 import ProjectRequest from "./components/forms/ProjectRequest";
 import UserProfile from "./components/user/UserProfileSideBar";
 import ProjectSummary from "./components/user/ProjectSummary";
+import Chat from "./components/user/Messaging";
+import AdminPanel from "./components/adminChat/AdminPanel";
+
 
 
 
 function AppContent() {
   const { currentUser } = useContext(UserContext);
   const location = useLocation();
-
   const isAdminPage = location.pathname.startsWith('/admin');
   const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
 
-
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col ">
       {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)}
       <div className="flex-grow">
         {/* <NavBar /> */}
@@ -46,6 +48,9 @@ function AppContent() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/hireexpert" element={<ProjectRequest />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/adminchat" element={<AdminPanel />} />
 
           {/* Only render admin routes if the user is an admin */}
           {currentUser?.is_admin && (
@@ -58,6 +63,7 @@ function AppContent() {
               <Route path="addservice" element={<AddServicePage />} />
               <Route path="projecttypes" element={<ProjectTypes />} />
               <Route path="subjectarea" element={<SubjectArea />} />
+              <Route path="*" element={<div>Page not found</div>} />
             </Route>
           )}
           {!currentUser?.is_admin && (
