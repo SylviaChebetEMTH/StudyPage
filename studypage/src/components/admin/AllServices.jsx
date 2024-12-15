@@ -61,7 +61,7 @@ export default function AllServices() {
     
         const fetchSubjects = async () => {
           try {
-            const response = await fetch("http://127.0.0.1:5000/subjects", { // Adjust endpoint as needed
+            const response = await fetch("http://127.0.0.1:5000/subjects", { 
               headers: {
                 Authorization: `Bearer ${authToken}`,
               },
@@ -74,14 +74,14 @@ export default function AllServices() {
             }
     
             const data = await response.json();
-            setSubjects(data); // Set the fetched subjects to the state
+            setSubjects(data); 
           } catch (error) {
             console.error("Error fetching subjects:", error);
           }
         };
         fetchData();
         fetchProjectTypes();
-        fetchSubjects(); // Fetch subjects when the component mounts
+        fetchSubjects(); 
       }, [authToken]);
     useEffect(() => {
         if (notification) {
@@ -93,10 +93,23 @@ export default function AllServices() {
     }, [notification]);
 
     const handleEditService = (serviceId) => {
-        if (currentUser.username !== "admin_user") {
-            alert("You do not have permission to edit services.");
+        if (!currentUser.is_admin) {
+            alert("You do not have permission to add services.");
+            return;
+          }
+          if (!updateValues.title || !updateValues.description || !updateValues.price || !updateValues.subject_name || !updateValues.project_type_name) {
+            alert("Please fill in all the fields.");
             return;
         }
+        // Convert price to a number
+    const updatedValues = {
+        ...updateValues,
+        price: Number(updateValues.price) 
+    };
+
+
+        console.log("Update Values:", updateValues);
+
 
         const token = authToken || localStorage.getItem("access_token");
         fetch(`http://127.0.0.1:5000/services/${serviceId}`, {
@@ -105,7 +118,7 @@ export default function AllServices() {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify(updateValues),
+            body: JSON.stringify(updatedValues),
         })
             .then((response) => {
                 if (!response.ok) throw new Error("Failed to update service");
@@ -129,10 +142,10 @@ export default function AllServices() {
     };
 
     const handleDeleteService = (serviceId) => {
-        if (currentUser.username !== "admin_user") {
-            alert("You do not have permission to delete services.");
+        if (!currentUser.is_admin) {
+            alert("You do not have permission to add services.");
             return;
-        }
+          }
 
         const token = authToken || localStorage.getItem("access_token");
         fetch(`http://127.0.0.1:5000/services/${serviceId}`, {
@@ -154,10 +167,6 @@ export default function AllServices() {
             });
     };
 
-    // const handleUpdateChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setUpdateValues((prevValues) => ({ ...prevValues, [name]: value }));
-    // };
     const handleUpdateChange = (e) => {
         const { name, value } = e.target;
         setUpdateValues((prevValues) => ({
@@ -209,7 +218,7 @@ export default function AllServices() {
                         <th className="py-2 px-4 border">Price</th>
                         <th className="py-2 px-4 border">Subject Area</th>
                         <th className="py-2 px-4 border">Project Type</th>
-                        {currentUser.username === "admin_user" && (
+                        {currentUser.is_admin && (
                             <>
                                 <th className="py-2 px-4 border">Edit</th>
                                 <th className="py-2 px-4 border">Delete</th>
@@ -232,7 +241,7 @@ export default function AllServices() {
                                 <td className="py-2 px-4 border">${service.price.toFixed(2)}</td>
                                 <td className="py-2 px-4 border">{service.subject_name}</td>
                                 <td className="py-2 px-4 border">{service.project_type_name}</td>
-                                {currentUser.username === "admin_user" && (
+                                {currentUser.is_admin && (
                                     <>
                                         <td className="py-2 px-4 border">
                                             <button

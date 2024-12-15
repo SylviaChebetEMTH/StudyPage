@@ -481,8 +481,6 @@ def add_expert():
     return jsonify({"message": "Expert added successfully!"}), 201
 
 
-
-
 @app.route('/experts/<int:id>', methods=['PATCH'])
 @jwt_required()
 def partial_update_expert(id):
@@ -500,6 +498,7 @@ def partial_update_expert(id):
         return jsonify({'message': 'Expert not found'}), 404
 
     data = request.get_json()
+    print(f"Incoming data for update: {data}")
 
     # Update expert fields based on the provided data
     if 'name' in data:
@@ -516,16 +515,41 @@ def partial_update_expert(id):
         expert.education = data['education']
     if 'languages' in data:
         expert.languages = data['languages']
-    if 'projectTypes' in data:
-        expert.project_types = data['projectTypes']
-    if 'subjects' in data:
-        expert.subjects = data['subjects']
+    if 'project_type' in data:
+        project_type = ProjectType.query.filter_by(name=data['project_type']).first()
+        if project_type:
+            expert.project_type = project_type
+        else:
+            return jsonify({'message': 'Project type not found'}), 404
+    if 'subject' in data:
+        # Fetch the Subject instance based on the provided subject name
+        subject = Subject.query.filter_by(name=data['subject']).first()
+        if subject:
+            expert.subject = subject
+        else:
+            return jsonify({'message': 'Subject not found'}), 404
     if 'profilePicture' in data:
         expert.profile_picture = data['profilePicture']
+    
 
     db.session.commit()
-    return jsonify({'message': 'Expert updated successfully'}), 200
 
+    # Return the updated expert data
+    updated_expert = {
+        'id': expert.id,
+        'name': expert.name,
+        'title': expert.title,
+        'expertise': expert.expertise,
+        'description': expert.description,
+        'biography': expert.biography,
+        'education': expert.education,
+        'languages': expert.languages,
+        'project_type': expert.project_type.name,
+        'subject': expert.subject.name,
+        'profile_picture': expert.profile_picture
+    }
+    
+    return jsonify(updated_expert), 200
 
 
 @app.route('/experts/<int:id>', methods=['DELETE'])
@@ -534,7 +558,10 @@ def delete_expert(id):
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
 
-    if not user or not user.is_admin:
+    if not user:
+        return jsonify({'message': 'User  not found'}), 404
+
+    if not user.is_admin:
         return jsonify({'message': 'Permission denied'}), 403
 
     expert = Expert.query.get(id)
@@ -546,7 +573,8 @@ def delete_expert(id):
         db.session.commit()
         return jsonify({'message': 'Expert deleted successfully'}), 200
     except Exception as e:
-        db.session.rollback()  # Rollback the session in case of error
+        db.session.rollback()
+        print(f"Error deleting expert: {e}")
         return jsonify({'message': 'Error deleting expert', 'error': str(e)}), 500
 
 
@@ -580,8 +608,8 @@ def add_service():
     title = data.get('title')
     description = data.get('description')
     price = data.get('price')
-    project_type_id = data.get('project_type_id')  # Capture project_type_id
-    subject_id = data.get('subject_id')  # Capture subject_id
+    project_type_id = data.get('project_type_id')  
+    subject_id = data.get('subject_id') 
 
     if not title or not description or price is None or project_type_id is None or subject_id is None:
         return jsonify({"message": "Title, description, price, project type, and subject are required."}), 400
@@ -591,7 +619,7 @@ def add_service():
         description=description,
         price=price,
         project_type_id=project_type_id,
-        subject_id=subject_id  # Include subject_id
+        subject_id=subject_id 
     )
 
     try:
@@ -755,7 +783,7 @@ def delete_service(service_id):
         print(f"Error deleting service: {e}")
         return jsonify({"error": "Could not delete service"}), 500
 
-# Route for admin to partially update services
+
 @app.route('/services/<int:id>', methods=['PATCH'])
 @jwt_required()
 def patch_service(id):
@@ -766,20 +794,32 @@ def patch_service(id):
         return jsonify({'message': 'Admin privileges required!'}), 403
 
     service = Service.query.get(id)
-    if service:
-        data = request.json
-        # Only update fields that are provided in the request
-        if 'title' in data:
-            service.title = data['title']
-        if 'description' in data:
-            service.description = data['description']
-        if 'price' in data:
+    if not service:
+        return jsonify({'message': 'Service not found!'}), 404
+
+    data = request.json
+    print("Received data:", data)
+
+    errors = []
+    if 'title' in data:
+        service.title = data['title']
+    if 'description' in data:
+        service.description = data['description']
+    if 'price' in data:
+        if not isinstance(data['price'], (int, float)):
+            errors.append("Price must be a number.")
+        else:
             service.price = data['price']
-        
-        db.session.commit()
-        return jsonify({'message': 'Service updated successfully!'})
-    
-    return jsonify({'message': 'Service not found!'}), 404
+    if 'subject_name' in data:
+        service.subject_name = data['subject_name']
+    if 'project_type_name' in data:
+        service.project_type_name = data['project_type_name']
+
+    if errors:
+        return jsonify({'errors': errors}), 422
+
+    db.session.commit()
+    return jsonify({'message': 'Service updated successfully!'})
 
 if __name__ == '__main__':
     app.run(debug=True)

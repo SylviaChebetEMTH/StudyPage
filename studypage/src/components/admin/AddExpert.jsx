@@ -98,8 +98,8 @@ function AddExpertPage() {
  
 
   const handleAddExpertSubmit = async (values) => {
-    if (currentUser.username !== "admin_user") {
-      alert("You do not have permission to add experts.");
+    if (!currentUser.is_admin) {
+      alert("You do not have permission to add services.");
       return;
     }
   
@@ -117,8 +117,8 @@ function AddExpertPage() {
       biography: values.biography,
       education: values.education,
       languages: values.languages,
-      project_type_id: values.project_type_id, // Include project_type_id
-      subject_id: values.subject_id, // Include subject_id
+      project_type_id: values.project_type_id, 
+      subject_id: values.subject_id, 
       profile_picture: profilePicture,  
     };
   

@@ -71,7 +71,7 @@ function AddServicePage() {
   });
 
   const handleAddServiceSubmit = async (values, { resetForm }) => {
-    if (currentUser.username !== "admin_user") {
+    if (!currentUser.is_admin) {
       alert("You do not have permission to add services.");
       return;
     }
@@ -80,8 +80,8 @@ function AddServicePage() {
       title: values.title,
       description: values.description,
       price: values.price,
-      project_type_id: values.project_type_id, // Include project_type_id
-      subject_id: values.subject_id, // Include subject_id
+      project_type_id: values.project_type_id, 
+      subject_id: values.subject_id, 
     };
 
     try {
@@ -94,6 +94,7 @@ function AddServicePage() {
         body: JSON.stringify(data),
       });
 
+
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error response:", errorData);
@@ -102,7 +103,7 @@ function AddServicePage() {
 
       const result = await response.json();
       alert(result.message);
-      resetForm(); // Reset form after successful submission
+      resetForm(); 
     } catch (error) {
       console.error("Error adding service:", error);
       alert("Failed to add service. Please try again.");
@@ -118,8 +119,8 @@ function AddServicePage() {
           title: "",
           description: "",
           price: "",
-          project_type_id: "", // Initialize project_type_id
-          subject_id: "", // Initialize subject_id
+          project_type_id: "", 
+          subject_id: "", 
         }}
         validationSchema={validationSchema}
         onSubmit={handleAddServiceSubmit}

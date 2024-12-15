@@ -22,7 +22,8 @@ import SubjectArea from "./components/admin/SubjectArea";
 import ProjectRequest from "./components/forms/ProjectRequest";
 import UserProfile from "./components/user/UserProfileSideBar";
 import ProjectSummary from "./components/user/ProjectSummary";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function AppContent() {
@@ -37,6 +38,7 @@ function AppContent() {
     <div className="min-h-screen flex flex-col">
       {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)}
       <div className="flex-grow">
+      <ToastContainer />
         {/* <NavBar /> */}
         <Routes>
           <Route path="/" element={<Home />} />
