@@ -311,6 +311,10 @@ const ProjectRequest = () => {
       fetch(`http://127.0.0.1:5000/services?project_type=${selectedProjectType}&subject=${selectedSubject}`)
         .then((response) => response.json())
         .then((data) => {
+          if (data.services.length === 0){
+            console.warn('No services found for the selected project type and subject.');
+            setErrorMessage('No services found for the selected criteria.');
+          }
           console.log('Fetched services for requests:', data.services);
           setServices(data.services || []);
           setSelectedService(data.services?.length > 0 ? data.services[0] : null); // Default to the first service

@@ -57,11 +57,11 @@ const Services = () => {
               key={service.id}
               className="bg-white shadow-lg rounded-xl p-6 transform transition-transform hover:-translate-y-2 hover:shadow-2xl"
             >
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">{service.title}</h2>
-              <p className="text-gray-600 mb-2">Description: {service.description}</p>
-              <p className="text-gray-600 mb-2">Price: ${service.price} {service.unit}</p>
-              <p className="text-gray-600 mb-2">Project Type: {service.project_type_name} </p>
-              <p className="text-gray-600">Subject Area: {service.subject_name}</p>
+              <h2 className="text-xl font-semibold mb-2">{service.title}</h2>
+              <p className="text-gray-700">Description: {service.description}</p>
+              <p className="text-gray-700">Price: ${service.price_per_page}</p>
+              <p className="text-gray-700">Duration: {service.duration} hours</p>
+              {/* You can add more fields as needed */}
             </div>
           ))
         ) : (

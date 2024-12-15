@@ -1154,6 +1154,7 @@ def get_services():
                 'subject_id': service.subject_id
             } for service in services
         ]
+        
     }), 200
 
 # @app.route('/services', methods=['POST'])
