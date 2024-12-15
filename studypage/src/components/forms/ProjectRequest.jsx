@@ -259,7 +259,7 @@
 
 
 import React, { useState, useEffect, useContext } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../contexts/userContext';
 
 const ProjectRequest = () => {
@@ -289,6 +289,12 @@ const ProjectRequest = () => {
   // const [notification, setNotification] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const showError = (message) => {
+    setErrorMessage(message);
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 3000);
+  }
   // Fetch Project Types
   useEffect(() => {
     fetch('http://127.0.0.1:5000/project-types')
@@ -311,9 +317,10 @@ const ProjectRequest = () => {
       fetch(`http://127.0.0.1:5000/services?project_type=${selectedProjectType}&subject=${selectedSubject}`)
         .then((response) => response.json())
         .then((data) => {
-          if (data.services.length === 0){
+          if (!data.services || data.services.length === 0){
             console.warn('No services found for the selected project type and subject.');
-            setErrorMessage('No services found for the selected criteria.');
+            showError('No services found for the selected criteria.');
+            setServices([]);
           }
           console.log('Fetched services for requests:', data.services);
           setServices(data.services || []);
@@ -321,6 +328,7 @@ const ProjectRequest = () => {
         })
         .catch((error) => console.error('Error fetching services:', error));
     } else {
+      setErrorMessage('');
       setServices([]);
       setSelectedService(null);
     }
@@ -539,7 +547,7 @@ const ProjectRequest = () => {
         )}
 
         {/* Pricing Breakdown */}
-        {selectedService && numberOfPages && (
+        {selectedService && numberOfPages > 0 && (
           <div className="mt-4 p-3 bg-white rounded shadow">
             <h3 className="font-bold">Pricing Breakdown</h3>
             <p>Base Price: ${selectedService.base_price.toFixed(2)}</p>
@@ -563,19 +571,19 @@ const ProjectRequest = () => {
         </div>
 
         {/* Submit Button */}
-        <div className="flex justify-between items-center mt-6">
+        <div className="flex justify-center mt-6">
           <button
             type="submit"
             className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200"
           >
             {!priceConfirmed ? 'Review Pricing' : 'Submit Request'}
           </button>
-          <Link
+          {/* <Link
             to="/userprofile/projectsummary"
             className="bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition duration-200"
           >
             Go to Project Summary
-          </Link>
+          </Link> */}
         </div>
       </form>
     </div>
