@@ -36,7 +36,7 @@ const ProjectSummary = () => {
         };
 
         fetchRequests();
-    }, []);
+    }, [authToken]);
 
     return (
         <div>

@@ -1,17 +1,21 @@
-import React, { useState, useContext,useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "../contexts/userContext";
 import axios from "axios";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { Circles } from "react-loader-spinner";
 
-const CLOUDINARY_UPLOAD_PRESET = "dlp71jbrz"; 
-const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/dlp71jbrz/image/upload`; 
+const CLOUDINARY_UPLOAD_PRESET = "dlp71jbrz";
+const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/dlp71jbrz/image/upload`;
 
 function AddExpertPage() {
   const { currentUser, authToken } = useContext(UserContext);
   const [profilePicture, setProfilePicture] = useState(null);
   const [projectTypes, setProjectTypes] = useState([]);
-  const [subjects, setSubjects] = useState([]); 
+  const [subjects, setSubjects] = useState([]);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchProjectTypes = async () => {
@@ -86,29 +90,32 @@ function AddExpertPage() {
   const handleProfilePictureChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
+      setLoading(true);
       try {
         const imageUrl = await uploadImageToCloudinary(file);
         setProfilePicture(imageUrl);
+        setLoading(false);
       } catch (error) {
         console.error("Failed to upload image:", error.message);
+        setLoading(false);
       }
     }
   };
 
- 
+
 
   const handleAddExpertSubmit = async (values) => {
     if (!currentUser.is_admin) {
       alert("You do not have permission to add services.");
       return;
     }
-  
+
     // Ensure profile picture is not null
     if (!profilePicture) {
       alert("Please upload a profile picture.");
       return;
     }
-  
+
     const data = {
       name: values.name,
       title: values.title,
@@ -117,11 +124,11 @@ function AddExpertPage() {
       biography: values.biography,
       education: values.education,
       languages: values.languages,
-      project_type_id: values.project_type_id, 
-      subject_id: values.subject_id, 
-      profile_picture: profilePicture,  
+      project_type_id: values.project_type_id,
+      subject_id: values.subject_id,
+      profile_picture: profilePicture,
     };
-  
+
     try {
       const response = await fetch("http://127.0.0.1:5000/experts", {
         method: "POST",
@@ -131,16 +138,16 @@ function AddExpertPage() {
         },
         body: JSON.stringify(data),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error response:", errorData);
         throw new Error(errorData.message || "Unknown error");
       }
-  
+
       const result = await response.json();
       alert(result.message);
-  
+
       // Reset the form after successful submission
       values.name = "";
       values.title = "";
@@ -152,12 +159,13 @@ function AddExpertPage() {
       values.project_type_id = "";
       values.subject_id = "";
       setProfilePicture(null);
+      navigate("/admin/allexperts")
     } catch (error) {
       console.error("Error adding expert:", error);
       alert("Failed to add expert. Please try again.");
     }
   };
-  
+
 
   return (
     <div className="w-full relative bg-aliceblue min-h-screen overflow-hidden text-left text-base text-black font-poppins p-4 sm:p-6 md:p-8">
@@ -259,15 +267,14 @@ function AddExpertPage() {
             </div>
 
             {/* Project Types */}
-          
+
             <div className="mb-4">
               <label className="block mb-2">Project Type:</label>
               <Field
                 name="project_type_id"
                 as="select"
-                className={`border py-2 px-4 border-gray-300 rounded-md w-full ${
-                  touched.project_type_id && errors.project_type_id ? "border-red-500" : ""
-                }`}
+                className={`border py-2 px-4 border-gray-300 rounded-md w-full ${touched.project_type_id && errors.project_type_id ? "border-red-500" : ""
+                  }`}
               >
                 <option value="">Select a project type</option>
                 {projectTypes.length > 0 ? (
@@ -284,15 +291,14 @@ function AddExpertPage() {
             </div>
 
             {/* Subjects */}
-           
+
             <div className="mb-4">
               <label className="block mb-2">Subject:</label>
               <Field
                 name="subject_id"
                 as="select"
-                className={`border py-2 px-4 border-gray-300 rounded-md w-full ${
-                  touched.subject_id && errors.subject_id ? "border-red-500" : ""
-                }`}
+                className={`border py-2 px-4 border-gray-300 rounded-md w-full ${touched.subject_id && errors.subject_id ? "border-red-500" : ""
+                  }`}
               >
                 <option value="">Select a subject</option>
                 {subjects.length > 0 ? (
@@ -317,7 +323,25 @@ function AddExpertPage() {
                 className="border py-2 px-4 border-gray-300 rounded-md w-full"
                 onChange={handleProfilePictureChange}
               />
-              {profilePicture && (
+              {loading && (
+                <div className="fixed inset-0 flex items-center justify-center bg-[#6E8F9F] bg-opacity-75"
+                  style={{ zIndex: 9999 }}>
+
+                  <Circles
+                    height="80"
+                    width="80"
+                    color="#296A8B"
+                    ariaLabel="loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                  />
+                  <span className="mt-4 text-white font-medium text-lg">
+                    Upload in progress..
+                  </span>
+                </div>
+              )}
+              {profilePicture && !loading && (
                 <div className="mt-2">
                   <img
                     src={profilePicture}

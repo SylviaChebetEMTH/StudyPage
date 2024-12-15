@@ -261,16 +261,6 @@ export default function AllExperts() {
           });
         }
       })
-      .catch((error) => console.error("Error deleting expert:", error));
-      setIsLoading(false);
-      toast.error("Error deleting expert. Please try again.", {
-        position: "top-right",
-        autoClose: 5000,
-        closeButton: true,
-        closeOnClick: true,
-        draggable: true,
-        theme: "light",
-      });
 
   };
 
@@ -281,7 +271,7 @@ export default function AllExperts() {
     setIsLoading(false);
   };
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const filteredExperts = (experts || []).filter((expert) =>
     expert.title ? expert.title.toLowerCase().includes(searchTerm.toLowerCase()) : false

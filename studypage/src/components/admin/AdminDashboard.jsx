@@ -70,7 +70,7 @@ const AdminDashboardSidebar = () => {
                             </NavLink>
                         </li>
 
-                        <li className="mb-4">
+                        <li className="mb-4">                                                                   
                             <button
                                 onClick={handleProductsClick}
                                 className="w-full text-left flex items-center px-4 py-6 block bg-[#FFFFFF] hover:bg-[#d1d5db] rounded mb-4"
