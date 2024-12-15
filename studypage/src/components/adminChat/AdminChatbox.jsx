@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-// import MessageBubble from "../chat-interface/src/components/MessageBubble";
-import MessageBubble from "../chat-interface/src/components/MessageBubble";
-// import MessageInput from "../chat-interface/src/components/MessageInput";
-import MessageBubble from "../chat-interface/src/components/MessageInput";
+import MessageBubble from "../chatInterface/MessageBubble.jsx";
+import MessageInput from "../chatInterface/MessageInput.jsx";
 
 const AdminChatBox = ({ conversationId, conversationDetails, authToken }) => {
   const [messages, setMessages] = useState([]);
