@@ -5,6 +5,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { Circles } from "react-loader-spinner";
+import { toast } from 'react-toastify';
 
 const CLOUDINARY_UPLOAD_PRESET = "dlp71jbrz";
 const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/dlp71jbrz/image/upload`;
@@ -61,7 +62,7 @@ function AddExpertPage() {
     };
 
     fetchProjectTypes();
-    fetchSubjects(); // Fetch subjects when the component mounts
+    fetchSubjects(); 
   }, [authToken]);
 
   const validationSchema = Yup.object().shape({
@@ -110,7 +111,7 @@ function AddExpertPage() {
       return;
     }
 
-    // Ensure profile picture is not null
+   
     if (!profilePicture) {
       alert("Please upload a profile picture.");
       return;
@@ -146,7 +147,14 @@ function AddExpertPage() {
       }
 
       const result = await response.json();
-      alert(result.message);
+      toast.success(result.message, {
+        position: "top-right",
+        autoClose: 3000,
+        closeButton: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "light",
+      });
 
       // Reset the form after successful submission
       values.name = "";
@@ -162,7 +170,14 @@ function AddExpertPage() {
       navigate("/admin/allexperts")
     } catch (error) {
       console.error("Error adding expert:", error);
-      alert("Failed to add expert. Please try again.");
+      toast.error("Failed to add expert. Please try again.",{
+        position: "top-right",
+        autoClose: 3000,
+        closeButton: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "light",
+      })
     }
   };
 

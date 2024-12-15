@@ -70,7 +70,7 @@ function ProjectTypes() {
       <h1 className="text-2xl font-semibold mb-4">Manage Project Types</h1>
 
       {/* Only show this section to admin users */}
-      {currentUser?.username === 'admin_user' && (
+      {currentUser?.is_admin && (
         <div className="mb-4">
           <h2 className="text-lg font-semibold">Add New Project Type</h2>
           <input
@@ -105,7 +105,7 @@ function ProjectTypes() {
               <span>{projectType.name}</span>
             )}
 
-            {currentUser?.username === 'admin_user' && (
+            {currentUser?.is_admin && (
               <div className="flex space-x-2">
                 {editingProjectType === projectType.id ? (
                   <button

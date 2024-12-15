@@ -70,7 +70,7 @@ function SubjectArea() {
       <h1 className="text-2xl font-semibold mb-4">Manage Subjects</h1>
 
       {/* Only show this section to admin users */}
-      {currentUser?.username === 'admin_user' && (
+      {currentUser?.is_admin && (
         <div className="mb-4">
           <h2 className="text-lg font-semibold">Add New Subject</h2>
           <input
@@ -105,7 +105,7 @@ function SubjectArea() {
               <span>{subject.name}</span>
             )}
 
-            {currentUser?.username === 'admin_user' && (
+            {currentUser?.is_admin && (
               <div className="flex space-x-2">
                 {editingSubject === subject.id ? (
                   <button
