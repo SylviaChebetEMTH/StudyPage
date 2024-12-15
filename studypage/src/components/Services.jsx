@@ -51,7 +51,7 @@ const Services = () => {
             >
               <h2 className="text-xl font-semibold mb-2">{service.title}</h2>
               <p className="text-gray-700">Description: {service.description}</p>
-              <p className="text-gray-700">Price: ${service.price}</p>
+              <p className="text-gray-700">Price: ${service.price_per_page}</p>
               <p className="text-gray-700">Duration: {service.duration} hours</p>
               {/* You can add more fields as needed */}
             </div>
