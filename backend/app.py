@@ -35,6 +35,46 @@ CORS(app,resources={r"/*": {"origins": "http://localhost:3001"}})
 
 PAYSTACK_SECRET_KEY = "sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
 
+@app.route('/verify-payment', methods=['POST'])
+def verify_payment():
+    """
+    Verify Paystack payment using the transaction reference.
+    """
+    data = request.json
+    reference = data.get('reference')
+    project_details = data.get('projectDetails')  # Project details from the frontend
+
+    if not reference:
+        return jsonify({"success": False, "message": "Transaction reference is required"}), 400
+
+    try:
+        # Call Paystack's API to verify the transaction
+        url = f"https://api.paystack.co/transaction/verify/{reference}"
+        headers = {
+            "Authorization": f"Bearer {PAYSTACK_SECRET_KEY}"
+        }
+        response = requests.get(url, headers=headers)
+        response_data = response.json()
+
+        if response_data['status'] and response_data['data']['status'] == "success":
+            # Payment was successful, proceed to save project details
+            # Save project_details to your database here (e.g., SQLite, PostgreSQL, MongoDB)
+            # Example: save_project_to_db(project_details)
+
+            return jsonify({
+                "success": True,
+                "message": "Payment verified and project submitted!",
+                "transaction_data": response_data['data']  # Optionally return transaction data
+            }), 200
+
+        else:
+            return jsonify({
+                "success": False,
+                "message": "Payment verification failed. Please try again."
+            }), 400
+
+    except Exception as e:
+        return jsonify({"success": False, "message": f"An error occurred: {str(e)}"}), 500
 # @app.route('/messages', methods=['GET'])
 # def get_messages():
 #     messages = Message.query.all()  # Get all messages from the database
