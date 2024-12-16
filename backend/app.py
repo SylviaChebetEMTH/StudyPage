@@ -23,7 +23,6 @@ import requests
 SECRET_KEY = os.urandom(24)
 >>>>>>> f73af04 (imported requests)
 
-
 app = Flask(__name__)
 api = Api(app)
 app.config["SECRET_KEY"] = os.urandom(24)
@@ -605,7 +604,8 @@ def request_expert():
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-        attachments.append(file_path)
+        file_url = url_for('serve_file', filename=filename, _external=True)
+        attachments.append(file_url)
     project.attachments = ','.join(attachments)
     db.session.commit()
 
