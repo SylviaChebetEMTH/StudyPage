@@ -619,9 +619,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../contexts/userContext';
 import { PaystackButton } from 'react-paystack';
 
-const ProjectRequest = ({currentUser}) => {
-  const { authToken } = useContext(UserContext);
+const ProjectRequest = () => {
+  // const email = currentUser?.email || '';
+  const { currentUser,authToken } = useContext(UserContext);
   const { state } = useLocation();
+
+  // const [email, setEmail] = useState(currentUser?.email || '');
   const navigate = useNavigate();
 
   // Form Fields

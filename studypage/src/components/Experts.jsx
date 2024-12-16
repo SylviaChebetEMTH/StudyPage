@@ -15,6 +15,8 @@ const ExpertPage = () => {
   const { currentUser, authToken } = useContext(UserContext);
   const API_URL = 'http://127.0.0.1:5000';
 
+  console.log('currentUser is here at experts', currentUser)
+
   // Function to fetch experts from backend
   const fetchExperts = async () => {
     try {
