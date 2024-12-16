@@ -13,6 +13,7 @@ import cloudinary.uploader
 from datetime import datetime
 from flask import url_for
 import os
+import requests
 SECRET_KEY = os.urandom(24)
 
 app = Flask(__name__)
