@@ -9,6 +9,7 @@ export const NavBar = () => {
     const { logout } = useContext(UserContext);
     const navigate = useNavigate();
     console.log('adminauthtoken', authToken);
+    console.log('this is the user',currentUser)
 
     // Determine account link
     const accountLink = authToken
