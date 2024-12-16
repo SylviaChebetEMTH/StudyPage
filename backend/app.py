@@ -702,18 +702,15 @@ def request_expert():
     Description: {project.project_description}
     Deadline: {project.deadline.strftime('%Y-%m-%d')}
     Attachments: {', '.join(attachments)}
-
-    Please review the request in your dashboard.
     """
-    try:
-        email_message = MessageInstance(
-            subject=email_subject,
-            recipients=['shadybett540@gmail.com','studypage001@gmail.com'],  # Replace with the recipient email(s)
-            body=email_body
-        )
-        mail.send(email_message)
-    except Exception as e:
-        return jsonify({'error': f"Failed to send email: {str(e)}"}), 500
+
+    # Send email using MIME
+    send_email_with_mime(
+        subject=email_subject,
+        body=email_body,
+        recipients=['shadybett540@gmail.com', 'studypage001@gmail.com'],
+        attachments=[os.path.join(app.config['UPLOAD_FOLDER'], filename) for filename in attachments]
+    )
     return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
 
 # @app.route('/request_expert', methods=['POST'])
@@ -853,7 +850,7 @@ def send_message(conversation_id):
         db.session.commit()
 
         sender = User.query.get(sender_id)
-        receiver = User.query.get(message.receiver_id)
+        # receiver = User.query.get(message.receiver_id)
         email_subject = "New Message Notification"
         email_body = f"""
         A new message has been sent in the conversation #{conversation_id}.
