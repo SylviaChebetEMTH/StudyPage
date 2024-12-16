@@ -35,13 +35,14 @@ if not os.path.exists(UPLOAD_FOLDER):  # Ensure the folder exists
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+mail = Mail(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Replace with your email provider's SMTP server
 app.config['MAIL_PORT'] = 587                # Commonly used port for TLS
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'your_email@gmail.com'  # Replace with your email
-app.config['MAIL_PASSWORD'] = 'your_email_password'   # Replace with your password
-app.config['MAIL_DEFAULT_SENDER'] = 'your_email@gmail.com'
+app.config['MAIL_USERNAME'] = 'shadrack.bett.92@gmail.com'  # Replace with your email
+app.config['MAIL_PASSWORD'] = 'iexm ejye mxbx ynhl'   # Replace with your password
+app.config['MAIL_DEFAULT_SENDER'] = 'shadrack.bett.92@gmail.com'
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -640,6 +641,26 @@ def request_expert():
     db.session.add(message)
     db.session.commit()
 
+    email_subject = "New Project Request Submitted"
+    email_body = f"""
+    A new project has been submitted with the following details:
+
+    Title: {project.project_title}
+    Description: {project.project_description}
+    Deadline: {project.deadline.strftime('%Y-%m-%d')}
+    Attachments: {', '.join(attachments)}
+
+    Please review the request in your dashboard.
+    """
+    try:
+        email_message = Message(
+            subject=email_subject,
+            recipients=['shadybett540@gmail.com'],  # Replace with the recipient email(s)
+            body=email_body
+        )
+        mail.send(email_message)
+    except Exception as e:
+        return jsonify({'error': f"Failed to send email: {str(e)}"}), 500
     return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
 
 # @app.route('/request_expert', methods=['POST'])
@@ -777,6 +798,32 @@ def send_message(conversation_id):
         )
         db.session.add(message)
         db.session.commit()
+
+                # Retrieve sender and receiver details
+        sender = User.query.get(sender_id)
+        receiver = User.query.get(message.receiver_id)
+
+        # If the receiver is an admin, send an email notification
+        if receiver.is_admin:
+            email_subject = "New Message Notification"
+            email_body = f"""
+            A new message has been sent in the conversation #{conversation_id}.
+
+            Sender: {sender.username} (Email: {sender.email})
+            Content: {content or 'No content'}
+            Attachments: {', '.join(attachments) if attachments else 'None'}
+
+            Please log in to the admin dashboard to respond.
+            """
+            try:
+                email_message = Message(
+                    subject=email_subject,
+                    recipients=[receiver.email],  # Admin's email
+                    body=email_body
+                )
+                mail.send(email_message)
+            except Exception as e:
+                return jsonify({'error': f"Failed to send email: {str(e)}"}), 500
 
         # Return the saved message as a response
         return jsonify(message.to_dict()), 201
