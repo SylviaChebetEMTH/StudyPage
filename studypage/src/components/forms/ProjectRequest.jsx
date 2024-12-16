@@ -727,35 +727,70 @@ const ProjectRequest = () => {
     attachments,
   ]);
 
-  const handleSuccess = useCallback(() => {
-    const formData = new FormData();
-    formData.append('project_title', projectTitle);
-    formData.append('project_description', description);
-    formData.append('project_type', selectedProjectType);
-    formData.append('subject', selectedSubject);
-    formData.append('deadline', deadline);
-    formData.append('expert_id', expertId);
-    formData.append('number_of_pages', numberOfPages);
-    formData.append('service_id', selectedService.id);
-    formData.append('total_price', totalPrice);
-
-    for (let i = 0; i < attachments.length; i++) {
-      formData.append('attachments', attachments[i]);
+  const handleSuccess = useCallback(async (response) => {
+    const reference = response.reference; // Extract the Paystack reference
+  
+    try {
+      // Step 1: Verify Payment with the Backend
+      const verifyResponse = await fetch("http://127.0.0.1:5000/verify-payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          reference, // Payment reference from Paystack
+          projectDetails: {
+            projectTitle,
+            description,
+            selectedProjectType,
+            selectedSubject,
+            deadline,
+            expertId,
+            numberOfPages,
+            selectedServiceId: selectedService?.id,
+            totalPrice,
+          },
+        }),
+      });
+  
+      const verifyData = await verifyResponse.json();
+  
+      if (!verifyData.success) {
+        throw new Error(verifyData.message || "Payment verification failed.");
+      }
+  
+      // Step 2: Submit Project After Payment Verification
+      const formData = new FormData();
+      formData.append("project_title", projectTitle);
+      formData.append("project_description", description);
+      formData.append("project_type", selectedProjectType);
+      formData.append("subject", selectedSubject);
+      formData.append("deadline", deadline);
+      formData.append("expert_id", expertId);
+      formData.append("number_of_pages", numberOfPages);
+      formData.append("service_id", selectedService?.id);
+      formData.append("total_price", totalPrice);
+  
+      for (let i = 0; i < attachments.length; i++) {
+        formData.append("attachments", attachments[i]);
+      }
+  
+      const projectResponse = await fetch("http://127.0.0.1:5000/request_expert", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${authToken}` },
+        body: formData,
+      });
+  
+      if (!projectResponse.ok) {
+        throw new Error("Failed to submit the project request.");
+      }
+  
+      // Redirect to success page
+      navigate("/payment/success", { state: { totalPrice, reference } });
+    } catch (error) {
+      console.error("Error:", error);
+      showError(error.message || "An unexpected error occurred.");
     }
-
-    fetch('http://127.0.0.1:5000/request_expert', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${authToken}` },
-      body: formData,
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error('Failed to submit the project request.');
-        return response.json();
-      })
-      .then(() => {
-        navigate('/payment/success', { state: { totalPrice, paymentRef } });
-      })
-      .catch(() => showError('There was an error submitting the project.'));
   }, [
     projectTitle,
     description,
@@ -769,8 +804,52 @@ const ProjectRequest = () => {
     attachments,
     authToken,
     navigate,
-    paymentRef,
   ]);
+  
+  // const handleSuccess = useCallback(() => {
+  //   const formData = new FormData();
+  //   formData.append('project_title', projectTitle);
+  //   formData.append('project_description', description);
+  //   formData.append('project_type', selectedProjectType);
+  //   formData.append('subject', selectedSubject);
+  //   formData.append('deadline', deadline);
+  //   formData.append('expert_id', expertId);
+  //   formData.append('number_of_pages', numberOfPages);
+  //   formData.append('service_id', selectedService.id);
+  //   formData.append('total_price', totalPrice);
+
+  //   for (let i = 0; i < attachments.length; i++) {
+  //     formData.append('attachments', attachments[i]);
+  //   }
+
+  //   fetch('http://127.0.0.1:5000/request_expert', {
+  //     method: 'POST',
+  //     headers: { Authorization: `Bearer ${authToken}` },
+  //     body: formData,
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) throw new Error('Failed to submit the project request.');
+  //       return response.json();
+  //     })
+  //     .then(() => {
+  //       navigate('/payment/success', { state: { totalPrice, paymentRef } });
+  //     })
+  //     .catch(() => showError('There was an error submitting the project.'));
+  // }, [
+  //   projectTitle,
+  //   description,
+  //   selectedProjectType,
+  //   selectedSubject,
+  //   deadline,
+  //   expertId,
+  //   numberOfPages,
+  //   selectedService,
+  //   totalPrice,
+  //   attachments,
+  //   authToken,
+  //   navigate,
+  //   paymentRef,
+  // ]);
 
   const handleClose = useCallback(() => {
     showError('Payment cancelled.');
