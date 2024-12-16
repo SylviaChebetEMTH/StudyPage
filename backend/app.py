@@ -32,14 +32,62 @@ if not os.path.exists(UPLOAD_FOLDER):  # Ensure the folder exists
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-mail = Mail(app)
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Replace with your email provider's SMTP server
-app.config['MAIL_PORT'] = 587                # Commonly used port for TLS
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'shadrack.bett.92@gmail.com'  # Replace with your email
-app.config['MAIL_PASSWORD'] = 'sxtf jjvt rddl riue'   # Replace with your password
-app.config['MAIL_DEFAULT_SENDER'] = 'shadrack.bett.92@gmail.com'
+def send_email_with_mime(subject, body, recipients, attachments=None):
+    """
+    Send an email using the MIME method.
+
+    :param subject: Email subject
+    :param body: Email body (text or HTML)
+    :param recipients: List of recipient email addresses
+    :param attachments: List of file paths for attachments
+    """
+    try:
+        # SMTP server configuration
+        smtp_server = "smtp.gmail.com"
+        smtp_port = 587
+        email_user = "shadrack.bett.92@gmail.com"
+        email_password = "iexm ejye mxbx ynhl"
+
+        # Create the email object
+        msg = MIMEMultipart()
+        msg['From'] = email_user
+        msg['To'] = ", ".join(recipients)
+        msg['Subject'] = subject
+
+        # Attach the email body
+        msg.attach(MIMEText(body, 'plain'))  # Use 'html' for HTML content
+
+        # Attach files if provided
+        if attachments:
+            for file_path in attachments:
+                try:
+                    # Open the file in binary mode
+                    with open(file_path, 'rb') as file:
+                        part = MIMEBase('application', 'octet-stream')
+                        part.set_payload(file.read())
+                    
+                    # Encode the file in ASCII to send as email
+                    encoders.encode_base64(part)
+
+                    # Add header to the attachment
+                    part.add_header(
+                        'Content-Disposition',
+                        f'attachment; filename={file_path.split("/")[-1]}'
+                    )
+                    msg.attach(part)
+                except Exception as e:
+                    print(f"Failed to attach file {file_path}: {e}")
+
+        # Connect to the SMTP server and send the email
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(email_user, email_password)
+            server.sendmail(email_user, recipients, msg.as_string())
+        
+        print("Email sent successfully!")
+    
+    except Exception as e:
+        print(f"Failed to send email: {e}")
 
 db.init_app(app)
 migrate = Migrate(app, db)
