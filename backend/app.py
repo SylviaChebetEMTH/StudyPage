@@ -9,12 +9,17 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
 from flask_restful import Resource,Api
-from flask_mail import Mail, Message
+from flask_mail import Mail, Message as MessageInstance
 import cloudinary.uploader
 from datetime import datetime
 from flask import url_for
 import os
 import requests
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
 SECRET_KEY = os.urandom(24)
 
 app = Flask(__name__)
@@ -33,7 +38,7 @@ app.config['MAIL_PORT'] = 587                # Commonly used port for TLS
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USERNAME'] = 'shadrack.bett.92@gmail.com'  # Replace with your email
-app.config['MAIL_PASSWORD'] = 'iexm ejye mxbx ynhl'   # Replace with your password
+app.config['MAIL_PASSWORD'] = 'sxtf jjvt rddl riue'   # Replace with your password
 app.config['MAIL_DEFAULT_SENDER'] = 'shadrack.bett.92@gmail.com'
 
 db.init_app(app)
@@ -42,7 +47,7 @@ jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 CORS(app,resources={r"/*": {"origins": "http://localhost:3001"}})
 
-PAYSTACK_SECRET_KEY = "sk_live_75b1c5594e05067ffe4bd0c745c9f73a10e6d9d5"
+PAYSTACK_SECRET_KEY = "sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
 
 @app.route('/verify-payment', methods=['POST'])
 def verify_payment():
@@ -107,7 +112,7 @@ def get_admin_messages():
         return jsonify({'error': 'Admin user is not authenticated or found'}), 403
 
     # Fetch messages sent to the admin user
-    messages = Message.query.filter_by(receiver_id=current_user.id).all()
+    messages = MessageModel.query.filter_by(receiver_id=current_user.id).all()
 
     if not messages:
         return jsonify({'message': 'No messages for admin'}), 404
@@ -127,7 +132,7 @@ def get_user_messages():
         return jsonify({"message": "User not found"}), 404
 
     # Retrieve messages that are sent to the current user
-    messages = Message.query.filter_by(receiver_id=current_user.id).all()
+    messages = MessageModel.query.filter_by(receiver_id=current_user.id).all()
 
     # Format messages for the response
     message_list = [{'user': message.sender.username, 'message': message.content} for message in messages]
@@ -467,7 +472,7 @@ def request_expert():
         db.session.commit()
 
     # Add an initial message
-    message = Message(
+    message = MessageModel(
         conversation_id=conversation.id,
         sender_id=get_jwt_identity(),
         content=f"New project submitted: {project.project_title}\\nDescription: {project.project_description}\\nDeadline: {project.deadline.strftime('%Y-%m-%d')}",
@@ -490,9 +495,9 @@ def request_expert():
     Please review the request in your dashboard.
     """
     try:
-        email_message = Message(
+        email_message = MessageInstance(
             subject=email_subject,
-            recipients=['shadybett540@gmail.com'],  # Replace with the recipient email(s)
+            recipients=['shadybett540@gmail.com','studypage001@gmail.com'],  # Replace with the recipient email(s)
             body=email_body
         )
         mail.send(email_message)
@@ -626,7 +631,7 @@ def send_message(conversation_id):
                     return jsonify({'error': f'Invalid file type: {file.filename}'}), 400
 
         # Create and save the message
-        message = Message(
+        message = MessageModel(
             conversation_id=conversation_id,
             sender_id=sender_id,
             receiver_id=conversation.client_id if sender_id != conversation.client_id else conversation.expert_id,
@@ -641,26 +646,25 @@ def send_message(conversation_id):
         receiver = User.query.get(message.receiver_id)
 
         # If the receiver is an admin, send an email notification
-        if receiver.is_admin:
-            email_subject = "New Message Notification"
-            email_body = f"""
-            A new message has been sent in the conversation #{conversation_id}.
+        email_subject = "New Message Notification"
+        email_body = f"""
+        A new message has been sent in the conversation #{conversation_id}.
 
-            Sender: {sender.username} (Email: {sender.email})
-            Content: {content or 'No content'}
-            Attachments: {', '.join(attachments) if attachments else 'None'}
+        Sender: {sender.username} (Email: {sender.email})
+        Content: {content or 'No content'}
+        Attachments: {', '.join(attachments) if attachments else 'None'}
 
-            Please log in to the admin dashboard to respond.
-            """
-            try:
-                email_message = Message(
-                    subject=email_subject,
-                    recipients=[receiver.email],  # Admin's email
-                    body=email_body
-                )
-                mail.send(email_message)
-            except Exception as e:
-                return jsonify({'error': f"Failed to send email: {str(e)}"}), 500
+        Please log in to the admin dashboard to respond.
+        """
+        try:
+            email_message = MessageInstance(
+                subject=email_subject,
+                recipients=['shadybett540@gmail.com','studypage001@gmail.com'],  # Admin's email
+                body=email_body
+            )
+            mail.send(email_message)
+        except Exception as e:
+            return jsonify({'error': f"Failed to send email: {str(e)}"}), 500
 
         # Return the saved message as a response
         return jsonify(message.to_dict()), 201
@@ -768,7 +772,7 @@ def send_admin_message(conversation_id):
     if not content and not attachments:
         return jsonify({'error': 'Message content or attachments are required.'}), 400
 
-    message = Message(
+    message = MessageModel(
         conversation_id=conversation_id,
         sender_id=get_jwt_identity(),  # Admin's ID
         content=content,
@@ -875,8 +879,8 @@ def get_conversations():
 
     result = []
     for conversation in conversations:
-        latest_message = Message.query.filter_by(conversation_id=conversation.id).order_by(
-            Message.timestamp.desc()
+        latest_message = MessageModel.query.filter_by(conversation_id=conversation.id).order_by(
+            MessageModel.timestamp.desc()
         ).first()
 
         result.append({
