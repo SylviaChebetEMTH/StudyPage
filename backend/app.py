@@ -53,8 +53,8 @@ def send_email_with_mime(subject, body, recipients, attachments=None):
         # SMTP server configuration
         smtp_server = "smtp.gmail.com"
         smtp_port = 587
-        email_user = "shadrack.bett.92@gmail.com"
-        email_password = "iexm ejye mxbx ynhl"
+        email_user = "studypage001@gmail.com"
+        email_password = "hbib knho xqon emrw"
 
         # Create the email object
         msg = MIMEMultipart()
