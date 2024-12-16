@@ -75,6 +75,11 @@ def verify_payment():
 
     except Exception as e:
         return jsonify({"success": False, "message": f"An error occurred: {str(e)}"}), 500
+
+@app.route('/test', methods=['GET'])
+def test():
+    """A simple test endpoint to ensure the server is running."""
+    return jsonify({"message": "Server is running!"})
 # @app.route('/messages', methods=['GET'])
 # def get_messages():
 #     messages = Message.query.all()  # Get all messages from the database
