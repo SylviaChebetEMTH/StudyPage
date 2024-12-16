@@ -853,7 +853,7 @@ def send_message(conversation_id):
         # receiver = User.query.get(message.receiver_id)
         email_subject = "New Message Notification"
         email_body = f"""
-        A new message has been sent in the conversation #{conversation_id}.
+        A new message has been sent by client {sender.username}.
 
         Sender: {sender.username} (Email: {sender.email})
         Content: {content or 'No content'}
