@@ -852,11 +852,8 @@ def send_message(conversation_id):
         db.session.add(message)
         db.session.commit()
 
-                # Retrieve sender and receiver details
         sender = User.query.get(sender_id)
         receiver = User.query.get(message.receiver_id)
-
-        # If the receiver is an admin, send an email notification
         email_subject = "New Message Notification"
         email_body = f"""
         A new message has been sent in the conversation #{conversation_id}.
@@ -867,16 +864,17 @@ def send_message(conversation_id):
 
         Please log in to the admin dashboard to respond.
         """
-        try:
-            email_message = MessageInstance(
-                subject=email_subject,
-                recipients=['shadybett540@gmail.com','studypage001@gmail.com'],  # Admin's email
-                body=email_body
-            )
-            mail.send(email_message)
-        except Exception as e:
-            return jsonify({'error': f"Failed to send email: {str(e)}"}), 500
 
+        # Convert attachment URLs to file paths if needed
+        attachment_paths = [url.replace(app.config['UPLOAD_FOLDER'], '') for url in attachments]
+
+        # Send email using MIME
+        send_email_with_mime(
+            subject=email_subject,
+            body=email_body,
+            recipients=['shadybett540@gmail.com', 'studypage001@gmail.com'],
+            attachments=attachment_paths
+        )
         # Return the saved message as a response
         return jsonify(message.to_dict()), 201
 
