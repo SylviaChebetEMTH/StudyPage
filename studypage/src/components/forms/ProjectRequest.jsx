@@ -255,7 +255,7 @@
 
 // export default ProjectRequest;
 
-// Above is the fixed one
+// Above is the clean one
 
 
 
@@ -614,20 +614,16 @@
 
 
 
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../contexts/userContext';
 import { PaystackButton } from 'react-paystack';
 
 const ProjectRequest = () => {
-  // const email = currentUser?.email || '';
   const { currentUser,authToken } = useContext(UserContext);
   const { state } = useLocation();
-
-  // const [email, setEmail] = useState(currentUser?.email || '');
   const navigate = useNavigate();
 
-  // Form Fields
   const [projectTitle, setProjectTitle] = useState('');
   const [description, setDescription] = useState('');
   const [projectTypes, setProjectTypes] = useState([]);
@@ -639,17 +635,14 @@ const ProjectRequest = () => {
   const [expertId, setExpertId] = useState(state ? state.expertId : '');
   const [numberOfPages, setNumberOfPages] = useState('');
 
-  // Services and Pricing
   const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
-  console.log('currentUser in proj request', currentUser)
 
-  // Notifications and Error Handling
   const [errorMessage, setErrorMessage] = useState('');
 
   const publicKey = 'pk_test_00e40d5cd3e321a68b22aad7e1c42a62f8587d4c';
-  const email = currentUser.email; 
+  const email = currentUser?.email || ''; 
   const [paymentRef] = useState(`ref_${Math.floor(Math.random() * 1000000000)}`);
 
   const showError = (message) => {
@@ -707,20 +700,34 @@ const ProjectRequest = () => {
     }
   }, [selectedService, numberOfPages]);
 
-  // Handle Submit
-  const handleValidation = () => {
-    if (!projectTitle || !description || !selectedProjectType || !selectedSubject || !deadline || !expertId || !numberOfPages) {
-      showError('Please fill in all required fields.');
+  const isFormValid = useMemo(() => {
+    if (
+      !projectTitle ||
+      !description ||
+      !selectedProjectType ||
+      !selectedSubject ||
+      !deadline ||
+      !expertId ||
+      !numberOfPages
+    ) {
       return false;
     }
     if (attachments.length === 0) {
-      showError('Please attach at least one file.');
       return false;
     }
     return true;
-  };
+  }, [
+    projectTitle,
+    description,
+    selectedProjectType,
+    selectedSubject,
+    deadline,
+    expertId,
+    numberOfPages,
+    attachments,
+  ]);
 
-  const handleSuccess = () => {
+  const handleSuccess = useCallback(() => {
     const formData = new FormData();
     formData.append('project_title', projectTitle);
     formData.append('project_description', description);
@@ -749,25 +756,36 @@ const ProjectRequest = () => {
         navigate('/payment/success', { state: { totalPrice, paymentRef } });
       })
       .catch(() => showError('There was an error submitting the project.'));
-  };
+  }, [
+    projectTitle,
+    description,
+    selectedProjectType,
+    selectedSubject,
+    deadline,
+    expertId,
+    numberOfPages,
+    selectedService,
+    totalPrice,
+    attachments,
+    authToken,
+    navigate,
+    paymentRef,
+  ]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     showError('Payment cancelled.');
-  };
+  }, []);
 
-  const componentProps = {
+  const componentProps = useMemo(() => ({
     email,
-    amount: totalPrice * 100, // Convert to kobo
-    metadata: {
-      name: projectTitle,
-      phone: "1234567890",
-    },
+    amount: totalPrice * 100,
+    metadata: { name: projectTitle, phone: '1234567890' },
     publicKey,
-    text: 'Pay Now',
+    text: 'Submit Project',
     onSuccess: handleSuccess,
     onClose: handleClose,
     reference: paymentRef,
-  };
+  }), [email, totalPrice, projectTitle, publicKey, paymentRef, handleSuccess, handleClose]);
 
   return (
     <div className="container mx-auto p-8 bg-gray-300 shadow-md rounded-lg max-w-4xl m-6">
@@ -776,8 +794,6 @@ const ProjectRequest = () => {
       {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
 
       <form>
-        {/* Form fields for projectTitle, description, projectType, subject, etc. */}
-                {/* Project Title */}
                 <div>
           <label htmlFor="projectTitle" className="block text-sm font-medium">Project Title</label>
           <input
@@ -908,27 +924,11 @@ const ProjectRequest = () => {
             required
           />
         </div>
-
-        {/* Submit Button */}
-        <div className="flex justify-center mt-6">
-          <button
-            type="submit"
-            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200"
-          >
-            {/* {!priceConfirmed ? 'Review Pricing' : 'Submit Request'} */}
-          </button>
-          {/* <Link
-            to="/userprofile/projectsummary"
-            className="bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition duration-200"
-          >
-            Go to Project Summary
-          </Link> */}
-        </div>
         <div className="flex justify-center mt-6">
           <PaystackButton
             className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200"
             {...componentProps}
-            disabled={!handleValidation()}
+            disabled={!isFormValid}
           />
         </div>
       </form>
