@@ -236,6 +236,7 @@ const ExpertPage = () => {
                 <button
                   onClick={() => hireExpert(expert.id)}
                   className="mt-4 bg-[#85C4C2] text-white px-4 py-2 rounded hover:bg-[#6EA5A4]"
+                  currentUser={currentUser}
                 >
                   Hire Expert
                 </button>
