@@ -105,7 +105,7 @@ mail = Mail(app)
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 CORS(app,resources={r"/*": {"origins": "http://localhost:3001"}})
 
-PAYSTACK_SECRET_KEY = "sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
+PAYSTACK_SECRET_KEY ="sk_live_75b1c5594e05067ffe4bd0c745c9f73a10e6d9d5"
 
 @app.route('/verify-payment', methods=['POST'])
 def verify_payment():
