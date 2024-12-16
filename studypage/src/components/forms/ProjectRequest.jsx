@@ -619,7 +619,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../contexts/userContext';
 import { PaystackButton } from 'react-paystack';
 
-const ProjectRequest = () => {
+const ProjectRequest = ({currentUser}) => {
   const { authToken } = useContext(UserContext);
   const { state } = useLocation();
   const navigate = useNavigate();
