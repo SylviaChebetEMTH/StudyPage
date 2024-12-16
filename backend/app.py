@@ -16,6 +16,7 @@ import os
 import requests
 SECRET_KEY = os.urandom(24)
 
+
 app = Flask(__name__)
 api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///studypage.db'
@@ -31,6 +32,8 @@ migrate = Migrate(app, db)
 jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 CORS(app,resources={r"/*": {"origins": "http://localhost:3001"}})
+
+PAYSTACK_SECRET_KEY = "sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
 
 # @app.route('/messages', methods=['GET'])
 # def get_messages():
