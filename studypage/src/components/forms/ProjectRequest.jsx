@@ -786,7 +786,7 @@ const ProjectRequest = () => {
       }
   
       // Redirect to success page
-      navigate("/payment/success", { state: { totalPrice, reference } });
+      navigate("/chat", { state: { totalPrice, reference } });
     } catch (error) {
       console.error("Error:", error);
       showError(error.message || "An unexpected error occurred.");
@@ -858,6 +858,7 @@ const ProjectRequest = () => {
   const componentProps = useMemo(() => ({
     email,
     amount: totalPrice * 100,
+    currency: 'KES',
     metadata: { name: projectTitle, phone: '1234567890' },
     publicKey,
     text: 'Submit Project',
@@ -872,7 +873,7 @@ const ProjectRequest = () => {
 
       {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
 
-      <form>
+      <form onSubmit={(e) => e.preventDefault()} >
                 <div>
           <label htmlFor="projectTitle" className="block text-sm font-medium">Project Title</label>
           <input
