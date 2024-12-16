@@ -11,6 +11,7 @@ from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from flask_migrate import Migrate
 from flask_restful import Resource,Api
+from flask_mail import Mail, Message
 import cloudinary.uploader
 from datetime import datetime
 from flask import url_for
@@ -34,14 +35,13 @@ if not os.path.exists(UPLOAD_FOLDER):  # Ensure the folder exists
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-#Configure flask mail
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Replace with your email provider's SMTP server
+app.config['MAIL_PORT'] = 587                # Commonly used port for TLS
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'urbanbazaar1994@gmail.com'
-app.config['MAIL_PASSWORD'] = 'xteg ewtp sifv qxgh'
-app.config['MAIL_DEFAULT_SENDER']= 'urbanbazaar1994@gmail.com'
+app.config['MAIL_USERNAME'] = 'your_email@gmail.com'  # Replace with your email
+app.config['MAIL_PASSWORD'] = 'your_email_password'   # Replace with your password
+app.config['MAIL_DEFAULT_SENDER'] = 'your_email@gmail.com'
 
 db.init_app(app)
 migrate = Migrate(app, db)
