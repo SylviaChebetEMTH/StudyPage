@@ -15,8 +15,13 @@ import cloudinary.uploader
 from datetime import datetime
 from flask import url_for
 import os
+<<<<<<< HEAD
 import re
 
+=======
+import requests
+SECRET_KEY = os.urandom(24)
+>>>>>>> f73af04 (imported requests)
 
 app = Flask(__name__)
 api = Api(app)
