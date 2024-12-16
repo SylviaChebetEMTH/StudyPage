@@ -644,8 +644,8 @@ const ProjectRequest = () => {
   // Notifications and Error Handling
   const [errorMessage, setErrorMessage] = useState('');
 
-  const publicKey = 'YOUR_PAYSTACK_PUBLIC_KEY';
-  const email = "user@example.com"; // Replace with dynamic user email
+  const publicKey = 'pk_test_00e40d5cd3e321a68b22aad7e1c42a62f8587d4c';
+  const email = "user@example.com"; 
   const [paymentRef] = useState(`ref_${Math.floor(Math.random() * 1000000000)}`);
 
   const showError = (message) => {
@@ -911,7 +911,7 @@ const ProjectRequest = () => {
             type="submit"
             className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200"
           >
-            {!priceConfirmed ? 'Review Pricing' : 'Submit Request'}
+            {/* {!priceConfirmed ? 'Review Pricing' : 'Submit Request'} */}
           </button>
           {/* <Link
             to="/userprofile/projectsummary"

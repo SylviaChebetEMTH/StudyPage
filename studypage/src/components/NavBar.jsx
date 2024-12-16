@@ -7,6 +7,7 @@ import { faUser, faCommentDots } from '@fortawesome/free-solid-svg-icons';
 export const NavBar = () => {
     const { authToken, currentUser } = useContext(UserContext);
     console.log('adminauthtoken', authToken);
+    console.log('this is the user',currentUser)
 
     // Determine account link
     const accountLink = authToken
