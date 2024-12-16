@@ -806,7 +806,6 @@ const ProjectRequest = () => {
           />
         </div>
 
-        {/* Description */}
         <div>
           <label htmlFor="description" className="block text-sm font-medium">Description</label>
           <textarea
