@@ -640,12 +640,13 @@ const ProjectRequest = ({currentUser}) => {
   const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  console.log('currentUser in proj request', currentUser)
 
   // Notifications and Error Handling
   const [errorMessage, setErrorMessage] = useState('');
 
   const publicKey = 'pk_test_00e40d5cd3e321a68b22aad7e1c42a62f8587d4c';
-  const email = "user@example.com"; 
+  const email = currentUser.email; 
   const [paymentRef] = useState(`ref_${Math.floor(Math.random() * 1000000000)}`);
 
   const showError = (message) => {
