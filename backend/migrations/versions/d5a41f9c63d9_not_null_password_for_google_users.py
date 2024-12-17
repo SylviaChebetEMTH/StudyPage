@@ -1,8 +1,8 @@
-"""done
+"""Not Null password for google users
 
-Revision ID: e637d3b9c1fc
+Revision ID: d5a41f9c63d9
 Revises: 
-Create Date: 2024-12-15 14:03:22.132807
+Create Date: 2024-12-16 21:32:04.359054
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e637d3b9c1fc'
+revision = 'd5a41f9c63d9'
 down_revision = None
 branch_labels = None
 depends_on = None

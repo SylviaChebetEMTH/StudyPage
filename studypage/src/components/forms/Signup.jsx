@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
+import axios from "axios";
 import { UserContext } from '../contexts/userContext';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import { useGoogleLogin } from "@react-oauth/google";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-// import mall from '../assets/mall.jpg';
-import facebookIcon from '../assets/facebookIcon.png';
 import googleIcon from '../assets/googleIcon.png';
 
 
@@ -21,6 +21,37 @@ export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
   const navigate = useNavigate();
+
+  const handleGoogleSignup = useGoogleLogin({
+    onSuccess: async (response) => {
+      try {
+        const { access_token } = response;
+        const { data } = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: { Authorization: `Bearer ${access_token}` },
+        });
+
+        // Use data from Google to register/login
+        const user = {
+          email: data.email,
+          username: data.given_name || data.email,
+        };
+
+        // Send the user data to your backend to handle signup/login
+        const res = await axios.post("http://127.0.0.1:5000/auth/google", user);
+        alert("Check your email to set your password.");
+        if (res.data.is_admin) {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Google Signup failed:", error);
+        alert('Google Signup failed. Please try again.');
+      }
+    },
+    onError: () => console.error("Google Login Failed"),
+  });
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -169,14 +200,11 @@ export default function SignUp() {
                     <div className="mt-6 text-center">
                       <div className="text-gray-500">or</div>
                       <div className="flex items-center justify-center mt-4 space-x-4 ">
-                        <button className="flex items-center justify-center py-1 px-3 w-auto text-black rounded-md shadow-sm text-sm border border-gray-200">
+                        <button 
+                        onClick={handleGoogleSignup}className="flex items-center justify-center py-1 px-3 w-auto text-black rounded-md shadow-sm text-sm border border-gray-200">
                           <img src={googleIcon} alt="Google" className="w-6 h-6 mr-2" />
                           Sign up with Google
-                        </button>
-                        <button className="flex items-center justify-center py-1 px-3 w-auto text-black  rounded-md shadow-sm text-sm border border-gray-200">
-                          <img src={facebookIcon} alt="Facebook" className="w-5 h-5 mr-2" />
-                          Sign up with Facebook
-                        </button>
+                        </button>                       
                       </div>
                     </div>
                     <div className="text-center mt-4">

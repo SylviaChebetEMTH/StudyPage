@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { UserProvider } from './components/contexts/userContext';
 import { UserContext } from "./components/contexts/userContext";
 import { NavBar } from './components/NavBar';
@@ -27,6 +28,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Chat from "./components/user/Messaging";
 import AdminPanel from "./components/adminChat/AdminPanel";
+import ResetPassword from "./components/forms/ResetPassword";
 
 
 function AppContent() {
@@ -35,6 +37,7 @@ function AppContent() {
   const isAdminPage = location.pathname.startsWith('/admin');
   const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
 
+  const clientId = "854474486915-lncgkai7f4jca5fqe4v7ma0flkftdd5k.apps.googleusercontent.com"
   return (
     <div className="min-h-screen flex flex-col ">
       {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)}
@@ -43,6 +46,7 @@ function AppContent() {
         {/* <NavBar /> */}
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/reset_password/:token" element={<ResetPassword />} />
           <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
           <Route path="/expertspage" element={<ExpertPage />} />
@@ -83,11 +87,14 @@ function AppContent() {
 }
 
 const App = () => {
+  const clientId = "854474486915-lncgkai7f4jca5fqe4v7ma0flkftdd5k.apps.googleusercontent.com"
   return (
     <Router>
+      <GoogleOAuthProvider clientId={clientId}>
       <UserProvider>
         <AppContent />
       </UserProvider>
+      </GoogleOAuthProvider>
     </Router>
   );
 }

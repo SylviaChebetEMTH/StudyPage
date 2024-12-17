@@ -1,10 +1,11 @@
 import React, { useState, useContext } from "react";
+import axios from "axios";
 import { UserContext } from "../contexts/userContext";
 import { useNavigate } from "react-router-dom";
+import { useGoogleLogin } from "@react-oauth/google";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import facebookIcon from '../assets/facebookIcon.png';
 import googleIcon from '../assets/googleIcon.png';
 
 export default function Login() {
@@ -13,6 +14,37 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const handleGoogleSignup = useGoogleLogin({
+    onSuccess: async (response) => {
+      try {
+        const { access_token } = response;
+        const { data } = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: { Authorization: `Bearer ${access_token}` },
+        });
+
+        // Use data from Google to register/login
+        const user = {
+          email: data.email,
+          username: data.given_name || data.email,
+        };
+
+        // Send the user data to your backend to handle signup/login
+        const res = await axios.post("http://127.0.0.1:5000/auth/google", user);
+        alert("Check your email to set your password.");
+        if (res.data.is_admin) {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Google Signup failed:", error);
+        alert('Google Signup failed. Please try again.');
+      }
+    },
+    onError: () => console.error("Google Login Failed"),
+  });
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,16 +55,16 @@ export default function Login() {
           navigate("/admin/dashboard");
           localStorage.setItem('isAdmin', user.is_admin);
         } else {
-          navigate("/"); 
+          navigate("/");
         }
       }
     } catch (error) {
       console.error("Login failed:", error);
-      
+
     }
   };
 
-  
+
 
   const handleGoHome = () => {
     navigate("/");
@@ -131,23 +163,15 @@ export default function Login() {
                         </div>
                       </div>
                       <div>
-                        <div className="flex items-center justify-center mt-4 space-x-4 ">
-                          <button className="flex items-center justify-center py-1 px-3 w-auto text-black rounded-md shadow-sm text-sm border border-gray-200">
-                            <img
-                              src={googleIcon}
-                              alt="Google"
-                              className="w-5 h-5 mr-2"
-                            />
-                            Google
-                          </button>
-                          <button className="flex items-center justify-center py-1 px-3 w-auto text-black rounded-md shadow-sm text-sm border border-gray-200">
-                            <img
-                              src={facebookIcon}
-                              alt="Facebook"
-                              className="w-4 h-4 mr-2"
-                            />
-                            Facebook
-                          </button>
+                        <div className="mt-6 text-center">
+                          <div className="text-gray-500">or</div>
+                          <div className="flex items-center justify-center mt-4 space-x-4 ">
+                            <button
+                              onClick={handleGoogleSignup} className="flex items-center justify-center py-1 px-3 w-auto text-black rounded-md shadow-sm text-sm border border-gray-200">
+                              <img src={googleIcon} alt="Google" className="w-6 h-6 mr-2" />
+                              Sign up with Google
+                            </button>
+                          </div>
                         </div>
                       </div>
                       <div className="text-center mt-4">
@@ -188,10 +212,10 @@ export default function Login() {
               <div className="absolute inset-0 opacity-50"></div>
               <div className="relative z-10">
                 <h2 className="text-3xl font-semibold text-gray-300 text-center">
-                Welcome to StudyPage! 🎓
+                  Welcome to StudyPage! 🎓
                 </h2>
                 <p className="text-black mt-4 text-center">
-                Empowering Experts and Students to Achieve More
+                  Empowering Experts and Students to Achieve More
                 </p>
               </div>
             </div>

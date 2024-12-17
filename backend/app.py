@@ -1,4 +1,4 @@
-from flask import Flask,make_response, jsonify, request, send_from_directory
+from flask import Flask,make_response, jsonify, request, send_from_directory, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
@@ -7,28 +7,42 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject, Message, Conversation
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from flask_migrate import Migrate
 from flask_restful import Resource,Api
 import cloudinary.uploader
 from datetime import datetime
 from flask import url_for
 import os
-SECRET_KEY = os.urandom(24)
+
 
 app = Flask(__name__)
 api = Api(app)
+app.config["SECRET_KEY"] = os.urandom(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///studypage.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = SECRET_KEY
+app.config['JWT_SECRET_KEY'] = app.config['SECRET_KEY']
 UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), 'uploads'))
 if not os.path.exists(UPLOAD_FOLDER):  # Ensure the folder exists
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+#Configure flask mail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'urbanbazaar1994@gmail.com'
+app.config['MAIL_PASSWORD'] = 'xteg ewtp sifv qxgh'
+app.config['MAIL_DEFAULT_SENDER']= 'urbanbazaar1994@gmail.com'
+
 db.init_app(app)
 migrate = Migrate(app, db)
 jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
+mail = Mail(app) 
+s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 CORS(app,resources={r"/*": {"origins": "http://localhost:3001"}})
 
 # @app.route('/messages', methods=['GET'])
@@ -36,6 +50,160 @@ CORS(app,resources={r"/*": {"origins": "http://localhost:3001"}})
 #     messages = Message.query.all()  # Get all messages from the database
 #     message_list = [{'user': message.sender.username, 'message': message.content} for message in messages]
 #     return {'messages': message_list}
+
+@app.route('/auth/google', methods=['POST'])
+def google_signup():
+    data = request.json
+    print(f"Received data: {data}")
+
+    # Check if the required fields are present (Google login might not provide a password or phone_number)
+    if 'username' not in data or 'email' not in data:
+        print("Missing required fields")
+        return jsonify({'error': 'Missing required fields'}), 400
+    
+    # Check if the user already exists
+    existing_user = User.query.filter_by(email=data['email']).first()
+    if existing_user:
+        print("User with this email already exists")
+        return jsonify({'error': 'User with this email already exists'}), 400
+    
+    placeholder_password = bcrypt.generate_password_hash('placeholder_password')
+    # Create new user (you might want to add a default password or handle it differently)
+    new_user = User(
+        username=data['username'],
+        email=data['email'],
+        password=placeholder_password,  
+        is_admin=False,  
+        phone_number=None  
+    )
+    
+    # Add to session and commit to the database
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error committing to the database: {e}")
+        return jsonify({'error': 'Failed to create user'}), 500
+
+
+
+    token = s.dumps(new_user.email, salt='password-reset-salt') 
+    reset_url = url_for('reset_password', token=token, _external=True) 
+    msg = Message('Set Your Password', sender=app.config['MAIL_DEFAULT_SENDER'], recipients=[new_user.email]) 
+    msg.body = f'Please click the following link to set your password: {reset_url.replace("http://127.0.0.1:5000", "http://localhost:3001")}' 
+    mail.send(msg)
+    try:
+        mail.send(msg)
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        return jsonify({'error': 'Failed to send email'}),
+
+
+    session['user_id'] = new_user.id
+
+    return jsonify({
+        'success': 'User registered successfully',
+        'user_id': new_user.id,
+        'email': new_user.email,
+        'username': new_user.username
+    }), 201
+
+# @app.route('/reset_password/<token>', methods=['GET', 'POST'])
+# def reset_password(token):
+#     # Verify the token
+#     try:
+#         email = s.loads(token, salt='password-reset-salt', max_age=3600)
+#     except SignatureExpired:
+#         return jsonify({'error': 'The token is expired'}), 400
+#     except BadTimeSignature:
+#         return jsonify({'error': 'Invalid token'}), 400
+
+#     if request.method == 'POST':
+#         # Check if the request is JSON
+#         if request.is_json:
+#             new_password = request.get_json().get('new_password')
+#         else:
+#             # If not JSON, check if it's a form submission
+#             if 'new_password' in request.form:
+#                 new_password = request.form['new_password']
+#             else:
+#                 return jsonify({'error': 'Missing new password'}), 400
+
+#         # Validate the new password
+#         if not new_password:
+#             return jsonify({'error': 'Missing new password'}), 400
+
+#         # Find the user by email
+#         user = User.query.filter_by(email=email).first()
+#         if not user:
+#             return jsonify({'error': 'User   not found'}), 404
+
+#         # Update the user's password
+#         user.password = bcrypt.generate_password_hash(new_password)
+#         db.session.commit()
+
+#         return jsonify({'success': 'Password updated successfully'}), 200
+
+#     # Render the password reset form for GET requests
+#     return '''
+#     <form method="POST" id="reset-password-form">
+#         <input type="password" name="new_password" placeholder="New Password" required>
+#         <input type="submit" value="Reset Password">
+#     </form>
+#     <script>
+#         // Send the form data as JSON
+#         document.getElementById('reset-password-form').addEventListener('submit', function(event) {
+#             event.preventDefault();
+#             var formData = new FormData(this);
+#             var jsonData = {};
+#             for (var pair of formData.entries()) {
+#                 jsonData[pair[0]] = pair[1];
+#             }
+#             fetch('/reset_password/''' + token + ''', {
+#                 method: 'POST',
+#                 headers: {
+#                     'Content-Type': 'application/json'
+#                 },
+#                 body: JSON.stringify(jsonData)
+#             })
+#             .then(response => response.json())
+#             .then(data => console.log(data))
+#             .catch(error => console.error('Error:', error));
+#         });
+#     </script>
+#     '''
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    # Verify the token
+    try:
+        email = s.loads(token, salt='password-reset-salt', max_age=3600)
+    except SignatureExpired:
+        return jsonify({'error': 'The token is expired'}), 400
+    except BadTimeSignature:
+        return jsonify({'error': 'Invalid token'}), 400
+
+    if request.method == 'POST':
+        # Get the new password from the request
+        new_password = request.json.get('new_password')
+        if not new_password:
+            return jsonify({'error': 'Missing new password'}), 400
+
+        # Find the user by email
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            return jsonify({'error': 'User  not found'}), 404
+
+        # Update the user's password
+        user.password = bcrypt.generate_password_hash(new_password)
+        db.session.commit()
+
+        return jsonify({'success': 'Password updated successfully'}), 200
+
+    # For GET requests, return a 200 status with a message indicating the frontend handles the reset
+    return '', 200
+
 
 # Admin Messages Route
 @app.route('/adminmessages', methods=['GET'])
