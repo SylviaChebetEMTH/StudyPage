@@ -16,7 +16,7 @@ def seed_database():
 
     admin1 = User(
         username='bett',
-        email='skipkorir567@gmail.com',
+        email='admin@example.com',
         phone_number='987-654-3210',
         is_admin=True
     )
@@ -134,7 +134,152 @@ def seed_database():
         unit='per page',
         project_type_id=2, 
         subject_id=2
+    ),
+        Service(
+        title='PowerPoint Presentation',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=3, 
+        subject_id=2
+    ),
+        Service(
+        title='Research Paper',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=4, 
+        subject_id=2
+    ),
+        Service(
+        title='Assignments',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=5, 
+        subject_id=2
+    ),
+        Service(
+        title='Homework',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=6, 
+        subject_id=2
+    ),
+        Service(
+        title='Speech',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=7, 
+        subject_id=2
+    ),
+        Service(
+        title='Book Reviews',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=8, 
+        subject_id=2
+    ),
+        Service(
+        title='Coursework',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=9, 
+        subject_id=2
+    ),
+        Service(
+        title='Personal Statement',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=10, 
+        subject_id=2
+    ),
+        Service(
+        title='PhD Dissertation',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=11, 
+        subject_id=2
+    ),
+        Service(
+        title='Thesis',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=12, 
+        subject_id=2
+    ),
+        Service(
+        title='Case Study',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=13, 
+        subject_id=2
+    ),
+        Service(
+        title='Term Paper',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=14, 
+        subject_id=14
+    ),
+        Service(
+        title='Lab Report',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=15.00,
+        unit='per page',
+        project_type_id=15, 
+        subject_id=2
+    ),
+        Service(
+        title='Editing',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=5.00,
+        unit='per page',
+        project_type_id=16, 
+        subject_id=2
+    ),
+        Service(
+        title='Proofreading',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=5.00,
+        unit='per page',
+        project_type_id=17, 
+        subject_id=6
+    ),
+        Service(
+        title='Rewrite',
+        description='cool proj',
+        base_price=2.00,
+        price_per_page=7.00,
+        unit='per page',
+        project_type_id=18, 
+        subject_id=1
     )
+
 ]
 
 

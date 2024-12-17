@@ -95,8 +95,8 @@ jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 CORS(app,resources={r"/*": {"origins": "http://localhost:3001"}})
 
-PAYSTACK_SECRET_KEY ="sk_live_75b1c5594e05067ffe4bd0c745c9f73a10e6d9d5"
-
+# PAYSTACK_SECRET_KEY ="sk_live_75b1c5594e05067ffe4bd0c745c9f73a10e6d9d5"
+PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
 @app.route('/verify-payment', methods=['POST'])
 def verify_payment():
     """
@@ -642,6 +642,84 @@ def request_expert():
 #         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/conversationsadmin/<int:conversation_id>/messages', methods=['POST'])
+@jwt_required()
+def send_message(conversation_id):
+    try:
+        # Get current user ID from JWT
+        sender_id = get_jwt_identity()
+
+        # Check if conversation exists
+        conversation = Conversation.query.get_or_404(conversation_id)
+        recievers_id = conversation.client_id
+        receivers_email = User.query.get(recievers_id).email
+        experts_id = conversation.expert_id
+        experts_name = User.query.get(experts_id).username
+        experts_email = User.query.get(experts_id).email
+
+        # Parse form data
+        content = request.form.get('content')
+        files = request.files.getlist('attachments')
+
+        # Ensure at least content or attachments are provided
+        if not content and not files:
+            return jsonify({'error': 'Message content or attachments are required.'}), 400
+
+        # Process file attachments
+        attachments = []
+        if files:
+            for file in files:
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    filepath = os.path.join(UPLOAD_FOLDER, filename)
+                    file.save(filepath)
+                    
+                    # Convert server path to URL
+                    file_url = url_for('serve_file', filename=filename, _external=True)
+                    attachments.append(file_url)
+                else:
+                    return jsonify({'error': f'Invalid file type: {file.filename}'}), 400
+
+        # Create and save the message
+        message = MessageModel(
+            conversation_id=conversation_id,
+            sender_id=sender_id,
+            receiver_id=conversation.client_id if sender_id != conversation.client_id else conversation.expert_id,
+            content=content,
+            attachments=', '.join(attachments) if attachments else None
+        )
+        db.session.add(message)
+        db.session.commit()
+
+        sender = User.query.get(sender_id)
+        # receiver = User.query.get(message.receiver_id)
+        email_subject = "New Message Notification"
+        email_body = f"""
+        A new message has been sent by expert {experts_name}.
+
+        Sender: {experts_name} (Email: {experts_email})
+        Content: {content or 'No content'}
+        Attachments: {', '.join(attachments) if attachments else 'None'}
+
+        Please log in to the website to respond.
+        """
+
+        # Convert attachment URLs to file paths if needed
+        attachment_paths = [url.replace(app.config['UPLOAD_FOLDER'], '') for url in attachments]
+
+        # Send email using MIME
+        send_email_with_mime(
+            subject=email_subject,
+            body=email_body,
+            recipients=['shadrack.bett.92@gmail.com',receivers_email],
+            attachments=attachment_paths
+        )
+        # Return the saved message as a response
+        return jsonify(message.to_dict()), 201
+
+    except Exception as e:
+        return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
+
 @app.route('/conversations/<int:conversation_id>/messages', methods=['POST'])
 @jwt_required()
 def send_message(conversation_id):
@@ -696,7 +774,7 @@ def send_message(conversation_id):
         Content: {content or 'No content'}
         Attachments: {', '.join(attachments) if attachments else 'None'}
 
-        Please log in to the admin dashboard to respond.
+        Please log in to the website to respond.
         """
 
         # Convert attachment URLs to file paths if needed
@@ -706,7 +784,7 @@ def send_message(conversation_id):
         send_email_with_mime(
             subject=email_subject,
             body=email_body,
-            recipients=['shadybett540@gmail.com', 'studypage001@gmail.com'],
+            recipients=['shadrack.bett.92@gmail.com', 'studypage001@gmail.com'],
             attachments=attachment_paths
         )
         # Return the saved message as a response
