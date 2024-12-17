@@ -807,7 +807,7 @@ def request_expert():
 
 @app.route('/conversationsadmin/<int:conversation_id>/messages', methods=['POST'])
 @jwt_required()
-def send_message(conversation_id):
+def admn_send_message(conversation_id):
     try:
         # Get current user ID from JWT
         sender_id = get_jwt_identity()
