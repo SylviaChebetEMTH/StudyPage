@@ -105,8 +105,8 @@ mail = Mail(app)
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 CORS(app,resources={r"/*": {"origins": "http://localhost:3001"}})
 
-# PAYSTACK_SECRET_KEY ="sk_live_75b1c5594e05067ffe4bd0c745c9f73a10e6d9d5"
-PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
+# PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
+PAYSTACK_SECRET_KEY =os.environ.get('PAYSTACK_SECRET_KEY')
 @app.route('/verify-payment', methods=['POST'])
 def verify_payment():
     """
@@ -114,13 +114,12 @@ def verify_payment():
     """
     data = request.json
     reference = data.get('reference')
-    project_details = data.get('projectDetails')  # Project details from the frontend
+    project_details = data.get('projectDetails') 
 
     if not reference:
         return jsonify({"success": False, "message": "Transaction reference is required"}), 400
 
     try:
-        # Call Paystack's API to verify the transaction
         url = f"https://api.paystack.co/transaction/verify/{reference}"
         headers = {
             "Authorization": f"Bearer {PAYSTACK_SECRET_KEY}"
@@ -129,14 +128,10 @@ def verify_payment():
         response_data = response.json()
 
         if response_data['status'] and response_data['data']['status'] == "success":
-            # Payment was successful, proceed to save project details
-            # Save project_details to your database here (e.g., SQLite, PostgreSQL, MongoDB)
-            # Example: save_project_to_db(project_details)
-
             return jsonify({
                 "success": True,
                 "message": "Payment verified and project submitted!",
-                "transaction_data": response_data['data']  # Optionally return transaction data
+                "transaction_data": response_data['data']  
             }), 200
 
         else:
@@ -618,7 +613,6 @@ def submit_project(project_id):
     for file in files:
         file.save(f"uploads/{file.filename}")
 
-    # Update project status
     project.status = 'Completed'
     db.session.commit()
 
@@ -629,10 +623,8 @@ def submit_project(project_id):
 def request_expert():
     data = request.form
     files = request.files.getlist('attachments')
-    # client_id=get_jwt_identity(),
-    # expert_id=data.get('expert_id')
 
-    deadline_str = data.get('deadline')  # e.g., "2024-12-11"
+    deadline_str = data.get('deadline') 
     try:
         deadline = datetime.strptime(deadline_str, "%Y-%m-%d")
     except ValueError:
@@ -652,7 +644,6 @@ def request_expert():
     db.session.add(project)
     db.session.commit()
 
-    # Save files
     attachments = []
     for file in files:
         filename = secure_filename(file.filename)
@@ -663,16 +654,12 @@ def request_expert():
     project.attachments = ','.join(attachments)
     db.session.commit()
 
-    # Check for an existing conversation
     conversation = Conversation.query.filter_by(
         
         client_id=get_jwt_identity(),
         expert_id=data.get('expert_id'),
     ).first()
-    
-    # print(conversation.messages)
 
-    # If no existing conversation, create a new one
     if not conversation:
         conversation = Conversation(
             client_id=get_jwt_identity(),
@@ -682,7 +669,6 @@ def request_expert():
         db.session.add(conversation)
         db.session.commit()
 
-    # Add an initial message
     message = MessageModel(
         conversation_id=conversation.id,
         sender_id=get_jwt_identity(),
@@ -704,7 +690,6 @@ def request_expert():
     Attachments: {', '.join(attachments)}
     """
 
-    # Send email using MIME
     send_email_with_mime(
         subject=email_subject,
         body=email_body,
@@ -712,107 +697,13 @@ def request_expert():
         attachments=[os.path.join(app.config['UPLOAD_FOLDER'], filename) for filename in attachments]
     )
     return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
-
-# @app.route('/request_expert', methods=['POST'])
-# @jwt_required()  # Ensure that the user is authenticated
-# def request_expert():
-#     try:
-#         # Retrieve form data
-#         project_title = request.form.get('project_title')
-#         project_description = request.form.get('project_description')
-#         project_type_id = request.form.get('project_type')
-#         subject_id = request.form.get('subject')
-#         deadline = request.form.get('deadline')
-#         expert_id = request.form.get('expert_id')
-#         number_of_pages = request.form.get('number_of_pages')
-
-#         # Handle file attachments
-#         attachments = []  # Start with an empty list
-#         if 'attachments' in request.files:
-#             files = request.files.getlist('attachments')
-#             print(f"Files received: {len(files)} files")
-#             for file in files:
-#                 if file and allowed_file(file.filename):
-#                     print(f"File received: {file.filename}")
-#                     filename = secure_filename(file.filename)
-#                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-#                     print(f"Saving file to: {file_path}")
-#                     try:
-#                         file.save(file_path)
-#                     except Exception as e:
-#                         print(f"Error saving file: {e}")
-#                     attachments.append(filename)  # Store only the filename or file path
-
-#         # Validate input fields
-#         if not all([project_title, project_description, project_type_id, subject_id, deadline]):
-#             return jsonify({'msg': 'Not enough segments'}), 422
-
-#         if not expert_id:
-#             return jsonify({'msg': 'Expert ID is required'}), 400
-
-#         try:
-#             expert_id = int(expert_id)
-#             project_type_id = int(project_type_id)
-#             subject_id = int(subject_id)
-#         except ValueError:
-#             return jsonify({'msg': 'Invalid ID, must be a number'}), 400
-
-#         try:
-#             deadline = datetime.strptime(deadline, '%Y-%m-%d')
-#         except ValueError:
-#             return jsonify({'msg': 'Invalid date format, use YYYY-MM-DD'}), 400
-
-#         # Query the related objects based on the provided IDs
-#         expert = Expert.query.get(expert_id)
-#         project_type = ProjectType.query.get(project_type_id)
-#         subject = Subject.query.get(subject_id)
-
-#         # If any of the objects do not exist, return an error message
-#         if not all([expert, project_type, subject]):
-#             return jsonify({'msg': 'Invalid Expert, Project Type, or Subject ID'}), 400
-
-#         # Get current user details using JWT identity
-#         current_user_id = get_jwt_identity()  # Get the current logged-in user ID
-#         current_user = User.query.get(current_user_id)
-#         if not current_user:
-#             return jsonify({'msg': 'Current user not found'}), 404
-
-#         # Create a new project request instance
-#         new_request = ProjectRequest(
-#             project_title=project_title,
-#             project_description=project_description,
-#             project_type=project_type,
-#             subject=subject,
-#             expert=expert,
-#             deadline=deadline,
-#             user_id=current_user.id,  # Assign current user's ID to the project request
-#             attachments=','.join(attachments),  # Join the list of filenames as a comma-separated string
-#             number_of_pages=number_of_pages
-#         )
-
-#         # Log project request data for debugging
-#         print(f"Project request data: {new_request.__dict__}")
-
-#         # Add to database
-#         db.session.add(new_request)
-#         db.session.commit()
-
-#         return jsonify({'msg': 'Request submitted successfully'}), 200
-
-#     except Exception as e:
-#         db.session.rollback()
-#         print(f"Error occurred: {e}")
-#         return jsonify({'error': str(e)}), 500
-
-
 @app.route('/conversationsadmin/<int:conversation_id>/messages', methods=['POST'])
 @jwt_required()
 def admn_send_message(conversation_id):
     try:
-        # Get current user ID from JWT
+
         sender_id = get_jwt_identity()
 
-        # Check if conversation exists
         conversation = Conversation.query.get_or_404(conversation_id)
         recievers_id = conversation.client_id
         receivers_email = User.query.get(recievers_id).email
@@ -820,15 +711,12 @@ def admn_send_message(conversation_id):
         experts_name = User.query.get(experts_id).username
         experts_email = User.query.get(experts_id).email
 
-        # Parse form data
         content = request.form.get('content')
         files = request.files.getlist('attachments')
 
-        # Ensure at least content or attachments are provided
         if not content and not files:
             return jsonify({'error': 'Message content or attachments are required.'}), 400
 
-        # Process file attachments
         attachments = []
         if files:
             for file in files:
@@ -843,7 +731,6 @@ def admn_send_message(conversation_id):
                 else:
                     return jsonify({'error': f'Invalid file type: {file.filename}'}), 400
 
-        # Create and save the message
         message = MessageModel(
             conversation_id=conversation_id,
             sender_id=sender_id,
@@ -855,7 +742,6 @@ def admn_send_message(conversation_id):
         db.session.commit()
 
         sender = User.query.get(sender_id)
-        # receiver = User.query.get(message.receiver_id)
         email_subject = "New Message Notification"
         email_body = f"""
         A new message has been sent by expert {experts_name}.
@@ -867,17 +753,14 @@ def admn_send_message(conversation_id):
         Please log in to the website to respond.
         """
 
-        # Convert attachment URLs to file paths if needed
         attachment_paths = [url.replace(app.config['UPLOAD_FOLDER'], '') for url in attachments]
 
-        # Send email using MIME
         send_email_with_mime(
             subject=email_subject,
             body=email_body,
             recipients=['shadrack.bett.92@gmail.com',receivers_email],
             attachments=attachment_paths
         )
-        # Return the saved message as a response
         return jsonify(message.to_dict()), 201
 
     except Exception as e:
@@ -887,21 +770,16 @@ def admn_send_message(conversation_id):
 @jwt_required()
 def send_message(conversation_id):
     try:
-        # Get current user ID from JWT
         sender_id = get_jwt_identity()
 
-        # Check if conversation exists
         conversation = Conversation.query.get_or_404(conversation_id)
 
-        # Parse form data
         content = request.form.get('content')
         files = request.files.getlist('attachments')
 
-        # Ensure at least content or attachments are provided
         if not content and not files:
             return jsonify({'error': 'Message content or attachments are required.'}), 400
 
-        # Process file attachments
         attachments = []
         if files:
             for file in files:
@@ -909,14 +787,12 @@ def send_message(conversation_id):
                     filename = secure_filename(file.filename)
                     filepath = os.path.join(UPLOAD_FOLDER, filename)
                     file.save(filepath)
-                    
-                    # Convert server path to URL
+
                     file_url = url_for('serve_file', filename=filename, _external=True)
                     attachments.append(file_url)
                 else:
                     return jsonify({'error': f'Invalid file type: {file.filename}'}), 400
 
-        # Create and save the message
         message = MessageModel(
             conversation_id=conversation_id,
             sender_id=sender_id,
@@ -928,7 +804,6 @@ def send_message(conversation_id):
         db.session.commit()
 
         sender = User.query.get(sender_id)
-        # receiver = User.query.get(message.receiver_id)
         email_subject = "New Message Notification"
         email_body = f"""
         A new message has been sent by client {sender.username}.
@@ -940,85 +815,31 @@ def send_message(conversation_id):
         Please log in to the website to respond.
         """
 
-        # Convert attachment URLs to file paths if needed
         attachment_paths = [url.replace(app.config['UPLOAD_FOLDER'], '') for url in attachments]
 
-        # Send email using MIME
         send_email_with_mime(
             subject=email_subject,
             body=email_body,
             recipients=['shadrack.bett.92@gmail.com', 'studypage001@gmail.com'],
             attachments=attachment_paths
         )
-        # Return the saved message as a response
         return jsonify(message.to_dict()), 201
 
     except Exception as e:
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
 
-# @app.route('/conversations/<int:conversation_id>/messages', methods=['POST'])
-# @jwt_required()
-# def send_message(conversation_id):
-#     try:
-#         # Get current user ID from JWT
-#         sender_id = get_jwt_identity()
-
-#         # Check if conversation exists
-#         conversation = Conversation.query.get_or_404(conversation_id)
-
-#         # Parse form data
-#         content = request.form.get('content')
-#         files = request.files.getlist('attachments')
-
-#         # Ensure at least content or attachments are provided
-#         if not content and not files:
-#             return jsonify({'error': 'Message content or attachments are required.'}), 400
-
-#         # Process file attachments
-#         attachments = []
-#         if files:
-#             for file in files:
-#                 if file and allowed_file(file.filename):
-#                     filename = secure_filename(file.filename)
-#                     filepath = os.path.join(UPLOAD_FOLDER, filename)
-#                     file.save(filepath)
-#                     attachments.append(filepath)
-#                 else:
-#                     return jsonify({'error': f'Invalid file type: {file.filename}'}), 400
-
-#         # Create and save the message
-#         message = Message(
-#             conversation_id=conversation_id,
-#             sender_id=sender_id,
-#             receiver_id=conversation.client_id if sender_id != conversation.client_id else conversation.expert_id,
-#             content=content,
-#             attachments=', '.join(attachments) if attachments else None
-#         )
-#         db.session.add(message)
-#         db.session.commit()
-
-#         # Return the saved message as a response
-#         return jsonify(message.to_dict()), 201
-
-#     except Exception as e:
-#         # current_app.logger.error(f"Error in send_message: {e}")
-#         return jsonify({'error': 'An unexpected error occurred.'}), 500
 
 @app.route('/admin/conversations', methods=['GET'])
 @jwt_required()
 def admin_get_conversations():
     try:
-        # Fetch all conversations
         conversations = Conversation.query.all()
 
-        # Prepare the response data
         data = []
         for conv in conversations:
-            # Fetch client and expert details
             client = User.query.get(conv.client_id)
             expert = User.query.get(conv.expert_id)
 
-            # Construct conversation details
             conversation_data = {
                 "conversation_id": conv.id,
                 "client": client.username if client else "Unknown",
