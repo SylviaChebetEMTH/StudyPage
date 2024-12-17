@@ -15,6 +15,7 @@ import cloudinary.uploader
 from datetime import datetime
 from flask import url_for
 import os
+import re
 
 
 app = Flask(__name__)
@@ -109,70 +110,6 @@ def google_signup():
         'username': new_user.username
     }), 201
 
-# @app.route('/reset_password/<token>', methods=['GET', 'POST'])
-# def reset_password(token):
-#     # Verify the token
-#     try:
-#         email = s.loads(token, salt='password-reset-salt', max_age=3600)
-#     except SignatureExpired:
-#         return jsonify({'error': 'The token is expired'}), 400
-#     except BadTimeSignature:
-#         return jsonify({'error': 'Invalid token'}), 400
-
-#     if request.method == 'POST':
-#         # Check if the request is JSON
-#         if request.is_json:
-#             new_password = request.get_json().get('new_password')
-#         else:
-#             # If not JSON, check if it's a form submission
-#             if 'new_password' in request.form:
-#                 new_password = request.form['new_password']
-#             else:
-#                 return jsonify({'error': 'Missing new password'}), 400
-
-#         # Validate the new password
-#         if not new_password:
-#             return jsonify({'error': 'Missing new password'}), 400
-
-#         # Find the user by email
-#         user = User.query.filter_by(email=email).first()
-#         if not user:
-#             return jsonify({'error': 'User   not found'}), 404
-
-#         # Update the user's password
-#         user.password = bcrypt.generate_password_hash(new_password)
-#         db.session.commit()
-
-#         return jsonify({'success': 'Password updated successfully'}), 200
-
-#     # Render the password reset form for GET requests
-#     return '''
-#     <form method="POST" id="reset-password-form">
-#         <input type="password" name="new_password" placeholder="New Password" required>
-#         <input type="submit" value="Reset Password">
-#     </form>
-#     <script>
-#         // Send the form data as JSON
-#         document.getElementById('reset-password-form').addEventListener('submit', function(event) {
-#             event.preventDefault();
-#             var formData = new FormData(this);
-#             var jsonData = {};
-#             for (var pair of formData.entries()) {
-#                 jsonData[pair[0]] = pair[1];
-#             }
-#             fetch('/reset_password/''' + token + ''', {
-#                 method: 'POST',
-#                 headers: {
-#                     'Content-Type': 'application/json'
-#                 },
-#                 body: JSON.stringify(jsonData)
-#             })
-#             .then(response => response.json())
-#             .then(data => console.log(data))
-#             .catch(error => console.error('Error:', error));
-#         });
-#     </script>
-#     '''
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
@@ -343,6 +280,7 @@ def get_current_user():
         return jsonify({"message": "User not found"}), 404
 
 
+
 BLACKLIST = set()
 # @jwt.token_in_blocklist_loader
 def check_if_token_in_blocklist(jwt_header, decrypted_token):
@@ -355,6 +293,68 @@ def logout():
     jti = get_jwt()["jti"]
     BLACKLIST.add(jti)
     return jsonify({"success":"Logged out successfully"}), 200
+
+@app.route('/verify_password', methods=['POST'])
+@jwt_required()
+def verify_password():
+    data = request.get_json()
+    existing_password = data.get('existing_password', None)
+
+    # Get the current user's ID from the JWT
+    current_user_id = get_jwt_identity()
+    current_user = User.query.get(current_user_id)
+
+    if not current_user:
+        return jsonify({"success": False, "error": "User  not found"}), 404
+
+    # Debugging: Log the current user's password hash and the existing password
+    print(f"Current user's password hash: {current_user.password}")
+    print(f"Existing password provided: {existing_password}")
+
+    # Check if the existing password matches the stored password
+    if existing_password and check_password_hash(current_user.password, existing_password):
+        return jsonify({"success": True}), 200
+    else:
+        return jsonify({"success": False, "error": "Incorrect password"}), 401
+
+
+@app.route('/update_profile', methods=['PUT'])
+@jwt_required()
+def update_profile():
+    # Get the current user's ID from the JWT token
+    current_user_id = get_jwt_identity()
+    current_user = User.query.get(current_user_id)
+
+    if not current_user:
+        return jsonify({"error": "User not found"}), 404
+
+    data = request.get_json()
+
+    # Update username if provided
+    if 'username' in data:
+        current_user.username = data['username']
+
+    if 'phone_number' in data:
+        current_user.phone_number = data['phone_number']
+    if 'email' in data:
+        current_user.email = data['email']
+
+    # Update password if provided
+    if 'password' in data:
+        new_password = data['password']
+        if not re.match(r'(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}', new_password):
+            return jsonify({"error": "Password must be at least 8 characters long and include numbers and symbols."}), 400
+        hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+        current_user.password = hashed_password
+
+    # Commit changes to the database
+    try:
+        db.session.commit()
+        return jsonify({"success": "Profile updated successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Failed to update profile"}), 500
+
 
 
 @app.route('/admin/users', methods=['GET'])

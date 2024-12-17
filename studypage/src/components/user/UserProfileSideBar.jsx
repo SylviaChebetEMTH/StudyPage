@@ -27,13 +27,13 @@ const UserProfile = (authToken) => {
         );
     }
     const accountLink = authToken
-    ? currentUser?.is_admin
-        ? "/admin/dashboard"
-        : "/userprofile"
-    : "/login";
+        ? currentUser?.is_admin
+            ? "/admin/dashboard"
+            : "/userprofile"
+        : "/login";
 
-// Determine chat link
-const chatLink = currentUser?.is_admin ? "/adminchat" : "/chat";
+    // Determine chat link
+    const chatLink = currentUser?.is_admin ? "/adminchat" : "/chat";
 
     return (
         <div className="flex flex-col md:flex-row min-h-screen bg-[#F0F9FF] pt-10">
@@ -64,13 +64,19 @@ const chatLink = currentUser?.is_admin ? "/adminchat" : "/chat";
                     } h-full md:h-auto pt-4 z-20`}>
                 <div className="p-4">
                     {/* User Profile */}
+
                     <div className="flex items-center mb-4 border-b-2 border-gray-200">
-                        <div className="bg-blue-300 rounded-full w-12 h-12 flex justify-center items-center mr-2 mb-2">
+                        <Link
+                            to="/updateprofile"
+                            className="bg-blue-300 rounded-full w-12 h-12 flex justify-center items-center mr-2 mb-2"
+                        >
                             <FontAwesomeIcon icon={faUser} className="text-white text-xl" />
-                        </div>
+                        </Link>
+
                         <h2 className="text-md text-gray-700">
                             {currentUser.username || "User"}
                         </h2>
+                        
                     </div>
 
                     {/* Navigation */}
@@ -129,16 +135,16 @@ const chatLink = currentUser?.is_admin ? "/adminchat" : "/chat";
                                 </NavLink>
                             </li>
                             <li className="mb-4">
-                            <Link
-                        to={{
-                            pathname: chatLink, // Dynamic path based on user role
-                        }}
-                        state={{ authToken }} // Pass authToken in state
-                        className="text-gray-700 hover:text-blue-700 flex items-center text-xs"
-                    >
-                        Messages
-                        {/* <FontAwesomeIcon icon={faCommentDots} className="text-lg text-blue-700" /> */}
-                    </Link>
+                                <Link
+                                    to={{
+                                        pathname: chatLink,
+                                    }}
+                                    state={{ authToken }}
+                                    className="text-gray-700 hover:text-blue-700 flex items-center text-xs"
+                                >
+                                    Messages
+                                    {/* <FontAwesomeIcon icon={faCommentDots} className="text-lg text-blue-700" /> */}
+                                </Link>
                             </li>
                             <li className="mb-4">
                                 <button

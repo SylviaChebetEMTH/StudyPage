@@ -29,6 +29,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Chat from "./components/user/Messaging";
 import AdminPanel from "./components/adminChat/AdminPanel";
 import ResetPassword from "./components/forms/ResetPassword";
+import UpdateProfile from "./components/forms/UpdateProfile";
+import UserDashboard from "./components/user/UserDashboard";
 
 
 function AppContent() {
@@ -37,7 +39,7 @@ function AppContent() {
   const isAdminPage = location.pathname.startsWith('/admin');
   const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
 
-  const clientId = "854474486915-lncgkai7f4jca5fqe4v7ma0flkftdd5k.apps.googleusercontent.com"
+  
   return (
     <div className="min-h-screen flex flex-col ">
       {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)}
@@ -49,9 +51,11 @@ function AppContent() {
           <Route path="/reset_password/:token" element={<ResetPassword />} />
           <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
+          <Route path="/updateprofile" element={<UpdateProfile />} />
           <Route path="/expertspage" element={<ExpertPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          
           <Route path="/hireexpert" element={<ProjectRequest />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/chat" element={<Chat />} />
@@ -74,6 +78,7 @@ function AppContent() {
           {!currentUser?.is_admin && (
             <Route path="/userprofile" element={<UserProfile />} >
               <Route path="hireexpert" element={<ProjectRequest />} />
+              <Route path="dashboard" element={<UserDashboard />} />
               <Route path="projectsummary" element={<ProjectSummary />} />
             </Route>
 

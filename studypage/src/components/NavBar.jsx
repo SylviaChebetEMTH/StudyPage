@@ -1,20 +1,18 @@
 import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { UserContext } from './contexts/userContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faCommentDots, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faCommentDots } from '@fortawesome/free-solid-svg-icons';
 
 export const NavBar = () => {
     const { authToken, currentUser } = useContext(UserContext);
-    const { logout } = useContext(UserContext);
-    const navigate = useNavigate();
     console.log('adminauthtoken', authToken);
 
     // Determine account link
     const accountLink = authToken
         ? currentUser?.is_admin
             ? "/admin/dashboard"
-            : "/userprofile"
+            : "/userprofile/dashboard"
         : "/login";
 
     // Determine chat link
