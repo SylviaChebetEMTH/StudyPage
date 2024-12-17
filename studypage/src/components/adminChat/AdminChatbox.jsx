@@ -38,7 +38,7 @@ const AdminChatBox = ({ conversationId, conversationDetails, authToken }) => {
     attachments.forEach(file => formData.append('attachments', file));
   
     try {
-      const response = await fetch(`http://127.0.0.1:5000/conversations/${conversationId}/messages`, {
+      const response = await fetch(`http://127.0.0.1:5000/conversationsadmin/${conversationId}/messages`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`,
