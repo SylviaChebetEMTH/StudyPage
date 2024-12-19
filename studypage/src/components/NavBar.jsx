@@ -19,42 +19,42 @@ export const NavBar = () => {
     const chatLink = currentUser?.is_admin ? "/adminchat" : "/chat";
 
     return (
-        <nav className="top-0 left-0 right-0 bg-[#AAC1C0] shadow-md p-4 z-50">
+        <nav className="flex justify-between items-center px-10 py-6 bg-gray-900">
             <div className="container mx-auto flex justify-between items-center">
                 <Link
                     to="/"
-                    className="text-xl font-semibold text-black"
+                    className="text-yellow-500 font-bold text-2xl"
                 >
-                    StudyPage
+                    Study<span className="text-white">Page</span>
                 </Link>
-                <div className="flex items-center">
+                <div className="flex items-center space-x-8">
                     <Link
                         to="/"
-                        className="bg-transparent py-1 px-2 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 hover:underline"
+                        className="text-white hover:text-yellow-400 cursor-pointer"
                     >
                         Home
                     </Link>
                     <Link
                         to="/services"
-                        className="bg-transparent py-1 px-2 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 hover:underline"
+                        className="text-white hover:text-yellow-400 cursor-pointer"
                     >
                         Services
                     </Link>
                     <Link
                         to="/expertspage"
-                        className="bg-transparent py-1 px-2 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 hover:underline"
+                        className="text-white hover:text-yellow-400 cursor-pointer"
                     >
                         Our Experts
                     </Link>
                     <Link
                         to="/about"
-                        className="bg-transparent py-1 px-2 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 hover:underline"
+                        className="text-white hover:text-yellow-400 cursor-pointer"
                     >
-                        About User
+                        About
                     </Link>
                 </div>
                 <div className="flex gap-4">
-                    <Link to={accountLink} className="text-gray-700 hover:text-blue-700 flex items-center text-xs">
+                    <Link to={accountLink} className="text-white hover:text-yellow-400 cursor-pointer flex items-center text-xs">
                         <FontAwesomeIcon icon={faUser} className="text-lg" />
                         <span className="ml-1">{authToken ? 'My Account' : 'Login'}</span>
                     </Link>

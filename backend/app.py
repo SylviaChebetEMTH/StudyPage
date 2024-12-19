@@ -1113,7 +1113,7 @@ def delete_expert(id):
 
 @app.route('/services', methods=['GET'])
 def get_services():
-    services = Service.query.options(db.joinedload(Service.project_type)).all()  # Fetch all services with related project type
+    services = Service.query.options(db.joinedload(Service.project_type)).all()  
     service_list = []
 
     for service in services:
@@ -1122,8 +1122,9 @@ def get_services():
             'title': service.title,
             'description': service.description,
             'price': service.price,
-            'project_type_name': service.project_type.name if service.project_type else None,  # Get project type name
-            'subject_name': service.subject.name if service.subject else None  # Get subject name, optional
+            'unit': service.unit,
+            'project_type_name': service.project_type.name if service.project_type else None,  
+            'subject_name': service.subject.name if service.subject else None  
         }
         service_list.append(service_data)
 

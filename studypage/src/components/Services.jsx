@@ -22,8 +22,8 @@ const Services = () => {
       }
 
       const data = await response.json();
-      console.log(data); // Log to verify structure
-      setServices(Array.isArray(data.services) ? data.services : []); // Access 'services' from the response
+      console.log(data);
+      setServices(Array.isArray(data.services) ? data.services : []); 
     } catch (error) {
       console.error('Error fetching services:', error);
       setError('Failed to fetch services.');
@@ -40,24 +40,32 @@ const Services = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Services List</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="bg-gray-50 py-16 px-4 md:px-8">
+      {/* Header Section */}
+      <header className="text-center mb-12">
+        <h1 className="text-5xl font-bold text-gray-900 mb-4">Our Services</h1>
+        <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+          Explore our wide range of services designed to help you achieve success.
+        </p>
+      </header>
+
+      {/* Services Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-screen-xl mx-auto">
         {Array.isArray(services) && services.length > 0 ? (
           services.map((service) => (
             <div
               key={service.id}
-              className="bg-slate-300 shadow-md rounded-lg p-4 flex flex-col items-center"
+              className="bg-white shadow-lg rounded-xl p-6 transform transition-transform hover:-translate-y-2 hover:shadow-2xl"
             >
-              <h2 className="text-xl font-semibold mb-2">{service.title}</h2>
-              <p className="text-gray-700">Description: {service.description}</p>
-              <p className="text-gray-700">Price: ${service.price}</p>
-              <p className="text-gray-700">Duration: {service.duration} hours</p>
-              {/* You can add more fields as needed */}
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">{service.title}</h2>
+              <p className="text-gray-600 mb-2">Description: {service.description}</p>
+              <p className="text-gray-600 mb-2">Price: ${service.price} {service.unit}</p>
+              <p className="text-gray-600 mb-2">Project Type: {service.project_type_name} </p>
+              <p className="text-gray-600">Subject Area: {service.subject_name}</p>
             </div>
           ))
         ) : (
-          <p>No services available</p>
+          <p className="text-center text-gray-600">No services available</p>
         )}
       </div>
     </div>

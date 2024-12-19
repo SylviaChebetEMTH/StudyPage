@@ -31,6 +31,9 @@ import AdminPanel from "./components/adminChat/AdminPanel";
 import ResetPassword from "./components/forms/ResetPassword";
 import UpdateProfile from "./components/forms/UpdateProfile";
 import UserDashboard from "./components/user/UserDashboard";
+import Footer from "./components/Footer";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import Help from "./components/Help";
 
 
 function AppContent() {
@@ -54,8 +57,10 @@ function AppContent() {
           <Route path="/updateprofile" element={<UpdateProfile />} />
           <Route path="/expertspage" element={<ExpertPage />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/privacy_policy" element={<PrivacyPolicy />} />
           <Route path="/login" element={<Login />} />
-          
+          <Route path="/footer" element={<Footer />} />
           <Route path="/hireexpert" element={<ProjectRequest />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/chat" element={<Chat />} />
@@ -85,6 +90,7 @@ function AppContent() {
           )}
         </Routes>
       </div>
+      <Footer />
 
     </div>
 
