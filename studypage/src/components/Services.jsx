@@ -32,6 +32,7 @@ const Services = () => {
     }
   };
 
+  
   useEffect(() => {
     fetchServices();
   }, []);
