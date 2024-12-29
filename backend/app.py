@@ -1252,6 +1252,27 @@ def partial_update_expert(id):
     
     return jsonify(updated_expert), 200
 
+@app.route('/conversations/<int:conversation_id>/mark-read', methods=['POST'])
+@jwt_required()
+def mark_messages_read(conversation_id):
+    try:
+        user_id = get_jwt_identity()
+        
+        # Mark all unread messages where the current user is the receiver
+        unread_messages = Message.query.filter_by(
+            conversation_id=conversation_id,
+            receiver_id=user_id,
+            read=False
+        ).all()
+        
+        for message in unread_messages:
+            message.read = True
+        
+        db.session.commit()
+        return jsonify({'success': True}), 200
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/experts/<int:id>', methods=['DELETE'])
 @jwt_required()
