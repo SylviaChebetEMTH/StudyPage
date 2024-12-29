@@ -30,6 +30,7 @@ const Sidebar = ({ setActiveUser }) => {
             conversationId: conv.id,
             client_name: conv.client?.client_name || "Unknown Client",
             client_id: conv.client?.id || null, 
+            message: conv.latest_message
           }}
           setActiveUser={setActiveUser}
         />
