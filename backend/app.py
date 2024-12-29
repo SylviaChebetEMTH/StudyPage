@@ -864,6 +864,12 @@ def send_message(conversation_id):
         )
         db.session.add(message)
         db.session.commit()
+        socketio.emit('new_message', {
+            'conversation_id': conversation_id,
+            'sender_id': sender_id,
+            'receiver_id': message.receiver_id,
+            'message': message.to_dict()
+        })
 
         sender = User.query.get(sender_id)
         email_subject = "New Message Notification"
