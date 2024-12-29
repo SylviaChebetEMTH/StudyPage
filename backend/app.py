@@ -1060,8 +1060,10 @@ def get_conversations():
                 'client_name': User.query.get(conversation.client_id).username
             },
             'latest_message': latest_message.content if latest_message else "No messages yet",
+            'timestamp': latest_message.timestamp.isoformat() if latest_message else None
         })
-
+        
+    result.sort(key=lambda x: x['timestamp'] if x['timestamp'] else '', reverse=True)
     return jsonify(result)
 
 @app.route('/experts/<int:id>', methods=['GET'])
