@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Sidebar from "../chat-interface/Sidebar";
-import ChatWindow from "../chat-interface/ChatWindow";
+import ChatWindow from "../chatInterface/ChatWindow";
+import Sidebar from "../chatInterface/Sidebar";
 
 const Messaging = () => {
   const [activeUser, setActiveUser] = useState(null); 

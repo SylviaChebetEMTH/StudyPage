@@ -15,7 +15,7 @@ def seed_database():
     user1.set_password('password123')
 
     admin1 = User(
-        username='Studypage',
+        username='bett',
         email='admin@example.com',
         phone_number='987-654-3210',
         is_admin=True
@@ -116,49 +116,194 @@ def seed_database():
         profile_picture='https://example.com/picture2.jpg'
     )
 
-#     services = [
-#     Service(
-#         title='Essays',
-#         description='cool proj',
-#         base_price=5.00,
-#         price_per_page=10.00,
-#         unit='per page',
-#         project_type_id=1,  # Ensure you reference the ID, not the object itself
-#         subject_id=1
-#     ),
-#     Service(
-#         title='Admissions Essay',
-#         description='cool proj',
-#         base_price=15.00,
-#         price_per_page=20.00,
-#         unit='per page',
-#         project_type_id=2,  # Adjust this to the correct project type
-#         subject_id=2
-#     )
-# ]
+    services = [
+    Service(
+        title='Essays',
+        description='cool proj',
+        base_price=5.00,
+        price_per_page=10.00,
+        unit='per page',
+        project_type_id=1,  # Ensure you reference the ID, not the object itself
+        subject_id=1
+    ),
+    Service(
+        title='Admissions Essay',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=2, 
+        subject_id=2
+    ),
+        Service(
+        title='PowerPoint Presentation',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=3, 
+        subject_id=2
+    ),
+        Service(
+        title='Research Paper',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=4, 
+        subject_id=2
+    ),
+        Service(
+        title='Assignments',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=5, 
+        subject_id=2
+    ),
+        Service(
+        title='Homework',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=6, 
+        subject_id=2
+    ),
+        Service(
+        title='Speech',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=7, 
+        subject_id=2
+    ),
+        Service(
+        title='Book Reviews',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=8, 
+        subject_id=2
+    ),
+        Service(
+        title='Coursework',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=9, 
+        subject_id=2
+    ),
+        Service(
+        title='Personal Statement',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=10, 
+        subject_id=2
+    ),
+        Service(
+        title='PhD Dissertation',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=11, 
+        subject_id=2
+    ),
+        Service(
+        title='Thesis',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=12, 
+        subject_id=2
+    ),
+        Service(
+        title='Case Study',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=13, 
+        subject_id=2
+    ),
+        Service(
+        title='Term Paper',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=20.00,
+        unit='per page',
+        project_type_id=14, 
+        subject_id=14
+    ),
+        Service(
+        title='Lab Report',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=15.00,
+        unit='per page',
+        project_type_id=15, 
+        subject_id=2
+    ),
+        Service(
+        title='Editing',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=5.00,
+        unit='per page',
+        project_type_id=16, 
+        subject_id=2
+    ),
+        Service(
+        title='Proofreading',
+        description='cool proj',
+        base_price=15.00,
+        price_per_page=5.00,
+        unit='per page',
+        project_type_id=17, 
+        subject_id=6
+    ),
+        Service(
+        title='Rewrite',
+        description='cool proj',
+        base_price=2.00,
+        price_per_page=7.00,
+        unit='per page',
+        project_type_id=18, 
+        subject_id=1
+    )
+
+]
 
 
     # Create services with pricing per page
-    services = [
-        Service(title='Essays',price=10.00, unit='per page', project_type=project_types[0], subject_id=1),
-        Service(title='Admissions Essay', price=15.00, unit='per page', project_type=project_types[0], subject_id=2),
-        Service(title='PowerPoint Presentation', price=8.00, unit='per slide', project_type=project_types[1], subject_id=3),
-        Service(title='Research Paper', price=20.00, unit='per page', project_type=project_types[0], subject_id=1),
-        Service(title='Assignments', price=12.00, unit='per page', project_type=project_types[0], subject_id=4),
-        Service(title='Homework', price=12.00, unit='per page', project_type=project_types[0], subject_id=6),
-        Service(title='Speech', price=10.00, unit='per page', project_type=project_types[0], subject_id=2),
-        Service(title='Book Reviews', price=10.00, unit='per page', project_type=project_types[0], subject_id=8),
-        Service(title='Coursework', price=15.00, unit='per page', project_type=project_types[0], subject_id=11),
-        Service(title='Personal Statement', price=18.00, unit='per page', project_type=project_types[0], subject_id=3),
-        Service(title='PhD Dissertation', price=30.00, unit='per page', project_type=project_types[0], subject_id=1),
-        Service(title='Thesis', price=25.00, unit='per page', project_type=project_types[0], subject_id=4),
-        Service(title='Case Study', price=22.00, unit='per page', project_type=project_types[1], subject_id=6),
-        Service(title='Term Paper', price=15.00, unit='per page', project_type=project_types[0], subject_id=12),
-        Service(title='Lab Report', price=20.00, unit='per page', project_type=project_types[1], subject_id=8),
-        Service(title='Editing', price=5.00, unit='per page', project_type=project_types[0], subject_id=2),
-        Service(title='Proofreading', price=4.00, unit='per page', project_type=project_types[0], subject_id=6),
-        Service(title='Rewrite', price=7.00, unit='per page', project_type=project_types[0], subject_id=1),
-    ]
+    # services = [
+    #     Service(title='Essays',price=10.00, unit='per page', project_type=project_types[0], subject_id=1),
+    #     Service(title='Admissions Essay', price=15.00, unit='per page', project_type=project_types[0], subject_id=2),
+    #     Service(title='PowerPoint Presentation', price=8.00, unit='per slide', project_type=project_types[1], subject_id=3),
+    #     Service(title='Research Paper', price=20.00, unit='per page', project_type=project_types[0], subject_id=1),
+    #     Service(title='Assignments', price=12.00, unit='per page', project_type=project_types[0], subject_id=4),
+    #     Service(title='Homework', price=12.00, unit='per page', project_type=project_types[0], subject_id=6),
+    #     Service(title='Speech', price=10.00, unit='per page', project_type=project_types[0], subject_id=2),
+    #     Service(title='Book Reviews', price=10.00, unit='per page', project_type=project_types[0], subject_id=8),
+    #     Service(title='Coursework', price=15.00, unit='per page', project_type=project_types[0], subject_id=11),
+    #     Service(title='Personal Statement', price=18.00, unit='per page', project_type=project_types[0], subject_id=3),
+    #     Service(title='PhD Dissertation', price=30.00, unit='per page', project_type=project_types[0], subject_id=1),
+    #     Service(title='Thesis', price=25.00, unit='per page', project_type=project_types[0], subject_id=4),
+    #     Service(title='Case Study', price=22.00, unit='per page', project_type=project_types[1], subject_id=6),
+    #     Service(title='Term Paper', price=15.00, unit='per page', project_type=project_types[0], subject_id=12),
+    #     Service(title='Lab Report', price=20.00, unit='per page', project_type=project_types[1], subject_id=8),
+    #     Service(title='Editing', price=5.00, unit='per page', project_type=project_types[0], subject_id=2),
+    #     Service(title='Proofreading', price=4.00, unit='per page', project_type=project_types[0], subject_id=6),
+    #     Service(title='Rewrite', price=7.00, unit='per page', project_type=project_types[0], subject_id=1),
+    # ]
 
     # Create project requests
     # request1 = ProjectRequest(

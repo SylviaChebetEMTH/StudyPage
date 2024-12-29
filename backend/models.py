@@ -90,38 +90,38 @@ class Subject(db.Model):
     services = db.relationship('Service', backref='subject')  # Adjusted to single subject relationship
 
 
-class Service(db.Model):
-    __tablename__ = 'services'
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text)
-    price = db.Column(db.Float, nullable=False)  # Base price or price per unit (e.g., page)
-    unit = db.Column(db.String(50), nullable=True)  # e.g., "per page", "per hour", etc.
-
-    # Foreign key for subject
-    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)  # Added subject_id
-
-    # Relationship to project types
-    project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'), nullable=False)
-
-    def get_price(self, quantity=1):
-        """Calculate price based on quantity (e.g., number of pages)"""
-        return self.price * quantity
-
 # class Service(db.Model):
 #     __tablename__ = 'services'
 #     id = db.Column(db.Integer, primary_key=True)
 #     title = db.Column(db.String(100), nullable=False)
 #     description = db.Column(db.Text)
-#     base_price = db.Column(db.Float, nullable=False)  # Base price
-#     price_per_page = db.Column(db.Float, nullable=False)  # Price per page
-#     unit = db.Column(db.String(50), nullable=True)
-    
+#     price = db.Column(db.Float, nullable=False)  # Base price or price per unit (e.g., page)
+#     unit = db.Column(db.String(50), nullable=True)  # e.g., "per page", "per hour", etc.
+
 #     # Foreign key for subject
-#     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)
+#     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)  # Added subject_id
 
 #     # Relationship to project types
 #     project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'), nullable=False)
+
+#     def get_price(self, quantity=1):
+#         """Calculate price based on quantity (e.g., number of pages)"""
+#         return self.price * quantity
+
+class Service(db.Model):
+    __tablename__ = 'services'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    base_price = db.Column(db.Float, nullable=False)  # Base price
+    price_per_page = db.Column(db.Float, nullable=False)  # Price per page
+    unit = db.Column(db.String(50), nullable=True)
+    
+    # Foreign key for subject
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)
+
+    # Relationship to project types
+    project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'), nullable=False)
 
     def calculate_total_price(self, number_of_pages):
         """

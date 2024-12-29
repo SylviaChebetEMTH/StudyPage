@@ -4,19 +4,27 @@ from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from functools import wraps
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, create_refresh_token, get_jwt, verify_jwt_in_request, decode_token
-from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject, Message, Conversation
+from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject, Message as MessageModel, Conversation
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from flask_migrate import Migrate
 from flask_restful import Resource,Api
+from flask_mail import Mail, Message as MessageInstance
 import cloudinary.uploader
 from datetime import datetime
 from flask import url_for
 import os
 import re
 
+import requests
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+SECRET_KEY = os.urandom(24)
 
 app = Flask(__name__)
 api = Api(app)
@@ -29,14 +37,119 @@ if not os.path.exists(UPLOAD_FOLDER):  # Ensure the folder exists
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-#Configure flask mail
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'urbanbazaar1994@gmail.com'
-app.config['MAIL_PASSWORD'] = 'xteg ewtp sifv qxgh'
-app.config['MAIL_DEFAULT_SENDER']= 'urbanbazaar1994@gmail.com'
+def send_email_with_mime(subject, body, recipients, attachments=None):
+    """
+    Send an email using the MIME method.
+
+    :param subject: Email subject
+    :param body: Email body (text or HTML)
+    :param recipients: List of recipient email addresses
+    :param attachments: List of file paths for attachments
+    """
+    try:
+        # SMTP server configuration
+        smtp_server = "smtp.gmail.com"
+        smtp_port = 587
+        email_user = "studypage001@gmail.com"
+        email_password = "hbib knho xqon emrw"
+
+        # Create the email object
+        msg = MIMEMultipart()
+        msg['From'] = email_user
+        msg['To'] = ", ".join(recipients)
+        msg['Subject'] = subject
+
+        # Attach the email body
+        msg.attach(MIMEText(body, 'plain'))  # Use 'html' for HTML content
+
+        # Attach files if provided
+        if attachments:
+            for file_path in attachments:
+                try:
+                    # Open the file in binary mode
+                    with open(file_path, 'rb') as file:
+                        part = MIMEBase('application', 'octet-stream')
+                        part.set_payload(file.read())
+                    
+                    # Encode the file in ASCII to send as email
+                    encoders.encode_base64(part)
+
+                    # Add header to the attachment
+                    part.add_header(
+                        'Content-Disposition',
+                        f'attachment; filename={file_path.split("/")[-1]}'
+                    )
+                    msg.attach(part)
+                except Exception as e:
+                    print(f"Failed to attach file {file_path}: {e}")
+
+        # Connect to the SMTP server and send the email
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(email_user, email_password)
+            server.sendmail(email_user, recipients, msg.as_string())
+        
+        print("Email sent successfully!")
+    
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+
+def send_email_with_mime(subject, body, recipients, attachments=None):
+    """
+    Send an email using the MIME method.
+
+    :param subject: Email subject
+    :param body: Email body (text or HTML)
+    :param recipients: List of recipient email addresses
+    :param attachments: List of file paths for attachments
+    """
+    try:
+        # SMTP server configuration
+        smtp_server = "smtp.gmail.com"
+        smtp_port = 587
+        email_user = "studypage001@gmail.com"
+        email_password = "hbib knho xqon emrw"
+
+        # Create the email object
+        msg = MIMEMultipart()
+        msg['From'] = email_user
+        msg['To'] = ", ".join(recipients)
+        msg['Subject'] = subject
+
+        # Attach the email body
+        msg.attach(MIMEText(body, 'plain'))  # Use 'html' for HTML content
+
+        # Attach files if provided
+        if attachments:
+            for file_path in attachments:
+                try:
+                    # Open the file in binary mode
+                    with open(file_path, 'rb') as file:
+                        part = MIMEBase('application', 'octet-stream')
+                        part.set_payload(file.read())
+                    
+                    # Encode the file in ASCII to send as email
+                    encoders.encode_base64(part)
+
+                    # Add header to the attachment
+                    part.add_header(
+                        'Content-Disposition',
+                        f'attachment; filename={file_path.split("/")[-1]}'
+                    )
+                    msg.attach(part)
+                except Exception as e:
+                    print(f"Failed to attach file {file_path}: {e}")
+
+        # Connect to the SMTP server and send the email
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(email_user, email_password)
+            server.sendmail(email_user, recipients, msg.as_string())
+        
+        print("Email sent successfully!")
+    
+    except Exception as e:
+        print(f"Failed to send email: {e}")
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -45,6 +158,49 @@ bcrypt = Bcrypt(app)
 mail = Mail(app) 
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 CORS(app,resources={r"/*": {"origins": "http://localhost:3001"}})
+
+# PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
+PAYSTACK_SECRET_KEY =os.environ.get('PAYSTACK_SECRET_KEY')
+@app.route('/verify-payment', methods=['POST'])
+def verify_payment():
+    """
+    Verify Paystack payment using the transaction reference.
+    """
+    data = request.json
+    reference = data.get('reference')
+    project_details = data.get('projectDetails') 
+
+    if not reference:
+        return jsonify({"success": False, "message": "Transaction reference is required"}), 400
+
+    try:
+        url = f"https://api.paystack.co/transaction/verify/{reference}"
+        headers = {
+            "Authorization": f"Bearer {PAYSTACK_SECRET_KEY}"
+        }
+        response = requests.get(url, headers=headers)
+        response_data = response.json()
+
+        if response_data['status'] and response_data['data']['status'] == "success":
+            return jsonify({
+                "success": True,
+                "message": "Payment verified and project submitted!",
+                "transaction_data": response_data['data']  
+            }), 200
+
+        else:
+            return jsonify({
+                "success": False,
+                "message": "Payment verification failed. Please try again."
+            }), 400
+
+    except Exception as e:
+        return jsonify({"success": False, "message": f"An error occurred: {str(e)}"}), 500
+
+@app.route('/test', methods=['GET'])
+def test():
+    """A simple test endpoint to ensure the server is running."""
+    return jsonify({"message": "Server is running!"})
 
 # @app.route('/messages', methods=['GET'])
 # def get_messages():
@@ -154,7 +310,8 @@ def get_admin_messages():
         return jsonify({'error': 'Admin user is not authenticated or found'}), 403
 
     # Fetch messages sent to the admin user
-    messages = Message.query.filter_by(receiver_id=current_user.id).all()
+    messages = MessageModel.query.filter_by(receiver_id=current_user.id).all()
+    messages = MessageModel.query.filter_by(receiver_id=current_user.id).all()
 
     if not messages:
         return jsonify({'message': 'No messages for admin'}), 404
@@ -174,7 +331,8 @@ def get_user_messages():
         return jsonify({"message": "User not found"}), 404
 
     # Retrieve messages that are sent to the current user
-    messages = Message.query.filter_by(receiver_id=current_user.id).all()
+    messages = MessageModel.query.filter_by(receiver_id=current_user.id).all()
+    messages = MessageModel.query.filter_by(receiver_id=current_user.id).all()
 
     # Format messages for the response
     message_list = [{'user': message.sender.username, 'message': message.content} for message in messages]
@@ -512,7 +670,6 @@ def submit_project(project_id):
     for file in files:
         file.save(f"uploads/{file.filename}")
 
-    # Update project status
     project.status = 'Completed'
     db.session.commit()
 
@@ -523,10 +680,9 @@ def submit_project(project_id):
 def request_expert():
     data = request.form
     files = request.files.getlist('attachments')
-    # client_id=get_jwt_identity(),
-    # expert_id=data.get('expert_id')
 
-    deadline_str = data.get('deadline')  # e.g., "2024-12-11"
+    deadline_str = data.get('deadline') 
+    deadline_str = data.get('deadline') 
     try:
         deadline = datetime.strptime(deadline_str, "%Y-%m-%d")
     except ValueError:
@@ -546,26 +702,23 @@ def request_expert():
     db.session.add(project)
     db.session.commit()
 
-    # Save files
     attachments = []
     for file in files:
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-        attachments.append(file_path)
+        file_url = url_for('serve_file', filename=filename, _external=True)
+        attachments.append(file_url)
     project.attachments = ','.join(attachments)
     db.session.commit()
 
-    # Check for an existing conversation
     conversation = Conversation.query.filter_by(
         
         client_id=get_jwt_identity(),
         expert_id=data.get('expert_id'),
     ).first()
-    
-    # print(conversation.messages)
 
-    # If no existing conversation, create a new one
+
     if not conversation:
         conversation = Conversation(
             client_id=get_jwt_identity(),
@@ -575,8 +728,7 @@ def request_expert():
         db.session.add(conversation)
         db.session.commit()
 
-    # Add an initial message
-    message = Message(
+    message = MessageModel(
         conversation_id=conversation.id,
         sender_id=get_jwt_identity(),
         content=f"New project submitted: {project.project_title}\\nDescription: {project.project_description}\\nDeadline: {project.deadline.strftime('%Y-%m-%d')}",
@@ -587,119 +739,43 @@ def request_expert():
     db.session.add(message)
     db.session.commit()
 
+    email_subject = "New Project Request Submitted"
+    email_body = f"""
+    A new project has been submitted with the following details:
+
+    Title: {project.project_title}
+    Description: {project.project_description}
+    Deadline: {project.deadline.strftime('%Y-%m-%d')}
+    Attachments: {', '.join(attachments)}
+    """
+
+    send_email_with_mime(
+        subject=email_subject,
+        body=email_body,
+        recipients=['shadybett540@gmail.com', 'studypage001@gmail.com'],
+        attachments=[os.path.join(app.config['UPLOAD_FOLDER'], filename) for filename in attachments]
+    )
     return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
-
-# @app.route('/request_expert', methods=['POST'])
-# @jwt_required()  # Ensure that the user is authenticated
-# def request_expert():
-#     try:
-#         # Retrieve form data
-#         project_title = request.form.get('project_title')
-#         project_description = request.form.get('project_description')
-#         project_type_id = request.form.get('project_type')
-#         subject_id = request.form.get('subject')
-#         deadline = request.form.get('deadline')
-#         expert_id = request.form.get('expert_id')
-#         number_of_pages = request.form.get('number_of_pages')
-
-#         # Handle file attachments
-#         attachments = []  # Start with an empty list
-#         if 'attachments' in request.files:
-#             files = request.files.getlist('attachments')
-#             print(f"Files received: {len(files)} files")
-#             for file in files:
-#                 if file and allowed_file(file.filename):
-#                     print(f"File received: {file.filename}")
-#                     filename = secure_filename(file.filename)
-#                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-#                     print(f"Saving file to: {file_path}")
-#                     try:
-#                         file.save(file_path)
-#                     except Exception as e:
-#                         print(f"Error saving file: {e}")
-#                     attachments.append(filename)  # Store only the filename or file path
-
-#         # Validate input fields
-#         if not all([project_title, project_description, project_type_id, subject_id, deadline]):
-#             return jsonify({'msg': 'Not enough segments'}), 422
-
-#         if not expert_id:
-#             return jsonify({'msg': 'Expert ID is required'}), 400
-
-#         try:
-#             expert_id = int(expert_id)
-#             project_type_id = int(project_type_id)
-#             subject_id = int(subject_id)
-#         except ValueError:
-#             return jsonify({'msg': 'Invalid ID, must be a number'}), 400
-
-#         try:
-#             deadline = datetime.strptime(deadline, '%Y-%m-%d')
-#         except ValueError:
-#             return jsonify({'msg': 'Invalid date format, use YYYY-MM-DD'}), 400
-
-#         # Query the related objects based on the provided IDs
-#         expert = Expert.query.get(expert_id)
-#         project_type = ProjectType.query.get(project_type_id)
-#         subject = Subject.query.get(subject_id)
-
-#         # If any of the objects do not exist, return an error message
-#         if not all([expert, project_type, subject]):
-#             return jsonify({'msg': 'Invalid Expert, Project Type, or Subject ID'}), 400
-
-#         # Get current user details using JWT identity
-#         current_user_id = get_jwt_identity()  # Get the current logged-in user ID
-#         current_user = User.query.get(current_user_id)
-#         if not current_user:
-#             return jsonify({'msg': 'Current user not found'}), 404
-
-#         # Create a new project request instance
-#         new_request = ProjectRequest(
-#             project_title=project_title,
-#             project_description=project_description,
-#             project_type=project_type,
-#             subject=subject,
-#             expert=expert,
-#             deadline=deadline,
-#             user_id=current_user.id,  # Assign current user's ID to the project request
-#             attachments=','.join(attachments),  # Join the list of filenames as a comma-separated string
-#             number_of_pages=number_of_pages
-#         )
-
-#         # Log project request data for debugging
-#         print(f"Project request data: {new_request.__dict__}")
-
-#         # Add to database
-#         db.session.add(new_request)
-#         db.session.commit()
-
-#         return jsonify({'msg': 'Request submitted successfully'}), 200
-
-#     except Exception as e:
-#         db.session.rollback()
-#         print(f"Error occurred: {e}")
-#         return jsonify({'error': str(e)}), 500
-
-
-@app.route('/conversations/<int:conversation_id>/messages', methods=['POST'])
+@app.route('/conversationsadmin/<int:conversation_id>/messages', methods=['POST'])
 @jwt_required()
-def send_message(conversation_id):
+def admn_send_message(conversation_id):
     try:
-        # Get current user ID from JWT
+
         sender_id = get_jwt_identity()
 
-        # Check if conversation exists
         conversation = Conversation.query.get_or_404(conversation_id)
+        recievers_id = conversation.client_id
+        receivers_email = User.query.get(recievers_id).email
+        experts_id = conversation.expert_id
+        experts_name = User.query.get(experts_id).username
+        experts_email = User.query.get(experts_id).email
 
-        # Parse form data
         content = request.form.get('content')
         files = request.files.getlist('attachments')
 
-        # Ensure at least content or attachments are provided
         if not content and not files:
             return jsonify({'error': 'Message content or attachments are required.'}), 400
 
-        # Process file attachments
         attachments = []
         if files:
             for file in files:
@@ -714,8 +790,7 @@ def send_message(conversation_id):
                 else:
                     return jsonify({'error': f'Invalid file type: {file.filename}'}), 400
 
-        # Create and save the message
-        message = Message(
+        message = MessageModel(
             conversation_id=conversation_id,
             sender_id=sender_id,
             receiver_id=conversation.client_id if sender_id != conversation.client_id else conversation.expert_id,
@@ -725,75 +800,147 @@ def send_message(conversation_id):
         db.session.add(message)
         db.session.commit()
 
-        # Return the saved message as a response
+        sender = User.query.get(sender_id)
+        email_subject = "New Message Notification"
+        email_body = f"""
+        A new message has been sent by expert {experts_name}.
+
+        Sender: {experts_name} (Email: {experts_email})
+        Content: {content or 'No content'}
+        Attachments: {', '.join(attachments) if attachments else 'None'}
+
+        Please log in to the website to respond.
+        """
+
+        attachment_paths = [url.replace(app.config['UPLOAD_FOLDER'], '') for url in attachments]
+
+        send_email_with_mime(
+            subject=email_subject,
+            body=email_body,
+            recipients=['shadrack.bett.92@gmail.com',receivers_email],
+            attachments=attachment_paths
+        )
+        return jsonify(message.to_dict()), 201
+
+    except Exception as e:
+        return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
+    email_subject = "New Project Request Submitted"
+    email_body = f"""
+    A new project has been submitted with the following details:
+
+    Title: {project.project_title}
+    Description: {project.project_description}
+    Deadline: {project.deadline.strftime('%Y-%m-%d')}
+    Attachments: {', '.join(attachments)}
+    """
+
+    send_email_with_mime(
+        subject=email_subject,
+        body=email_body,
+        recipients=['shadybett540@gmail.com', 'studypage001@gmail.com'],
+        attachments=[os.path.join(app.config['UPLOAD_FOLDER'], filename) for filename in attachments]
+    )
+    return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
+
+@app.route('/conversations/<int:conversation_id>/messages', methods=['POST'])
+@jwt_required()
+def send_message(conversation_id):
+    try:
+        sender_id = get_jwt_identity()
+
+        conversation = Conversation.query.get_or_404(conversation_id)
+
+        content = request.form.get('content')
+        files = request.files.getlist('attachments')
+
+        if not content and not files:
+            return jsonify({'error': 'Message content or attachments are required.'}), 400
+
+        attachments = []
+        if files:
+            for file in files:
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    filepath = os.path.join(UPLOAD_FOLDER, filename)
+                    file.save(filepath)
+
+
+                    file_url = url_for('serve_file', filename=filename, _external=True)
+                    attachments.append(file_url)
+                else:
+                    return jsonify({'error': f'Invalid file type: {file.filename}'}), 400
+
+        message = MessageModel(
+            conversation_id=conversation_id,
+            sender_id=sender_id,
+            receiver_id=conversation.client_id if sender_id != conversation.client_id else conversation.expert_id,
+            content=content,
+            attachments=', '.join(attachments) if attachments else None
+        )
+        db.session.add(message)
+        db.session.commit()
+
+        sender = User.query.get(sender_id)
+        email_subject = "New Message Notification"
+        email_body = f"""
+        A new message has been sent by client {sender.username}.
+
+        Sender: {sender.username} (Email: {sender.email})
+        Content: {content or 'No content'}
+        Attachments: {', '.join(attachments) if attachments else 'None'}
+
+        Please log in to the website to respond.
+        """
+
+        attachment_paths = [url.replace(app.config['UPLOAD_FOLDER'], '') for url in attachments]
+
+        send_email_with_mime(
+            subject=email_subject,
+            body=email_body,
+            recipients=['shadrack.bett.92@gmail.com', 'studypage001@gmail.com'],
+            attachments=attachment_paths
+        )
+        return jsonify(message.to_dict()), 201
+        sender = User.query.get(sender_id)
+        email_subject = "New Message Notification"
+        email_body = f"""
+        A new message has been sent by client {sender.username}.
+
+        Sender: {sender.username} (Email: {sender.email})
+        Content: {content or 'No content'}
+        Attachments: {', '.join(attachments) if attachments else 'None'}
+
+        Please log in to the website to respond.
+        """
+
+        attachment_paths = [url.replace(app.config['UPLOAD_FOLDER'], '') for url in attachments]
+
+        send_email_with_mime(
+            subject=email_subject,
+            body=email_body,
+            recipients=['shadrack.bett.92@gmail.com', 'studypage001@gmail.com'],
+            attachments=attachment_paths
+        )
         return jsonify(message.to_dict()), 201
 
     except Exception as e:
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
 
-# @app.route('/conversations/<int:conversation_id>/messages', methods=['POST'])
-# @jwt_required()
-# def send_message(conversation_id):
-#     try:
-#         # Get current user ID from JWT
-#         sender_id = get_jwt_identity()
+    except Exception as e:
+        return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
 
-#         # Check if conversation exists
-#         conversation = Conversation.query.get_or_404(conversation_id)
-
-#         # Parse form data
-#         content = request.form.get('content')
-#         files = request.files.getlist('attachments')
-
-#         # Ensure at least content or attachments are provided
-#         if not content and not files:
-#             return jsonify({'error': 'Message content or attachments are required.'}), 400
-
-#         # Process file attachments
-#         attachments = []
-#         if files:
-#             for file in files:
-#                 if file and allowed_file(file.filename):
-#                     filename = secure_filename(file.filename)
-#                     filepath = os.path.join(UPLOAD_FOLDER, filename)
-#                     file.save(filepath)
-#                     attachments.append(filepath)
-#                 else:
-#                     return jsonify({'error': f'Invalid file type: {file.filename}'}), 400
-
-#         # Create and save the message
-#         message = Message(
-#             conversation_id=conversation_id,
-#             sender_id=sender_id,
-#             receiver_id=conversation.client_id if sender_id != conversation.client_id else conversation.expert_id,
-#             content=content,
-#             attachments=', '.join(attachments) if attachments else None
-#         )
-#         db.session.add(message)
-#         db.session.commit()
-
-#         # Return the saved message as a response
-#         return jsonify(message.to_dict()), 201
-
-#     except Exception as e:
-#         # current_app.logger.error(f"Error in send_message: {e}")
-#         return jsonify({'error': 'An unexpected error occurred.'}), 500
 
 @app.route('/admin/conversations', methods=['GET'])
 @jwt_required()
 def admin_get_conversations():
     try:
-        # Fetch all conversations
         conversations = Conversation.query.all()
 
-        # Prepare the response data
         data = []
         for conv in conversations:
-            # Fetch client and expert details
             client = User.query.get(conv.client_id)
             expert = User.query.get(conv.expert_id)
 
-            # Construct conversation details
             conversation_data = {
                 "conversation_id": conv.id,
                 "client": client.username if client else "Unknown",
@@ -831,7 +978,7 @@ def send_admin_message(conversation_id):
     if not content and not attachments:
         return jsonify({'error': 'Message content or attachments are required.'}), 400
 
-    message = Message(
+    message = MessageModel(
         conversation_id=conversation_id,
         sender_id=get_jwt_identity(),  # Admin's ID
         content=content,
@@ -938,8 +1085,8 @@ def get_conversations():
 
     result = []
     for conversation in conversations:
-        latest_message = Message.query.filter_by(conversation_id=conversation.id).order_by(
-            Message.timestamp.desc()
+        latest_message = MessageModel.query.filter_by(conversation_id=conversation.id).order_by(
+            MessageModel.timestamp.desc()
         ).first()
 
         result.append({
@@ -1111,91 +1258,69 @@ def delete_expert(id):
         print(f"Error deleting expert: {e}")
         return jsonify({'message': 'Error deleting expert', 'error': str(e)}), 500
 
-@app.route('/services', methods=['GET'])
-def get_services():
-    services = Service.query.options(db.joinedload(Service.project_type)).all()  
-    service_list = []
-
-    for service in services:
-        service_data = {
-            'id': service.id,
-            'title': service.title,
-            'description': service.description,
-            'price': service.price,
-            'unit': service.unit,
-            'project_type_name': service.project_type.name if service.project_type else None,  
-            'subject_name': service.subject.name if service.subject else None  
-        }
-        service_list.append(service_data)
-
-    return jsonify({'services': service_list})
 # @app.route('/services', methods=['GET'])
 # def get_services():
-#     project_type_id = request.args.get('project_type', type=int)
-#     subject_id = request.args.get('subject', type=int)
-#     print(f"Received project_type_id: {project_type_id}, subject_id: {subject_id}")
+#     services = Service.query.options(db.joinedload(Service.project_type)).all()  # Fetch all services with related project type
+#     service_list = []
 
-#     query = Service.query
+#     for service in services:
+#         service_data = {
+#             'id': service.id,
+#             'title': service.title,
+#             'description': service.description,
+#             'price': service.price,
+#             'project_type_name': service.project_type.name if service.project_type else None,  # Get project type name
+#             'subject_name': service.subject.name if service.subject else None  # Get subject name, optional
+#         }
+#         service_list.append(service_data)
 
-#     if project_type_id:
-#         query = query.filter_by(project_type_id=project_type_id)
-#     if subject_id:
-#         query = query.filter_by(subject_id=subject_id)
+#     return jsonify({'services': service_list})
+# @app.route('/services', methods=['GET'])
+# def get_services():
+#     services = Service.query.options(db.joinedload(Service.project_type)).all()  # Fetch all services with related project type
+#     service_list = []
 
-#     services = query.all()
-#     return jsonify({
-#         "services": [
-#             {
-#                 'id': service.id,
-#                 'title': service.title,
-#                 'description': service.description,
-#                 'base_price': service.base_price,
-#                 'price_per_page': service.price_per_page,
-#                 'project_type_id': service.project_type_id,
-#                 'subject_id': service.subject_id
-#             } for service in services
-#         ]
-#     }), 200
+#     for service in services:
+#         service_data = {
+#             'id': service.id,
+#             'title': service.title,
+#             'description': service.description,
+#             'price': service.price,
+#             'project_type_name': service.project_type.name if service.project_type else None,  # Get project type name
+#             'subject_name': service.subject.name if service.subject else None  # Get subject name, optional
+#         }
+#         service_list.append(service_data)
 
-@app.route('/services', methods=['POST'])
-def add_service():
-    if not request.is_json:
-        return jsonify({"message": "Invalid request. JSON data required."}), 400
+#     return jsonify({'services': service_list})
+@app.route('/services', methods=['GET'])
+def get_services():
+    project_type_id = request.args.get('project_type', type=int)
+    subject_id = request.args.get('subject', type=int)
+    print(f"Received project_type_id: {project_type_id}, subject_id: {subject_id}")
 
-    data = request.get_json()
+    query = Service.query
 
-    title = data.get('title')
-    description = data.get('description')
-    price = data.get('price')
-    project_type_id = data.get('project_type_id')  
-    subject_id = data.get('subject_id') 
+    if project_type_id:
+        query = query.filter_by(project_type_id=project_type_id)
+    if subject_id:
+        query = query.filter_by(subject_id=subject_id)
 
-    if not title or not description or price is None or project_type_id is None or subject_id is None:
-        return jsonify({"message": "Title, description, price, project type, and subject are required."}), 400
+    print(f"Query: {query}")
 
-    new_service = Service(
-        title=title,
-        description=description,
-        price=price,
-        project_type_id=project_type_id,
-        subject_id=subject_id 
-    )
-
-    try:
-        db.session.add(new_service)
-        db.session.commit()
-        return jsonify({"message": "Service added successfully!", "service": {
-            'id': new_service.id,
-            'title': new_service.title,
-            'description': new_service.description,
-            'price': new_service.price,
-            'project_type_id': new_service.project_type_id,
-            'subject_id': new_service.subject_id  # Include subject_id in the response
-        }}), 201
-    except Exception as e:
-        db.session.rollback()
-        print("Error adding service:", str(e))
-        return jsonify({"message": "Failed to add service.", "error": str(e)}), 500
+    services = query.all()
+    return jsonify({
+        "services": [
+            {
+                'id': service.id,
+                'title': service.title,
+                'description': service.description,
+                'base_price': service.base_price,
+                'price_per_page': service.price_per_page,
+                'project_type_id': service.project_type_id,
+                'subject_id': service.subject_id
+            } for service in services
+        ] 
+    }), 200
 
 # @app.route('/services', methods=['POST'])
 # def add_service():
@@ -1206,44 +1331,153 @@ def add_service():
 
 #     title = data.get('title')
 #     description = data.get('description')
-#     base_price = data.get('base_price')  # Expecting base_price in the request
-#     price_per_page = data.get('price_per_page')  # Expecting price_per_page in the request
+#     price = data.get('price')
 #     project_type_id = data.get('project_type_id')  # Capture project_type_id
 #     subject_id = data.get('subject_id')  # Capture subject_id
 
-#     # Validate required fields
-#     if not title or base_price is None or price_per_page is None or project_type_id is None or subject_id is None:
-#         return jsonify({"message": "Title, base price, price per page, project type, and subject are required."}), 400
+#     if not title or not description or price is None or project_type_id is None or subject_id is None:
+#         return jsonify({"message": "Title, description, price, project type, and subject are required."}), 400
+    project_type_id = request.args.get('project_type', type=int)
+    subject_id = request.args.get('subject', type=int)
+    print(f"Received project_type_id: {project_type_id}, subject_id: {subject_id}")
 
-#     # Create a new Service instance
+    query = Service.query
+
+    if project_type_id:
+        query = query.filter_by(project_type_id=project_type_id)
+    if subject_id:
+        query = query.filter_by(subject_id=subject_id)
+
+    print(f"Query: {query}")
+
+    services = query.all()
+    return jsonify({
+        "services": [
+            {
+                'id': service.id,
+                'title': service.title,
+                'description': service.description,
+                'base_price': service.base_price,
+                'price_per_page': service.price_per_page,
+                'project_type_id': service.project_type_id,
+                'subject_id': service.subject_id
+            } for service in services
+        ] 
+    }), 200
+
+# @app.route('/services', methods=['POST'])
+# def add_service():
+#     if not request.is_json:
+#         return jsonify({"message": "Invalid request. JSON data required."}), 400
+
+#     data = request.get_json()
+
+#     title = data.get('title')
+#     description = data.get('description')
+#     price = data.get('price')
+#     project_type_id = data.get('project_type_id')  # Capture project_type_id
+#     subject_id = data.get('subject_id')  # Capture subject_id
+
+#     if not title or not description or price is None or project_type_id is None or subject_id is None:
+#         return jsonify({"message": "Title, description, price, project type, and subject are required."}), 400
+
 #     new_service = Service(
 #         title=title,
 #         description=description,
-#         base_price=base_price,
-#         price_per_page=price_per_page,
+#         price=price,
 #         project_type_id=project_type_id,
-#         subject_id=subject_id
+#         subject_id=subject_id  # Include subject_id
+#     )
+#     new_service = Service(
+#         title=title,
+#         description=description,
+#         price=price,
+#         project_type_id=project_type_id,
+#         subject_id=subject_id  # Include subject_id
 #     )
 
 #     try:
 #         db.session.add(new_service)
 #         db.session.commit()
-#         return jsonify({
-#             "message": "Service added successfully!",
-#             "service": {
-#                 'id': new_service.id,
-#                 'title': new_service.title,
-#                 'description': new_service.description,
-#                 'base_price': new_service.base_price,
-#                 'price_per_page': new_service.price_per_page,
-#                 'project_type_id': new_service.project_type_id,
-#                 'subject_id': new_service.subject_id
-#             }
-#         }), 201
+#         return jsonify({"message": "Service added successfully!", "service": {
+#             'id': new_service.id,
+#             'title': new_service.title,
+#             'description': new_service.description,
+#             'price': new_service.price,
+#             'project_type_id': new_service.project_type_id,
+#             'subject_id': new_service.subject_id  # Include subject_id in the response
+#         }}), 201
 #     except Exception as e:
 #         db.session.rollback()
 #         print("Error adding service:", str(e))
 #         return jsonify({"message": "Failed to add service.", "error": str(e)}), 500
+#     try:
+#         db.session.add(new_service)
+#         db.session.commit()
+#         return jsonify({"message": "Service added successfully!", "service": {
+#             'id': new_service.id,
+#             'title': new_service.title,
+#             'description': new_service.description,
+#             'price': new_service.price,
+#             'project_type_id': new_service.project_type_id,
+#             'subject_id': new_service.subject_id  # Include subject_id in the response
+#         }}), 201
+#     except Exception as e:
+#         db.session.rollback()
+#         print("Error adding service:", str(e))
+#         return jsonify({"message": "Failed to add service.", "error": str(e)}), 500
+
+@app.route('/services', methods=['POST'])
+def add_service():
+    if not request.is_json:
+        return jsonify({"message": "Invalid request. JSON data required."}), 400
+
+    data = request.get_json()
+
+    title = data.get('title')
+    description = data.get('description')
+    base_price = data.get('base_price')  # Expecting base_price in the request
+    price_per_page = data.get('price_per_page')  # Expecting price_per_page in the request
+    base_price = data.get('base_price')  # Expecting base_price in the request
+    price_per_page = data.get('price_per_page')  # Expecting price_per_page in the request
+    project_type_id = data.get('project_type_id')  # Capture project_type_id
+    subject_id = data.get('subject_id')  # Capture subject_id
+
+    # Validate required fields
+    if not title or base_price is None or price_per_page is None or project_type_id is None or subject_id is None:
+        return jsonify({"message": "Title, base price, price per page, project type, and subject are required."}), 400
+    # Validate required fields
+
+    # Create a new Service instance
+    # Create a new Service instance
+    new_service = Service(
+        title=title,
+        description=description,
+        base_price=base_price,
+        price_per_page=price_per_page,
+        project_type_id=project_type_id,
+        subject_id=subject_id
+    )
+
+    try:
+        db.session.add(new_service)
+        db.session.commit()
+        return jsonify({
+            "message": "Service added successfully!",
+            "service": {
+                'id': new_service.id,
+                'title': new_service.title,
+                'description': new_service.description,
+                'base_price': new_service.base_price,
+                'price_per_page': new_service.price_per_page,
+                'project_type_id': new_service.project_type_id,
+                'subject_id': new_service.subject_id
+            }
+        }), 201
+    except Exception as e:
+        db.session.rollback()
+        print("Error adding service:", str(e))
+        return jsonify({"message": "Failed to add service.", "error": str(e)}), 500
 
 
 @app.route('/project-types', methods=['GET'])

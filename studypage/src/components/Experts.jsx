@@ -15,6 +15,8 @@ const ExpertPage = () => {
   const { currentUser, authToken } = useContext(UserContext);
   const API_URL = 'http://127.0.0.1:5000';
 
+  console.log('currentUser is here at experts', currentUser)
+
   // Function to fetch experts from backend
   const fetchExperts = async () => {
     try {
@@ -236,6 +238,7 @@ const ExpertPage = () => {
                 <button
                   onClick={() => hireExpert(expert.id)}
                   className="mt-4 bg-[#85C4C2] text-white px-4 py-2 rounded hover:bg-[#6EA5A4]"
+                  currentUser={currentUser}
                 >
                   Hire Expert
                 </button>

@@ -1,0 +1,58 @@
+/* Chat.css */
+
+.bubble {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    max-width: 60%;
+    word-wrap: break-word;
+    display: inline-block;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .bubble-sender {
+    background-color: #4a90e2; /* Blue for sender */
+    color: white;
+    align-self: flex-end;
+  }
+  
+  .bubble-receiver {
+    background-color: #444; /* Gray for receiver */
+    color: white;
+    align-self: flex-start;
+  }
+  
+  .attachment-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    margin-top: 5px;
+    cursor: pointer;
+  }
+  
+  .attachment-link {
+    display: block;
+    margin-top: 5px;
+    text-decoration: underline;
+    word-break: break-all;
+  }
+  
+  .text-sender {
+    color: white; /* Sender text */
+  }
+  
+  .text-receiver {
+    color: #ccc; /* Receiver text */
+  }
+  
+  .message-content {
+    white-space: pre-wrap;
+  }
+  
+  .timestamp {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 5px;
+  }
+  
