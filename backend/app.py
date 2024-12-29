@@ -889,32 +889,79 @@ def send_message(conversation_id):
 
     except Exception as e:
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
-
+    
 @app.route('/admin/conversations', methods=['GET'])
 @jwt_required()
 def admin_get_conversations():
     try:
         conversations = Conversation.query.all()
-
+        
         data = []
         for conv in conversations:
+            # Get the latest message
+            latest_message = (MessageModel.query
+                            .filter_by(conversation_id=conv.id)
+                            .order_by(MessageModel.timestamp.desc())
+                            .first())
+            
             client = User.query.get(conv.client_id)
             expert = User.query.get(conv.expert_id)
 
+            message_content = "No messages yet"
+            if latest_message:
+                if latest_message.attachments:
+                    # Get number of attachments
+                    num_attachments = len(latest_message.attachments.split(', '))
+                    file_text = "files" if num_attachments > 1 else "file"
+                    message_content = f"📎 Sent {num_attachments} {file_text}"
+                    if latest_message.content:
+                        message_content += f": {latest_message.content}"
+                else:
+                    message_content = latest_message.content
+            
             conversation_data = {
                 "conversation_id": conv.id,
                 "client": client.username if client else "Unknown",
                 "expert": expert.username if expert else "Unassigned",
-                "last_message": conv.messages[-1].content if conv.messages else None,
-                "last_timestamp": conv.messages[-1].timestamp.strftime('%Y-%m-%d %H:%M:%S') if conv.messages else None,
+                "last_message": message_content,
+                "is_file": bool(latest_message and latest_message.file_path if hasattr(latest_message, 'file_path') else False),
+                "last_timestamp": latest_message.timestamp.strftime('%Y-%m-%d %H:%M:%S') if latest_message else None,
                 "created_at": conv.created_at.strftime('%Y-%m-%d %H:%M:%S'),
             }
             data.append(conversation_data)
-
+        
+        # Sort by last_timestamp or created_at
+        data.sort(key=lambda x: x['last_timestamp'] or x['created_at'], reverse=True)
+        
         return jsonify(data), 200
     except Exception as e:
         print("Error fetching conversations:", e)
         return jsonify({"error": "Unable to fetch conversations"}), 500
+# @app.route('/admin/conversations', methods=['GET'])
+# @jwt_required()
+# def admin_get_conversations():
+#     try:
+#         conversations = Conversation.query.all()
+
+#         data = []
+#         for conv in conversations:
+#             client = User.query.get(conv.client_id)
+#             expert = User.query.get(conv.expert_id)
+
+#             conversation_data = {
+#                 "conversation_id": conv.id,
+#                 "client": client.username if client else "Unknown",
+#                 "expert": expert.username if expert else "Unassigned",
+#                 "last_message": conv.messages[-1].content if conv.messages else None,
+#                 "last_timestamp": conv.messages[-1].timestamp.strftime('%Y-%m-%d %H:%M:%S') if conv.messages else None,
+#                 "created_at": conv.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+#             }
+#             data.append(conversation_data)
+
+#         return jsonify(data), 200
+#     except Exception as e:
+#         print("Error fetching conversations:", e)
+#         return jsonify({"error": "Unable to fetch conversations"}), 500
 
 @app.route('/admin/conversations/<int:conversationId>/messages', methods=['GET'])
 @jwt_required()
@@ -1049,6 +1096,16 @@ def get_conversations():
             MessageModel.timestamp.desc()
         ).first()
 
+        message_content = "No messages yet"
+        if latest_message:
+            if latest_message.attachments:
+                num_attachments = len(latest_message.attachments.split(', '))
+                file_text = "files" if num_attachments > 1 else "file"
+                message_content = f"📎 Sent {num_attachments} {file_text}"
+                if latest_message.content:
+                    message_content += f": {latest_message.content}"
+            else:
+                message_content = latest_message.content
         result.append({
             'id': conversation.id,
             'expert': {
@@ -1059,10 +1116,11 @@ def get_conversations():
                 'id': conversation.client_id,
                 'client_name': User.query.get(conversation.client_id).username
             },
-            'latest_message': latest_message.content if latest_message else "No messages yet",
+            'latest_message': message_content,
+            'is_file': bool(latest_message and latest_message.file_path if hasattr(latest_message, 'file_path') else False),
             'timestamp': latest_message.timestamp.isoformat() if latest_message else None
         })
-        
+
     result.sort(key=lambda x: x['timestamp'] if x['timestamp'] else '', reverse=True)
     return jsonify(result)
 
