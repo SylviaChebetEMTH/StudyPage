@@ -1096,6 +1096,12 @@ def get_conversations():
             MessageModel.timestamp.desc()
         ).first()
 
+        unread_count = MessageModel.query.filter_by(
+            conversation_id=conversation.id,
+            receiver_id=user_id,
+            read=False
+        ).count()
+
         message_content = "No messages yet"
         if latest_message:
             if latest_message.attachments:
