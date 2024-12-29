@@ -824,23 +824,6 @@ def admn_send_message(conversation_id):
 
     except Exception as e:
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
-    email_subject = "New Project Request Submitted"
-    email_body = f"""
-    A new project has been submitted with the following details:
-
-    Title: {project.project_title}
-    Description: {project.project_description}
-    Deadline: {project.deadline.strftime('%Y-%m-%d')}
-    Attachments: {', '.join(attachments)}
-    """
-
-    send_email_with_mime(
-        subject=email_subject,
-        body=email_body,
-        recipients=['shadybett540@gmail.com', 'studypage001@gmail.com'],
-        attachments=[os.path.join(app.config['UPLOAD_FOLDER'], filename) for filename in attachments]
-    )
-    return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
 
 @app.route('/conversations/<int:conversation_id>/messages', methods=['POST'])
 @jwt_required()
@@ -901,34 +884,11 @@ def send_message(conversation_id):
             attachments=attachment_paths
         )
         return jsonify(message.to_dict()), 201
-        sender = User.query.get(sender_id)
-        email_subject = "New Message Notification"
-        email_body = f"""
-        A new message has been sent by client {sender.username}.
-
-        Sender: {sender.username} (Email: {sender.email})
-        Content: {content or 'No content'}
-        Attachments: {', '.join(attachments) if attachments else 'None'}
-
-        Please log in to the website to respond.
-        """
-
-        attachment_paths = [url.replace(app.config['UPLOAD_FOLDER'], '') for url in attachments]
-
-        send_email_with_mime(
-            subject=email_subject,
-            body=email_body,
-            recipients=['shadrack.bett.92@gmail.com', 'studypage001@gmail.com'],
-            attachments=attachment_paths
-        )
-        return jsonify(message.to_dict()), 201
-
     except Exception as e:
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
 
     except Exception as e:
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
-
 
 @app.route('/admin/conversations', methods=['GET'])
 @jwt_required()
