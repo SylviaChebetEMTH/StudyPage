@@ -12,6 +12,8 @@ from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignat
 from flask_migrate import Migrate
 from flask_restful import Resource,Api
 from flask_mail import Mail, Message as MessageInstance
+from flask_socketio import SocketIO, emit
+socketio = SocketIO(app, cors_allowed_origins="*")
 import cloudinary.uploader
 from datetime import datetime
 from flask import url_for
