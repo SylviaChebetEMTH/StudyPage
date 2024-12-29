@@ -13,17 +13,6 @@ const Sidebar = ({ setActiveUser }) => {
       });
       const data = await response.json();
       setConversations(data);
-      // console.log("Fetched conversations in sidebar:", data);
-  
-      // Avoid duplication: Map conversations by expert ID
-    //   const uniqueConversations = Object.values(
-    //     data.reduce((acc, conv) => {
-    //       acc[conv.expert.id] = conv;
-    //       return acc;
-    //     }, {})
-    //   );
-  
-    //   setConversations(uniqueConversations);
     };
   
     fetchConversations();
