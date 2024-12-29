@@ -1124,7 +1124,8 @@ def get_conversations():
             },
             'latest_message': message_content,
             'is_file': bool(latest_message and latest_message.file_path if hasattr(latest_message, 'file_path') else False),
-            'timestamp': latest_message.timestamp.isoformat() if latest_message else None
+            'timestamp': latest_message.timestamp.isoformat() if latest_message else None,
+            'unread_count': unread_count,
         })
 
     result.sort(key=lambda x: x['timestamp'] if x['timestamp'] else '', reverse=True)
