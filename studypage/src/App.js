@@ -42,7 +42,6 @@ function AppContent() {
   const isAdminPage = location.pathname.startsWith('/admin');
   const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
 
-  
   return (
     <div className="min-h-screen flex flex-col ">
       {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)}
