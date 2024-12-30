@@ -45,6 +45,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { UserContext } from "../contexts/userContext";
 import ContactItem from "./ContactItem";
+import { useSocket } from '../contexts/socketContext';
 
 const Sidebar = ({ setActiveUser }) => {
   const [conversations, setConversations] = useState([]);
