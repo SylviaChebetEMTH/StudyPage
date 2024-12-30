@@ -12,6 +12,7 @@ from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignat
 from flask_migrate import Migrate
 from flask_restful import Resource,Api
 from flask_mail import Mail, Message as MessageInstance
+from flask_socketio import SocketIO, emit
 import cloudinary.uploader
 from datetime import datetime
 from flask import url_for
@@ -27,6 +28,7 @@ from email import encoders
 SECRET_KEY = os.urandom(24)
 
 app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*")
 api = Api(app)
 app.config["SECRET_KEY"] = os.urandom(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///studypage.db'
@@ -824,23 +826,6 @@ def admn_send_message(conversation_id):
 
     except Exception as e:
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
-    email_subject = "New Project Request Submitted"
-    email_body = f"""
-    A new project has been submitted with the following details:
-
-    Title: {project.project_title}
-    Description: {project.project_description}
-    Deadline: {project.deadline.strftime('%Y-%m-%d')}
-    Attachments: {', '.join(attachments)}
-    """
-
-    send_email_with_mime(
-        subject=email_subject,
-        body=email_body,
-        recipients=['shadybett540@gmail.com', 'studypage001@gmail.com'],
-        attachments=[os.path.join(app.config['UPLOAD_FOLDER'], filename) for filename in attachments]
-    )
-    return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
 
 @app.route('/conversations/<int:conversation_id>/messages', methods=['POST'])
 @jwt_required()
@@ -879,6 +864,12 @@ def send_message(conversation_id):
         )
         db.session.add(message)
         db.session.commit()
+        socketio.emit('new_message', {
+            'conversation_id': conversation_id,
+            'sender_id': sender_id,
+            'receiver_id': message.receiver_id,
+            'message': message.to_dict()
+        })
 
         sender = User.query.get(sender_id)
         email_subject = "New Message Notification"
@@ -901,60 +892,84 @@ def send_message(conversation_id):
             attachments=attachment_paths
         )
         return jsonify(message.to_dict()), 201
-        sender = User.query.get(sender_id)
-        email_subject = "New Message Notification"
-        email_body = f"""
-        A new message has been sent by client {sender.username}.
-
-        Sender: {sender.username} (Email: {sender.email})
-        Content: {content or 'No content'}
-        Attachments: {', '.join(attachments) if attachments else 'None'}
-
-        Please log in to the website to respond.
-        """
-
-        attachment_paths = [url.replace(app.config['UPLOAD_FOLDER'], '') for url in attachments]
-
-        send_email_with_mime(
-            subject=email_subject,
-            body=email_body,
-            recipients=['shadrack.bett.92@gmail.com', 'studypage001@gmail.com'],
-            attachments=attachment_paths
-        )
-        return jsonify(message.to_dict()), 201
-
     except Exception as e:
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
 
     except Exception as e:
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
-
-
+    
 @app.route('/admin/conversations', methods=['GET'])
 @jwt_required()
 def admin_get_conversations():
     try:
         conversations = Conversation.query.all()
-
+        
         data = []
         for conv in conversations:
+            # Get the latest message
+            latest_message = (MessageModel.query
+                            .filter_by(conversation_id=conv.id)
+                            .order_by(MessageModel.timestamp.desc())
+                            .first())
+            
             client = User.query.get(conv.client_id)
             expert = User.query.get(conv.expert_id)
 
+            message_content = "No messages yet"
+            if latest_message:
+                if latest_message.attachments:
+                    # Get number of attachments
+                    num_attachments = len(latest_message.attachments.split(', '))
+                    file_text = "files" if num_attachments > 1 else "file"
+                    message_content = f"📎 Sent {num_attachments} {file_text}"
+                    if latest_message.content:
+                        message_content += f": {latest_message.content}"
+                else:
+                    message_content = latest_message.content
+            
             conversation_data = {
                 "conversation_id": conv.id,
                 "client": client.username if client else "Unknown",
                 "expert": expert.username if expert else "Unassigned",
-                "last_message": conv.messages[-1].content if conv.messages else None,
-                "last_timestamp": conv.messages[-1].timestamp.strftime('%Y-%m-%d %H:%M:%S') if conv.messages else None,
+                "last_message": message_content,
+                "is_file": bool(latest_message and latest_message.file_path if hasattr(latest_message, 'file_path') else False),
+                "last_timestamp": latest_message.timestamp.strftime('%Y-%m-%d %H:%M:%S') if latest_message else None,
                 "created_at": conv.created_at.strftime('%Y-%m-%d %H:%M:%S'),
             }
             data.append(conversation_data)
-
+        
+        # Sort by last_timestamp or created_at
+        data.sort(key=lambda x: x['last_timestamp'] or x['created_at'], reverse=True)
+        
         return jsonify(data), 200
     except Exception as e:
         print("Error fetching conversations:", e)
         return jsonify({"error": "Unable to fetch conversations"}), 500
+# @app.route('/admin/conversations', methods=['GET'])
+# @jwt_required()
+# def admin_get_conversations():
+#     try:
+#         conversations = Conversation.query.all()
+
+#         data = []
+#         for conv in conversations:
+#             client = User.query.get(conv.client_id)
+#             expert = User.query.get(conv.expert_id)
+
+#             conversation_data = {
+#                 "conversation_id": conv.id,
+#                 "client": client.username if client else "Unknown",
+#                 "expert": expert.username if expert else "Unassigned",
+#                 "last_message": conv.messages[-1].content if conv.messages else None,
+#                 "last_timestamp": conv.messages[-1].timestamp.strftime('%Y-%m-%d %H:%M:%S') if conv.messages else None,
+#                 "created_at": conv.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+#             }
+#             data.append(conversation_data)
+
+#         return jsonify(data), 200
+#     except Exception as e:
+#         print("Error fetching conversations:", e)
+#         return jsonify({"error": "Unable to fetch conversations"}), 500
 
 @app.route('/admin/conversations/<int:conversationId>/messages', methods=['GET'])
 @jwt_required()
@@ -1089,6 +1104,22 @@ def get_conversations():
             MessageModel.timestamp.desc()
         ).first()
 
+        unread_count = MessageModel.query.filter_by(
+            conversation_id=conversation.id,
+            receiver_id=user_id,
+            read=False
+        ).count()
+
+        message_content = "No messages yet"
+        if latest_message:
+            if latest_message.attachments:
+                num_attachments = len(latest_message.attachments.split(', '))
+                file_text = "files" if num_attachments > 1 else "file"
+                message_content = f"📎 Sent {num_attachments} {file_text}"
+                if latest_message.content:
+                    message_content += f": {latest_message.content}"
+            else:
+                message_content = latest_message.content
         result.append({
             'id': conversation.id,
             'expert': {
@@ -1099,9 +1130,13 @@ def get_conversations():
                 'id': conversation.client_id,
                 'client_name': User.query.get(conversation.client_id).username
             },
-            'latest_message': latest_message.content if latest_message else "No messages yet",
+            'latest_message': message_content,
+            'is_file': bool(latest_message and latest_message.file_path if hasattr(latest_message, 'file_path') else False),
+            'timestamp': latest_message.timestamp.isoformat() if latest_message else None,
+            'unread_count': unread_count,
         })
 
+    result.sort(key=lambda x: x['timestamp'] if x['timestamp'] else '', reverse=True)
     return jsonify(result)
 
 @app.route('/experts/<int:id>', methods=['GET'])
@@ -1232,6 +1267,27 @@ def partial_update_expert(id):
     
     return jsonify(updated_expert), 200
 
+@app.route('/conversations/<int:conversation_id>/mark-read', methods=['POST'])
+@jwt_required()
+def mark_messages_read(conversation_id):
+    try:
+        user_id = get_jwt_identity()
+        
+        # Mark all unread messages where the current user is the receiver
+        unread_messages = Message.query.filter_by(
+            conversation_id=conversation_id,
+            receiver_id=user_id,
+            read=False
+        ).all()
+        
+        for message in unread_messages:
+            message.read = True
+        
+        db.session.commit()
+        return jsonify({'success': True}), 200
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/experts/<int:id>', methods=['DELETE'])
 @jwt_required()

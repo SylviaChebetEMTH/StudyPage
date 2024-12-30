@@ -6,6 +6,9 @@ import "aos/dist/aos.css";
 export default function Home() {
   useEffect(() => {
     AOS.init();
+    if (Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
   }, []);
   return (
     <div className="homepage-container">
@@ -14,7 +17,7 @@ export default function Home() {
         className="relative bg-cover bg-center h-screen"
         style={{
           backgroundImage: `url(https://img.freepik.com/free-photo/young-student-sitting-university-library-break-from-studying_496169-1232.jpg?t=st=1727969795~exp=1727973395~hmac=a4ebdf76a64d3ab12cb8c85b7edea028ac7516b9462538ab0d7cc1ff8377c012&w=740)`,
-        }}
+        }}`
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="relative z-10 text-center text-white flex flex-col justify-center items-center h-full">

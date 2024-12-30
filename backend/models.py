@@ -180,6 +180,7 @@ class Message(db.Model):
     sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages')
     receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_messages')
     expert = db.relationship('Expert', backref='messages')  # Optional expert relationship
+    read = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return f'<Message from {self.sender.username} to {self.receiver.username if self.receiver else self.expert.name}>'
@@ -195,4 +196,5 @@ class Message(db.Model):
             'content': self.content,
             'attachments': self.attachments.split(', ') if self.attachments else [],
             'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            'read': self.read,
         }
