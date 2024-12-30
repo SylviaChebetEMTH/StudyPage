@@ -1,20 +1,24 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
-// import { useContext as useAuthContext } from '../contexts/userContext';
-import { UserContext as useAuthContext} from './contexts/userContext';
-// import { useContext as useAuthContext } from '/userContext';
+import { useUserContext } from './contexts/userContext';
+
 const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
-  const { user } = useAuthContext();
+  const { user } = useUserContext();
   const [unreadCounts, setUnreadCounts] = useState({});
 
   useEffect(() => {
+    if (!user) return; // Don't connect if no user
+
     const socket = io('http://127.0.0.1:5000');
+
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server');
+    });
 
     socket.on('new_message', (data) => {
       if (data.receiver_id === user?.id) {
-        // Update unread count for the conversation
         setUnreadCounts(prev => ({
           ...prev,
           [data.conversation_id]: (prev[data.conversation_id] || 0) + 1
@@ -23,21 +27,29 @@ export const SocketProvider = ({ children }) => {
         // Show browser notification
         if (Notification.permission === 'granted') {
           new Notification('New Message', {
-            body: data.message.content || 'You have a new message',
-            icon: '/path/to/your/icon.png'
+            body: data.message.content || 'You have a new message'
           });
         }
       }
     });
 
-    return () => socket.disconnect();
+    return () => {
+      socket.disconnect();
+    };
   }, [user]);
 
+  const value = {
+    unreadCounts,
+    setUnreadCounts
+  };
+
   return (
-    <SocketContext.Provider value={{ unreadCounts, setUnreadCounts }}>
+    <SocketContext.Provider value={value}>
       {children}
     </SocketContext.Provider>
   );
 };
 
 export const useSocket = () => useContext(SocketContext);
+
+export default SocketContext;

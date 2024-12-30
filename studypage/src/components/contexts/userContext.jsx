@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext();
@@ -37,7 +37,7 @@ const fetchWithAuth = async (url, options = {}) => {
 
   return response;
 };
-
+export const useUserContext = () => useContext(UserContext);
 export const UserProvider = ({ children }) => {
   
   const nav = useNavigate();

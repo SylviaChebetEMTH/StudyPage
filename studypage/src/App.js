@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -100,34 +100,30 @@ function AppContent() {
     </SocketProvider>
   );
 }
-
-/*************  ✨ Codeium Command ⭐  *************/
-/**
- * The main App component.
- *
- * This component wraps the entire application in a Router component,
- * a GoogleOAuthProvider component, and a UserProvider component.
- *
- * The GoogleOAuthProvider component is used to provide the Google OAuth
- * client ID to the entire appliccation.
- *
- * The UserProvider component is used to provide the application with
- * user authentication functionality.
- *
- * The AppContent component is the actual content of the application.
-
-/******  7e4caa1e-c897-4620-b17b-39fe3806fe73  *******/
 const App = () => {
+  const [user, setUser] = useState(null);
+  const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
+
+  const userContextValue = {
+    user,
+    setUser,
+    authToken,
+    setAuthToken,
+  };
   const clientId =
     "854474486915-lncgkai7f4jca5fqe4v7ma0flkftdd5k.apps.googleusercontent.com";
   return (
-    <Router>
-      <GoogleOAuthProvider clientId={clientId}>
-        <UserProvider>
-          <AppContent />
-        </UserProvider>
-      </GoogleOAuthProvider>
-    </Router>
+    <UserContext.Provider value={userContextValue}>
+      <SocketProvider>
+        <Router>
+          <GoogleOAuthProvider clientId={clientId}>
+            <UserProvider>
+              <AppContent />
+            </UserProvider>
+          </GoogleOAuthProvider>
+        </Router>
+      </SocketProvider>
+    </UserContext.Provider>
   );
 };
 
