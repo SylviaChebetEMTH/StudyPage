@@ -50,6 +50,7 @@ import { useSocket } from '../contexts/socketContext';
 const Sidebar = ({ setActiveUser }) => {
   const [conversations, setConversations] = useState([]);
   const { authToken } = useContext(UserContext);
+  const { unreadCounts } = useSocket();
 
   useEffect(() => {
     const fetchConversations = async () => {
