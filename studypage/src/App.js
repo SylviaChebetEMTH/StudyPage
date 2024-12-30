@@ -39,7 +39,7 @@ import UserDashboard from "./components/user/UserDashboard";
 import Footer from "./components/Footer";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import Help from "./components/Help";
-import { SocketProvider } from "./SocketContext";
+import { SocketProvider } from "./components/SocketContext";
 
 function AppContent() {
   const { currentUser } = useContext(UserContext);
