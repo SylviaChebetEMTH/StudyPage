@@ -65,14 +65,20 @@ const Sidebar = ({ setActiveUser }) => {
           return new Date(b.timestamp) - new Date(a.timestamp);
         });
         
-        setConversations(sortedConversations);
+        const updatedData = sortedConversations.map(conv => ({
+          ...conv,
+          unread_count: (conv.unread_count || 0) + (unreadCounts[conv.id] || 0)
+        }));
+        
+        setConversations(updatedData);
       } catch (error) {
         console.error("Error fetching conversations:", error);
+        setConversations([]);
       }
     };
 
     fetchConversations();
-  }, [authToken]);
+  }, [authToken, unreadCounts]);
 
   return (
     <div className="w-full md:w-1/4 bg-gray-800 p-4">
@@ -89,7 +95,8 @@ const Sidebar = ({ setActiveUser }) => {
               client_id: conv.client?.id,
               message: conv.latest_message,
               timestamp: conv.timestamp, // Add this if you include it in your backend
-              condition: conv.is_file
+              condition: conv.is_file,
+              unread_count: conv.unread_count
             }}
             setActiveUser={setActiveUser}
           />
