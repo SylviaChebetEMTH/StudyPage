@@ -11,8 +11,7 @@ export const SocketProvider = ({ children }) => {
   const [activeConversationId, setActiveConversationId] = useState(null);
 
   // Initialize notification sound
-  const notificationSound = new Audio('/path/to/your/notification-sound.mp3'); // Add your sound file
-
+  const notificationSound = new Audio('./assets/mixkit-magic-notification-ring-2344.wav'); // Add your sound file
   useEffect(() => {
     if (!currentUser) return;
 
@@ -54,7 +53,7 @@ export const SocketProvider = ({ children }) => {
     return () => {
       newSocket.disconnect();
     };
-  }, [currentUser, activeConversationId,notificationSound ]);
+  }, [currentUser ]);
 
   // Function to mark conversation as active
   const setActiveConversation = (conversationId) => {
