@@ -2,9 +2,10 @@ import React from "react";
 import { FileIcon, MessageCircle } from "lucide-react";
 import { useSocket } from '../contexts/SocketContext.js';
 const ContactItem = ({ contact, setActiveUser }) => {
-  const { setUnreadCounts } = useSocket();
+  const { setUnreadCounts,setActiveConversation } = useSocket();
   const handleClick = async () => {
     setActiveUser(contact);
+    setActiveConversation(contact.conversationId);
     if (contact.unread_count > 0) {
       try {
         await fetch(`http://127.0.0.1:5000/conversations/${contact.conversationId}/mark-read`, {
