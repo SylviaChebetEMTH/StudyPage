@@ -1272,25 +1272,36 @@ def partial_update_expert(id):
 def mark_messages_read(conversation_id):
     try:
         user_id = get_jwt_identity()
-        print(f"User ID: {user_id}, Conversation ID: {conversation_id}") 
+        print(f"DEBUG - User ID: {user_id}, Conversation ID: {conversation_id}")
         
-        # Mark all unread messages where the current user is the receiver
+        # Check if conversation exists
+        conversation = Conversation.query.get(conversation_id)
+        if not conversation:
+            print(f"DEBUG - Conversation {conversation_id} not found")
+            return jsonify({'error': 'Conversation not found'}), 404
+
+        # Get unread messages
         unread_messages = Message.query.filter_by(
             conversation_id=conversation_id,
             receiver_id=user_id,
             read=False
         ).all()
+        
+        print(f"DEBUG - Found {len(unread_messages)} unread messages")
+        print(f"DEBUG - Messages: {unread_messages}")  # See the actual messages
 
-        print(f"Found {len(unread_messages)} unread messages")
-        
         for message in unread_messages:
+            print(f"DEBUG - Marking message {message.id} as read")
             message.read = True
-        
+
         db.session.commit()
         return jsonify({'success': True}), 200
-        
+
     except Exception as e:
-        print(f"Error in mark_messages_read: {str(e)}")
+        print(f"DEBUG - Error in mark_messages_read: {str(e)}")
+        print(f"DEBUG - Error type: {type(e)}")
+        import traceback
+        print(f"DEBUG - Traceback: {traceback.format_exc()}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/experts/<int:id>', methods=['DELETE'])
