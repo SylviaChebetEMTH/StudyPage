@@ -1290,6 +1290,7 @@ def mark_messages_read(conversation_id):
         return jsonify({'success': True}), 200
         
     except Exception as e:
+        print(f"Error in mark_messages_read: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/experts/<int:id>', methods=['DELETE'])
