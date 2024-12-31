@@ -66,7 +66,7 @@
 
 
 import React, { useEffect, useState } from "react";
-import { FileIcon, MessageSquare } from "lucide-react";
+import { FileIcon } from "lucide-react";
 
 const AdminSidebar = ({ onSelectConversation, authToken }) => {
   const [conversations, setConversations] = useState([]);
