@@ -8,18 +8,29 @@ const ContactItem = ({ contact, setActiveUser }) => {
   const handleClick = async () => {
     setActiveUser(contact);
     setActiveConversation(contact.conversationId);
+
     if (contact.unread_count > 0) {
       try {
-        await fetch(`http://127.0.0.1:5000/conversations/${contact.conversationId}/mark-read`, {
+        const response = await fetch(`http://127.0.0.1:5000/conversations/${contact.conversationId}/mark-read`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,  // Use the token from context
           },
         });
-        setUnreadCounts(prev => ({
-          ...prev,
-          [contact.conversationId]: 0
-        }));
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (data.success) {
+          setUnreadCounts(prev => ({
+            ...prev,
+            [contact.conversationId]: 0
+          }));
+        }
       } catch (error) {
         console.error('Error marking messages as read:', error);
       }

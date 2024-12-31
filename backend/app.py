@@ -1273,6 +1273,7 @@ def mark_messages_read(conversation_id):
     try:
         user_id = get_jwt_identity()
         
+        
         # Mark all unread messages where the current user is the receiver
         unread_messages = Message.query.filter_by(
             conversation_id=conversation_id,
