@@ -1272,7 +1272,7 @@ def partial_update_expert(id):
 def mark_messages_read(conversation_id):
     try:
         user_id = get_jwt_identity()
-        
+        print(f"User ID: {user_id}, Conversation ID: {conversation_id}") 
         
         # Mark all unread messages where the current user is the receiver
         unread_messages = Message.query.filter_by(
