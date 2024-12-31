@@ -1280,6 +1280,8 @@ def mark_messages_read(conversation_id):
             receiver_id=user_id,
             read=False
         ).all()
+
+        print(f"Found {len(unread_messages)} unread messages")
         
         for message in unread_messages:
             message.read = True
