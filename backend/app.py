@@ -1280,7 +1280,6 @@ def mark_messages_read(conversation_id):
             print(f"DEBUG - Conversation {conversation_id} not found")
             return jsonify({'error': 'Conversation not found'}), 404
 
-        # Get unread messages
         unread_messages = Message.query.filter_by(
             conversation_id=conversation_id,
             receiver_id=user_id,
