@@ -1,8 +1,10 @@
 import React from "react";
 import { FileIcon, MessageCircle } from "lucide-react";
 import { useSocket } from '../contexts/SocketContext.js';
+import { useUserContext } from '../contexts/userContext'
 const ContactItem = ({ contact, setActiveUser }) => {
   const { setUnreadCounts,setActiveConversation } = useSocket();
+  const { authToken } = useUserContext();
   const handleClick = async () => {
     setActiveUser(contact);
     setActiveConversation(contact.conversationId);
@@ -11,7 +13,7 @@ const ContactItem = ({ contact, setActiveUser }) => {
         await fetch(`http://127.0.0.1:5000/conversations/${contact.conversationId}/mark-read`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+            'Authorization': `Bearer ${authToken}`,
           },
         });
         setUnreadCounts(prev => ({
