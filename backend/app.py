@@ -11,7 +11,7 @@ from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
 from flask_migrate import Migrate
 from flask_restful import Resource,Api
-from flask_mail import Mail, Message as MessageInstance
+from flask_mail import Mail, Message as MessageInstance 
 from flask_socketio import SocketIO, emit
 import cloudinary.uploader
 from datetime import datetime
@@ -1280,8 +1280,7 @@ def mark_messages_read(conversation_id):
             print(f"DEBUG - Conversation {conversation_id} not found")
             return jsonify({'error': 'Conversation not found'}), 404
 
-        # Get unread messages
-        unread_messages = Message.query.filter_by(
+        unread_messages = MessageModel.query.filter_by(
             conversation_id=conversation_id,
             receiver_id=user_id,
             read=False

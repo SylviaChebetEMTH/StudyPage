@@ -35,13 +35,14 @@ export const SocketProvider = ({ children }) => {
           // Play notification sound if the conversation is not active
           notificationSound.play().catch(error => {
             console.error('Error playing notification sound:', error);
+            console.log('played')
           });
 
           // Show browser notification
           if (Notification.permission === 'granted') {
             new Notification('New Message', {
               body: data.message.content || 'You have a new message',
-              icon: '/path/to/your/notification-icon.png', // Add your icon
+              icon: './assets/mixkit-magic-notification-ring-2344.wav', // Add your icon
             });
           }
         }

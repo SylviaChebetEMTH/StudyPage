@@ -94,7 +94,7 @@ const Sidebar = ({ setActiveUser }) => {
               client_name: conv.client?.client_name || "Unknown Client",
               client_id: conv.client?.id,
               message: conv.latest_message,
-              timestamp: conv.timestamp, // Add this if you include it in your backend
+              timestamp: conv.timestamp,
               condition: conv.is_file,
               unread_count: conv.unread_count
             }}
