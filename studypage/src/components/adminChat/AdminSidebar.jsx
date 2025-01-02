@@ -140,7 +140,7 @@ const AdminSidebar = ({ onSelectConversation, authToken }) => {
                 )}
                 {/* <span>Latest Message</span> */}
               </div>
-              <p className="text-white truncate flex items-center gap-2">
+              <p className="text-gray-300 truncate flex items-center gap-2">
                 {conv.last_message}
               </p>
             </div>
