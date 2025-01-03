@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { UserContext } from './contexts/userContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { Field, Formik, Form, ErrorMessage } from "formik";
+import ExpertCard from './ExpertCard';
 
 const ExpertPage = () => {
   const [experts, setExperts] = useState([]);
@@ -206,43 +207,15 @@ const ExpertPage = () => {
           </div>
         </div>
         <h2 className="text-2xl font-semibold text-gray-700 text-center mb-2">Experts List</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0 bg-blue-50 z-100 px-4 py-4 mb-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
           {Array.isArray(experts) && experts.length > 0 ? (
             experts.map((expert) => (
-              <div
+              <ExpertCard
                 key={expert.id}
-                className="border p-4 flex flex-col justify-between shadow-xl rounded-lg overflow-hidden bg-white aos-init transition-transform transform hover:scale-105 hover:shadow-2xl hover:bg-gray-100"
-              >
-                <div className="w-full  flex justify-center items-center border border-[#e4e4e4] h-[300px] relative overflow-hidden group transition">
-                  <div className="w-full h-full mx-auto flex justify-center items-center">
-                    <img
-                      src={`${expert.profilePicture}`}
-                      alt="Profile"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col items-center justify-center text-center">
-                <h2 className="text-md font-medium text-gray-700 mb-1">{expert.name}</h2>
-                <p className="text-gray-700 text-sm">{expert.title}</p>
-                </div>
-                
-                <hr />
-                {expert.education && (
-                  <p className="text-gray-700 text-xs">{expert.education}</p>
-                )}
-                {expert.languages && (
-                  <p className="text-gray-700 text-xs">{expert.languages.split(',').slice(0, 4).join(', ')}</p>
-                )}
-                {/* Hire Expert Button */}
-                <button
-                  onClick={() => hireExpert(expert.id)}
-                  className="mt-4 bg-[#85C4C2] text-white px-4 py-2 rounded hover:bg-[#6EA5A4]"
-                  currentUser={currentUser}
-                >
-                  Hire Expert
-                </button>
-              </div>
+                expert={expert}
+                onHire={hireExpert}
+                currentUser={currentUser}
+              />
             ))
           ) : (
             <p>No experts available</p>
