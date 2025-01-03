@@ -111,6 +111,20 @@ const ExpertPage = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
+  const renderStars = (rating) => {
+    return (
+      <div className="flex items-center gap-1">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star
+            key={star}
+            size={16}
+            className={`${star <= rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
+          />
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className="p-0">
       {/* Login prompt modal */}
