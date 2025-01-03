@@ -612,7 +612,10 @@ def get_experts():
             'languages': expert.languages,
             'projectType': expert.project_type.name if expert.project_type else None,  # Corrected to use `project_type`
             'subject': expert.subject.name if expert.subject else None,  # Corrected to use `subject`
-            'profilePicture': expert.profile_picture
+            'profilePicture': expert.profile_picture,
+            'rating': expert.rating_avg,
+            'totalReviews': expert.total_reviews,
+            'successRate': f"{expert.success_rate:.1f}%"
         }
         output.append(expert_data)
 
