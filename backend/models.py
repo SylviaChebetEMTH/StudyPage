@@ -49,6 +49,18 @@ class Expert(db.Model):
     project_type = db.relationship('ProjectType', backref='experts')
     subject = db.relationship('Subject', backref='experts')
 
+class Rating(db.Model):
+    __tablename__ = 'ratings'
+    id = db.Column(db.Integer, primary_key=True)
+    expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    rating = db.Column(db.Float, nullable=False)
+    review = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    expert = db.relationship('Expert', backref='ratings')
+    user = db.relationship('User', backref='ratings')
+
 
 class ProjectType(db.Model):
     __tablename__ = 'project_types'
