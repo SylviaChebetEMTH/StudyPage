@@ -101,7 +101,7 @@ def seed_database():
         education='PhD in Literature',
         languages='English, French',
         project_type=project_types[0],  # Linking expert to the first project type
-        profile_picture='https://example.com/picture1.jpg'
+        profile_picture='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJVe6__2JCii1tDMVzlrt0vYYT9QIxVBsjLJE8aFLTR3ikm5HvDLN8m_VXhmSfwU6OzoU&usqp=CAU'
     )
 
     expert2 = Expert(
@@ -113,7 +113,7 @@ def seed_database():
         education='MS in Engineering',
         languages='English, Spanish',
         project_type=project_types[1],  # Linking expert to the second project type
-        profile_picture='https://example.com/picture2.jpg'
+        profile_picture='https://media.istockphoto.com/id/1337575989/photo/close-up-of-young-red-bearded-man-posing-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=CMWClxp0azh3lzE0tR3GjZzwjXxedmzNjmvvtlCbx9U='
     )
 
     services = [
