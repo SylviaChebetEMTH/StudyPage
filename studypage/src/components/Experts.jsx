@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { UserContext } from './contexts/userContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { Field, Formik, Form, ErrorMessage } from "formik";
+import { Star } from 'lucide-react';
 
 const ExpertPage = () => {
   const [experts, setExperts] = useState([]);
