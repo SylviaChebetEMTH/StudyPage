@@ -12,6 +12,7 @@ const ExpertPage = () => {
   const [subjects, setSubjects] = useState([]);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const navigate = useNavigate();
+  const [isHovered, setIsHovered] = useState(null);
 
   const { currentUser, authToken } = useContext(UserContext);
   const API_URL = 'http://127.0.0.1:5000';
