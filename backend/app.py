@@ -14,6 +14,7 @@ from flask_restful import Resource,Api
 from flask_mail import Mail, Message as MessageInstance 
 from flask_socketio import SocketIO, emit
 import cloudinary.uploader
+from random import uniform, randint
 from datetime import datetime
 from flask import url_for
 import os
