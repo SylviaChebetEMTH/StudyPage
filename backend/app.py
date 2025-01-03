@@ -200,6 +200,28 @@ def verify_payment():
     except Exception as e:
         return jsonify({"success": False, "message": f"An error occurred: {str(e)}"}), 500
 
+@app.route('/admin/update-expert-stats', methods=['POST'])
+def update_expert_stats():
+    try:
+        experts = Expert.query.all()
+        
+        for expert in experts:
+            # Generate realistic-looking random ratings between 4.0 and 5.0
+            expert.rating_avg = round(uniform(4.0, 5.0), 1)
+            
+            # Generate random number of reviews between 15 and 50
+            expert.total_reviews = randint(15, 50)
+            
+            # Generate success rate between 92% and 99%
+            expert.success_rate = round(uniform(92.0, 99.0), 1)
+        
+        db.session.commit()
+        return jsonify({'message': 'Expert statistics updated successfully'}), 200
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/test', methods=['GET'])
 def test():
     """A simple test endpoint to ensure the server is running."""
