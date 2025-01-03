@@ -48,6 +48,9 @@ class Expert(db.Model):
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
     project_type = db.relationship('ProjectType', backref='experts')
     subject = db.relationship('Subject', backref='experts')
+    rating_avg = db.Column(db.Float, default=0.0)
+    total_reviews = db.Column(db.Integer, default=0)
+    success_rate = db.Column(db.Float, default=0.0)
 
 class Rating(db.Model):
     __tablename__ = 'ratings'
