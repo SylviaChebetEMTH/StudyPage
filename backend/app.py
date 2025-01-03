@@ -601,6 +601,7 @@ def get_experts():
     output = []
 
     for expert in experts:
+        success_rate_str = f"{expert.success_rate:.1f}%" if expert.success_rate is not None else "0.0%"
         expert_data = {
             'id': expert.id,
             'name': expert.name,
@@ -615,7 +616,7 @@ def get_experts():
             'profilePicture': expert.profile_picture,
             'rating': expert.rating_avg,
             'totalReviews': expert.total_reviews,
-            'successRate': f"{expert.success_rate:.1f}%"
+            'successRate': success_rate_str
         }
         output.append(expert_data)
 
