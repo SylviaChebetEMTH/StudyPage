@@ -207,8 +207,7 @@ const ExpertPage = () => {
           </div>
         </div>
         <h2 className="text-2xl font-semibold text-gray-700 text-center mb-2">Experts List</h2>
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6"> */}
-        <div className="grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-4 px-2 md:px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
           {Array.isArray(experts) && experts.length > 0 ? (
             experts.map((expert) => (
               <ExpertCard
