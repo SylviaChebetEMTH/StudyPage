@@ -85,7 +85,7 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
         {/* Hire Button */}
         <button
           onClick={() => onHire(expert.id)}
-          className="w-full bg-[#85C4C2] text-white py-2 px-4 rounded-lg hover:bg-[#6EA5A4] transition-colors duration-300 flex items-center justify-center gap-2"
+          className="w-full bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors duration-300 flex items-center justify-center gap-2"
         >
           <span>Hire Expert</span>
           <span className="text-sm">→</span>
