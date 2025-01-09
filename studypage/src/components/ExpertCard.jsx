@@ -25,7 +25,8 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
-      <div className="relative h-64 overflow-hidden">
+      {/* <div className="relative h-64 overflow-hidden"> */}
+      <div className="relative h-24 md:h-40 overflow-hidden">
         <img
           src={expert.profilePicture}
           alt={expert.name}
