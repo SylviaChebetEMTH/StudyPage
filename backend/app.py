@@ -682,7 +682,7 @@ def get_experts():
                 'user_name': comment.user.username  # Assuming User model has username field
             }
             comments.append(comment_data)
-            
+
         expert_data = {
             'id': expert.id,
             'name': expert.name,
@@ -699,6 +699,7 @@ def get_experts():
             'totalReviews': expert.total_reviews,
             'successRate': success_rate_str,
             'isAiFree': expert.is_ai_free,
+            'comments': comments
         }
         output.append(expert_data)
 
