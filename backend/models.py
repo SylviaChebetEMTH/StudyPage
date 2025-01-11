@@ -76,8 +76,6 @@ class Comment(db.Model):
     expert = db.relationship('Expert', backref='comments')
     user = db.relationship('User', backref='comments')
 
-
-
 class ProjectType(db.Model):
     __tablename__ = 'project_types'
     id = db.Column(db.Integer, primary_key=True)

@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from functools import wraps
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, create_refresh_token, get_jwt, verify_jwt_in_request, decode_token
-from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject, Message as MessageModel, Conversation
+from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject, Message as MessageModel, Conversation, Comment
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_mail import Mail, Message
@@ -230,7 +230,7 @@ def get_expert_comments(expert_id):
     })
 
 @app.route('/experts/<int:expert_id>/comments', methods=['POST'])
-@login_required
+# @login_required
 def add_expert_comment(expert_id):
     data = request.get_json()
     comment = Comment(
