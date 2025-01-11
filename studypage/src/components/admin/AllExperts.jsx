@@ -357,13 +357,47 @@ export default function AllExperts() {
                   <p className="mb-2 text-sm">
                     <span className="font-medium">Subjects:</span> {expert.subject}
                   </p>
-                  <p className="mb-2 text-sm">
+                  {/* <p className="mb-2 text-sm">
                     <span className="font-medium">Comments:</span> {expert.comments}
-                  </p>
+                  </p> */}
                 </div>
                 {currentUser.is_admin && (
                   <div className="mt-4">
-                    <div className="flex flex-row justify-between mb-2">
+                    {/* Comments section first */}
+                    <ExpertComments
+                      expert={expert}
+                      comments={Array.isArray(expert.comments) ? expert.comments : []}
+                      authToken={authToken}
+                      onCommentUpdate={(updatedComment) => {
+                        setExperts((prevExperts) =>
+                          prevExperts.map((exp) =>
+                            exp.id === expert.id
+                              ? {
+                                  ...exp,
+                                  comments: exp.comments.map((c) =>
+                                    c.id === updatedComment.id ? updatedComment : c
+                                  ),
+                                }
+                              : exp
+                          )
+                        );
+                      }}
+                      onCommentDelete={(commentId) => {
+                        setExperts((prevExperts) =>
+                          prevExperts.map((exp) =>
+                            exp.id === expert.id
+                              ? {
+                                  ...exp,
+                                  comments: exp.comments.filter((c) => c.id !== commentId),
+                                }
+                              : exp
+                          )
+                        );
+                      }}
+                    />
+                    
+                    {/* Action buttons in their own div */}
+                    <div className="flex flex-row justify-between mt-4">
                       <button
                         onClick={() => {
                           setEditingExpert(expert.id);

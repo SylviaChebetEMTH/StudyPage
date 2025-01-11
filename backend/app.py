@@ -708,7 +708,8 @@ def get_experts():
 @app.route('/comments/<int:comment_id>', methods=['PATCH'])
 @jwt_required()
 def update_comment(comment_id):
-    current_user = get_jwt_identity()
+    current_user_id = get_jwt_identity()
+    current_user = User.query.get(current_user_id) 
     if not current_user.is_admin:
         return jsonify({'message': 'Unauthorized'}), 403
         
@@ -729,7 +730,8 @@ def update_comment(comment_id):
 @app.route('/comments/<int:comment_id>', methods=['DELETE'])
 @jwt_required()
 def delete_comment(comment_id):
-    current_user = get_jwt_identity()
+    current_user_id = get_jwt_identity()
+    current_user = User.query.get(current_user_id) 
     if not current_user.is_admin:
         return jsonify({'message': 'Unauthorized'}), 403
         
