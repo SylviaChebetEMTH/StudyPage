@@ -673,6 +673,16 @@ def get_experts():
 
     for expert in experts:
         success_rate_str = f"{expert.success_rate:.1f}%" if expert.success_rate is not None else "0.0%"
+        comments = []
+        for comment in expert.comments:
+            comment_data = {
+                'id': comment.id,
+                'content': comment.content,
+                'created_at': comment.created_at.isoformat(),
+                'user_name': comment.user.username  # Assuming User model has username field
+            }
+            comments.append(comment_data)
+            
         expert_data = {
             'id': expert.id,
             'name': expert.name,
