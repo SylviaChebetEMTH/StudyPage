@@ -224,20 +224,19 @@ def get_expert_comments(expert_id):
             'id': comment.id,
             'content': comment.content,
             'created_at': comment.created_at.isoformat(),
-            'user_name': comment.user.name,
+            'user_name': comment.user.username,
             'user_id': comment.user.id
         } for comment in comments]
     })
 
-@app.route('/experts/<int:expert_id>/comments', methods=['POST'])
+@app.route('/experts/<int:expert_id>/comments/<int:currentUser_id>', methods=['POST'])
 @jwt_required()
-def add_expert_comment(expert_id):
-    current_user = get_jwt_identity()
+def add_expert_comment(expert_id,currentUser_id):
     data = request.get_json()
     comment = Comment(
         content=data['content'],
         expert_id=expert_id,
-        user_id=current_user.id
+        user_id=currentUser_id
     )
     db.session.add(comment)
     db.session.commit()
@@ -247,7 +246,7 @@ def add_expert_comment(expert_id):
             'id': comment.id,
             'content': comment.content,
             'created_at': comment.created_at.isoformat(),
-            'user_name': comment.user.name,
+            'user_name': comment.user.username,
             'user_id': comment.user.id
         }
     })

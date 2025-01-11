@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { X, Send, Star } from 'lucide-react';
 // import { UserContext } from "../contexts/userContext";
-import { UserContext } from '../contexts/userContext';
+// import { UserContext } from '../contexts/userContext';
 
-const ExpertDetailModal = ({ expert, isOpen, onClose }) => {
+const ExpertDetailModal = ({ expert, isOpen, onClose, currentUser }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(false);
-  const { currentUser, authToken } = useContext(UserContext);
+  // const { currentUser, authToken } = useContext(UserContext);
   const [activeTab, setActiveTab] = useState('about');
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const ExpertDetailModal = ({ expert, isOpen, onClose }) => {
 
   const fetchComments = async () => {
     try {
-      const response = await fetch(`/experts/${expert.id}/comments`);
+      const response = await fetch(`http://127.0.0.1:5000/experts/${expert.id}/comments`);
       const data = await response.json();
       setComments(data.comments);
     } catch (error) {
@@ -36,11 +36,11 @@ const ExpertDetailModal = ({ expert, isOpen, onClose }) => {
 
     setLoading(true);
     try {
-      const response = await fetch(`/experts/${expert.id}/comments`, {
+      const response = await fetch(`http://127.0.0.1:5000/experts/${expert.id}/comments/${currentUser.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${authToken}`
+          // Authorization: `Bearer ${authToken}`
         },
         body: JSON.stringify({ content: newComment }),
       });

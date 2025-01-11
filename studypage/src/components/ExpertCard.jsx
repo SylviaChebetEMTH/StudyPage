@@ -6,6 +6,8 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
   const [isHovered, setIsHovered] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
 
+  // console.log('this current user s great',currentUser)
+
   const renderStars = (rating) => {
     return (
       <div className="flex items-center gap-1">
