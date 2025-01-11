@@ -9,11 +9,16 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import googleIcon from '../assets/googleIcon.png';
 
 export default function Login() {
+  const { setAuthToken, setCurrentUser } = useContext(UserContext);
   const { login } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+
+  console.log("setAuthToken:", setAuthToken);
+  console.log("setCurrentUser :", setCurrentUser);
 
   const handleGoogleSignup = useGoogleLogin({
     onSuccess: async (response) => {
@@ -23,27 +28,57 @@ export default function Login() {
           headers: { Authorization: `Bearer ${access_token}` },
         });
 
-        // Use data from Google to register/login
+        // Prepare the user data from Google response
         const user = {
           email: data.email,
           username: data.given_name || data.email,
         };
+        console.log("Before setting user:", user);
 
         // Send the user data to your backend to handle signup/login
         const res = await axios.post("http://127.0.0.1:5000/auth/google", user);
-        alert("Check your email to set your password.");
-        if (res.data.is_admin) {
-          navigate("/admin/dashboard");
+
+        if (res.data.success) {
+          // Check if the user is an existing user or a new user
+          if (res.data.authToken) {
+            // If the user has an auth token, they are an existing user
+            setAuthToken(res.data.authToken); // Set the auth token in context
+            setCurrentUser(res.data); // Set the current user in context
+            localStorage.setItem('token', res.data.authToken);
+            alert("Logged in successfully!");
+
+            // Save user data to localStorage or context for future use (authentication state)
+            localStorage.setItem('user_id', res.data.user_id);
+            localStorage.setItem('email', res.data.email);
+            localStorage.setItem('username', res.data.username);
+            localStorage.setItem('is_admin', res.data.is_admin);
+
+            // Navigate user based on their role
+            if (res.data.is_admin) {
+              navigate("/admin/dashboard");
+            } else {
+              navigate("/");
+            }
+          } else {
+            // If no auth token exists, it means the user is new
+            alert("Check your email to set your password.");
+          }
         } else {
-          navigate("/");
+          // Handle any other failure cases
+          alert("An error occurred. Please try again.");
         }
       } catch (error) {
         console.error("Google Signup failed:", error);
-        alert('Google Signup failed. Please try again.');
+        alert("Google Signup failed. Please try again.");
       }
     },
     onError: () => console.error("Google Login Failed"),
   });
+
+  const handleNavigateToForgotPassword = () => {
+    navigate("/forgot-password");
+  };
+
 
 
   const handleSubmit = async (e) => {
@@ -154,12 +189,12 @@ export default function Login() {
                           </label>
                         </div>
                         <div className="text-sm">
-                          <Link
-                            to="#"
+                          <button
+                            onClick={handleNavigateToForgotPassword}
                             className="font-medium text-blue-500 hover:text-blue-400"
                           >
                             Forgot your password?
-                          </Link>
+                          </button>
                         </div>
                       </div>
                       <div>
@@ -169,7 +204,7 @@ export default function Login() {
                             <button
                               onClick={handleGoogleSignup} className="flex items-center justify-center py-1 px-3 w-auto text-black rounded-md shadow-sm text-sm border border-gray-200">
                               <img src={googleIcon} alt="Google" className="w-6 h-6 mr-2" />
-                              Sign up with Google
+                              Log in with Google
                             </button>
                           </div>
                         </div>

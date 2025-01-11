@@ -63,8 +63,9 @@ const Footer = () => {
             <Link to="/features" className="hover:text-gray-200 cursor-pointer">Features</Link>
             <Link to="/pricing" className="hover:text-gray-200 cursor-pointer">Pricing</Link>
             <Link to="/help" className="hover:text-gray-200 cursor-pointer">Help</Link>
-            <Link to="/privacy_policy" className="hover:text-gray-200 cursor-pointer">
-              Privacy
+
+            <Link to="https://sites.google.com/view/studypage-cloud/home" className="hover:text-gray-200 cursor-pointer">
+              Privacy Policy
             </Link>
           </div>
           <div className="flex flex-wrap gap-4 justify-center md:justify-end">

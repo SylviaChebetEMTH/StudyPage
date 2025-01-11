@@ -57,19 +57,29 @@ def google_signup():
     data = request.json
     print(f"Received data: {data}")
 
-    # Check if the required fields are present (Google login might not provide a password or phone_number)
+    # Check if the required fields are present
     if 'username' not in data or 'email' not in data:
         print("Missing required fields")
         return jsonify({'error': 'Missing required fields'}), 400
-    
+
     # Check if the user already exists
     existing_user = User.query.filter_by(email=data['email']).first()
     if existing_user:
-        print("User with this email already exists")
-        return jsonify({'error': 'User with this email already exists'}), 400
-    
+        print("User with this email already exists. Logging in...")
+        # Automatically log in the user
+        session['user_id'] = existing_user.id
+        access_token = create_access_token(identity=existing_user.id)
+        return jsonify({
+            'success': True,
+            'authToken': access_token,
+            'user_id': existing_user.id,
+            'email': existing_user.email,
+            'username': existing_user.username,
+            'is_admin': existing_user.is_admin
+        }), 200
+
+    # If the user doesn't exist, create a new user
     placeholder_password = bcrypt.generate_password_hash('placeholder_password')
-    # Create new user (you might want to add a default password or handle it differently)
     new_user = User(
         username=data['username'],
         email=data['email'],
@@ -77,7 +87,7 @@ def google_signup():
         is_admin=False,  
         phone_number=None  
     )
-    
+
     # Add to session and commit to the database
     try:
         db.session.add(new_user)
@@ -87,28 +97,28 @@ def google_signup():
         print(f"Error committing to the database: {e}")
         return jsonify({'error': 'Failed to create user'}), 500
 
-
-
-    token = s.dumps(new_user.email, salt='password-reset-salt') 
-    reset_url = url_for('reset_password', token=token, _external=True) 
-    msg = Message('Set Your Password', sender=app.config['MAIL_DEFAULT_SENDER'], recipients=[new_user.email]) 
-    msg.body = f'Please click the following link to set your password: {reset_url.replace("http://127.0.0.1:5000", "http://localhost:3001")}' 
-    mail.send(msg)
+    # Send an email to set their password
+    token = s.dumps(new_user.email, salt='password-reset-salt')
+    reset_url = url_for('reset_password', token=token, _external=True)
+    msg = Message('Set Your Password', sender=app.config['MAIL_DEFAULT_SENDER'], recipients=[new_user.email])
+    msg.body = f'Please click the following link to set your password: {reset_url.replace("http://127.0.0.1:5000", "http://localhost:3001")}'
     try:
         mail.send(msg)
     except Exception as e:
         print(f"Error sending email: {e}")
-        return jsonify({'error': 'Failed to send email'}),
+        return jsonify({'error': 'Failed to send email'}), 500
 
-
+    # Automatically log in the new user
     session['user_id'] = new_user.id
 
     return jsonify({
-        'success': 'User registered successfully',
+        'success': True,  
         'user_id': new_user.id,
         'email': new_user.email,
         'username': new_user.username
     }), 201
+
+
 
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
@@ -140,6 +150,61 @@ def reset_password(token):
 
     # For GET requests, return a 200 status with a message indicating the frontend handles the reset
     return '', 200
+
+from flask import request, jsonify, url_for
+from flask_mail import Message
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature
+
+s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+
+@app.route('/auth/forgot_password', methods=['POST'])
+def forgot_password():
+    """
+    Handles user requests to reset their password.
+    Sends an email with a reset link if the email exists in the database.
+    """
+    data = request.json
+    email = data.get('email')
+
+    if not email:
+        return jsonify({'error': 'Email is required'}), 400
+
+    # Check if the user exists
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({'error': 'No user found with this email'}), 404
+
+    # Generate a secure token
+    token = s.dumps(user.email, salt='password-reset-salt')
+    reset_url = url_for('reset_password', token=token, _external=True)
+
+    # Prepare the email message
+    msg = Message(
+        'Reset Your Password',
+        sender=app.config['MAIL_DEFAULT_SENDER'],
+        recipients=[user.email]
+    )
+    msg.body = f'''
+    Hello {user.username},
+    
+    We received a request to reset your password. Click the link below to reset it:
+    {reset_url.replace("http://127.0.0.1:5000", "http://localhost:3001")}
+
+    If you didn't request this, you can ignore this email.
+
+    Regards,
+    Your App Team
+    '''
+
+    # Send the email
+    try:
+        mail.send(msg)
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        return jsonify({'error': 'Failed to send email'}), 500
+
+    return jsonify({'success': 'Password reset link sent to your email'}), 200
+
 
 
 # Admin Messages Route

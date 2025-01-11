@@ -34,6 +34,7 @@ import UserDashboard from "./components/user/UserDashboard";
 import Footer from "./components/Footer";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import Help from "./components/Help";
+import ForgotPassword from "./components/forms/ForgotPassword";
 
 
 function AppContent() {
@@ -57,6 +58,7 @@ function AppContent() {
           <Route path="/updateprofile" element={<UpdateProfile />} />
           <Route path="/expertspage" element={<ExpertPage />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/help" element={<Help />} />
           <Route path="/privacy_policy" element={<PrivacyPolicy />} />
           <Route path="/login" element={<Login />} />
