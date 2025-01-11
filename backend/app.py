@@ -216,6 +216,41 @@ def update_expert_features():
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
+@app.route('/experts/<int:expert_id>/comments', methods=['GET'])
+def get_expert_comments(expert_id):
+    comments = Comment.query.filter_by(expert_id=expert_id).order_by(Comment.created_at.desc()).all()
+    return jsonify({
+        'comments': [{
+            'id': comment.id,
+            'content': comment.content,
+            'created_at': comment.created_at.isoformat(),
+            'user_name': comment.user.name,
+            'user_id': comment.user.id
+        } for comment in comments]
+    })
+
+@app.route('/experts/<int:expert_id>/comments', methods=['POST'])
+@login_required
+def add_expert_comment(expert_id):
+    data = request.get_json()
+    comment = Comment(
+        content=data['content'],
+        expert_id=expert_id,
+        user_id=current_user.id
+    )
+    db.session.add(comment)
+    db.session.commit()
+    return jsonify({
+        'message': 'Comment added successfully',
+        'comment': {
+            'id': comment.id,
+            'content': comment.content,
+            'created_at': comment.created_at.isoformat(),
+            'user_name': comment.user.name,
+            'user_id': comment.user.id
+        }
+    })
+
 @app.route('/admin/update-expert-stats', methods=['POST'])
 def update_expert_stats():
     try:
