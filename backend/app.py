@@ -200,6 +200,21 @@ def verify_payment():
     except Exception as e:
         return jsonify({"success": False, "message": f"An error occurred: {str(e)}"}), 500
 
+@app.route('/admin/update-expert-features', methods=['POST'])
+def update_expert_features():
+    try:
+        experts = Expert.query.all()
+        
+        for expert in experts:
+            expert.is_ai_free = random.random() < 0.3
+        
+        db.session.commit()
+        return jsonify({'message': 'Expert features updated successfully'}), 200
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/admin/update-expert-stats', methods=['POST'])
 def update_expert_stats():
     try:
