@@ -1,8 +1,8 @@
-"""Not Null password for google users
+"""initialized
 
-Revision ID: d5a41f9c63d9
+Revision ID: 08d76574b433
 Revises: 
-Create Date: 2024-12-16 21:32:04.359054
+Create Date: 2024-12-16 15:22:07.590357
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'd5a41f9c63d9'
+revision = '08d76574b433'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -59,7 +59,8 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=100), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
-    sa.Column('price', sa.Float(), nullable=False),
+    sa.Column('base_price', sa.Float(), nullable=False),
+    sa.Column('price_per_page', sa.Float(), nullable=False),
     sa.Column('unit', sa.String(length=50), nullable=True),
     sa.Column('subject_id', sa.Integer(), nullable=False),
     sa.Column('project_type_id', sa.Integer(), nullable=False),
