@@ -207,7 +207,7 @@ def update_expert_features():
         experts = Expert.query.all()
         
         for expert in experts:
-            expert.is_ai_free = random.random() < 0.3
+            expert.is_ai_free = random.random() < 0.6
         
         db.session.commit()
         return jsonify({'message': 'Expert features updated successfully'}), 200
