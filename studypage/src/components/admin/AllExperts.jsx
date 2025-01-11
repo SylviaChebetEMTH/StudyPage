@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../contexts/userContext";
 import { Circles } from 'react-loader-spinner';
 import { toast } from 'react-toastify';
-
+import ExpertComments from './ExpertComments'
 export default function AllExperts() {
   const [experts, setExperts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
