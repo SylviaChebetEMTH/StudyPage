@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Star } from 'lucide-react';
-
+import ExpertDetailModal from './admin/ExpertDetailModal'
+// studypage/src/components/admin/ExpertDetailModal.jsx
 const ExpertCard = ({ expert, onHire, currentUser }) => {
   const [isHovered, setIsHovered] = useState(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
 
   const renderStars = (rating) => {
     return (
@@ -66,6 +68,12 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
             {expert.successRate || "98%"} Success Rate
           </span>
         </div>
+        <button
+          onClick={() => setShowDetailModal(true)}
+          className="text-blue-600 text-xs hover:underline mt-2"
+        >
+          View Details
+        </button>
 
         {/* Expertise Tags */}
         <div className="flex flex-wrap gap-2 mb-3">
@@ -106,6 +114,12 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
           <span className="text-sm">→</span>
         </button>
       </div>
+      <ExpertDetailModal
+        expert={expert}
+        isOpen={showDetailModal}
+        onClose={() => setShowDetailModal(false)}
+        currentUser={currentUser}
+      />
     </div>
   );
 };

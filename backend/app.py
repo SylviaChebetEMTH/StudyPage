@@ -230,8 +230,9 @@ def get_expert_comments(expert_id):
     })
 
 @app.route('/experts/<int:expert_id>/comments', methods=['POST'])
-# @login_required
+@jwt_required()
 def add_expert_comment(expert_id):
+    current_user = get_jwt_identity()
     data = request.get_json()
     comment = Comment(
         content=data['content'],
