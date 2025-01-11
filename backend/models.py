@@ -65,6 +65,18 @@ class Rating(db.Model):
     expert = db.relationship('Expert', backref='ratings')
     user = db.relationship('User', backref='ratings')
 
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    
+    expert = db.relationship('Expert', backref='comments')
+    user = db.relationship('User', backref='comments')
+
+
 
 class ProjectType(db.Model):
     __tablename__ = 'project_types'
