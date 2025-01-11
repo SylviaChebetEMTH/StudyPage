@@ -17,9 +17,9 @@ const Footer = () => {
         {/* Join Us Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-700 pb-6 mb-6">
           <div className="mb-6 md:mb-0">
-            <h3 data-aos="fade-up"
+            <button data-aos="fade-up"
             data-aos-duration="1000"
-            data-aos-delay="0" className="text-2xl font-bold text-white">Join Us</h3>
+            data-aos-delay="0" className="text-2xl font-bold text-white bg-slate-600 p-2 rounded">Become an expert</button>
             <p data-aos="fade-up"
           data-aos-duration="1500"
           data-aos-delay="300" className="text-gray-400 mt-2">
