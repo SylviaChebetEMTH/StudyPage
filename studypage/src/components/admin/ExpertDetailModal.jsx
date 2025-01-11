@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { X, Send, Star } from 'lucide-react';
-// import { UserContext } from "../contexts/userContext";
+import { UserContext } from "../contexts/userContext";
 // import { UserContext } from '../contexts/userContext';
 
 const ExpertDetailModal = ({ expert, isOpen, onClose, currentUser }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(false);
-  // const { currentUser, authToken } = useContext(UserContext);
+  const { authToken } = useContext(UserContext);
   const [activeTab, setActiveTab] = useState('about');
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const ExpertDetailModal = ({ expert, isOpen, onClose, currentUser }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // Authorization: `Bearer ${authToken}`
+          Authorization: `Bearer ${authToken}`
         },
         body: JSON.stringify({ content: newComment }),
       });
@@ -194,19 +194,26 @@ const ExpertDetailModal = ({ expert, isOpen, onClose, currentUser }) => {
 
                 {/* Comments List */}
                 <div className="space-y-4">
-                  {comments.map((comment) => (
-                    <div key={comment.id} className="border-b pb-4">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <p className="font-medium">{comment.user_name}</p>
-                          <p className="text-sm text-gray-500">
-                            {new Date(comment.created_at).toLocaleDateString()}
-                          </p>
-                        </div>
+                {comments.map((comment) => (
+                  <div 
+                    key={comment.id} 
+                    className="border rounded-lg p-4 mb-4 shadow-sm bg-white hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex justify-between items-center mb-3">
+                      <div>
+                        <p className="font-semibold text-blue-800 text-lg">
+                          User {comment.user_id}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {new Date(comment.created_at).toLocaleDateString()}
+                        </p>
                       </div>
-                      <p className="text-gray-700">{comment.content}</p>
                     </div>
-                  ))}
+                    <p className="text-gray-700 leading-relaxed">
+                      {comment.content}
+                    </p>
+                  </div>
+                ))}
                 </div>
               </div>
             )}

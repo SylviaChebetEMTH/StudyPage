@@ -357,6 +357,9 @@ export default function AllExperts() {
                   <p className="mb-2 text-sm">
                     <span className="font-medium">Subjects:</span> {expert.subject}
                   </p>
+                  <p className="mb-2 text-sm">
+                    <span className="font-medium">Comments:</span> {expert.comments}
+                  </p>
                 </div>
                 {currentUser.is_admin && (
                   <div className="mt-4">

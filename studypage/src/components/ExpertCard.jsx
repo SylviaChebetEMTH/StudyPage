@@ -70,12 +70,6 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
             {expert.successRate || "98%"} Success Rate
           </span>
         </div>
-        <button
-          onClick={() => setShowDetailModal(true)}
-          className="text-blue-600 text-xs hover:underline mt-2"
-        >
-          View Details
-        </button>
 
         {/* Expertise Tags */}
         <div className="flex flex-wrap gap-2 mb-3">
@@ -105,6 +99,12 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
               </p>
             </div>
           )}
+            <button
+              onClick={() => setShowDetailModal(true)}
+              className="text-blue-600 text-xs hover:underline mt-2"
+            >
+              View Profile
+            </button>
         </div>
 
         {/* Hire Button */}
