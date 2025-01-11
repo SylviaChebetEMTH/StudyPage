@@ -726,6 +726,19 @@ def update_comment(comment_id):
         'user_name': comment.user.username
     })
 
+@app.route('/comments/<int:comment_id>', methods=['DELETE'])
+@jwt_required()
+def delete_comment(comment_id):
+    current_user = get_jwt_identity()
+    if not current_user.is_admin:
+        return jsonify({'message': 'Unauthorized'}), 403
+        
+    comment = Comment.query.get_or_404(comment_id)
+    db.session.delete(comment)
+    db.session.commit()
+    
+    return '', 204
+
 class Projects(Resource):
     @jwt_required()
     def get(self):
