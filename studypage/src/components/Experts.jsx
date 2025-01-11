@@ -75,7 +75,7 @@ const ExpertPage = () => {
         }
 
         const data = await response.json();
-        setProjectTypes(data); // Set the fetched project types to the state
+        setProjectTypes(data);
       } catch (error) {
         console.error("Error fetching project types:", error);
       }
@@ -96,7 +96,7 @@ const ExpertPage = () => {
         }
 
         const data = await response.json();
-        setSubjects(data); // Set the fetched subjects to the state
+        setSubjects(data);
       } catch (error) {
         console.error("Error fetching subjects:", error);
       }
@@ -135,14 +135,25 @@ const ExpertPage = () => {
         </div>
       )}
 
+
       <div className="bg-slate-200 min-h-screen">
-        <div className="relative h-[400px] mb-4 bg-cover bg-center" style={{ backgroundImage: 'url(https://img.freepik.com/free-photo/young-teenage-girl-sitting-her-bed-studying-using-laptop_1157-51884.jpg?t=st=1728331518~exp=1728335118~hmac=5428c854e95a9ee0af0928c5b3902e81ab7688795b5dc7ab812a07eb9419fced&w=740)' }}>
+        <div
+          className="relative h-[400px] mb-4 bg-cover bg-center"
+          style={{
+            backgroundImage:
+              'url(https://img.freepik.com/free-photo/young-teenage-girl-sitting-her-bed-studying-using-laptop_1157-51884.jpg?t=st=1728331518~exp=1728335118~hmac=5428c854e95a9ee0af0928c5b3902e81ab7688795b5dc7ab812a07eb9419fced&w=740)',
+          }}
+        >
           <div className="absolute inset-0 bg-black opacity-50"></div>
 
-          <div className="relative z-10 text-center p-8">
+          <div className="relative z-10 text-center p-4 md:p-8">
             <div>
-              <h1 className="text-4xl text-white font-bold mb-4">Skilled Professionals at Your Service</h1>
-              <p className="text-lg text-white max-w-xl mx-auto mb-6">Connect with top experts across various fields to elevate your projects. Find the perfect match based on expertise, reviews, and availability.</p>
+              <h1 className="text-2xl md:text-4xl text-white font-bold mb-2 md:mb-4">
+                Skilled Professionals at Your Service
+              </h1>
+              <p className="text-sm md:text-lg text-white max-w-sm md:max-w-xl mx-auto mb-4 md:mb-6">
+                Connect with top experts across various fields to elevate your projects. Find the perfect match based on expertise, reviews, and availability.
+              </p>
             </div>
             <div className="flex flex-col justify-center items-center z-10">
               <Formik
@@ -152,18 +163,19 @@ const ExpertPage = () => {
                 }}
               >
                 {({ touched, errors }) => (
-                  <Form className="flex justify-between gap-4 mb-6 w-full max-w-4xl">
+                  <Form className="flex flex-col sm:flex-row gap-4 mb-6 w-full max-w-lg md:max-w-4xl">
                     <Field
                       type="text"
                       name="search"
                       placeholder="Search by name"
-                      className="py-2 px-4 rounded text-xs text-gray-700 bg-[#CBDFDE] w-full "
+                      className="py-2 px-4 rounded text-xs text-gray-700 bg-[#CBDFDE] w-full"
                     />
-
                     <Field
                       name="project_type_id"
                       as="select"
-                      className={`border py-2 px-4 border-gray-500 text-xs text-gray-700 bg-[#CBDFDE] rounded-md  ${touched.project_type_id && errors.project_type_id ? "border-red-500" : ""
+                      className={`border py-2 px-4 text-xs text-gray-700 bg-[#CBDFDE] rounded-md w-full sm:w-auto ${touched.project_type_id && errors.project_type_id
+                          ? 'border-red-500'
+                          : 'border-gray-500'
                         }`}
                     >
                       <option value="">Select a project type</option>
@@ -177,11 +189,17 @@ const ExpertPage = () => {
                         <option disabled>No project types available</option>
                       )}
                     </Field>
-                    <ErrorMessage name="project_type_id" component="div" className="text-red-500 text-sm" />
+                    <ErrorMessage
+                      name="project_type_id"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
                     <Field
                       name="subject_id"
                       as="select"
-                      className={`border py-2 px-4 border-gray-300 text-xs text-gray-700 bg-[#CBDFDE] rounded-md w-full ${touched.subject_id && errors.subject_id ? "border-red-500" : ""
+                      className={`border py-2 px-4 text-xs text-gray-700 bg-[#CBDFDE] rounded-md w-full sm:w-auto ${touched.subject_id && errors.subject_id
+                          ? 'border-red-500'
+                          : 'border-gray-300'
                         }`}
                     >
                       <option value="">Select a subject</option>
@@ -195,60 +213,71 @@ const ExpertPage = () => {
                         <option disabled>No subjects available</option>
                       )}
                     </Field>
-                    <ErrorMessage name="subject_id" component="div" className="text-red-500 text-sm" />
-
-
-                    <button type="submit" className="p-2 rounded text-gray-700 bg-[#7E9292]  font-semibold">Search</button>
+                    <ErrorMessage
+                      name="subject_id"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
+                    <button
+                      type="submit"
+                      className="p-2 rounded text-gray-700 bg-[#7E9292] font-semibold w-full sm:w-auto"
+                    >
+                      Search
+                    </button>
                   </Form>
                 )}
               </Formik>
             </div>
           </div>
         </div>
-        <h2 className="text-2xl font-semibold text-gray-700 text-center mb-2">Experts List</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0 bg-blue-50 z-100 px-4 py-4 mb-0">
+        <h2 className="text-xl md:text-2xl font-semibold text-gray-700 text-center mb-4">
+          Experts List
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 md:px-8">
           {Array.isArray(experts) && experts.length > 0 ? (
             experts.map((expert) => (
               <div
                 key={expert.id}
-                className="border p-4 flex flex-col justify-between shadow-xl rounded-lg overflow-hidden bg-white aos-init transition-transform transform hover:scale-105 hover:shadow-2xl hover:bg-gray-100"
+                className="border p-4 flex flex-col justify-between shadow-lg rounded-lg overflow-hidden bg-white transition-transform transform hover:scale-105 hover:shadow-2xl hover:bg-gray-100"
               >
-                <div className="w-full  flex justify-center items-center border border-[#e4e4e4] h-[300px] relative overflow-hidden group transition">
-                  <div className="w-full h-full mx-auto flex justify-center items-center">
-                    <img
-                      src={`${expert.profilePicture}`}
-                      alt="Profile"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                <div className="w-full h-[200px] sm:h-[300px] flex justify-center items-center border border-[#e4e4e4] relative overflow-hidden">
+                  <img
+                    src={expert.profilePicture}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <div className="flex flex-col items-center justify-center text-center">
-                <h2 className="text-md font-medium text-gray-700 mb-1">{expert.name}</h2>
-                <p className="text-gray-700 text-sm">{expert.title}</p>
+                <div className="flex flex-col items-center text-center mt-4">
+                  <h2 className="text-md font-medium text-gray-700 mb-1">
+                    {expert.name}
+                  </h2>
+                  <p className="text-sm text-gray-700">{expert.title}</p>
                 </div>
-                
-                <hr />
+                <hr className="my-2" />
                 {expert.education && (
-                  <p className="text-gray-700 text-xs">{expert.education}</p>
+                  <p className="text-sm text-gray-700">{expert.education}</p>
                 )}
                 {expert.languages && (
-                  <p className="text-gray-700 text-xs">{expert.languages.split(',').slice(0, 4).join(', ')}</p>
+                  <p className="text-sm text-gray-700">
+                    {expert.languages.split(',').slice(0, 4).join(', ')}
+                  </p>
                 )}
-                {/* Hire Expert Button */}
                 <button
                   onClick={() => hireExpert(expert.id)}
                   className="mt-4 bg-[#85C4C2] text-white px-4 py-2 rounded hover:bg-[#6EA5A4]"
-                  currentUser={currentUser}
                 >
                   Hire Expert
                 </button>
               </div>
             ))
           ) : (
-            <p>No experts available</p>
+            <p className="col-span-full text-center text-gray-700">
+              No experts available
+            </p>
           )}
         </div>
       </div>
+
     </div>
   );
 };

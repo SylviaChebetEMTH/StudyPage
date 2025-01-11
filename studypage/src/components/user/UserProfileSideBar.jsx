@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { NavLink, Outlet, useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contexts/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faBook, faTasks, faEnvelope, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faBook, faTasks, faEnvelope, faSignOutAlt, faUser, faBars } from "@fortawesome/free-solid-svg-icons";
 
 const UserProfile = (authToken) => {
     const { currentUser, logout } = useContext(UserContext);
@@ -39,23 +39,11 @@ const UserProfile = (authToken) => {
         <div className="flex flex-col md:flex-row min-h-screen bg-[#F0F9FF] pt-10">
             {/* Toggle Button */}
             <button
-                className="md:hidden p-4 bg-[#45B1E8] text-white"
+                className="md:hidden p-4 bg-[#194e6b] text-white"
                 onClick={() => setSidebarOpen(!isSidebarOpen)}
             >
-                <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 6h16M4 12h16M4 18h16"
-                    />
-                </svg>
+                {/* Hamburger Icon (FontAwesome) */}
+                <FontAwesomeIcon icon={faBars} className="w-6 h-6" />
             </button>
 
             {/* Sidebar */}
@@ -76,7 +64,6 @@ const UserProfile = (authToken) => {
                         <h2 className="text-md text-gray-700">
                             {currentUser.username || "User"}
                         </h2>
-                        
                     </div>
 
                     {/* Navigation */}
@@ -123,7 +110,10 @@ const UserProfile = (authToken) => {
                             </li>
                             <li className="mb-4">
                                 <NavLink
-                                    to="messages"
+                                    to={{
+                                        pathname: chatLink,
+                                    }}
+                                    state={{ authToken }}
                                     className={({ isActive }) =>
                                         isActive
                                             ? "px-4 py-6 bg-[#769594] rounded flex items-center"
@@ -134,18 +124,7 @@ const UserProfile = (authToken) => {
                                     Messages
                                 </NavLink>
                             </li>
-                            <li className="mb-4">
-                                <Link
-                                    to={{
-                                        pathname: chatLink,
-                                    }}
-                                    state={{ authToken }}
-                                    className="text-gray-700 hover:text-blue-700 flex items-center text-xs"
-                                >
-                                    Messages
-                                    {/* <FontAwesomeIcon icon={faCommentDots} className="text-lg text-blue-700" /> */}
-                                </Link>
-                            </li>
+                           
                             <li className="mb-4">
                                 <button
                                     onClick={handleLogout}

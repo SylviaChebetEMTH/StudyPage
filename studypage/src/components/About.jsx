@@ -28,10 +28,10 @@ const About = () => {
             <p className="tracking-widest font-semibold uppercase text-xl p-5 text-black">
               StudyPage - Empowering Your Learning Journey!
             </p>
-            <p className="text-2xl px-[20rem] pb-5 font-extralight">
+            <p className="text-2xl px-8 sm:px-16 md:px-24 lg:px-[20rem] pb-5 font-extralight">
               Unlock your potential and achieve academic success with StudyPage - where learning is not just a task, but an inspiring experience.
             </p>
-            <p className="px-[7rem] pb-2 text-xl font-light">
+            <p className="px-6 sm:px-12 md:px-16 lg:px-[7rem] pb-2 text-xl font-light">
               Welcome to StudyPage, your ultimate destination for comprehensive study resources. Our journey started with a mission: to provide students, educators, and lifelong learners with the tools they need to excel in their academic endeavors.
               We believe in fostering a community of knowledge and growth, where everyone has access to expert guidance, useful tips, and relevant study materials.
               Your feedback and suggestions matter to us. They inspire us to enhance our platform and continuously innovate, ensuring that we meet the evolving needs of our users. We are committed to supporting your learning journey every step of the way.

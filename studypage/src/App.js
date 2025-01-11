@@ -52,11 +52,11 @@ function AppContent() {
   return (
     <div className="min-h-screen flex flex-col ">
 
-      {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)}
+      {/* {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)} */}
       <div className="flex-grow">
         <ToastContainer />
         {/* <NavBar /> */}
-        <Routes>
+        {/* <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/reset_password/:token" element={<ResetPassword />} />
           <Route path="/services" element={<Services />} />
@@ -73,7 +73,7 @@ function AppContent() {
           <Route path="/projects" element={<Projects />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/adminchat" element={<AdminPanel />} />
-        </Routes>
+        </Routes> */}
         <SocketProvider>
           <div className="min-h-screen flex flex-col ">
             {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)}
@@ -88,6 +88,7 @@ function AppContent() {
                 <Route path="/updateprofile" element={<UpdateProfile />} />
                 <Route path="/expertspage" element={<ExpertPage />} />
                 <Route path="/signup" element={<SignUp />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/help" element={<Help />} />
                 <Route path="/privacy_policy" element={<PrivacyPolicy />} />
                 <Route path="/login" element={<Login />} />
@@ -96,7 +97,6 @@ function AppContent() {
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/chat" element={<Chat />} />
                 <Route path="/adminchat" element={<AdminPanel />} />
-
                 {/* Only render admin routes if the user is an admin */}
                 {currentUser?.is_admin && (
                   <Route path="/admin" element={<AdminDashboardSidebar />}>
@@ -123,35 +123,36 @@ function AppContent() {
             <Footer />
           </div>
         </SocketProvider>
-        
+
       </div>
-      </div>
-)}
+    </div>
+  )
+}
 const App = () => {
   const [user, setUser] = useState(null);
-      const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
+  const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
 
-      const userContextValue = {
-        user,
-        setUser,
-        authToken,
-        setAuthToken,
+  const userContextValue = {
+    user,
+    setUser,
+    authToken,
+    setAuthToken,
   };
-      const clientId =
-      "854474486915-lncgkai7f4jca5fqe4v7ma0flkftdd5k.apps.googleusercontent.com";
-      return (
-      <UserContext.Provider value={userContextValue}>
-        <SocketProvider>
-          <Router>
-            <GoogleOAuthProvider clientId={clientId}>
-              <UserProvider>
-                <AppContent />
-              </UserProvider>
-            </GoogleOAuthProvider>
-          </Router>
-        </SocketProvider>
-      </UserContext.Provider>
-      );
+  const clientId =
+    "854474486915-lncgkai7f4jca5fqe4v7ma0flkftdd5k.apps.googleusercontent.com";
+  return (
+    <UserContext.Provider value={userContextValue}>
+      <SocketProvider>
+        <Router>
+          <GoogleOAuthProvider clientId={clientId}>
+            <UserProvider>
+              <AppContent />
+            </UserProvider>
+          </GoogleOAuthProvider>
+        </Router>
+      </SocketProvider>
+    </UserContext.Provider>
+  );
 };
 
-      export default App;
+export default App;

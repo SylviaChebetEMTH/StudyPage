@@ -7,7 +7,7 @@ const UserDashboard = () => {
     const { currentUser } = useContext(UserContext);
 
     return (
-        <div className="min-h-screen bg-gray-100 p-8">
+        <div className="min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8">
             <div className="bg-white shadow-md rounded-lg p-6 max-w-4xl mx-auto h-full">
                 {/* Welcome Section */}
                 <div className="flex items-center space-x-4">
@@ -21,7 +21,7 @@ const UserDashboard = () => {
                 </div>
 
                 {/* Dashboard Content */}
-                <div className="mt-8 h-full">
+                <div className="mt-8">
                     <h2 className="text-xl font-semibold text-gray-800">Your Dashboard</h2>
                     <p className="mt-2 text-gray-600">
                         Welcome to your dashboard. Here, you can monitor your activity, track your progress, and explore available resources.
@@ -53,6 +53,7 @@ const UserDashboard = () => {
                 </div>
             </div>
         </div>
+
     );
 };
 

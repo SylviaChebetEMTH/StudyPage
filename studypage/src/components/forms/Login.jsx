@@ -45,7 +45,7 @@ export default function Login() {
             setAuthToken(res.data.authToken); // Set the auth token in context
             setCurrentUser(res.data); // Set the current user in context
             localStorage.setItem('token', res.data.authToken);
-            alert("Logged in successfully!");
+            // alert("Logged in successfully!");
 
             // Save user data to localStorage or context for future use (authentication state)
             localStorage.setItem('user_id', res.data.user_id);

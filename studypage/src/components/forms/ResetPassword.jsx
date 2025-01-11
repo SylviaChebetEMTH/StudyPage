@@ -27,6 +27,7 @@ const ResetPassword = () => {
   };
 
   const toggleShowPassword = () => {
+    console.log("Toggling password visibility...");
     setShowPassword(!showPassword);
   };
 
@@ -49,7 +50,7 @@ const ResetPassword = () => {
         toast.success('Password updated successfully!');
         setTimeout(() => {
           navigate('/login');
-        }, 2000);
+        }, 1000);
       } else {
         setError(response.data.error);
         toast.error(response.data.error);

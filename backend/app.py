@@ -34,8 +34,15 @@ app.config["SECRET_KEY"] = os.urandom(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///studypage.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = app.config['SECRET_KEY']
+app.config['MAIL_SENDER'] = 'studypage001@gmail.com'
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'studypage001@gmail.com'
+app.config['MAIL_PASSWORD'] = 'hbib knho xqon emrw'  
+
 UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), 'uploads'))
-if not os.path.exists(UPLOAD_FOLDER):  # Ensure the folder exists
+if not os.path.exists(UPLOAD_FOLDER): 
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -258,7 +265,7 @@ def google_signup():
     # Send an email to set their password
     token = s.dumps(new_user.email, salt='password-reset-salt')
     reset_url = url_for('reset_password', token=token, _external=True)
-    msg = Message('Set Your Password', sender=app.config['MAIL_DEFAULT_SENDER'], recipients=[new_user.email])
+    msg = Message('Set Your Password', sender=app.config['MAIL_SENDER'], recipients=[new_user.email])
     msg.body = f'Please click the following link to set your password: {reset_url.replace("http://127.0.0.1:5000", "http://localhost:3001")}'
     try:
         mail.send(msg)
@@ -1793,7 +1800,7 @@ def patch_service(id):
     if errors:
         return jsonify({'errors': errors}), 422
 
-    # Commit the changes to the database
+   
     db.session.commit()
 
     return jsonify({'message': 'Service updated successfully!'})
