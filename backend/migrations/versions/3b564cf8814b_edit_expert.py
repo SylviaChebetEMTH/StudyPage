@@ -1,8 +1,8 @@
-"""initialized
+"""Edit Expert
 
-Revision ID: 08d76574b433
+Revision ID: 3b564cf8814b
 Revises: 
-Create Date: 2024-12-16 15:22:07.590357
+Create Date: 2025-01-12 01:05:55.259237
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '08d76574b433'
+revision = '3b564cf8814b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -113,6 +113,7 @@ def upgrade():
     sa.Column('content', sa.Text(), nullable=False),
     sa.Column('timestamp', sa.DateTime(), nullable=True),
     sa.Column('attachments', sa.String(), nullable=True),
+    sa.Column('read', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['conversation_id'], ['conversations.id'], ),
     sa.ForeignKeyConstraint(['expert_id'], ['experts.id'], ),
     sa.ForeignKeyConstraint(['receiver_id'], ['users.id'], ),

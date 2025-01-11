@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "../contexts/userContext";
 import axios from "axios";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form, ErrorMessage, useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { Circles } from "react-loader-spinner";
@@ -65,10 +65,21 @@ function AddExpertPage() {
     fetchSubjects(); 
   }, [authToken]);
 
+  // const validationSchema = Yup.object().shape({
+  //   project_type_id: Yup.string().required("Project type is required"),
+  //   subject_id: Yup.string().required("Subject is required"), // Validation for subject
+  // });
+
   const validationSchema = Yup.object().shape({
-    project_type_id: Yup.string().required("Project type is required"),
-    subject_id: Yup.string().required("Subject is required"), // Validation for subject
+    project_type_id: Yup.array()
+      .min(1, "At least one project type is required")
+      .max(5, "You can select up to 5 project types"),
+    subject_id: Yup.array()
+      .min(1, "At least one subject is required")
+      .max(5, "You can select up to 5 subjects"),
   });
+
+  
 
   const uploadImageToCloudinary = async (file) => {
     const formData = new FormData();
@@ -164,8 +175,8 @@ function AddExpertPage() {
       values.biography = "";
       values.education = "";
       values.languages = "";
-      values.project_type_id = "";
-      values.subject_id = "";
+      values.project_type_id = [];
+      values.subject_id = [];
       setProfilePicture(null);
       navigate("/admin/allexperts")
     } catch (error) {
@@ -195,13 +206,13 @@ function AddExpertPage() {
           biography: "",
           education: "",
           languages: "",
-          project_type_id: "",
-          subject_id: "",
+          project_type_id: [],
+          subject_id: [],
         }}
         validationSchema={validationSchema}
         onSubmit={handleAddExpertSubmit}
       >
-        {({ touched, errors }) => (
+        {({ touched, errors, setFieldValue, values }) => (
           <Form className="space-y-6">
             {/* Name */}
             <div className="mb-4">
@@ -284,12 +295,18 @@ function AddExpertPage() {
             {/* Project Types */}
 
             <div className="mb-4">
-              <label className="block mb-2">Project Type:</label>
+              <label className="block mb-2">Project Types (Select up to 5):</label>
               <Field
                 name="project_type_id"
                 as="select"
+                multiple
                 className={`border py-2 px-4 border-gray-300 rounded-md w-full ${touched.project_type_id && errors.project_type_id ? "border-red-500" : ""
                   }`}
+                  value={values.project_type_id}
+                  onChange={(e) => {
+                    const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
+                    setFieldValue("project_type_id", selectedOptions);
+                  }}
               >
                 <option value="">Select a project type</option>
                 {projectTypes.length > 0 ? (
@@ -308,12 +325,18 @@ function AddExpertPage() {
             {/* Subjects */}
 
             <div className="mb-4">
-              <label className="block mb-2">Subject:</label>
+              <label className="block mb-2">Subject (Select up to 5):</label>
               <Field
                 name="subject_id"
                 as="select"
+                multiple
                 className={`border py-2 px-4 border-gray-300 rounded-md w-full ${touched.subject_id && errors.subject_id ? "border-red-500" : ""
                   }`}
+                  value={values.subject_id}
+                  onChange={(e) => {
+                    const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
+                    setFieldValue("subject_id", selectedOptions);
+                  }}
               >
                 <option value="">Select a subject</option>
                 {subjects.length > 0 ? (

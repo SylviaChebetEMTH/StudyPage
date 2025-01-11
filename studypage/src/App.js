@@ -94,7 +94,7 @@ function AppContent() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/footer" element={<Footer />} />
                 <Route path="/hireexpert" element={<ProjectRequest />} />
-                <Route path="/projects" element={<Projects />} />
+                {/* <Route path="/projects" element={<Projects />} /> */}
                 <Route path="/chat" element={<Chat />} />
                 <Route path="/adminchat" element={<AdminPanel />} />
                 {/* Only render admin routes if the user is an admin */}
@@ -108,6 +108,7 @@ function AppContent() {
                     <Route path="addservice" element={<AddServicePage />} />
                     <Route path="projecttypes" element={<ProjectTypes />} />
                     <Route path="subjectarea" element={<SubjectArea />} />
+                    <Route path="projects" element={<Projects />} />
                     <Route path="*" element={<div>Page not found</div>} />
                   </Route>
                 )}

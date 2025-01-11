@@ -1240,6 +1240,9 @@ def add_expert():
 
     print(f"Received project_type_id: {project_type_id}, subject_id: {subject_id}")  # Debug log
 
+    if len(project_type_id) > 5 or len(subject_id) > 5:
+        return {"message": "You can select up to 5 project types and 5 subjects."}, 400
+    
     profile_picture = data.get("profile_picture")
     if not profile_picture:
         return jsonify({"error": "Profile picture is required"}), 400
