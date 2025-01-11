@@ -51,6 +51,7 @@ class Expert(db.Model):
     rating_avg = db.Column(db.Float, default=0.0)
     total_reviews = db.Column(db.Integer, default=0)
     success_rate = db.Column(db.Float, default=0.0)
+    is_ai_free = db.Column(db.Boolean, default=False)
 
 class Rating(db.Model):
     __tablename__ = 'ratings'
