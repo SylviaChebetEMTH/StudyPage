@@ -651,7 +651,8 @@ def get_experts():
             'profilePicture': expert.profile_picture,
             'rating': expert.rating_avg,
             'totalReviews': expert.total_reviews,
-            'successRate': success_rate_str
+            'successRate': success_rate_str,
+            'isAiFree': expert.is_ai_free
         }
         output.append(expert_data)
 
