@@ -705,6 +705,27 @@ def get_experts():
 
     return jsonify({'experts': output})
 
+@app.route('/comments/<int:comment_id>', methods=['PATCH'])
+@jwt_required()
+def update_comment(comment_id):
+    current_user = get_jwt_identity()
+    if not current_user.is_admin:
+        return jsonify({'message': 'Unauthorized'}), 403
+        
+    comment = Comment.query.get_or_404(comment_id)
+    data = request.get_json()
+    
+    if 'content' in data:
+        comment.content = data['content']
+        db.session.commit()
+        
+    return jsonify({
+        'id': comment.id,
+        'content': comment.content,
+        'created_at': comment.created_at.isoformat(),
+        'user_name': comment.user.username
+    })
+
 class Projects(Resource):
     @jwt_required()
     def get(self):
