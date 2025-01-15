@@ -299,7 +299,6 @@ function AddExpertPage() {
               <Field
                 name="project_type_id"
                 as="select"
-                multiple
                 className={`border py-2 px-4 border-gray-300 rounded-md w-full ${touched.project_type_id && errors.project_type_id ? "border-red-500" : ""
                   }`}
                   value={values.project_type_id}
