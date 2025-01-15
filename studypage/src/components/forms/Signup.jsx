@@ -126,7 +126,7 @@ export default function SignUp() {
                         value={username}
                         onChange={(e) => setName(e.target.value)}
                         className="mt-1 px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
-                        placeholder="Your Username"
+                        placeholder="johndoe"
                       />
                     </div>
                     <div>
@@ -142,7 +142,7 @@ export default function SignUp() {
                         value={phone_number}
                         onChange={(e) => setPhoneNumber(e.target.value)}
                         className="mt-1 px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
-                        placeholder=" Your Phone Number"
+                        placeholder="+1234567890"
                       />
                     </div>
                     </div>
@@ -159,7 +159,7 @@ export default function SignUp() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="mt-1 px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
-                        placeholder="Your Email"
+                        placeholder="johndoe@example.com"
                       />
                     </div>
                     <div className="relative">

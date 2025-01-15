@@ -233,27 +233,12 @@ export default function Login() {
                 </div>
               </div>
             </div>
-            {/* Left blue half */}
-             <div
-                        className="bg-cover bg-center md:w-1/2"
-                        style={{ backgroundImage: `url(${loginImage})` }}
-                      >
-                      </div>
-            {/* <div className="w-1/2 text-white flex flex-col justify-center items-center p-10">
-              <div className="relative z-10">
-                <div
-                  className="bg-cover bg-center md:w-1/2"
-                  style={{ backgroundImage: `url(${loginImage})` }}
-                >
-                </div>
-                <h2 className="text-3xl font-semibold text-gray-300 text-center">
-                  Welcome to StudyPage! 🎓
-                </h2>
-                <p className="text-black mt-4 text-center">
-                  Empowering Experts and Students to Achieve More
-                </p>
-              </div>
-            </div> */}
+            <div
+              className="bg-cover bg-center md:w-1/2"
+              style={{ backgroundImage: `url(${loginImage})` }}
+            >
+            </div>
+
           </div>
         </div>
       </div>
