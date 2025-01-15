@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import googleIcon from '../assets/googleIcon.png';
+import loginImage from "../assets/login.png"
 
 export default function Login() {
   const { setAuthToken, setCurrentUser } = useContext(UserContext);
@@ -99,22 +100,28 @@ export default function Login() {
     }
   };
 
-
-
   const handleGoHome = () => {
     navigate("/");
   };
 
   return (
     <div className="login-container">
-      <div className="min-h-screen flex items-center justify-center bg-gray-200 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-screen-lg bg-white rounded-lg overflow-hidden shadow-md h-[500px]">
+      <div className="min-h-screen flex items-center justify-center bg-gray-400 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-screen-lg w-full bg-white rounded-lg overflow-hidden shadow-md h-[550px]">
           <div className="flex flex-col md:flex-row">
             {/* Right white half */}
-            <div className="md:w-1/2 px-4 py-8 md:px-8">
+            <div className="md:w-1/2 bg-gray-800 text-white flex justify-center items-center px-4 py-8 md:px-8">
               <div className="flex items-center justify-center md:h-full">
                 <div className="w-full max-w-md">
-                  <div className="bg-white overflow-hidden">
+                  <div className="text-center">
+                    <button
+                      onClick={handleGoHome}
+                      className="flex flex-start px-2 py-2 hover:text-yellow-400 text-white font-thin rounded"
+                    >
+                      Back to website
+                    </button>
+                  </div>
+                  <div className="bg-gray-800 overflow-hidden p-2">
                     <h2 className="text-3xl font-semibold mb-4 text-center">
                       Log in
                     </h2>
@@ -122,7 +129,7 @@ export default function Login() {
                       <div>
                         <label
                           htmlFor="email"
-                          className="block text-sm font-medium text-gray-700"
+                          className="block text-sm font-medium text-gray-300 hover:underline"
                         >
                           Email address
                         </label>
@@ -134,14 +141,14 @@ export default function Login() {
                           required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="input-field border border-gray-300 rounded-md px-3 py-2 w-full"
+                          className="px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
                           placeholder="Your Email"
                         />
                       </div>
                       <div className="relative">
                         <label
                           htmlFor="password"
-                          className="block text-sm font-medium text-gray-700"
+                          className="block text-sm font-medium text-gray-300 hover:underline"
                         >
                           Password
                         </label>
@@ -153,11 +160,11 @@ export default function Login() {
                           required
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="input-field border border-gray-300 rounded-md px-3 py-2 w-full"
+                          className="px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
                           placeholder="Password"
                         />
                         <span
-                          className="absolute inset-y-0 right-0 pr-3 pt-4 flex items-center cursor-pointer"
+                          className="absolute inset-y-0 right-0 pr-3 pt-4 flex items-center cursor-pointer text-gray-300"
                           onClick={() => setShowPassword(!showPassword)}
                         >
                           <FontAwesomeIcon
@@ -168,7 +175,7 @@ export default function Login() {
                       <div>
                         <button
                           type="submit"
-                          className="btn-primary w-full py-2 px-4 mt-4 bg-blue-300 hover:bg-blue-500 text-white font-semibold rounded"
+                          className="btn-primary w-full py-2 px-4 mt-4 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold rounded"
                         >
                           Log in
                         </button>
@@ -183,7 +190,7 @@ export default function Login() {
                           />
                           <label
                             htmlFor="remember-me"
-                            className="ml-2 block text-sm text-gray-900"
+                            className="ml-2 block text-sm text-gray-300"
                           >
                             Remember me
                           </label>
@@ -202,7 +209,7 @@ export default function Login() {
                           <div className="text-gray-500">or</div>
                           <div className="flex items-center justify-center mt-4 space-x-4 ">
                             <button
-                              onClick={handleGoogleSignup} className="flex items-center justify-center py-1 px-3 w-auto text-black rounded-md shadow-sm text-sm border border-gray-200">
+                              onClick={handleGoogleSignup} className="flex items-center justify-center py-1 px-3 w-auto text-gray-300 rounded-md shadow-sm text-sm border border-gray-200">
                               <img src={googleIcon} alt="Google" className="w-6 h-6 mr-2" />
                               Log in with Google
                             </button>
@@ -210,7 +217,7 @@ export default function Login() {
                         </div>
                       </div>
                       <div className="text-center mt-4">
-                        <span className="text-sm text-gray-600">
+                        <span className="text-sm text-gray-500">
                           Don't have an account?
                         </span>{" "}
                         <Link
@@ -220,32 +227,25 @@ export default function Login() {
                           Sign up
                         </Link>
                       </div>
-                      <div className="text-center">
-                        <button
-                          onClick={handleGoHome}
-                          className="mt-4 px-4 py-2 bg-blue-300 text-white rounded hover:bg-blue-500"
-                        >
-                          Go Home
-                        </button>
-                      </div>
+
                     </form>
                   </div>
                 </div>
               </div>
             </div>
             {/* Left blue half */}
-            <div
-              className="relative flex flex-col justify-center items-center md:w-1/2 px-4 py-4 md:px-8 bg-cover bg-center opacity-70"
-              style={{
-                height: "500px",
-                backgroundImage: `url(https://img.freepik.com/free-photo/student-class-taking-notes_23-2148888811.jpg?t=st=1727298426~exp=1727302026~hmac=313e10e1b801d48981696e076c92995ae75bd87903abc41776afb47d1e1eccce&w=360)`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            >
-              <div className="absolute inset-0 opacity-50"></div>
+             <div
+                        className="bg-cover bg-center md:w-1/2"
+                        style={{ backgroundImage: `url(${loginImage})` }}
+                      >
+                      </div>
+            {/* <div className="w-1/2 text-white flex flex-col justify-center items-center p-10">
               <div className="relative z-10">
+                <div
+                  className="bg-cover bg-center md:w-1/2"
+                  style={{ backgroundImage: `url(${loginImage})` }}
+                >
+                </div>
                 <h2 className="text-3xl font-semibold text-gray-300 text-center">
                   Welcome to StudyPage! 🎓
                 </h2>
@@ -253,10 +253,11 @@ export default function Login() {
                   Empowering Experts and Students to Achieve More
                 </p>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
     </div>
   );
 }
+
