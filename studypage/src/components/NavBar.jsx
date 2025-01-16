@@ -110,7 +110,7 @@ export const NavBar = () => {
                         >
                             <FontAwesomeIcon
                                 icon={faCommentDots}
-                                className="text-lg text-blue-700"
+                                className="text-lg text-green-700"
                             />
                             {totalUnreadMessages > 0 && (
                                 <div className="absolute -top-2 -right-2 flex items-center justify-center">
