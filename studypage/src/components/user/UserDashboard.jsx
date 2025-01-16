@@ -7,23 +7,28 @@ const UserDashboard = () => {
     const { currentUser } = useContext(UserContext);
 
     return (
-        <div className="min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8">
-            <div className="bg-white shadow-md rounded-lg p-6 max-w-4xl mx-auto h-full">
+        <div className="min-h-screen bg-gray-500 rounded p-4 sm:p-6 md:p-8">
+            <div className="bg-gray-700 shadow-md rounded-lg p-6 max-w-4xl mx-auto h-full mt-6">
                 {/* Welcome Section */}
                 <div className="flex items-center space-x-4">
-                    <div className="w-16 h-16 bg-blue-300 text-white flex items-center justify-center rounded-full text-2xl">
+
+                    <Link
+                        to="/updateprofile"
+                        className="w-16 h-16 bg-blue-300 text-white flex items-center justify-center rounded-full text-2xl"
+                    >
                         <FaUserAlt />
-                    </div>
+                    </Link>
+
                     <div>
-                        <h1 className="text-2xl font-semibold text-gray-800">Welcome back, {currentUser.username}!</h1>
-                        <p className="text-gray-500">Email: {currentUser.email}</p>
+                        <h1 className="text-2xl font-semibold text-gray-200">Welcome back, {currentUser.username}!</h1>
+                        <p className="text-gray-400">Email: {currentUser.email}</p>
                     </div>
                 </div>
 
                 {/* Dashboard Content */}
                 <div className="mt-8">
-                    <h2 className="text-xl font-semibold text-gray-800">Your Dashboard</h2>
-                    <p className="mt-2 text-gray-600">
+                    <h2 className="text-xl font-semibold text-gray-200">Your Dashboard</h2>
+                    <p className="mt-2 text-gray-300">
                         Welcome to your dashboard. Here, you can monitor your activity, track your progress, and explore available resources.
                     </p>
 

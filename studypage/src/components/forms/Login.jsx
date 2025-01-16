@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import googleIcon from '../assets/googleIcon.png';
-import loginImage from "../assets/login.png"
+import loginImage from "../assets/login.png";
+import loginVideo from '../assets/loginVideo.mp4';
 
 export default function Login() {
   const { setAuthToken, setCurrentUser } = useContext(UserContext);
@@ -103,11 +104,28 @@ export default function Login() {
   const handleGoHome = () => {
     navigate("/");
   };
+  const handleVideoEnd = (e) => {
+    e.target.play(); 
+  };
 
   return (
     <div className="login-container">
-      <div className="min-h-screen flex items-center justify-center bg-gray-400 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-screen-lg w-full bg-white rounded-lg overflow-hidden shadow-md h-[550px]">
+      <div className="relative min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <video
+        autoPlay
+        loop
+        muted
+        className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+        onEnded={handleVideoEnd}
+      >
+        <source
+          src={loginVideo}
+          type="video/mp4"
+        />
+        Your browser does not support the video tag.
+      </video>
+
+        <div className="max-w-screen-lg w-full bg-white rounded-lg overflow-hidden shadow-md h-[550px] ">
           <div className="flex flex-col md:flex-row">
             {/* Right white half */}
             <div className="md:w-1/2 bg-gray-800 text-white flex justify-center items-center px-4 py-8 md:px-8">

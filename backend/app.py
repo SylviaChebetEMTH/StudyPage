@@ -346,7 +346,7 @@ def forgot_password():
     # Prepare the email message
     msg = Message(
         'Reset Your Password',
-        sender=app.config['MAIL_DEFAULT_SENDER'],
+        sender=app.config['MAIL_SENDER'],
         recipients=[user.email]
     )
     msg.body = f'''

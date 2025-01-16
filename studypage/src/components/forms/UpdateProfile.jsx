@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { UserContext } from '../contexts/userContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const UpdateProfile = () => {
     const { currentUser, authToken } = useContext(UserContext);
@@ -11,16 +13,16 @@ const UpdateProfile = () => {
     const [phone_number, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
-    
+
 
     // console.log(currentUser.username)
     useEffect(() => {
-        if (currentUser ) {
+        if (currentUser) {
             setUsername(currentUser.username || '');
             setPhoneNumber(currentUser.phone_number || '');
             setEmail(currentUser.email || '');
         }
-    }, [currentUser ]);
+    }, [currentUser]);
 
 
     const handleUpdateProfile = async (e) => {
@@ -65,23 +67,23 @@ const UpdateProfile = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <div className="bg-white rounded-lg shadow-lg p-8 mt-6 mb-6 w-full max-w-lg">
+        <div className="flex justify-center items-center min-h-screen bg-gray-400 p-4 sm:p-6 md:p-8">
+            <div className="bg-gray-800 rounded-lg shadow-lg p-8 mt-6 mb-6 w-full max-w-lg">
                 <div className="mb-4">
-                    <nav className="flex text-sm text-gray-500">
-                        <Link to="/userprofile/dashboard" className="hover:text-blue-500">
+                    <nav className="flex text-sm text-gray-400">
+                        <Link to="/userprofile/dashboard" className="hover:text-yellow-500">
                             Profile
                         </Link>
                         <span className="mx-2">/</span>
-                        <span className="text-gray-700">Update Profile</span>
+                        <span className="text-gray-500">Update Profile</span>
                     </nav>
                 </div>
 
-                <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Update Profile</h1>
+                <h1 className="text-2xl font-bold text-gray-200 mb-6 text-center">Update Profile</h1>
                 <form onSubmit={handleUpdateProfile} className="space-y-4">
                     {/* Username */}
                     <div>
-                        <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                        <label htmlFor="username" className="block text-sm font-medium text-gray-300 hover:underline">
                             Username
                         </label>
                         <input
@@ -90,11 +92,11 @@ const UpdateProfile = () => {
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             placeholder="Enter new username"
-                            className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            className="mt-1 px-3 py-2 bg-gray-700 rounded-md w-full sm:text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
                         />
                     </div>
                     <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                        <label htmlFor="phone" className="block text-sm font-medium text-gray-300 hover:underline">
                             Email
                         </label>
                         <input
@@ -103,27 +105,31 @@ const UpdateProfile = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter new email"
-                            className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            className="mt-1 px-3 py-2 bg-gray-700 rounded-md w-full sm:text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
                         />
                     </div>
 
                     <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                        <label htmlFor="phone" className="block text-sm font-medium text-gray-300 hover:underline">
                             Phone Number
                         </label>
-                        <input
-                            id="phone"
-                            type="text"
+                        <PhoneInput
+                            country={"us"}
                             value={phone_number}
-                            onChange={(e) => setPhoneNumber(e.target.value)}
-                            placeholder="Enter new phone number"
-                            className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            onChange={(value) => setPhoneNumber(value)}
+                            inputProps={{
+                                name: "phone",
+                                required: true,
+                                autoFocus: true,
+                            }}
+                            containerClass="mt-1"
+                            inputClass="px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
                         />
                     </div>
 
 
                     <div>
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-300 hover:underline">
                             Password
                         </label>
                         <input
@@ -132,7 +138,7 @@ const UpdateProfile = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter new password"
-                            className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            className="mt-1 px-3 py-2 bg-gray-700 rounded-md w-full sm:text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
                         />
                         <p className="text-gray-500 text-sm mt-1">
                             Password must be at least 8 characters long and include numbers and symbols.
@@ -143,7 +149,7 @@ const UpdateProfile = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-[#307CA2] text-white py-2 px-4 rounded hover:bg-[#378EBA] focus:ring-4 focus:ring-blue-300 disabled:opacity-50"
+                        className="w-full py-2 px-4 mt-4 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
                     >
                         {loading ? 'Updating...' : 'Update Profile'}
                     </button>

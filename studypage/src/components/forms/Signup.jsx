@@ -8,6 +8,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import googleIcon from '../assets/googleIcon.png';
 import signupImage from '../assets/signup.png';
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import loginVideo from '../assets/loginVideo.mp4';
+
 
 
 
@@ -66,6 +70,10 @@ export default function SignUp() {
       setError('Password must be at least 8 characters long and include numbers and symbols');
       return;
     }
+    // if (!isValidPhoneNumber(phone_number)) {
+    //   setError('Invalid phone number');
+    //   return;
+    // }
 
     try {
       await signup(username, email, phone_number, password);
@@ -77,10 +85,25 @@ export default function SignUp() {
   const handleGoHome = () => {
     navigate("/");
   };
+  const handleVideoEnd = (e) => {
+    e.target.play(); // restart video on end
+  };
 
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-400 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <video
+        autoPlay
+        loop
+        muted
+        className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+        onEnded={handleVideoEnd}
+      >
+        <source
+          src={loginVideo}
+        />
+        Your browser does not support the video tag.
+      </video>
       <div className="w-full max-w-screen-lg bg-customBlue rounded-lg overflow-hidden shadow-md">
         <div className="flex flex-col md:flex-row">
           {/* Left half with image */}
@@ -94,25 +117,25 @@ export default function SignUp() {
           <div className="md:w-1/2 px-4 py-8 md:px-12 bg-gray-800">
             <div className="flex items-center justify-center md:h-full">
               <div className="w-full max-w-md">
-              <div className="text-center">
-                    <button
-                      onClick={handleGoHome}
-                      className="mt-4 px-4 py-2 hover:text-yellow-400 font-thin text-white rounded"
-                    >
-                      Back to website
-                    </button>
-                  </div>
+                <div className="text-center">
+                  <button
+                    onClick={handleGoHome}
+                    className="mt-4 px-4 py-2 hover:text-yellow-400 font-thin text-white rounded"
+                  >
+                    Back to website
+                  </button>
+                </div>
                 <div className="bg-customBlue overflow-hidden p-2">
                   <h2 className="text-3xl font-semibold mb-1 text-center text-gray-300">Create an account</h2>
                   <div className="text-center mb-2">
-                      <span className="text-sm text-gray-500">Already have an account?</span>{' '}
-                      <Link to="/login" className="text-sm font-medium text-blue-500 hover:text-blue-400">
-                        Sign in
-                      </Link>
-                    </div>
+                    <span className="text-sm text-gray-500">Already have an account?</span>{' '}
+                    <Link to="/login" className="text-sm font-medium text-blue-500 hover:text-blue-400">
+                      Sign in
+                    </Link>
+                  </div>
                   <form className="space-y-4" onSubmit={handleSubmit}>
                     {error && <div className="text-red-500 text-center">{error}</div>}
-                    <div className="grid grid-cols-2 gap-4">
+                    {/* <div className="grid grid-cols-2 gap-4"> */}
                     <div>
                       <label htmlFor="username" className="block text-sm font-medium text-gray-300 hover:underline">
                         Username
@@ -133,19 +156,22 @@ export default function SignUp() {
                       <label htmlFor="phone" className="block text-sm font-medium text-gray-300 hover:underline">
                         Phone Number
                       </label>
-                      <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        autoComplete="tel"
-                        required
+                     
+                      <PhoneInput
+                        country={"us"}
                         value={phone_number}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        className="mt-1 px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
-                        placeholder="+1234567890"
+                        onChange={(value) => setPhoneNumber(value)} 
+                        inputProps={{
+                          name: "phone",
+                          required: true,
+                          autoFocus: true,
+                        }}
+                        containerClass="mt-1"
+                        inputClass="px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
                       />
+
                     </div>
-                    </div>
+                    {/* </div> */}
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-gray-300 hover:underline">
                         Email address
@@ -209,7 +235,7 @@ export default function SignUp() {
                     <div>
                       <button
                         type="submit"
-                        className="w-full py-2 px-4 mt-4 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className="w-full py-2 px-4 mt-4 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
                       >
                         Sign up
                       </button>
@@ -217,16 +243,16 @@ export default function SignUp() {
                     <div className="mt-6 text-center">
                       <div className="text-gray-500">or</div>
                       <div className="flex items-center justify-center mt-4 space-x-4 ">
-                        <button 
-                        onClick={handleGoogleSignup}className="flex items-center justify-center py-1 px-3 w-auto text-gray-300 rounded-md shadow-sm text-sm border border-gray-200">
+                        <button
+                          onClick={handleGoogleSignup} className="flex items-center justify-center py-1 px-3 w-auto text-gray-300 rounded-md shadow-sm text-sm border border-gray-200">
                           <img src={googleIcon} alt="Google" className="w-6 h-6 mr-2" />
                           Sign up with Google
-                        </button>                       
+                        </button>
                       </div>
                     </div>
-                    
+
                   </form>
-                  
+
                 </div>
               </div>
             </div>
