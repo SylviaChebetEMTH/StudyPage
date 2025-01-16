@@ -10,7 +10,8 @@ const ExpertPage = () => {
   const [projectTypes, setProjectTypes] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState(''); 
+  const navigate = useNavigate()
 
   const { currentUser, authToken } = useContext(UserContext);
   const API_URL = 'http://127.0.0.1:5000';
@@ -32,7 +33,7 @@ const ExpertPage = () => {
       }
 
       const data = await response.json();
-      console.log(data); // Log to verify structure
+      console.log(data); 
       setExperts(Array.isArray(data.experts) ? data.experts : []);
     } catch (error) {
       console.error('Error fetching experts:', error);
@@ -135,7 +136,6 @@ const ExpertPage = () => {
         </div>
       )}
 
-
       <div className="bg-slate-200 min-h-screen">
         <div
           className="relative h-[400px] mb-4 bg-cover bg-center"
@@ -157,9 +157,13 @@ const ExpertPage = () => {
             </div>
             <div className="flex flex-col justify-center items-center z-10">
               <Formik
-                initialValues={{ project_type_id: '', subject_id: '' }}
+                initialValues={{ project_type_id: '', subject_id: '', search: '' }}
                 onSubmit={(values) => {
-                  console.log(values);
+                  if (values.search === '') {
+                    setSearchTerm(''); 
+                  } else {
+                    setSearchTerm(values.search); 
+                  }
                 }}
               >
                 {({ touched, errors }) => (
@@ -235,7 +239,9 @@ const ExpertPage = () => {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 md:px-8">
           {Array.isArray(experts) && experts.length > 0 ? (
-            experts.map((expert) => (
+            experts.filter(expert => 
+              searchTerm === '' || expert.name.toLowerCase().includes(searchTerm.toLowerCase())
+            ).map((expert) => (
               <div
                 key={expert.id}
                 className="border p-4 flex flex-col justify-between shadow-lg rounded-lg overflow-hidden bg-white transition-transform transform hover:scale-105 hover:shadow-2xl hover:bg-gray-100"
@@ -277,7 +283,6 @@ const ExpertPage = () => {
           )}
         </div>
       </div>
-
     </div>
   );
 };
