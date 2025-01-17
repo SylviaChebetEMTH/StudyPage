@@ -55,7 +55,7 @@ export const NavBar = () => {
                 <div
                     className={`${
                         isMenuOpen ? 'block' : 'hidden'
-                    } absolute top-16 left-0 w-full bg-gray-900 z-10 md:static md:flex md:items-center md:justify-between md:w-auto space-x-4`}
+                    } absolute top-16 left-0 w-full bg-gray-900 z-50 md:static md:flex md:items-center md:justify-between md:w-auto space-x-4`}
                 >
                     <div className="flex flex-col md:flex-row md:space-x-8 text-center md:items-center">
                         <Link
@@ -105,7 +105,7 @@ export const NavBar = () => {
                         <Link
                             to={chatLink}
                             state={{ authToken }}
-                            className="text-gray-700 hover:text-blue-700 flex items-center text-xs relative justify-center"
+                            className="text-gray-700 hover:text-blue-700 flex items-center text-xs relative justify-center mt-4 md:mt-0"
                             onClick={handleLinkClick}
                         >
                             <FontAwesomeIcon
