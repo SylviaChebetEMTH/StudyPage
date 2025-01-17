@@ -16,7 +16,7 @@ const About = () => {
             autoPlay
             loop
             muted
-            className="absolute top-0 left-0 w-full h-[calc(100vh-5rem)] object-cover -z-10"
+            className="absolute top-0 left-0 w-full h-screen object-cover -z-10"
             onEnded={handleVideoEnd}
           >
             <source
@@ -26,9 +26,9 @@ const About = () => {
             Your browser does not support the video tag.
           </video>
 
-          <div className="relative z-10">
+          <div className="relative flex items-center justify-center h-screen z-10 text-white">
             <div style={{ height: 500 }}>
-              <p className="text-center absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] uppercase font-extralight text-white text-8xl">
+              <p className="uppercase font-extralight text-4xl sm:text-8xl">
                 StudyPage
               </p>
             </div>
