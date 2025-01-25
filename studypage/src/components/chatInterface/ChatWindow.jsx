@@ -4,7 +4,7 @@ import MessageInput from "./MessageInput";
 import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
 
-const ChatWindow = ({ activeUser }) => {
+const ChatWindow = ({ activeUser, initiateConversation }) => {
   const [messages, setMessages] = useState([]);
   const { authToken } = useContext(UserContext);
   // console.log("client's auth token",authToken)
@@ -37,6 +37,9 @@ const ChatWindow = ({ activeUser }) => {
   
 
   useEffect(() => {
+    if (activeUser && activeUser.conversationId === -1) {
+      initiateConversation();
+    }
     if (activeUser) {
       const fetchMessages = async () => {
         try {
@@ -62,7 +65,7 @@ const ChatWindow = ({ activeUser }) => {
   
       fetchMessages();
     }
-  }, [activeUser, authToken]);
+  }, [activeUser, authToken, initiateConversation]);
   
 
   if (!activeUser) {
@@ -76,19 +79,21 @@ const ChatWindow = ({ activeUser }) => {
 
   return (
     <div className="flex-grow bg-gray-900 p-4 flex flex-col justify-between">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center">
-          <img
-            src={activeUser.image || "default-avatar.png"}
-            alt={activeUser.expert_name}
-            className="w-12 h-12 rounded-full mr-3"
-          />
-          <div>
-            <p className="text-white">{activeUser.expert_name}</p>
-            <p className="text-gray-400 text-sm">Online</p>
+      {activeUser.conversationId !== -1 && (
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <img
+              src={activeUser.image || "default-avatar.png"}
+              alt={activeUser.expert_name}
+              className="w-12 h-12 rounded-full mr-3"
+            />
+            <div>
+              <p className="text-white">{activeUser.expert_name}</p>
+              <p className="text-gray-400 text-sm">Online</p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
       <div className="flex-grow overflow-y-auto mb-4">
         {messages.length > 0 ? (
           messages.map((message, index) => (

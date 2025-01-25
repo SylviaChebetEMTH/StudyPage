@@ -950,6 +950,27 @@ def admn_send_message(conversation_id):
     except Exception as e:
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
 
+@app.route('/conversations', methods=['POST'])
+@jwt_required()
+def create_conversation():
+    data = request.get_json()
+    sender_id = get_jwt_identity()
+    
+    conversation = Conversation(
+        client_id=sender_id,
+        expert_id=data.get('expert_id'),
+        project_id=data.get('project_id')
+    )
+    
+    db.session.add(conversation)
+    db.session.commit()
+    
+    return jsonify({
+        'conversation_id': conversation.id,
+        'client_id': conversation.client_id,
+        'expert_id': conversation.expert_id
+    }), 201
+
 @app.route('/conversations/<int:conversation_id>/messages', methods=['POST'])
 @jwt_required()
 def send_message(conversation_id=None):
