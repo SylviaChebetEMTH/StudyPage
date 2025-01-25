@@ -952,7 +952,7 @@ def admn_send_message(conversation_id):
 
 @app.route('/conversations/<int:conversation_id>/messages', methods=['POST'])
 @jwt_required()
-def send_message(conversation_id):
+def send_message(conversation_id=None):
     try:
         sender_id = get_jwt_identity()
 
