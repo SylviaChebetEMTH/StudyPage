@@ -8,39 +8,11 @@ import { UserContext } from './contexts/userContext';
 const ChatModal = ({ expert, onClose }) => {
   const { currentUser, authToken } = useContext(UserContext);
   const [activeUser, setActiveUser] = useState({
-    conversationId: -1,  // Signal for new conversation
+    conversationId: -1, 
     expert_id: expert.id,
     expert_name: expert.name,
     image: expert.profilePicture
   });
-
-  const initiateConversation = async () => {
-    try {
-      const response = await fetch('http://127.0.0.1:5000/conversations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`
-        },
-        body: JSON.stringify({
-          expert_id: expert.id,
-          project_id: null  // You might want to add project context later
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to initiate conversation');
-      }
-
-      const data = await response.json();
-      setActiveUser(prev => ({
-        ...prev,
-        conversationId: data.conversation_id
-      }));
-    } catch (error) {
-      console.error('Conversation initiation error:', error);
-    }
-  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -66,7 +38,7 @@ const ChatModal = ({ expert, onClose }) => {
         </div>
         <ChatWindow 
           activeUser={activeUser} 
-          initiateConversation={initiateConversation}
+          // initiateConversation={initiateConversation}
         />
       </div>
     </div>

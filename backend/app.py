@@ -971,33 +971,33 @@ def create_conversation():
         'expert_id': conversation.expert_id
     }), 201
 
-@app.route('/conversations/<int:conversation_id>/messages', methods=['POST'])
+@app.route('/conversations/<int:conversation_id>/messages', methods=['POST','OPTIONS'])
 @jwt_required()
-def send_message(conversation_id=None):
+def send_message(conversation_id):
     try:
         sender_id = get_jwt_identity()
 
         if conversation_id == -1:
             data = request.form
             expert_id = data.get('expert_id')
-            project_id = data.get('project_id')
+            # project_id = data.get('project_id')
 
-            if not expert_id or not project_id:
+            if not expert_id:
                 return jsonify({'error': 'Expert ID and Project ID are required for new conversations'}), 400
             
             conversation = Conversation(
                 client_id=sender_id,
                 expert_id=expert_id,
-                project_id=project_id
+                # project_id=project_id
             )
             db.session.add(conversation)
             db.session.commit()
 
-            conversation_id = conversation.project_id
+            conversation_id = conversation.id
         else:
             conversation = Conversation.query.get_or_404(conversation_id)
 
-        content = request.form.get('content')
+        content = request.form.get('content','').strip()
         files = request.files.getlist('attachments')
 
         if not content and not files:

@@ -95,7 +95,7 @@ function AppContent() {
             )}
           </Routes>
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </SocketProvider>
   );

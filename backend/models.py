@@ -95,7 +95,7 @@ class Conversation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'), nullable=False)
-    project_id = db.Column(db.Integer, db.ForeignKey('project_requests.id'), nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey('project_requests.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Remove the backref from here and keep it simple

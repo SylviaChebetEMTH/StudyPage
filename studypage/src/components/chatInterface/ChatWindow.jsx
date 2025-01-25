@@ -4,7 +4,7 @@ import MessageInput from "./MessageInput";
 import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
 
-const ChatWindow = ({ activeUser, initiateConversation }) => {
+const ChatWindow = ({ activeUser }) => {
   const [messages, setMessages] = useState([]);
   const { authToken } = useContext(UserContext);
   // console.log("client's auth token",authToken)
@@ -37,9 +37,6 @@ const ChatWindow = ({ activeUser, initiateConversation }) => {
   
 
   useEffect(() => {
-    if (activeUser && activeUser.conversationId === -1) {
-      initiateConversation();
-    }
     if (activeUser) {
       const fetchMessages = async () => {
         try {
@@ -65,7 +62,8 @@ const ChatWindow = ({ activeUser, initiateConversation }) => {
   
       fetchMessages();
     }
-  }, [activeUser, authToken, initiateConversation]);
+  }, [activeUser, authToken]);
+  console.log('activeusersersr',activeUser)
   
 
   if (!activeUser) {
@@ -78,12 +76,12 @@ const ChatWindow = ({ activeUser, initiateConversation }) => {
   }
 
   return (
-    <div className="flex-grow bg-gray-900 p-4 flex flex-col justify-between">
-      {activeUser.conversationId !== -1 && (
+    <div className="flex-grow bg-gray-600 p-4 flex flex-col justify-between">
+      {activeUser.conversationId === -1 && (
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <img
-              src={activeUser.image || "default-avatar.png"}
+              src={activeUser.profilePicture || "default-avatar.png"}
               alt={activeUser.expert_name}
               className="w-12 h-12 rounded-full mr-3"
             />
