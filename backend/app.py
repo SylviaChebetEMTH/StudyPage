@@ -956,7 +956,25 @@ def send_message(conversation_id=None):
     try:
         sender_id = get_jwt_identity()
 
-        conversation = Conversation.query.get_or_404(conversation_id)
+        if conversation_id == -1:
+            data = request.form
+            expert_id = data.get('expert_id')
+            project_id = data.get('project_id')
+
+            if not expert_id or not project_id:
+                return jsonify({'error': 'Expert ID and Project ID are required for new conversations'}), 400
+            
+            conversation = Conversation(
+                client_id=sender_id,
+                expert_id=expert_id,
+                project_id=project_id
+            )
+            db.session.add(conversation)
+            db.session.commit()
+
+            conversation_id = conversation.project_id
+        else:
+            conversation = Conversation.query.get_or_404(conversation_id)
 
         content = request.form.get('content')
         files = request.files.getlist('attachments')
