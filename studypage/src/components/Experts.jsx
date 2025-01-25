@@ -277,6 +277,7 @@ const ExpertPage = () => {
       const data = await response.json();
       const expertsArray = Array.isArray(data.experts) ? data.experts : [];
       setExperts(expertsArray);
+      console.log('arrayofexpertssghh',expertsArray);
       setFilteredExperts(expertsArray); // Initialize filtered experts with all experts
     } catch (error) {
       console.error('Error fetching experts:', error);

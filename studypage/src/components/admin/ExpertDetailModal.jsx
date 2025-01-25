@@ -25,6 +25,7 @@ const ExpertDetailModal = ({ expert, isOpen, onClose, currentUser }) => {
       console.error('Error fetching comments:', error);
     }
   };
+  console.log('Hellossjababxjhjj',authToken,currentUser.id)
 
   const handleSubmitComment = async (e) => {
     e.preventDefault();

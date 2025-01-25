@@ -224,7 +224,7 @@ def get_expert_comments(expert_id):
             'id': comment.id,
             'content': comment.content,
             'created_at': comment.created_at.isoformat(),
-            'user_name': comment.user.username,
+            # 'user_name': comment.user.username,
             'user_id': comment.user.id
         } for comment in comments]
     })
@@ -679,7 +679,7 @@ def get_experts():
                 'id': comment.id,
                 'content': comment.content,
                 'created_at': comment.created_at.isoformat(),
-                'user_name': comment.user.username  # Assuming User model has username field
+                # 'user_name': comment.user.username  
             }
             comments.append(comment_data)
 
