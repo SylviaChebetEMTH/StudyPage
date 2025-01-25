@@ -225,12 +225,12 @@ def get_expert_comments(expert_id):
             'content': comment.content,
             'created_at': comment.created_at.isoformat(),
             # 'user_name': comment.user.username,
-            'user_id': comment.user.id
+            'user_id': comment.user_id
         } for comment in comments]
     })
 
 @app.route('/experts/<int:expert_id>/comments/<int:currentUser_id>', methods=['POST'])
-@jwt_required()
+# @jwt_required()
 def add_expert_comment(expert_id,currentUser_id):
     data = request.get_json()
     comment = Comment(
@@ -246,8 +246,8 @@ def add_expert_comment(expert_id,currentUser_id):
             'id': comment.id,
             'content': comment.content,
             'created_at': comment.created_at.isoformat(),
-            'user_name': comment.user.username,
-            'user_id': comment.user.id
+            # 'user_name': comment.user.username,
+            'user_id': comment.user_id
         }
     })
 
@@ -728,14 +728,14 @@ def update_comment(comment_id):
     })
 
 @app.route('/comments/<int:comment_id>', methods=['DELETE'])
-@jwt_required()
+# @jwt_required()
 def delete_comment(comment_id):
-    current_user_id = get_jwt_identity()
-    current_user = User.query.get(current_user_id) 
-    if not current_user.is_admin:
-        return jsonify({'message': 'Unauthorized'}), 403
+    # current_user_id = get_jwt_identity()
+    # current_user = User.query.get(current_user_id) 
+    # if not current_user.is_admin:
+        # return jsonify({'message': 'Unauthorized'}), 403
         
-    comment = Comment.query.get_or_404(comment_id)
+    comment = Comment.query.get_or_404(comment_id)  
     db.session.delete(comment)
     db.session.commit()
     
