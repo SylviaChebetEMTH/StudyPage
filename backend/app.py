@@ -971,7 +971,7 @@ def create_conversation():
         'expert_id': conversation.expert_id
     }), 201
 
-@app.route('/conversations/<int:conversation_id>/messages', methods=['POST','OPTIONS'])
+@app.route('/conversations/<conversation_id>/messages', methods=['POST','OPTIONS'])
 @jwt_required()
 def send_message(conversation_id):
     try:

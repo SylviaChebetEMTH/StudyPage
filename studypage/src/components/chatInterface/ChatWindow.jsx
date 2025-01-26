@@ -12,6 +12,7 @@ const ChatWindow = ({ activeUser }) => {
   const sendMessage = async (conversationId, content, attachments) => {
     const formData = new FormData();
     formData.append('content', content);
+    formData.append('expert_id', activeUser.expert_id);
     attachments.forEach(file => formData.append('attachments', file));
   
     try {
