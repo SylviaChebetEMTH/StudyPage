@@ -12,9 +12,10 @@ const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
     expert_name: teacher.name,
     profilePicture: teacher.profilePicture
   });
-  console.log('teacherpic',teacher.profilePicture)
+  localStorage.setItem('teacherpic','teacher.profilePicture')
+  // console.log('teacherpic',teacher.p)
 
-  return (
+  return (  
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-gray-900 w-full max-w-4xl h-[80vh] rounded-lg flex flex-col overflow-hidden">
         {/* Fixed Header */}

@@ -229,6 +229,7 @@ const useConversation = (authToken, conversationId) => {
       setLoading(false);
     }
   };
+  const pic = localStorage.getItem('teacherpic')
 
   useEffect(() => {
     fetchMessages();
@@ -342,8 +343,8 @@ const ChatWindow = ({ activeUser, currentUser, auth, teacher,pic, isInModal,teac
         <div className="flex items-center justify-between mb-6 bg-gray-400">
           <div className="flex items-center ml-4">
             <img
-              src={pic.profilePicture }
-              alt='profile'
+              src={pic }
+              alt={chatActiveUser.expert_name}
               className="w-10 h-10 rounded-full mr-3"
             />
             <div>
