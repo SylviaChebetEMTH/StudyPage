@@ -5,14 +5,15 @@ import ChatWindow from './chatInterface/ChatWindow';
 // import { UserContext } from '../contexts/userContext';
 import { UserContext } from './contexts/userContext';
 
-const ChatModal = ({ expert, onClose }) => {
+const ChatModal = ({ auth,curUser,teacher, onClose }) => {
   const { currentUser, authToken } = useContext(UserContext);
   const [activeUser, setActiveUser] = useState({
     conversationId: -1, 
-    expert_id: expert.id,
-    expert_name: expert.name,
-    image: expert.profilePicture
+    expert_id: teacher.id,
+    expert_name: teacher.name,
+    image: teacher.profilePicture
   });
+  // console.log('userididid',currentUser.id)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -20,12 +21,12 @@ const ChatModal = ({ expert, onClose }) => {
         <div className="flex justify-between items-center p-4 border-b border-gray-700">
           <div className="flex items-center">
             <img 
-              src={expert.profilePicture} 
-              alt={expert.name} 
+              src={teacher.profilePicture} 
+              alt={teacher.name} 
               className="w-10 h-10 rounded-full mr-3"
             />
             <div>
-                <p className="text-white">{expert.name}</p>
+                <p className="text-white">{teacher.name}</p>
                 <p className="text-gray-400 text-sm">Online</p>
             </div>
           </div>
@@ -38,6 +39,9 @@ const ChatModal = ({ expert, onClose }) => {
         </div>
         <ChatWindow 
           activeUser={activeUser} 
+          auth={auth}
+          teacher={teacher}
+          curreUser={curUser}
           // initiateConversation={initiateConversation}
         />
       </div>

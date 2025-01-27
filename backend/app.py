@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from functools import wraps
+import traceback
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, create_refresh_token, get_jwt, verify_jwt_in_request, decode_token
 from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject, Message as MessageModel, Conversation, Comment
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -163,8 +164,8 @@ mail = Mail(app)
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 CORS(app,resources={r"/*": {"origins": "http://localhost:3001"}})
 
-# PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
-PAYSTACK_SECRET_KEY =os.environ.get('PAYSTACK_SECRET_KEY')
+PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
+# PAYSTACK_SECRET_KEY =os.environ.get('PAYSTACK_SECRET_KEY')
 @app.route('/verify-payment', methods=['POST'])
 def verify_payment():
     """
@@ -856,7 +857,7 @@ def request_expert():
     message = MessageModel(
         conversation_id=conversation.id,
         sender_id=get_jwt_identity(),
-        content=f"New project submitted: {project.project_title}\\nDescription: {project.project_description}\\nDeadline: {project.deadline.strftime('%Y-%m-%d')}",
+        content=f"New project submitted: {project.project_title}\nDescription: {project.project_description}\nDeadline: {project.deadline.strftime('%Y-%m-%d')}",
         attachments=project.attachments,
         receiver_id=data.get('expert_id'),
         expert_id=data.get('expert_id')
@@ -971,31 +972,41 @@ def create_conversation():
         'expert_id': conversation.expert_id
     }), 201
 
-@app.route('/conversations/<conversation_id>/messages', methods=['POST','OPTIONS'])
+@app.route('/conversations/<conversation_id>/messages', methods=['POST'])
 @jwt_required()
 def send_message(conversation_id):
     try:
         sender_id = get_jwt_identity()
+        content = request.form.get('content','').strip()
+        files    = request.files.getlist('attachments')
 
+        try:
+            conversation_id = int(conversation_id)
+        except ValueError:
+            return jsonify({'error': 'Invalid conversation ID'}), 400
+        
         if conversation_id == -1:
-            data = request.form
-            expert_id = data.get('expert_id')
-            # project_id = data.get('project_id')
-
+            expert_id = request.form.get('expert_id')
             if not expert_id:
-                return jsonify({'error': 'Expert ID and Project ID are required for new conversations'}), 400
-            
-            conversation = Conversation(
-                client_id=sender_id,
-                expert_id=expert_id,
-                # project_id=project_id
-            )
-            db.session.add(conversation)
-            db.session.commit()
+                return jsonify({'error': 'Expert ID is required for new conversations'}), 400
 
+            conversation = Conversation.query.filter_by(
+                client_id=sender_id,
+                expert_id=expert_id
+            ).first()
+            if not conversation:
+                conversation = Conversation(
+                    client_id=sender_id,
+                    expert_id=expert_id
+                )
+                db.session.add(conversation)
+                db.session.commit()
             conversation_id = conversation.id
+            conversation = Conversation.query.get_or_404(conversation_id)
+            print(f"Creating message with: conversation_id={conversation_id}, sender_id={sender_id}, content='{content}', attachments={files}")
         else:
             conversation = Conversation.query.get_or_404(conversation_id)
+            print(f"Creating message with: conversation_id={conversation_id}, sender_id={sender_id}, content='{content}', attachments={files}")
 
         content = request.form.get('content','').strip()
         files = request.files.getlist('attachments')
@@ -1010,8 +1021,6 @@ def send_message(conversation_id):
                     filename = secure_filename(file.filename)
                     filepath = os.path.join(UPLOAD_FOLDER, filename)
                     file.save(filepath)
-
-
                     file_url = url_for('serve_file', filename=filename, _external=True)
                     attachments.append(file_url)
                 else:
@@ -1055,9 +1064,11 @@ def send_message(conversation_id):
         )
         return jsonify(message.to_dict()), 201
     except Exception as e:
+        traceback.print_exc()
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
 
     except Exception as e:
+        traceback.print_exc()
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
     
 @app.route('/admin/conversations', methods=['GET'])

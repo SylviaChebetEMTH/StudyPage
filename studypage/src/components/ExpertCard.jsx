@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { IoMdChatbubbles } from 'react-icons/io';
 import { Star } from 'lucide-react';
 import ChatModal from './ChatModal';
 import ExpertDetailModal from './admin/ExpertDetailModal'
-// import { UserContext } from './contexts/userContext';
+import { UserContext } from './contexts/userContext';
 // studypage/src/components/admin/ExpertDetailModal.jsx
 const ExpertCard = ({ expert, onHire, currentUser }) => {
   const [isHovered, setIsHovered] = useState(null);
-  // const { currentUser, authToken } = useContext(UserContext);
+  const { authToken } = useContext(UserContext);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showChatModal, setShowChatModal] = useState(false);
 
@@ -138,7 +138,9 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
       />
       {showChatModal && (
         <ChatModal 
-          expert={expert} 
+          teacher={expert} 
+          curUser={currentUser}
+          auth={authToken}
           onClose={() => setShowChatModal(false)} 
         />
       )}
