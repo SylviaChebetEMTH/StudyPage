@@ -4,70 +4,109 @@
 // import MessageBubble from "./MessageBubble";
 // import { IoMdChatbubbles } from "react-icons/io";
 
-// const ChatWindow = ({activeUser,curreUser,auth,teacher }) => {
+// const ChatWindow = ({ activeUser, curreUser, auth, teacher }) => {
 //   const [messages, setMessages] = useState([]);
-//   // const [chatActiveUser, setChatActiveUser] = useState(initialActiveUser);
 //   const [chatActiveUser, setChatActiveUser] = useState(activeUser || null);
 //   const { authToken } = useContext(UserContext);
-//   // console.log("client's auth token",authToken)
 
+//   // Send message function
 //   const sendMessage = async (conversationId, content, attachments) => {
 //     if (conversationId === -1) {
 //       try {
 //         const formData = new FormData();
-//         formData.append('expert_id', teacher.id);
-//         formData.append('content', content);
-//         attachments.forEach(file => formData.append('attachments', file));
-  
-//         const conversationResponse = await fetch(`http://127.0.0.1:5000/conversations/${conversationId}/messages`, {
-//           method: 'POST',
-//           headers: {
-//             'Authorization': `Bearer ${authToken}`
-//           },
-//           body: formData
-//         });
-  
+//         formData.append("expert_id", teacher.id);
+//         formData.append("content", content);
+//         attachments.forEach((file) => formData.append("attachments", file));
+
+//         const conversationResponse = await fetch(
+//           `http://127.0.0.1:5000/conversations/${conversationId}/messages`,
+//           {
+//             method: "POST",
+//             headers: {
+//               Authorization: `Bearer ${authToken}`,
+//             },
+//             body: formData,
+//           }
+//         );
+
 //         if (!conversationResponse.ok) {
 //           throw new Error("Failed to create conversation");
 //         }
-  
+
 //         const conversationData = await conversationResponse.json();
-//         conversationId = conversationData.id; // Use 'id' instead of 'conversation_id'
+//         conversationId = conversationData.conversation_id; // Use 'id' as the new conversation ID
+//         localStorage.setItem('convId','conversationId')
+
+//         // Update chatActiveUser with the new conversation ID
+//         setChatActiveUser((prev) => ({
+//           ...prev,
+//           conversationId,
+//         }));
 //       } catch (error) {
-//         console.error('Error creating conversation:', error);
+//         console.error("Error creating conversation:", error);
 //         return null;
 //       }
 //     }
+
 //     const formData = new FormData();
-//     formData.append('content', content);
-//     // formData.append('expert_id', activeUser.expert_id);
-//     // formData.append('user_id',curreUser.id)
-//     attachments.forEach(file => formData.append('attachments', file));
-  
+//     formData.append("content", content);
+//     attachments.forEach((file) => formData.append("attachments", file));
+
 //     try {
-//       const response = await fetch(`http://127.0.0.1:5000/conversations/${conversationId}/messages`, {
-//         method: 'POST',
-//         headers: {
-//           'Authorization': `Bearer ${authToken}`,
-//         },
-//         body: formData,
-//       });
-  
+//       const response = await fetch(
+//         `http://127.0.0.1:5000/conversations/${conversationId}/messages`,
+//         {
+//           method: "POST",
+//           headers: {
+//             Authorization: `Bearer ${authToken}`,
+//           },
+//           body: formData,
+//         }
+//       );
+
 //       if (!response.ok) {
 //         throw new Error("Failed to send message");
 //       }
-  
+
 //       const data = await response.json();
-//       // console.log('Message sent successfully:', data);
-//       // return data;
 //       return { ...data, conversationId };
 //     } catch (error) {
-//       console.error('Error sending message:', error);
-//       return null
+//       console.error("Error sending message:", error);
+//       return null;
 //     }
 //   };
+//   const value = localStorage.getItem('convId')
+//   console.log('valueasfhj',value)
+//     // Fetch messages whenever chatActiveUser or conversationId changes
+//     useEffect(() => {
+//       if (value) {
+//         const fetchMessages = async () => {
+//           try {
+//             const response = await fetch(
+//               `http://127.0.0.1:5000/conversations/${value}/messages`,
+//               {
+//                 headers: { Authorization: `Bearer ${authToken}` },
+//               }
+//             );
   
-
+//             if (!response.ok) {
+//               console.error("Failed to fetch messages");
+//               return;
+//             }
+  
+//             const data = await response.json();
+//             setMessages(data);
+//           } catch (err) {
+//             console.error("Error fetching messages:", err);
+//           }
+//         };
+  
+//         fetchMessages();
+//       }
+//       // Update chatActiveUser state when activeUser changes
+//       setChatActiveUser(activeUser);
+//     }, [activeUser, chatActiveUser, authToken,value]);
+//   // Fetch messages whenever chatActiveUser or conversationId changes
 //   useEffect(() => {
 //     if (chatActiveUser) {
 //       const fetchMessages = async () => {
@@ -75,29 +114,27 @@
 //           const response = await fetch(
 //             `http://127.0.0.1:5000/conversations/${chatActiveUser.conversationId}/messages`,
 //             {
-//               headers: { Authorization: `Bearer ${authToken}` }, 
+//               headers: { Authorization: `Bearer ${authToken}` },
 //             }
 //           );
-  
+
 //           if (!response.ok) {
 //             console.error("Failed to fetch messages");
 //             return;
 //           }
-  
+
 //           const data = await response.json();
-//           console.log("Fetched messages for client:", data);
 //           setMessages(data);
 //         } catch (err) {
 //           console.error("Error fetching messages:", err);
 //         }
 //       };
-  
+
 //       fetchMessages();
 //     }
+//     // Update chatActiveUser state when activeUser changes
 //     setChatActiveUser(activeUser);
-//   }, [activeUser,chatActiveUser, authToken]);
-//   console.log('activeusersersr',chatActiveUser)
-  
+//   }, [activeUser, chatActiveUser, authToken]);
 
 //   if (!chatActiveUser) {
 //     return (
@@ -128,8 +165,11 @@
 //       <div className="flex-grow overflow-y-auto mb-4">
 //         {messages.length > 0 ? (
 //           messages.map((message, index) => (
-//             <MessageBubble key={index} message={message} activeUser={{ ...chatActiveUser, isAdmin: false }} />
-            
+//             <MessageBubble
+//               key={index}
+//               message={message}
+//               activeUser={{ ...chatActiveUser, isAdmin: false }}
+//             />
 //           ))
 //         ) : (
 //           <div className="text-gray-400 text-center mt-4">
@@ -139,11 +179,13 @@
 //       </div>
 //       <MessageInput
 //         sendMessage={(content, attachments) =>
-//           sendMessage(chatActiveUser.conversationId, content, attachments).then((data) => {
-//             if (data) {
-//               setMessages((prev) => [...prev, data]);
+//           sendMessage(chatActiveUser.conversationId, content, attachments).then(
+//             (data) => {
+//               if (data) {
+//                 setMessages((prev) => [...prev, data]);
+//               }
 //             }
-//           })
+//           )
 //         }
 //       />
 //     </div>
@@ -153,22 +195,86 @@
 // export default ChatWindow;
 
 
-import React, { useState, useEffect, useContext } from "react";
+
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { UserContext } from "../contexts/userContext";
 import MessageInput from "./MessageInput";
 import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
 
-const ChatWindow = ({ activeUser, curreUser, auth, teacher }) => {
+// Custom hook for managing conversations
+const useConversation = (authToken, conversationId) => {
   const [messages, setMessages] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetchMessages = async () => {
+    if (!conversationId) return;
+    
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:5000/conversations/${conversationId}/messages`,
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+
+      const data = await response.json();
+      setMessages(data);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMessages();
+  }, [conversationId, authToken]);
+
+  return { messages, setMessages, error, loading, fetchMessages };
+};
+
+const ChatWindow = ({ activeUser, currentUser, auth, teacher }) => {
   const [chatActiveUser, setChatActiveUser] = useState(activeUser || null);
   const { authToken } = useContext(UserContext);
+  const { messages, setMessages,  loading } = useConversation(
+    authToken,
+    chatActiveUser?.conversationId
+  );
+  
+  // Add ref for the messages container
+  const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
 
-  // Send message function
+  // Scroll to bottom function
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Auto scroll when new messages arrive
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  // Handle initial scroll position when messages load
+  useEffect(() => {
+    if (!loading && messages.length > 0) {
+      scrollToBottom();
+    }
+  }, [loading, messages]);
+
+  useEffect(() => {
+    setChatActiveUser(activeUser);
+  }, [activeUser]);
+
   const sendMessage = async (conversationId, content, attachments) => {
-    if (conversationId === -1) {
-      try {
-        const formData = new FormData();
+    try {
+      const formData = new FormData();
+      
+      if (conversationId === -1) {
         formData.append("expert_id", teacher.id);
         formData.append("content", content);
         attachments.forEach((file) => formData.append("attachments", file));
@@ -177,9 +283,7 @@ const ChatWindow = ({ activeUser, curreUser, auth, teacher }) => {
           `http://127.0.0.1:5000/conversations/${conversationId}/messages`,
           {
             method: "POST",
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
+            headers: { Authorization: `Bearer ${authToken}` },
             body: formData,
           }
         );
@@ -188,32 +292,23 @@ const ChatWindow = ({ activeUser, curreUser, auth, teacher }) => {
           throw new Error("Failed to create conversation");
         }
 
-        const conversationData = await conversationResponse.json();
-        conversationId = conversationData.id; // Use 'id' as the new conversation ID
-
-        // Update chatActiveUser with the new conversation ID
+        const { conversation_id } = await conversationResponse.json();
         setChatActiveUser((prev) => ({
           ...prev,
-          conversationId,
+          conversationId: conversation_id,
         }));
-      } catch (error) {
-        console.error("Error creating conversation:", error);
-        return null;
+        
+        return sendMessage(conversation_id, content, attachments);
       }
-    }
 
-    const formData = new FormData();
-    formData.append("content", content);
-    attachments.forEach((file) => formData.append("attachments", file));
+      formData.append("content", content);
+      attachments.forEach((file) => formData.append("attachments", file));
 
-    try {
       const response = await fetch(
         `http://127.0.0.1:5000/conversations/${conversationId}/messages`,
         {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
+          headers: { Authorization: `Bearer ${authToken}` },
           body: formData,
         }
       );
@@ -225,40 +320,9 @@ const ChatWindow = ({ activeUser, curreUser, auth, teacher }) => {
       const data = await response.json();
       return { ...data, conversationId };
     } catch (error) {
-      console.error("Error sending message:", error);
-      return null;
+      throw new Error(`Failed to send message: ${error.message}`);
     }
   };
-
-  // Fetch messages whenever chatActiveUser or conversationId changes
-  useEffect(() => {
-    if (chatActiveUser) {
-      const fetchMessages = async () => {
-        try {
-          const response = await fetch(
-            `http://127.0.0.1:5000/conversations/${chatActiveUser.conversationId}/messages`,
-            {
-              headers: { Authorization: `Bearer ${authToken}` },
-            }
-          );
-
-          if (!response.ok) {
-            console.error("Failed to fetch messages");
-            return;
-          }
-
-          const data = await response.json();
-          setMessages(data);
-        } catch (err) {
-          console.error("Error fetching messages:", err);
-        }
-      };
-
-      fetchMessages();
-    }
-    // Update chatActiveUser state when activeUser changes
-    setChatActiveUser(activeUser);
-  }, [activeUser, chatActiveUser, authToken]);
 
   if (!chatActiveUser) {
     return (
@@ -270,12 +334,12 @@ const ChatWindow = ({ activeUser, curreUser, auth, teacher }) => {
   }
 
   return (
-    <div className="flex-grow bg-gray-600 p-4 flex flex-col justify-between">
+    <div className="flex-grow bg-gray-600 p-4 flex flex-col h-screen">
       {chatActiveUser.conversationId !== -1 && (
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <img
-              src={chatActiveUser.profilePicture || "default-avatar.png"}
+              src={chatActiveUser.profilePicture || "/default-avatar.png"}
               alt={chatActiveUser.expert_name}
               className="w-12 h-12 rounded-full mr-3"
             />
@@ -286,30 +350,42 @@ const ChatWindow = ({ activeUser, curreUser, auth, teacher }) => {
           </div>
         </div>
       )}
-      <div className="flex-grow overflow-y-auto mb-4">
-        {messages.length > 0 ? (
-          messages.map((message, index) => (
-            <MessageBubble
-              key={index}
-              message={message}
-              activeUser={{ ...chatActiveUser, isAdmin: false }}
-            />
-          ))
+
+      <div 
+        ref={messagesContainerRef}
+        className="flex-grow overflow-y-auto mb-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-700"
+      >
+        {loading ? (
+          <div className="text-white text-center">Loading messages...</div>
+        ) : messages.length > 0 ? (
+          <>
+            {messages.map((message, index) => (
+              <MessageBubble
+                key={message.id || index}
+                message={message}
+                activeUser={{ ...chatActiveUser, isAdmin: false }}
+              />
+            ))}
+            <div ref={messagesEndRef} /> {/* Scroll anchor */}
+          </>
         ) : (
           <div className="text-gray-400 text-center mt-4">
             No messages yet. Start the conversation!
           </div>
         )}
       </div>
+
       <MessageInput
         sendMessage={(content, attachments) =>
-          sendMessage(chatActiveUser.conversationId, content, attachments).then(
-            (data) => {
+          sendMessage(chatActiveUser.conversationId, content, attachments)
+            .then((data) => {
               if (data) {
                 setMessages((prev) => [...prev, data]);
               }
-            }
-          )
+            })
+            .catch((error) => {
+              console.error("Error sending message:", error);
+            })
         }
       />
     </div>

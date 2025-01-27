@@ -1003,7 +1003,8 @@ def send_message(conversation_id):
                 db.session.commit()
             conversation_id = conversation.id
             conversation = Conversation.query.get_or_404(conversation_id)
-            print(f"Creating message with: conversation_id={conversation_id}, sender_id={sender_id}, content='{content}', attachments={files}")
+            return jsonify({'conversation_id': conversation_id}), 201
+            # print(f"Creating message with: conversation_id={conversation_id}, sender_id={sender_id}, content='{content}', attachments={files}")
         else:
             conversation = Conversation.query.get_or_404(conversation_id)
             print(f"Creating message with: conversation_id={conversation_id}, sender_id={sender_id}, content='{content}', attachments={files}")
