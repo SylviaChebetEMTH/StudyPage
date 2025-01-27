@@ -237,10 +237,11 @@ const useConversation = (authToken, conversationId) => {
   return { messages, setMessages, error, loading, fetchMessages };
 };
 
-const ChatWindow = ({ activeUser, currentUser, auth, teacher }) => {
+const ChatWindow = ({ activeUser, currentUser, auth, teacher,pic, isInModal,teach }) => {
+  console.log('chatgagactiveuserteach',teacher)
   const [chatActiveUser, setChatActiveUser] = useState(activeUser || null);
   const { authToken } = useContext(UserContext);
-  const { messages, setMessages,  loading } = useConversation(
+  const { messages, setMessages, error, loading } = useConversation(
     authToken,
     chatActiveUser?.conversationId
   );
@@ -297,6 +298,7 @@ const ChatWindow = ({ activeUser, currentUser, auth, teacher }) => {
           ...prev,
           conversationId: conversation_id,
         }));
+        console.log('chatactivenoewnow',chatActiveUser)
         
         return sendMessage(conversation_id, content, attachments);
       }
@@ -318,6 +320,7 @@ const ChatWindow = ({ activeUser, currentUser, auth, teacher }) => {
       }
 
       const data = await response.json();
+      console.log('chatactivenoewnow',data)
       return { ...data, conversationId };
     } catch (error) {
       throw new Error(`Failed to send message: ${error.message}`);
@@ -326,7 +329,7 @@ const ChatWindow = ({ activeUser, currentUser, auth, teacher }) => {
 
   if (!chatActiveUser) {
     return (
-      <div className="flex-grow bg-gray-900 p-4 flex items-center justify-center">
+      <div className={`${isInModal ? 'h-full' : 'flex-grow'} bg-gray-900 p-4 flex items-center justify-center`}>
         <IoMdChatbubbles className="text-white text-6xl mr-4" />
         <h2 className="text-white text-xl">Select a user to start chatting</h2>
       </div>
@@ -334,18 +337,18 @@ const ChatWindow = ({ activeUser, currentUser, auth, teacher }) => {
   }
 
   return (
-    <div className="flex-grow bg-gray-600 p-4 flex flex-col h-screen">
-      {chatActiveUser.conversationId !== -1 && (
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center">
+    <div className={`${isInModal ? 'h-full' : 'flex-grow h-screen'} flex flex-col bg-gray-600`}>
+      { !isInModal && (
+        <div className="flex items-center justify-between mb-6 bg-gray-400">
+          <div className="flex items-center ml-4">
             <img
-              src={chatActiveUser.profilePicture || "/default-avatar.png"}
-              alt={chatActiveUser.expert_name}
-              className="w-12 h-12 rounded-full mr-3"
+              src={pic.profilePicture }
+              alt='profile'
+              className="w-10 h-10 rounded-full mr-3"
             />
             <div>
               <p className="text-white">{chatActiveUser.expert_name}</p>
-              <p className="text-gray-400 text-sm">Online</p>
+              <p className="text-gray-700 text-sm">Online</p>
             </div>
           </div>
         </div>

@@ -1,33 +1,33 @@
+
 import React, { useState, useContext } from 'react';
 import { X } from 'lucide-react';
 import ChatWindow from './chatInterface/ChatWindow';
-// import ChatWindow from './ChatWindow';
-// import { UserContext } from '../contexts/userContext';
 import { UserContext } from './contexts/userContext';
 
-const ChatModal = ({ auth,curUser,teacher, onClose }) => {
+const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
   const { currentUser, authToken } = useContext(UserContext);
   const [activeUser, setActiveUser] = useState({
     conversationId: -1, 
     expert_id: teacher.id,
     expert_name: teacher.name,
-    image: teacher.profilePicture
+    profilePicture: teacher.profilePicture
   });
-  // console.log('userididid',currentUser.id)
+  console.log('teacherpic',teacher.profilePicture)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-gray-900 w-full max-w-4xl h-[80vh] rounded-lg flex flex-col">
-        <div className="flex justify-between items-center p-4 border-b border-gray-700">
+      <div className="bg-gray-900 w-full max-w-4xl h-[80vh] rounded-lg flex flex-col overflow-hidden">
+        {/* Fixed Header */}
+        <div className="flex justify-between items-center p-4 border-b border-gray-700 bg-gray-900">
           <div className="flex items-center">
             <img 
-              src={teacher.profilePicture} 
+              src={teacher.profilePicture } 
               alt={teacher.name} 
               className="w-10 h-10 rounded-full mr-3"
             />
             <div>
-                <p className="text-white">{teacher.name}</p>
-                <p className="text-gray-400 text-sm">Online</p>
+              <p className="text-white">{teacher.name}</p>
+              <p className="text-gray-400 text-sm">Online</p>
             </div>
           </div>
           <button 
@@ -37,13 +37,18 @@ const ChatModal = ({ auth,curUser,teacher, onClose }) => {
             <X size={24} />
           </button>
         </div>
-        <ChatWindow 
-          activeUser={activeUser} 
-          auth={auth}
-          teacher={teacher}
-          curreUser={curUser}
-          // initiateConversation={initiateConversation}
-        />
+
+        {/* Chat Window Container - Takes remaining height */}
+        <div className="flex-1 overflow-hidden">
+          <ChatWindow 
+            activeUser={activeUser} 
+            auth={auth}
+            pic={teach}
+            teacher={teacher}
+            curreUser={curUser}
+            isInModal={true}
+          />
+        </div>
       </div>
     </div>
   );

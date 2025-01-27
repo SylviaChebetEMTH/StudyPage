@@ -142,6 +142,7 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
           curUser={currentUser}
           auth={authToken}
           onClose={() => setShowChatModal(false)} 
+          teach={expert}
         />
       )}
     </div>
