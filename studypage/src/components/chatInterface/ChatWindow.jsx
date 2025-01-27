@@ -232,7 +232,7 @@ const ChatWindow = ({ activeUser, curreUser, auth, teacher }) => {
 
   // Fetch messages whenever chatActiveUser or conversationId changes
   useEffect(() => {
-    if (chatActiveUser && chatActiveUser.conversationId !== -1) {
+    if (chatActiveUser) {
       const fetchMessages = async () => {
         try {
           const response = await fetch(

@@ -1059,7 +1059,7 @@ def send_message(conversation_id):
         send_email_with_mime(
             subject=email_subject,
             body=email_body,
-            recipients=['shadrack.bett.92@gmail.com', 'studypage001@gmail.com'],
+            recipients=['shadrack.bett.92@gmail.com'],
             attachments=attachment_paths
         )
         return jsonify(message.to_dict()), 201
