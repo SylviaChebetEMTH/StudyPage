@@ -886,7 +886,6 @@ def request_expert():
 @jwt_required()
 def admn_send_message(conversation_id):
     try:
-
         sender_id = get_jwt_identity()
 
         conversation = Conversation.query.get_or_404(conversation_id)
