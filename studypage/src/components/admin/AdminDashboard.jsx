@@ -17,6 +17,9 @@ const AdminDashboardSidebar = () => {
     const handleServiceClick = () => {
         setServiceOpen(!isServiceOpen);
     }
+    const handleLinkClick = () => {
+        setSidebarOpen(false); 
+    };
 
     const handleLogout = async () => {
         try {
@@ -52,8 +55,8 @@ const AdminDashboardSidebar = () => {
             </button>
 
             {/* Sidebar */}
-            <aside className={`fixed md:relative top-0 left-0 w-64 bg-[#C2E1E1] text-[#747474] shadow-md transition-transform duration-300 ease-in-out md:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-                } h-full md:h-auto pt-16 z-20`}>
+            <aside className={`fixed md:relative top-0 left-0 w-64 bg-[#C2E1E1] text-[#747474] shadow-md transition-transform duration-300 ease-in-out md:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full "
+                } h-full overflow-y-auto pt-16 z-20`}>
                 <nav className="p-4">
                     <ul>
                         <li className="mb-4">
@@ -64,6 +67,7 @@ const AdminDashboardSidebar = () => {
                                         ? "block px-4 py-6 bg-[#769594] rounded flex items-center text-white"
                                         : "block px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                 }
+                                onClick={handleLinkClick}
                             >
                                 <FontAwesomeIcon icon={faHome} className="mr-3 w-6 h-6" />
                                 Dashboard
@@ -107,6 +111,7 @@ const AdminDashboardSidebar = () => {
                                                     ? "block px-4 py-4 bg-[#769594] rounded flex items-center text-white"
                                                     : "block px-4 py-4 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                             }
+                                            onClick={handleLinkClick}
                                         >
                                             All Experts
                                         </NavLink>
@@ -119,6 +124,7 @@ const AdminDashboardSidebar = () => {
                                                     ? "block px-4 py-4 bg-[#769594] rounded flex items-center text-white"
                                                     : "block px-4 py-4 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                             }
+                                            onClick={handleLinkClick}
                                         >
                                             Add Expert
                                         </NavLink>
@@ -163,6 +169,7 @@ const AdminDashboardSidebar = () => {
                                                     ? "block px-4 py-4 bg-[#769594] rounded flex items-center text-white"
                                                     : "block px-4 py-4 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                             }
+                                            onClick={handleLinkClick}
                                         >
                                             All Services
                                         </NavLink>
@@ -175,6 +182,7 @@ const AdminDashboardSidebar = () => {
                                                     ? "block px-4 py-4 bg-[#769594] rounded flex items-center text-white"
                                                     : "block px-4 py-4 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                             }
+                                            onClick={handleLinkClick}
                                         >
                                             Add Service
                                         </NavLink>
@@ -190,6 +198,7 @@ const AdminDashboardSidebar = () => {
                                         ? "block px-4 py-6 bg-[#769594] rounded flex items-center text-white"
                                         : "block px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                 }
+                                onClick={handleLinkClick}
                             >
                                 <FontAwesomeIcon icon={faUsers} className="mr-3 w-6 h-6" />
                                 User Management
@@ -203,6 +212,7 @@ const AdminDashboardSidebar = () => {
                                         ? "block px-4 py-6 bg-[#769594] rounded flex items-center text-white"
                                         : "block px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                 }
+                                onClick={handleLinkClick}
                             >
                                 <FontAwesomeIcon icon={faTasks} className="mr-3 w-6 h-6" />
                                 Project Types
@@ -216,6 +226,7 @@ const AdminDashboardSidebar = () => {
                                         ? "block px-4 py-6 bg-[#769594] rounded flex items-center text-white"
                                         : "block px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
                                 }
+                                onClick={handleLinkClick}
                             >
                                 <FontAwesomeIcon icon={faBook} className="mr-3 w-6 h-6" />
                                 Subject Area
@@ -235,7 +246,7 @@ const AdminDashboardSidebar = () => {
             </aside>
 
             {/* Main Content Area */}
-            <main className="flex-1 bg-[#F0F9FF] p-4 md:p-8">
+            <main className="flex-1 bg-[#F0F9FF] p-4 md:p-8 overflow-y-auto">
                 <Outlet />
             </main>
         </div>

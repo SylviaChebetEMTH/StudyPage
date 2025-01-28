@@ -255,7 +255,8 @@ const ExpertPage = () => {
   const [projectTypes, setProjectTypes] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState(''); 
+  const navigate = useNavigate()
 
   const { currentUser, authToken } = useContext(UserContext);
   const API_URL = 'http://127.0.0.1:5000';
@@ -350,6 +351,7 @@ const ExpertPage = () => {
 
         const data = await response.json();
         setProjectTypes(data);
+        setProjectTypes(data);
       } catch (error) {
         console.error("Error fetching project types:", error);
       }
@@ -370,6 +372,7 @@ const ExpertPage = () => {
         }
 
         const data = await response.json();
+        setSubjects(data);
         setSubjects(data);
       } catch (error) {
         console.error("Error fetching subjects:", error);
@@ -443,7 +446,6 @@ const ExpertPage = () => {
                       placeholder="Search by name"
                       className="py-2 px-4 rounded text-xs text-gray-700 bg-[#CBDFDE] w-full sm:w-1/4"
                     />
-
                     <Field
                       name="project_type_id"
                       as="select"

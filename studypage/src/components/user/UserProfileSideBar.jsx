@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { NavLink, Outlet, useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contexts/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faBook, faTasks, faEnvelope, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faBook, faTasks, faEnvelope, faSignOutAlt, faUser, faBars } from "@fortawesome/free-solid-svg-icons";
 
 const UserProfile = (authToken) => {
     const { currentUser, logout } = useContext(UserContext);
@@ -26,6 +26,11 @@ const UserProfile = (authToken) => {
             </div>
         );
     }
+
+    const handleLinkClick = () => {
+        setSidebarOpen(false); 
+    };
+
     const accountLink = authToken
         ? currentUser?.is_admin
             ? "/admin/dashboard"
@@ -39,29 +44,17 @@ const UserProfile = (authToken) => {
         <div className="flex flex-col md:flex-row min-h-screen bg-[#F0F9FF] pt-10">
             {/* Toggle Button */}
             <button
-                className="md:hidden p-4 bg-[#45B1E8] text-white"
+                className="md:hidden p-4 bg-[#194e6b] text-white"
                 onClick={() => setSidebarOpen(!isSidebarOpen)}
             >
-                <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 6h16M4 12h16M4 18h16"
-                    />
-                </svg>
+                {/* Hamburger Icon (FontAwesome) */}
+                <FontAwesomeIcon icon={faBars} className="w-6 h-6" />
             </button>
 
             {/* Sidebar */}
             <aside
-                className={`fixed md:relative top-0 left-0 w-64 bg-[#C2E1E1] text-[#747474] shadow-md transition-transform duration-300 ease-in-out md:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-                    } h-full md:h-auto pt-4 z-20`}>
+                className={`fixed md:relative top-2 left-2 w-64 bg-gray-600 text-gray-300 shadow-md transition-transform duration-300 ease-in-out md:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+                    } h-full mb-6 md:h-auto pt-4 z-20`}>
                 <div className="p-4">
                     {/* User Profile */}
 
@@ -73,83 +66,78 @@ const UserProfile = (authToken) => {
                             <FontAwesomeIcon icon={faUser} className="text-white text-xl" />
                         </Link>
 
-                        <h2 className="text-md text-gray-700">
+                        <h2 className="text-md text-gray-300">
                             {currentUser.username || "User"}
                         </h2>
-                        
                     </div>
 
                     {/* Navigation */}
                     <nav>
                         <ul>
-                            <li className="mb-4">
+                            <li className="mb-4 text-gray-500">
                                 <NavLink
                                     to="dashboard"
                                     className={({ isActive }) =>
                                         isActive
                                             ? "px-4 py-6 bg-[#769594] rounded flex items-center"
-                                            : "px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
+                                            : "px-4 py-6 bg-gray-300 hover:bg-gray-400 rounded flex items-center"
                                     }
+                                    onClick={handleLinkClick}
                                 >
                                     <FontAwesomeIcon icon={faHome} className="mr-3" />
                                     Dashboard
                                 </NavLink>
                             </li>
-                            <li className="mb-4">
+                            <li className="mb-4 text-gray-500">
                                 <NavLink
                                     to="/userprofile/projectsummary"
                                     className={({ isActive }) =>
                                         isActive
                                             ? "px-4 py-6 bg-[#769594] rounded flex items-center"
-                                            : "px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
+                                            : "px-4 py-6 bg-gray-300 hover:bg-gray-400 rounded flex items-center"
                                     }
+                                    onClick={handleLinkClick}
                                 >
                                     <FontAwesomeIcon icon={faBook} className="mr-3" />
                                     Courses
                                 </NavLink>
                             </li>
-                            <li className="mb-4">
+                            <li className="mb-4 text-gray-500">
                                 <NavLink
                                     to="/userprofile/hireexpert"
                                     className={({ isActive }) =>
                                         isActive
                                             ? "px-4 py-6 bg-[#769594] rounded flex items-center"
-                                            : "px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
+                                            : "px-4 py-6 bg-gray-300 hover:bg-gray-400 rounded flex items-center"
                                     }
+                                    onClick={handleLinkClick}
                                 >
                                     <FontAwesomeIcon icon={faTasks} className="mr-3" />
                                     Projects
                                 </NavLink>
                             </li>
-                            <li className="mb-4">
+                            <li className="mb-4 text-gray-500">
                                 <NavLink
-                                    to="messages"
+                                    to={{
+                                        pathname: chatLink,
+                                    }}
+                                    state={{ authToken }}
                                     className={({ isActive }) =>
                                         isActive
                                             ? "px-4 py-6 bg-[#769594] rounded flex items-center"
-                                            : "px-4 py-6 bg-[#FFFFFF] hover:bg-[#d1d5db] rounded flex items-center"
+                                            : "px-4 py-6 bg-gray-300 hover:bg-gray-400 rounded flex items-center"
                                     }
+                                    onClick={handleLinkClick}
                                 >
                                     <FontAwesomeIcon icon={faEnvelope} className="mr-3" />
                                     Messages
                                 </NavLink>
                             </li>
-                            <li className="mb-4">
-                                <Link
-                                    to={{
-                                        pathname: chatLink,
-                                    }}
-                                    state={{ authToken }}
-                                    className="text-gray-700 hover:text-blue-700 flex items-center text-xs"
-                                >
-                                    Messages
-                                    {/* <FontAwesomeIcon icon={faCommentDots} className="text-lg text-blue-700" /> */}
-                                </Link>
-                            </li>
-                            <li className="mb-4">
+                           
+                            <li className="mb-4 text-gray-500">
                                 <button
                                     onClick={handleLogout}
-                                    className="px-4 py-6 w-full text-left flex items-center bg-[#FFFFFF] hover:bg-[#d1d5db] rounded"
+                                    className="px-4 py-6 w-full text-left flex items-center bg-gray-300 hover:bg-gray-400 rounded"
                                 >
                                     <FontAwesomeIcon icon={faSignOutAlt} className="mr-3" />
                                     Logout

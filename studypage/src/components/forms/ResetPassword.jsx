@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import passwordReset from '../assets/passwordReset.mp4';
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -27,6 +28,7 @@ const ResetPassword = () => {
   };
 
   const toggleShowPassword = () => {
+    console.log("Toggling password visibility...");
     setShowPassword(!showPassword);
   };
 
@@ -49,7 +51,7 @@ const ResetPassword = () => {
         toast.success('Password updated successfully!');
         setTimeout(() => {
           navigate('/login');
-        }, 2000);
+        }, 1000);
       } else {
         setError(response.data.error);
         toast.error(response.data.error);
@@ -59,16 +61,32 @@ const ResetPassword = () => {
       toast.error('An error occurred. Please try again.');
     }
   };
+  const handleVideoEnd = (e) => {
+    e.target.play(); 
+  };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-sm">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Reset Password</h1>
+    <div className="flex justify-center items-center min-h-screen">
+      <video
+              autoPlay
+              loop
+              muted
+              className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+              onEnded={handleVideoEnd}
+            >
+              <source
+                src={passwordReset}
+                type="video/mp4"
+              />
+              Your browser does not support the video tag.
+            </video>
+      <div className="bg-gray-800 bg-opacity-70 rounded-lg shadow-lg p-8 w-full max-w-sm">
+        <h1 className="text-2xl font-bold text-gray-200 mb-6 text-center">Reset Password</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
             <label
               htmlFor="new-password"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-200"
             >
               New Password
             </label>
@@ -78,7 +96,7 @@ const ResetPassword = () => {
               value={newPassword}
               onChange={handlePasswordChange}
               required
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="w-full p-2  mb-4 mt-1 px-3 py-2 bg-gray-700 rounded-md sm:text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500 "
             />
             <button
               type="button"
@@ -104,11 +122,11 @@ const ResetPassword = () => {
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
             type="submit"
-            className="w-full bg-[#6894AA] text-white py-2 px-4 rounded hover:bg-[#51A7D3] focus:ring-4 focus:ring-blue-300"
+            className="w-full py-2 px-4 mt-2 bg-yellow-400 hover:bg-yellow-500  text-gray-500 font-semibold rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
           >
             Reset Password
           </button>
-          <div className="mt-4 text-sm text-gray-600">
+          <div className="mt-4 text-sm text-gray-300">
             <p>Password must be:</p>
             <ul className="list-disc list-inside">
               <li>At least 8 characters long</li>

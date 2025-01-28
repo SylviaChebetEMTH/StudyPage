@@ -171,6 +171,7 @@ export const UserProvider = ({ children }) => {
   const contextData = {
     currentUser,
     setCurrentUser,
+    setAuthToken,
     signup,
     login,
     logout,

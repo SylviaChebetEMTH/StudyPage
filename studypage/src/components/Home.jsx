@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import homeVideo from './assets/homeVideo.mp4';
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -45,13 +46,20 @@ export default function Home() {
             Your one-stop platform for all study resources. Learn, Grow, Succeed! Unlock endless opportunities and achieve your academic goals.
           </p>
         </div>
-        <div className="relative lg:w-1/2 mt-8 lg:mt-0">
-          <img
-            src="https://img.freepik.com/free-photo/study-group-african-people_23-2149156390.jpg?t=st=1734469669~exp=1734473269~hmac=f95e5125c30fa6774da87317b5f5e2bd121a94b4984e0f608440db54520c99ba&w=740"
-            alt="Team Collaboration"
-            className="rounded-xl shadow-lg"
-          />
-          <div className="absolute top-0 left-0 bg-yellow-500 w-full h-full -z-10 rounded-xl translate-x-6 translate-y-6"></div>
+        <div className="md:w-1/2 relative lg:w-1/2 mt-8 lg:mt-0">
+          <div className="bg-orange-800 w-full h-full absolute -z-10 rounded-md translate-x-6 translate-y-6"></div>
+          <video
+            className="rounded-md shadow-lg w-full h-full object-cover"
+            autoPlay
+            loop
+            muted
+          >
+            <source
+              src={homeVideo}
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </section>
 
@@ -144,10 +152,11 @@ export default function Home() {
                 <span className="text-gray-700">Guaranteed Quality and Timely Delivery</span>
               </li>
             </ul>
-            <Link to='/expertspage'>
-            <button className="bg-yellow-400 hover:bg-yellow-300  font-semibold py-3 px-6 rounded-md shadow-md">
-              Hire an Expert
-            </button>
+
+            <Link to="/expertspage">
+              <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-md shadow-md">
+                Hire an Expert
+              </button>
             </Link>
           </div>
 
@@ -160,6 +169,8 @@ export default function Home() {
               className="rounded-md shadow-lg"
             />
           </div>
+
+
         </div>
       </section>
     </div>

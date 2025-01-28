@@ -1,26 +1,38 @@
 import React from "react";
-import { Parallax } from "react-parallax";
+import aboutVideo from './assets/aboutVideo.mp4'
 
 const About = () => {
+
+  const handleVideoEnd = (e) => {
+    e.target.play(); 
+  };
   return (
-    <div className="bg-gray-50">
-      {/* Sidebar */}
-
-
-      {/* Main Content */}
-      <main className="w-full p-8">
-        <div className="header">
-          <Parallax
-            className="w-full h-[calc(100vh-5rem)] object-cover brightness-[.6]"
-            bgImage="https://plus.unsplash.com/premium_photo-1723622412015-c4a9b4ef46b8?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            strength={225}
+    <div>
+      <main className="w-full">
+        
+        <div className="header relative">
+          {/* Video Background */}
+          <video
+            autoPlay
+            loop
+            muted
+            className="absolute top-0 left-0 w-full h-screen object-cover -z-10"
+            onEnded={handleVideoEnd}
           >
+            <source
+              src={aboutVideo}
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
+
+          <div className="relative flex items-center justify-center h-screen z-10 text-white">
             <div style={{ height: 500 }}>
-              <p className="text-center absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] uppercase font-extralight text-white text-8xl">
+              <p className="uppercase font-extralight text-4xl sm:text-8xl">
                 StudyPage
               </p>
             </div>
-          </Parallax>
+          </div>
         </div>
 
         <div className="wrapper">
@@ -28,10 +40,10 @@ const About = () => {
             <p className="tracking-widest font-semibold uppercase text-xl p-5 text-black">
               StudyPage - Empowering Your Learning Journey!
             </p>
-            <p className="text-2xl px-[20rem] pb-5 font-extralight">
+            <p className="text-2xl px-8 sm:px-16 md:px-24 lg:px-[20rem] pb-5 font-extralight">
               Unlock your potential and achieve academic success with StudyPage - where learning is not just a task, but an inspiring experience.
             </p>
-            <p className="px-[7rem] pb-2 text-xl font-light">
+            <p className="px-6 sm:px-12 md:px-16 lg:px-[7rem] pb-2 text-xl font-light">
               Welcome to StudyPage, your ultimate destination for comprehensive study resources. Our journey started with a mission: to provide students, educators, and lifelong learners with the tools they need to excel in their academic endeavors.
               We believe in fostering a community of knowledge and growth, where everyone has access to expert guidance, useful tips, and relevant study materials.
               Your feedback and suggestions matter to us. They inspire us to enhance our platform and continuously innovate, ensuring that we meet the evolving needs of our users. We are committed to supporting your learning journey every step of the way.

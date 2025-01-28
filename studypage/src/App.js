@@ -39,6 +39,7 @@ import UserDashboard from "./components/user/UserDashboard";
 import Footer from "./components/Footer";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import Help from "./components/Help";
+import ForgotPassword from "./components/forms/ForgotPassword";
 import { SocketProvider } from "./components/contexts/SocketContext";
 
 function AppContent() {
@@ -49,56 +50,84 @@ function AppContent() {
     location.pathname === "/login" || location.pathname === "/signup";
 
   return (
-    <SocketProvider>
-      <div className="min-h-screen flex flex-col ">
-        {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)}
-        <div className="flex-grow">
-          <ToastContainer />
-          {/* <NavBar /> */}
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/reset_password/:token" element={<ResetPassword />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/updateprofile" element={<UpdateProfile />} />
-            <Route path="/expertspage" element={<ExpertPage />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/help" element={<Help />} />
-            <Route path="/privacy_policy" element={<PrivacyPolicy />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/footer" element={<Footer />} />
-            <Route path="/hireexpert" element={<ProjectRequest />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/adminchat" element={<AdminPanel />} />
+    <div className="min-h-screen flex flex-col ">
 
-            {/* Only render admin routes if the user is an admin */}
-            {currentUser?.is_admin && (
-              <Route path="/admin" element={<AdminDashboardSidebar />}>
-                <Route path="dashboard" element={<AdminDasboardStats />} />
-                <Route path="users" element={<AllUsers />} />
-                <Route path="allexperts" element={<AllExperts />} />
-                <Route path="addexpert" element={<AddExpertPage />} />
-                <Route path="allservices" element={<AllServices />} />
-                <Route path="addservice" element={<AddServicePage />} />
-                <Route path="projecttypes" element={<ProjectTypes />} />
-                <Route path="subjectarea" element={<SubjectArea />} />
-                <Route path="*" element={<div>Page not found</div>} />
-              </Route>
-            )}
-            {!currentUser?.is_admin && (
-              <Route path="/userprofile" element={<UserProfile />}>
-                <Route path="hireexpert" element={<ProjectRequest />} />
-                <Route path="dashboard" element={<UserDashboard />} />
-                <Route path="projectsummary" element={<ProjectSummary />} />
-              </Route>
-            )}
-          </Routes>
-        </div>
-        <Footer />
+      {/* {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)} */}
+      <div className="flex-grow">
+        <ToastContainer />
+        {/* <NavBar /> */}
+        {/* <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/reset_password/:token" element={<ResetPassword />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/updateprofile" element={<UpdateProfile />} />
+          <Route path="/expertspage" element={<ExpertPage />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/privacy_policy" element={<PrivacyPolicy />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/footer" element={<Footer />} />
+          <Route path="/hireexpert" element={<ProjectRequest />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/adminchat" element={<AdminPanel />} />
+        </Routes> */}
+        <SocketProvider>
+          <div className="min-h-screen flex flex-col ">
+            {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)}
+            <div className="flex-grow">
+              <ToastContainer />
+              {/* <NavBar /> */}
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/reset_password/:token" element={<ResetPassword />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/updateprofile" element={<UpdateProfile />} />
+                <Route path="/expertspage" element={<ExpertPage />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/help" element={<Help />} />
+                <Route path="/privacy_policy" element={<PrivacyPolicy />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/footer" element={<Footer />} />
+                <Route path="/hireexpert" element={<ProjectRequest />} />
+                {/* <Route path="/projects" element={<Projects />} /> */}
+                <Route path="/chat" element={<Chat />} />
+                <Route path="/adminchat" element={<AdminPanel />} />
+                {/* Only render admin routes if the user is an admin */}
+                {currentUser?.is_admin && (
+                  <Route path="/admin" element={<AdminDashboardSidebar />}>
+                    <Route path="dashboard" element={<AdminDasboardStats />} />
+                    <Route path="users" element={<AllUsers />} />
+                    <Route path="allexperts" element={<AllExperts />} />
+                    <Route path="addexpert" element={<AddExpertPage />} />
+                    <Route path="allservices" element={<AllServices />} />
+                    <Route path="addservice" element={<AddServicePage />} />
+                    <Route path="projecttypes" element={<ProjectTypes />} />
+                    <Route path="subjectarea" element={<SubjectArea />} />
+                    <Route path="projects" element={<Projects />} />
+                    <Route path="*" element={<div>Page not found</div>} />
+                  </Route>
+                )}
+                {!currentUser?.is_admin && (
+                  <Route path="/userprofile" element={<UserProfile />}>
+                    <Route path="hireexpert" element={<ProjectRequest />} />
+                    <Route path="dashboard" element={<UserDashboard />} />
+                    <Route path="projectsummary" element={<ProjectSummary />} />
+                  </Route>
+                )}
+              </Routes>
+            </div>
+            <Footer />
+          </div>
+        </SocketProvider>
+
       </div>
-    </SocketProvider>
-  );
+    </div>
+  )
 }
 const App = () => {
   const [user, setUser] = useState(null);

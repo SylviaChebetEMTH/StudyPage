@@ -7,6 +7,11 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import googleIcon from '../assets/googleIcon.png';
+import signupImage from '../assets/signup.png';
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import loginVideo from '../assets/loginVideo.mp4';
+
 
 
 
@@ -65,6 +70,10 @@ export default function SignUp() {
       setError('Password must be at least 8 characters long and include numbers and symbols');
       return;
     }
+    // if (!isValidPhoneNumber(phone_number)) {
+    //   setError('Invalid phone number');
+    //   return;
+    // }
 
     try {
       await signup(username, email, phone_number, password);
@@ -76,29 +85,59 @@ export default function SignUp() {
   const handleGoHome = () => {
     navigate("/");
   };
+  const handleVideoEnd = (e) => {
+    e.target.play(); // restart video on end
+  };
 
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <video
+        autoPlay
+        loop
+        muted
+        className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+        onEnded={handleVideoEnd}
+      >
+        <source
+          src={loginVideo}
+        />
+        Your browser does not support the video tag.
+      </video>
       <div className="w-full max-w-screen-lg bg-customBlue rounded-lg overflow-hidden shadow-md">
         <div className="flex flex-col md:flex-row">
           {/* Left half with image */}
           <div
             className="bg-cover bg-center md:w-1/2"
-            style={{ backgroundImage: `url(https://img.freepik.com/free-photo/front-view-smiley-teenage-girl-with-headphones-online-school_23-2148827454.jpg?t=st=1727299164~exp=1727302764~hmac=76eb1cd1ca8d399d630ddfa5cf0d03d2e6ebe93c0739dbd988e4d8519e59439c&w=360)` }}
+            style={{ backgroundImage: `url(${signupImage})` }}
           >
           </div>
 
           {/* Right half with form */}
-          <div className="md:w-1/2 px-4 py-8 md:px-12">
+          <div className="md:w-1/2 px-4 py-8 md:px-12 bg-gray-800">
             <div className="flex items-center justify-center md:h-full">
               <div className="w-full max-w-md">
-                <div className="bg-customBlue overflow-hidden">
-                  <h2 className="text-3xl font-semibold mb-4 text-center">Sign up</h2>
+                <div className="text-center">
+                  <button
+                    onClick={handleGoHome}
+                    className="mt-4 px-4 py-2 hover:text-yellow-400 font-thin text-white rounded"
+                  >
+                    Back to website
+                  </button>
+                </div>
+                <div className="bg-customBlue overflow-hidden p-2">
+                  <h2 className="text-3xl font-semibold mb-1 text-center text-gray-300">Create an account</h2>
+                  <div className="text-center mb-2">
+                    <span className="text-sm text-gray-500">Already have an account?</span>{' '}
+                    <Link to="/login" className="text-sm font-medium text-blue-500 hover:text-blue-400">
+                      Sign in
+                    </Link>
+                  </div>
                   <form className="space-y-4" onSubmit={handleSubmit}>
                     {error && <div className="text-red-500 text-center">{error}</div>}
+                    {/* <div className="grid grid-cols-2 gap-4"> */}
                     <div>
-                      <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="username" className="block text-sm font-medium text-gray-300 hover:underline">
                         Username
                       </label>
                       <input
@@ -109,28 +148,32 @@ export default function SignUp() {
                         required
                         value={username}
                         onChange={(e) => setName(e.target.value)}
-                        className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                        placeholder="Your Username"
+                        className="mt-1 px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
+                        placeholder="johndoe"
                       />
                     </div>
                     <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-300 hover:underline">
                         Phone Number
                       </label>
-                      <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        autoComplete="tel"
-                        required
+                     
+                      <PhoneInput
+                        country={"us"}
                         value={phone_number}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                        placeholder=" Your Phone Number"
+                        onChange={(value) => setPhoneNumber(value)} 
+                        inputProps={{
+                          name: "phone",
+                          required: true,
+                          autoFocus: true,
+                        }}
+                        containerClass="mt-1"
+                        inputClass="px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
                       />
+
                     </div>
+                    {/* </div> */}
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-300 hover:underline">
                         Email address
                       </label>
                       <input
@@ -141,12 +184,12 @@ export default function SignUp() {
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                        placeholder="Your Email"
+                        className="mt-1 px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
+                        placeholder="johndoe@example.com"
                       />
                     </div>
                     <div className="relative">
-                      <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="password" className="block text-sm font-medium text-gray-300 hover:underline">
                         Password
                       </label>
                       <input
@@ -157,7 +200,7 @@ export default function SignUp() {
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="mt-1 px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
                         placeholder="Password"
                       />
                       <span
@@ -168,7 +211,7 @@ export default function SignUp() {
                       </span>
                     </div>
                     <div className="relative">
-                      <label htmlFor="passwordConfirmation" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="passwordConfirmation" className="block text-sm font-medium text-gray-300 hover:underline">
                         Repeat Password
                       </label>
                       <input
@@ -179,7 +222,7 @@ export default function SignUp() {
                         required
                         value={passwordConfirmation}
                         onChange={(e) => setPasswordConfirmation(e.target.value)}
-                        className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="mt-1 px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
                         placeholder="Repeat Password"
                       />
                       <span
@@ -192,7 +235,7 @@ export default function SignUp() {
                     <div>
                       <button
                         type="submit"
-                        className="w-full py-2 px-4 mt-4 bg-blue-300 hover:bg-blue-500 text-white font-semibold rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className="w-full py-2 px-4 mt-4 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
                       >
                         Sign up
                       </button>
@@ -200,28 +243,16 @@ export default function SignUp() {
                     <div className="mt-6 text-center">
                       <div className="text-gray-500">or</div>
                       <div className="flex items-center justify-center mt-4 space-x-4 ">
-                        <button 
-                        onClick={handleGoogleSignup}className="flex items-center justify-center py-1 px-3 w-auto text-black rounded-md shadow-sm text-sm border border-gray-200">
+                        <button
+                          onClick={handleGoogleSignup} className="flex items-center justify-center py-1 px-3 w-auto text-gray-300 rounded-md shadow-sm text-sm border border-gray-200">
                           <img src={googleIcon} alt="Google" className="w-6 h-6 mr-2" />
                           Sign up with Google
-                        </button>                       
+                        </button>
                       </div>
                     </div>
-                    <div className="text-center mt-4">
-                      <span className="text-sm text-gray-600">Already have an account?</span>{' '}
-                      <Link to="/login" className="text-sm font-medium text-blue-500 hover:text-blue-400">
-                        Sign in
-                      </Link>
-                    </div>
+
                   </form>
-                  <div className="text-center">
-                    <button
-                      onClick={handleGoHome}
-                      className="mt-4 px-4 py-2 bg-blue-300 text-white rounded hover:bg-blue-500"
-                    >
-                      Go Home
-                    </button>
-                  </div>
+
                 </div>
               </div>
             </div>
