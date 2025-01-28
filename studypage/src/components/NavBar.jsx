@@ -35,6 +35,14 @@ export const NavBar = () => {
     
     const chatLink = currentUser?.is_admin ? "/adminchat" : "/chat";
 
+    const toggleMenu = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const closeMenu = () => {
+        setIsOpen(false);
+    };
+
     return (
         <nav className="bg-gray-900">
             <div className="container mx-auto px-6 py-4 flex justify-between items-center">

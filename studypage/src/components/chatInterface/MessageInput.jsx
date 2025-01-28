@@ -52,46 +52,6 @@ const handleFileChange = (event) => {
   });
 };
 
-
-// const handleVoiceMessage = async () => {
-//   if (!navigator.mediaDevices?.getUserMedia) {
-//     console.error('getUserMedia not supported on your browser!');
-//     return;
-//   }
-
-//   try {
-//     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-//     mediaRecorderRef.current = new MediaRecorder(stream);
-//     chunksRef.current = [];
-
-//     mediaRecorderRef.current.ondataavailable = (event) => {
-//       chunksRef.current.push(event.data);
-//     };
-
-//     mediaRecorderRef.current.onstop = () => {
-//       const audioBlob = new Blob(chunksRef.current, { type: 'audio/webm' });
-//       console.log('Audio Blob:', audioBlob);
-
-//       const audioUrl = URL.createObjectURL(audioBlob);
-//       console.log('Audio URL:', audioUrl);
-
-//       try {
-//         sendMessage(`[Voice message: ${audioUrl}]`); // Ensure sendMessage can handle a string
-//       } catch (err) {
-//         console.error('Error in sendMessage:', err);
-//       }
-//     };
-
-//     mediaRecorderRef.current.start();
-//     setTimeout(() => {
-//       mediaRecorderRef.current.stop();
-//     }, 3000); // 3-second recording
-
-//   } catch (err) {
-//     console.error('Error accessing audio devices.', err);
-//   }
-// };
-
 const handleEmojiClick = (emoji) => {
   setNewMessage((prev) => prev + emoji);
   // No state toggle to prevent accidental close

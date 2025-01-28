@@ -15,8 +15,8 @@ const Help = () => {
         {/* Additional Contact Information */}
         <div className="mt-8 text-center">
           <p className="text-gray-600 mb-2">Prefer direct contact?</p>
-          <a href="mailto:support@studypage.com" className="text-yellow-500 hover:underline">
-            support@studypage.com
+          <a href="mailto:help@studypage.cloud" className="text-yellow-500 hover:underline">
+            help@studypage.cloud
           </a>
           <p className="text-gray-600 mt-2">Call us: +123 456 789</p>
         </div>
