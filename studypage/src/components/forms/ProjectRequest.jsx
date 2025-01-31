@@ -503,7 +503,7 @@ const ProjectRequest = () => {
   const componentProps = useMemo(() => ({
     email,
     amount: totalPrice * 100,
-    currency: 'KES',
+    currency: 'USD',
     metadata: { name: projectTitle, phone: '1234567890' },
     publicKey,
     text: 'Submit Project',
