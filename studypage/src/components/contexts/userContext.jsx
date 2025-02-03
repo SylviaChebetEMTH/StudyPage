@@ -15,7 +15,7 @@ const fetchWithAuth = async (url, options = {}) => {
 
   if (response.status === 401) {
     const refreshToken = localStorage.getItem("refresh_token");
-    const refreshResponse = await fetch("http://127.0.0.1:5000/refresh", {
+    const refreshResponse = await fetch("https://backendstudypage.onrender.com/refresh", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export const UserProvider = ({ children }) => {
     if (authToken) {
       try {
         const response = await fetchWithAuth(
-          "http://127.0.0.1:5000/current_user",
+          "https://backendstudypage.onrender.com/current_user",
           {
             method: "GET",
             headers: {
@@ -83,7 +83,7 @@ export const UserProvider = ({ children }) => {
   }, [authToken]);
 
   const signup = (username, email, phone_number = '', password) => {
-    fetch("http://127.0.0.1:5000/register", {
+    fetch("https://backendstudypage.onrender.com/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -114,7 +114,7 @@ export const UserProvider = ({ children }) => {
 
 
   const login = (email, password) => {
-    fetch("http://127.0.0.1:5000/login", {
+    fetch("https://backendstudypage.onrender.com/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -152,7 +152,7 @@ export const UserProvider = ({ children }) => {
   };
 
   const logout = () => {
-    fetchWithAuth("http://127.0.0.1:5000/logout", {
+    fetchWithAuth("https://backendstudypage.onrender.com/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

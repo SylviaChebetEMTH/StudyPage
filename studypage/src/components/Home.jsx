@@ -38,8 +38,8 @@ export default function Home() {
 
       <section className="bg-gray-900 flex flex-col lg:flex-row items-center justify-between px-10 py-16">
         <div className="lg:w-1/2 space-y-6">
-          <h4 className="text-orange-500 uppercase font-medium" data-aos="flip-up" data-aos-duration="1000" data-aos-delay="0">Study Central</h4>
-          <h1 className="text-5xl lg:text-6xl font-bold" data-aos="flip-up" data-aos-duration="1000" data-aos-delay="0">
+          {/* <h4 className="text-yellow-500 uppercase font-medium" data-aos="flip-up" data-aos-duration="1000" data-aos-delay="0">Study Central</h4> */}
+          <h1 className="text-5xl lg:text-6xl text-white font-bold" data-aos="flip-up" data-aos-duration="1000" data-aos-delay="0">
             DESIGNING THE FUTURE <span className="text-yellow-500">TODAY</span>
           </h1>
           <p className="text-gray-400 text-lg">
