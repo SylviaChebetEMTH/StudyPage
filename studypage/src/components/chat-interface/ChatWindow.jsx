@@ -15,7 +15,7 @@ const ChatWindow = ({ activeUser }) => {
     attachments.forEach(file => formData.append('attachments', file));
   
     try {
-      const response = await fetch(`http://127.0.0.1:5000/conversations/${conversationId}/messages`, {
+      const response = await fetch(`https://backendstudypage.onrender.com/conversations/${conversationId}/messages`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`,
@@ -41,7 +41,7 @@ const ChatWindow = ({ activeUser }) => {
       const fetchMessages = async () => {
         try {
           const response = await fetch(
-            `http://127.0.0.1:5000/conversations/${activeUser.conversationId}/messages`,
+            `https://backendstudypage.onrender.com/conversations/${activeUser.conversationId}/messages`,
             {
               headers: { Authorization: `Bearer ${authToken}` }, 
             }

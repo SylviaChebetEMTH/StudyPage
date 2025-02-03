@@ -110,7 +110,7 @@ const Projects = () => {
     // Fetch projects when the component loads
     const fetchProjects = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/projects', {
+        const response = await fetch('https://backendstudypage.onrender.com/projects', {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },

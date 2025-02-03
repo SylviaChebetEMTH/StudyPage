@@ -5,7 +5,7 @@ const Services = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const API_URL = 'http://127.0.0.1:5000';
+  const API_URL = 'https://backendstudypage.onrender.com';
 
   // Function to fetch services from backend
   const fetchServices = async () => {

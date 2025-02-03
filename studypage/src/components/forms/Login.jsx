@@ -38,7 +38,7 @@ export default function Login() {
         console.log("Before setting user:", user);
 
         // Send the user data to your backend to handle signup/login
-        const res = await axios.post("http://127.0.0.1:5000/auth/google", user);
+        const res = await axios.post("https://backendstudypage.onrender.com/auth/google", user);
 
         if (res.data.success) {
           // Check if the user is an existing user or a new user

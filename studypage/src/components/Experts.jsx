@@ -14,7 +14,7 @@ const ExpertPage = () => {
   const navigate = useNavigate()
 
   const { currentUser, authToken } = useContext(UserContext);
-  const API_URL = 'http://127.0.0.1:5000';
+  const API_URL = 'https://backendstudypage.onrender.com';
 
   console.log('currentUser is here at experts', currentUser)
 

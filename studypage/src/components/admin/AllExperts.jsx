@@ -20,7 +20,7 @@ export default function AllExperts() {
 
 
   const fetchData = () => {
-    fetch("http://127.0.0.1:5000/experts")
+    fetch("https://backendstudypage.onrender.com/experts")
       .then((response) => response.json())
       .then((data) => {
         if (Array.isArray(data.experts)) {
@@ -146,7 +146,7 @@ export default function AllExperts() {
       }
     }
 
-    fetch(`http://127.0.0.1:5000/experts/${expertId}`, {
+    fetch(`https://backendstudypage.onrender.com/experts/${expertId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -229,7 +229,7 @@ export default function AllExperts() {
     setIsLoading(true);
 
     const token = authToken || localStorage.getItem("access_token");
-    fetch(`http://127.0.0.1:5000/experts/${expertId}`, {
+    fetch(`https://backendstudypage.onrender.com/experts/${expertId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

@@ -299,7 +299,7 @@ const ProjectRequest = () => {
 
   // Fetch Project Types
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/project-types')
+    fetch('https://backendstudypage.onrender.com/project-types')
       .then((response) => response.json())
       .then((data) => setProjectTypes(data))
       .catch(() => showError('Error fetching project types.'));
@@ -307,7 +307,7 @@ const ProjectRequest = () => {
 
   // Fetch Subjects
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/subjects')
+    fetch('https://backendstudypage.onrender.com/subjects')
       .then((response) => response.json())
       .then((data) => setSubjects(data))
       .catch(() => showError('Error fetching subjects.'));
@@ -316,7 +316,7 @@ const ProjectRequest = () => {
   // Fetch Services
   useEffect(() => {
     if (selectedProjectType && selectedSubject) {
-      fetch(`http://127.0.0.1:5000/services?project_type=${selectedProjectType}&subject=${selectedSubject}`)
+      fetch(`https://backendstudypage.onrender.com/services?project_type=${selectedProjectType}&subject=${selectedSubject}`)
         .then((response) => response.json())
         .then((data) => {
           if (!data.services || data.services.length === 0) {
@@ -376,7 +376,7 @@ const ProjectRequest = () => {
   
     try {
       // Step 1: Verify Payment with the Backend
-      const verifyResponse = await fetch("http://127.0.0.1:5000/verify-payment", {
+      const verifyResponse = await fetch("https://backendstudypage.onrender.com/verify-payment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -419,7 +419,7 @@ const ProjectRequest = () => {
         formData.append("attachments", attachments[i]);
       }
   
-      const projectResponse = await fetch("http://127.0.0.1:5000/request_expert", {
+      const projectResponse = await fetch("https://backendstudypage.onrender.com/request_expert", {
         method: "POST",
         headers: { Authorization: `Bearer ${authToken}` },
         body: formData,

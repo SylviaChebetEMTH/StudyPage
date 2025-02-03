@@ -42,7 +42,7 @@ export default function SignUp() {
         };
 
         // Send the user data to your backend to handle signup/login
-        const res = await axios.post("http://127.0.0.1:5000/auth/google", user);
+        const res = await axios.post("https://backendstudypage.onrender.com/auth/google", user);
         alert("Check your email to set your password.");
         if (res.data.is_admin) {
           navigate("/admin/dashboard");

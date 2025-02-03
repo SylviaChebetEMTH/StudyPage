@@ -16,7 +16,7 @@ function AddServicePage() {
   useEffect(() => {
     const fetchProjectTypes = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/project-types", {
+        const response = await fetch("https://backendstudypage.onrender.com/project-types", {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -37,7 +37,7 @@ function AddServicePage() {
 
     const fetchSubjects = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/subjects", {
+        const response = await fetch("https://backendstudypage.onrender.com/subjects", {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -91,7 +91,7 @@ function AddServicePage() {
     };
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/services", {
+      const response = await fetch("https://backendstudypage.onrender.com/services", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${authToken}`,

@@ -11,7 +11,7 @@ const ProjectSummary = () => {
         const fetchRequests = async () => {
             try {
                 // const token = localStorage.getItem('jwt_token'); // Assuming JWT is stored in localStorage
-                const response = await fetch('http://127.0.0.1:5000/my_requests', {
+                const response = await fetch('https://backendstudypage.onrender.com/my_requests', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
