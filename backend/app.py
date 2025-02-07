@@ -918,9 +918,11 @@ def request_expert():
     attachments = []
     for file in files:
         filename = secure_filename(file.filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_path)
-        file_url = url_for('serve_file', filename=filename, _external=True)
+        # file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        # file.save(file_path)
+        upload_result = cloudinary.uploader.upload(file, resource_type="raw")
+        # file_url = url_for('serve_file', filename=filename, _external=True)
+        file_url = upload_result['secure_url']
         attachments.append(file_url)
     project.attachments = ','.join(attachments)
     db.session.commit()
@@ -993,11 +995,13 @@ def admn_send_message(conversation_id):
             for file in files:
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
-                    filepath = os.path.join(UPLOAD_FOLDER, filename)
-                    file.save(filepath)
+                    # filepath = os.path.join(UPLOAD_FOLDER, filename)
+                    upload_result = cloudinary.uploader.upload(file, resource_type="raw")
+                    file_url = upload_result['secure_url']
+                    # file.save(filepath)
                     
                     # Convert server path to URL
-                    file_url = url_for('serve_file', filename=filename, _external=True)
+                    # file_url = url_for('serve_file', filename=filename, _external=True)
                     attachments.append(file_url)
                 else:
                     return jsonify({'error': f'Invalid file type: {file.filename}'}), 400
@@ -1106,9 +1110,11 @@ def send_message(conversation_id):
             for file in files:
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
-                    filepath = os.path.join(UPLOAD_FOLDER, filename)
-                    file.save(filepath)
-                    file_url = url_for('serve_file', filename=filename, _external=True)
+                    upload_result = cloudinary.uploader.upload(file, resource_type="raw")
+                    file_url = upload_result["secure_url"]
+                    # filepath = os.path.join(UPLOAD_FOLDER, filename)
+                    # file.save(filepath)
+                    # file_url = url_for('serve_file', filename=filename, _external=True)
                     attachments.append(file_url)
                 else:
                     return jsonify({'error': f'Invalid file type: {file.filename}'}), 400
