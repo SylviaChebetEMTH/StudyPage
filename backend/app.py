@@ -25,10 +25,6 @@ import cloudinary
 import cloudinary.uploader
 from dotenv import load_dotenv
 load_dotenv()
-#  sk_live_75b1c5594e05067ffe4bd0c745c9f73a10e6d9d5
-# api secret SIAh1rVO5qGtgrCrnxq3Jg2QFns
-# cloud_name dliyoq5nf
-# api key 729815478551777
 
 import requests
 import smtplib
@@ -42,7 +38,7 @@ app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 api = Api(app)
 app.config["SECRET_KEY"] = os.urandom(24)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///studypage.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('database_url')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = app.config['SECRET_KEY']
 app.config['MAIL_SENDER'] = 'studypage001@gmail.com'
