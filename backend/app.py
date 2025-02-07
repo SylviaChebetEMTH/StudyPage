@@ -21,6 +21,11 @@ from flask import url_for
 import os
 import re
 import random
+import cloudinary
+#  sk_live_75b1c5594e05067ffe4bd0c745c9f73a10e6d9d5
+# api secret SIAh1rVO5qGtgrCrnxq3Jg2QFns
+# cloud_name dliyoq5nf
+# api key 729815478551777
 
 import requests
 import smtplib
