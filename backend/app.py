@@ -52,6 +52,13 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'studypage001@gmail.com'
 app.config['MAIL_PASSWORD'] = 'hbib knho xqon emrw'  
 
+cloudinary.config(
+    cloud_name=os.environ.get('cloud_name'),
+    api_secret=os.environ.get('cloudinary_api_secret'),
+    api_key=os.environ.get('cloudinary_api_key'),
+    secure=True
+)
+
 UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), 'uploads'))
 if not os.path.exists(UPLOAD_FOLDER): 
     os.makedirs(UPLOAD_FOLDER)
