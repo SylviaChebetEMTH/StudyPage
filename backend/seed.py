@@ -90,7 +90,7 @@ def seed_database():
     for subject_name in subjects:
         subject = Subject(name=subject_name)
         db.session.add(subject)
-
+    
     # Create some experts
     expert1 = Expert(
         title='Academic Writer',
