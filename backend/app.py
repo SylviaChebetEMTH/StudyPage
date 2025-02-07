@@ -22,6 +22,9 @@ import os
 import re
 import random
 import cloudinary
+import cloudinary.uploader
+from dotenv import load_dotenv
+load_dotenv()
 #  sk_live_75b1c5594e05067ffe4bd0c745c9f73a10e6d9d5
 # api secret SIAh1rVO5qGtgrCrnxq3Jg2QFns
 # cloud_name dliyoq5nf
