@@ -55,6 +55,10 @@ cloudinary.config(
     secure=True
 )
 
+@app.route('/')
+def home():
+    return "Studypage Backend is Running!", 200
+
 UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), 'uploads'))
 if not os.path.exists(UPLOAD_FOLDER): 
     os.makedirs(UPLOAD_FOLDER)
