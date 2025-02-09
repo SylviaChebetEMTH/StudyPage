@@ -75,7 +75,6 @@ function AllUsers() {
       [name]: value,
     }));
   };
-  
 
   const handleAddUser = async (e) => {
     e.preventDefault();
