@@ -36,11 +36,11 @@ export const NavBar = () => {
     const chatLink = currentUser?.is_admin ? "/adminchat" : "/chat";
 
     const toggleMenu = () => {
-        setIsOpen(!isOpen);
+        setIsMenuOpen(!isMenuOpen);
     };
 
     const closeMenu = () => {
-        setIsOpen(false);
+        setIsMenuOpen(false);
     };
 
     return (
