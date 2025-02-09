@@ -11,7 +11,7 @@ const Sidebar = ({ setActiveUser }) => {
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/conversations", {
+        const response = await fetch("https://studypage.onrender.com/conversations", {
           headers: { Authorization: `Bearer ${authToken}` },
         });
         const data = await response.json();

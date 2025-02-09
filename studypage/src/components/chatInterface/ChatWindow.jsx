@@ -214,7 +214,7 @@ const useConversation = (authToken, conversationId) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://127.0.0.1:5000/conversations/${conversationId}/messages`,
+        `https://studypage.onrender.com/conversations/${conversationId}/messages`,
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }
@@ -282,7 +282,7 @@ const ChatWindow = ({ activeUser, currentUser, auth, teacher,pic, isInModal,teac
         attachments.forEach((file) => formData.append("attachments", file));
 
         const conversationResponse = await fetch(
-          `http://127.0.0.1:5000/conversations/${conversationId}/messages`,
+          `https://studypage.onrender.com/conversations/${conversationId}/messages`,
           {
             method: "POST",
             headers: { Authorization: `Bearer ${authToken}` },
@@ -308,7 +308,7 @@ const ChatWindow = ({ activeUser, currentUser, auth, teacher,pic, isInModal,teac
       attachments.forEach((file) => formData.append("attachments", file));
 
       const response = await fetch(
-        `http://127.0.0.1:5000/conversations/${conversationId}/messages`,
+        `https://studypage.onrender.com/conversations/${conversationId}/messages`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${authToken}` },

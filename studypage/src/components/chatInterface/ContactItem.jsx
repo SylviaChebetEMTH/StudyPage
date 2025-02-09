@@ -11,7 +11,7 @@ const ContactItem = ({ contact, setActiveUser }) => {
 
     if (contact.unread_count > 0) {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/conversations/${contact.conversationId}/mark-read`, {
+        const response = await fetch(`https://studypage.onrender.com/conversations/${contact.conversationId}/mark-read`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

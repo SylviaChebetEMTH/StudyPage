@@ -21,7 +21,7 @@ export default function AllServices() {
     const { currentUser, authToken } = useContext(UserContext);
 
     const fetchData = () => {
-        fetch("http://127.0.0.1:5000/services")
+        fetch("https://studypage.onrender.com/services")
             .then((response) => response.json())
             .then((data) => {
                 if (Array.isArray(data.services)) {
@@ -40,7 +40,7 @@ export default function AllServices() {
     useEffect(() => {
         const fetchProjectTypes = async () => {
           try {
-            const response = await fetch("http://127.0.0.1:5000/project-types", {
+            const response = await fetch("https://studypage.onrender.com/project-types", {
               headers: {
                 Authorization: `Bearer ${authToken}`,
               },
@@ -61,7 +61,7 @@ export default function AllServices() {
     
         const fetchSubjects = async () => {
           try {
-            const response = await fetch("http://127.0.0.1:5000/subjects", { 
+            const response = await fetch("https://studypage.onrender.com/subjects", { 
               headers: {
                 Authorization: `Bearer ${authToken}`,
               },
@@ -112,7 +112,7 @@ export default function AllServices() {
 
 
         const token = authToken || localStorage.getItem("access_token");
-        fetch(`http://127.0.0.1:5000/services/${serviceId}`, {
+        fetch(`https://studypage.onrender.com/services/${serviceId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -148,7 +148,7 @@ export default function AllServices() {
           }
 
         const token = authToken || localStorage.getItem("access_token");
-        fetch(`http://127.0.0.1:5000/services/${serviceId}`, {
+        fetch(`https://studypage.onrender.com/services/${serviceId}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`,

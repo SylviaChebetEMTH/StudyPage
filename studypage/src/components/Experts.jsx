@@ -259,7 +259,7 @@ const ExpertPage = () => {
   const navigate = useNavigate()
 
   const { currentUser, authToken } = useContext(UserContext);
-  const API_URL = 'http://127.0.0.1:5000';
+  const API_URL = 'https://studypage.onrender.com';
 
   // Function to fetch experts from backend
   const fetchExperts = async () => {

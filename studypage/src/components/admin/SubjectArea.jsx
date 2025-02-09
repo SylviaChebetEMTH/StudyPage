@@ -16,7 +16,7 @@ function SubjectArea() {
 
   const fetchSubjects = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:5000/subjects');
+      const response = await axios.get('https://studypage.onrender.com/subjects');
       setSubjects(response.data);
     } catch (error) {
       console.error("Error fetching subjects:", error);
@@ -28,7 +28,7 @@ function SubjectArea() {
     if (newSubject.trim() === "") return;
 
     try {
-      const response = await axios.post('http://127.0.0.1:5000/subjects', {
+      const response = await axios.post('https://studypage.onrender.com/subjects', {
         name: newSubject
       });
       setSubjects([...subjects, response.data]);
@@ -43,7 +43,7 @@ function SubjectArea() {
     if (editName.trim() === "") return;
 
     try {
-      const response = await axios.put(`http://127.0.0.1:5000/subjects/${id}`, {
+      const response = await axios.put(`https://studypage.onrender.com/subjects/${id}`, {
         name: editName
       });
       setSubjects(
@@ -58,7 +58,7 @@ function SubjectArea() {
   // Delete a subject
   const handleDeleteSubject = async (id) => {
     try {
-      await axios.delete(`http://127.0.0.1:5000/subjects/${id}`);
+      await axios.delete(`https://studypage.onrender.com/subjects/${id}`);
       setSubjects(subjects.filter((subject) => subject.id !== id));
     } catch (error) {
       console.error("Error deleting subject:", error);
