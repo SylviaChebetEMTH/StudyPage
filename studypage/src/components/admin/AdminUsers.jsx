@@ -15,7 +15,6 @@ function AllUsers() {
     password: "",
   });
 
-  
   useEffect(() => {
 
     const fetchUsers = async () => {
