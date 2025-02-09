@@ -3,6 +3,7 @@ import React, { useState, useContext } from 'react';
 import { X } from 'lucide-react';
 import ChatWindow from './chatInterface/ChatWindow';
 import { UserContext } from './contexts/userContext';
+
 const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
   const { currentUser, authToken } = useContext(UserContext);
   const [activeUser, setActiveUser] = useState({
