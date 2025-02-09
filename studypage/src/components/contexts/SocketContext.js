@@ -15,7 +15,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     if (!currentUser) return;
 
-    const newSocket = io('https://backendstudypage.onrender.com');
+    const newSocket = io('https://studypage.onrender.com');
 
     newSocket.on('connect', () => {
       console.log('Connected to WebSocket server');

@@ -110,7 +110,7 @@ const Projects = () => {
     // Fetch projects when the component loads
     const fetchProjects = async () => {
       try {
-        const response = await fetch('https://backendstudypage.onrender.com/projects', {
+        const response = await fetch('https://studypage.onrender.com/projects', {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },

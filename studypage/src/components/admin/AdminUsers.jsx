@@ -19,7 +19,7 @@ function AllUsers() {
 
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("https://backendstudypage.onrender.com/admin/users", {
+        const response = await axios.get("https://studypage.onrender.com/admin/users", {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -39,7 +39,7 @@ function AllUsers() {
   const handleDeleteUser = async (userId) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
-        await axios.delete(`https://backendstudypage.onrender.com/admin/users/${userId}`, {
+        await axios.delete(`https://studypage.onrender.com/admin/users/${userId}`, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -55,7 +55,7 @@ function AllUsers() {
   const handleUpdateUser = async (userId, isAdmin) => {
     const newIsAdmin = !isAdmin; // Toggle the is_admin status
     try {
-      await axios.patch(`https://backendstudypage.onrender.com/admin/users/${userId}`, { is_admin: newIsAdmin }, {
+      await axios.patch(`https://studypage.onrender.com/admin/users/${userId}`, { is_admin: newIsAdmin }, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -79,7 +79,7 @@ function AllUsers() {
   const handleAddUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://backendstudypage.onrender.com/admin/users", newUser, {
+      const response = await axios.post("https://studypage.onrender.com/admin/users", newUser, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -107,8 +107,6 @@ function AllUsers() {
       alert(err.response ? err.response.data.message : "Failed to add user.");
     }
   };
-
-
 
   if (loading) {
     return <div>Loading users...</div>;

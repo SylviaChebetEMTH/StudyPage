@@ -24,7 +24,7 @@ function AdminDashboard() {
                 setLoading(true);
 
                 // Fetch users
-                const usersResponse = await fetch("https://backendstudypage.onrender.com/admin/users", {
+                const usersResponse = await fetch("https://studypage.onrender.com/admin/users", {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -36,7 +36,7 @@ function AdminDashboard() {
                 setUsers(usersData?.users || []);
 
                 // Fetch services
-                const servicesResponse = await fetch("https://backendstudypage.onrender.com/services", {
+                const servicesResponse = await fetch("https://studypage.onrender.com/services", {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -48,7 +48,7 @@ function AdminDashboard() {
                 setServices(servicesData?.services || []);
 
                 // Fetch experts
-                const expertsResponse = await fetch("https://backendstudypage.onrender.com/experts", {
+                const expertsResponse = await fetch("https://studypage.onrender.com/experts", {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -62,7 +62,7 @@ function AdminDashboard() {
                 // Fetch project types
                 const fetchProjectTypes = async () => {
                     try {
-                        const response = await axios.get('https://backendstudypage.onrender.com/project-types');
+                        const response = await axios.get('https://studypage.onrender.com/project-types');
                         setProjectTypes(response.data);
                     } catch (error) {
                         console.error("Error fetching project types:", error);
@@ -72,7 +72,7 @@ function AdminDashboard() {
                 // Fetch subjects
                 const fetchSubjects = async () => {
                     try {
-                        const response = await axios.get('https://backendstudypage.onrender.com/subjects');
+                        const response = await axios.get('https://studypage.onrender.com/subjects');
                         setSubjects(response.data);
                     } catch (error) {
                         console.error("Error fetching subjects:", error);

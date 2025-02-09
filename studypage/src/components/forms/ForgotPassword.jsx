@@ -12,7 +12,7 @@ export default function ForgotPassword() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("https://backendstudypage.onrender.com/auth/forgot_password", {
+    fetch("https://studypage.onrender.com/auth/forgot_password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),

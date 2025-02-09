@@ -74,7 +74,7 @@ const AdminSidebar = ({ onSelectConversation, authToken }) => {
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const response = await fetch("https://backendstudypage.onrender.com/admin/conversations", {
+        const response = await fetch("https://studypage.onrender.com/admin/conversations", {
           headers: { Authorization: `Bearer ${authToken}` },
         });
 
