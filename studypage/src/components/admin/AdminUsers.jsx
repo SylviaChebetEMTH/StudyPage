@@ -108,8 +108,6 @@ function AllUsers() {
     }
   };
 
-
-
   if (loading) {
     return <div>Loading users...</div>;
   }
