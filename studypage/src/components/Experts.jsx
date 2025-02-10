@@ -12,7 +12,6 @@ const ExpertPage = () => {
   const [projectTypes, setProjectTypes] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(''); 
   const navigate = useNavigate()
 
   const { currentUser, authToken } = useContext(UserContext);
