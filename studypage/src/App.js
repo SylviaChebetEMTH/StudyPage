@@ -41,6 +41,7 @@ import PrivacyPolicy from "./components/PrivacyPolicy";
 import Help from "./components/Help";
 import ForgotPassword from "./components/forms/ForgotPassword";
 import { SocketProvider } from "./components/contexts/SocketContext";
+import ContactUs from "./components/ContactUs";
 
 function AppContent() {
   const { currentUser } = useContext(UserContext);
@@ -90,6 +91,7 @@ function AppContent() {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/help" element={<Help />} />
+                <Route path="/contact-us" element={<ContactUs />} />
                 <Route path="/privacy_policy" element={<PrivacyPolicy />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/footer" element={<Footer />} />

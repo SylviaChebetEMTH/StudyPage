@@ -3,6 +3,7 @@ import { UserContext } from './contexts/userContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { Field, Formik, Form, ErrorMessage } from "formik";
 import ExpertCard from './ExpertCard';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const ExpertPage = () => {
   const [experts, setExperts] = useState([]);
@@ -139,9 +140,15 @@ const ExpertPage = () => {
     fetchSubjects();
   }, [authToken]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader size={60} color={"#4A90E2"} />
+      </div>
+    );
 
+  if (error)
+    return <p className="text-center text-red-500">{error}</p>;
   return (
     <div className="p-0">
       {/* Login prompt modal */}

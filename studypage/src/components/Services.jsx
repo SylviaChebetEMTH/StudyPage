@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -37,8 +38,15 @@ const Services = () => {
     fetchServices();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader size={60} color={"#4A90E2"} />
+      </div>
+    );
+
+  if (error)
+    return <p className="text-center text-red-500">{error}</p>;
 
   return (
     <div className="bg-gray-50 py-16 px-4 md:px-8">

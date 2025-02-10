@@ -59,9 +59,9 @@ const Footer = () => {
             <span className="text-yellow-500">Study</span>Page
           </div>
           <div  className="flex space-x-6 text-gray-400 mt-4 md:mt-0">
-            <Link to="/overview" className="hover:text-gray-200 cursor-pointer">Overview</Link>
-            <Link to="/features" className="hover:text-gray-200 cursor-pointer">Features</Link>
-            <Link to="/pricing" className="hover:text-gray-200 cursor-pointer">Pricing</Link>
+            <Link to="/about" className="hover:text-gray-200 cursor-pointer">Overview</Link>
+            {/* <Link to="/features" className="hover:text-gray-200 cursor-pointer">Features</Link> */}
+            <Link to="/contact-us" className="hover:text-gray-200 cursor-pointer">Contact Us</Link>
             <Link to="/help" className="hover:text-gray-200 cursor-pointer">Help</Link>
 
             <Link to="https://sites.google.com/view/studypage-cloud/home" className="hover:text-gray-200 cursor-pointer">
