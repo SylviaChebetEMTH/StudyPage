@@ -90,7 +90,7 @@ def seed_database():
     for subject_name in subjects:
         subject = Subject(name=subject_name)
         db.session.add(subject)
-
+    
     # Create some experts
     expert1 = Expert(
         title='Academic Writer',
@@ -337,12 +337,12 @@ def seed_database():
     db.session.add_all([user1, admin1, *project_types, expert1, expert2, expert4, *services])
 
     # Commit the session to the database
-    db.session.commit()
+    # db.session.commit()
 
 # Drop and create all tables (be cautious, this will delete all data)
 if __name__ == '__main__':
     with app.app_context():
-        db.drop_all()
-        db.create_all()
-        seed_database()
+        # db.drop_all()
+        # db.create_all()
+        # seed_database()
         print("Database seeded successfully!")

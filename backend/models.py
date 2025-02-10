@@ -34,14 +34,14 @@ class User(db.Model):
 class Expert(db.Model):
     __tablename__ = 'experts'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    title = db.Column(db.String(100), nullable=False)
-    expertise = db.Column(db.String(200), nullable=False)
+    name = db.Column(db.String(120), nullable=False)
+    title = db.Column(db.String(120), nullable=False)
+    expertise = db.Column(db.Text, nullable=False)  # Allow longer text
     description = db.Column(db.Text)
     biography = db.Column(db.Text, nullable=True)
     education = db.Column(db.String(255), nullable=True)
     languages = db.Column(db.String(255), nullable=True)
-    profile_picture = db.Column(db.String(120))
+    profile_picture = db.Column(db.Text, nullable=True)  # Store long URLs
 
     # Relationships
     project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'))
@@ -52,6 +52,7 @@ class Expert(db.Model):
     total_reviews = db.Column(db.Integer, default=0)
     success_rate = db.Column(db.Float, default=0.0)
     is_ai_free = db.Column(db.Boolean, default=False)
+
 
 class Rating(db.Model):
     __tablename__ = 'ratings'

@@ -10,7 +10,7 @@ const AdminChatBox = ({ conversationId, conversationDetails, authToken }) => {
     if (conversationId) {
       const fetchMessages = async () => {
         try {
-          const response = await fetch(`https://backendstudypage.onrender.com/conversations/${conversationId}/messages`, {
+          const response = await fetch(`https://studypage.onrender.com/conversations/${conversationId}/messages`, {
             headers: { Authorization: `Bearer ${authToken}` },
           });
   
@@ -38,7 +38,7 @@ const AdminChatBox = ({ conversationId, conversationDetails, authToken }) => {
     attachments.forEach(file => formData.append('attachments', file));
   
     try {
-      const response = await fetch(`https://backendstudypage.onrender.com/conversationsadmin/${conversationId}/messages`, {
+      const response = await fetch(`https://studypage.onrender.com/conversationsadmin/${conversationId}/messages`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`,
