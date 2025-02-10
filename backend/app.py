@@ -184,7 +184,7 @@ jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 mail = Mail(app) 
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-CORS(app,resources={r"/*": {"origins": "http://localhost:3001"}})
+CORS(app, resources={r"/*": {"origins": ["http://localhost:3001", "https://www.studypage.cloud"]}})
 
 @app.before_request
 def handle_options_request():
