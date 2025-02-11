@@ -2,7 +2,7 @@ import React from "react";
 
 const Help = () => {
   return (
-    <section className="bg-gray-50 text-gray-800 min-h-screen py-8 px-4 md:px-16">
+    <section className="bg-gray-300 text-gray-800 min-h-screen py-8 px-4 md:px-16">
       <div className="max-w-screen-lg mx-auto bg-white rounded-lg shadow-lg p-8 md:p-12">
         {/* Header Section */}
         <h2 className="text-3xl md:text-4xl font-bold text-center text-yellow-500 mb-6">
