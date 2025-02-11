@@ -57,7 +57,17 @@ function AppContent() {
 
       {/* {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)} */}
       <div className="flex-grow">
-        <ToastContainer position="top-right" autoClose={2000}/>
+        <ToastContainer 
+          position="top-right"
+          autoClose={3000}  // Ensures all toasts auto-close
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnHover={false} // Prevents persistence when hovering
+          draggable
+          theme="light"
+        />
         {/* <NavBar /> */}
         {/* <Routes>
           <Route path="/" element={<Home />} />
@@ -81,7 +91,7 @@ function AppContent() {
           <div className="min-h-screen flex flex-col ">
             {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)}
             <div className="flex-grow">
-              <ToastContainer />
+              {/* <ToastContainer /> */}
               {/* <NavBar /> */}
               <Routes>
                 <Route path="/" element={<Home />} />
