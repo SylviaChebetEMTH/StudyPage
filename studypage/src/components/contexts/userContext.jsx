@@ -83,7 +83,7 @@ export const UserProvider = ({ children }) => {
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
-          // toast.success(res.success);
+          toast.success(res.success);
           nav("/login");
         } else {
           toast.error(res.message || "Something went wrong");
@@ -104,7 +104,7 @@ export const UserProvider = ({ children }) => {
           setAuthToken(res.access_token);
           localStorage.setItem("token", res.access_token);
           localStorage.setItem("refresh_token", res.refresh_token);
-          // toast.success("Login successful");
+          toast.success("Login successful");
           nav("/");
         } else {
           toast.error(res.message || "Invalid credentials");
@@ -129,7 +129,7 @@ export const UserProvider = ({ children }) => {
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
-          // toast.success("Logged out successfully");
+          toast.success("Logged out successfully");
           handleLogout();
         } else {
           toast.error("Something went wrong");
