@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext, useMemo, useCallback } from 're
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../contexts/userContext';
 import { PaystackButton } from 'react-paystack';
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from 'react-toastify';
 
 const ProjectRequest = () => {
   const { currentUser,authToken } = useContext(UserContext);
@@ -24,7 +26,6 @@ const ProjectRequest = () => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   const [errorMessage, setErrorMessage] = useState('');
-
   // const publicKey = 'pk_live_9d093b52e09ff0b847d1e490f6ad1f1add87c150';
   const publicKey = 'pk_test_00e40d5cd3e321a68b22aad7e1c42a62f8587d4c';
   const email = currentUser?.email || ''; 
@@ -43,7 +44,7 @@ const ProjectRequest = () => {
     fetch('https://studypage.onrender.com/project-types')
       .then((response) => response.json())
       .then((data) => setProjectTypes(data))
-      .catch(() => showError('Error fetching project types.'));
+      .catch(() => toast.error('Error fetching project types.'));
   }, []);
 
   // Fetch Subjects
@@ -51,7 +52,7 @@ const ProjectRequest = () => {
     fetch('https://studypage.onrender.com/subjects')
       .then((response) => response.json())
       .then((data) => setSubjects(data))
-      .catch(() => showError('Error fetching subjects.'));
+      .catch(() => toast.error('Error fetching subjects.'));
   }, []);
 
   // Fetch Services
@@ -243,7 +244,7 @@ const ProjectRequest = () => {
   const componentProps = useMemo(() => ({
     email,
     amount: totalPrice * 100,
-    currency: 'USD',
+    currency: 'KES',
     metadata: { name: projectTitle, phone: '1234567890' },
     publicKey,
     text: 'Submit Project',
