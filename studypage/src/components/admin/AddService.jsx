@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { Circles } from "react-loader-spinner";
 import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 function AddServicePage() {
   const { currentUser, authToken } = useContext(UserContext);
@@ -77,7 +78,7 @@ function AddServicePage() {
 
   const handleAddServiceSubmit = async (values, { resetForm }) => {
     if (!currentUser.is_admin) {
-      alert("You do not have permission to add services.");
+      toast.error("You do not have permission to add services.");
       return;
     }
     setLoading(true);

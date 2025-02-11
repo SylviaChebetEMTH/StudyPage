@@ -3,6 +3,8 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUsers, faCog, faSignOutAlt, faUserTie, faBook, faTasks } from '@fortawesome/free-solid-svg-icons';
 import { UserContext } from '../contexts/userContext';
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const AdminDashboardSidebar = () => {
     const { logout } = useContext(UserContext);
@@ -24,10 +26,10 @@ const AdminDashboardSidebar = () => {
     const handleLogout = async () => {
         try {
             await logout();
-            alert("Logged out successfully");
+            toast.success("Logged out successfully");
             navigate("/");
         } catch (error) {
-            alert("Failed to log out. Please try again.");
+            toast.error("Failed to log out. Please try again.");
         }
     };
 
