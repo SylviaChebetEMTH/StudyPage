@@ -86,10 +86,10 @@ export const UserProvider = ({ children }) => {
           toast.success(res.success);
           nav("/login");
         } else {
-          toast.error(res.error || "Something went wrong");
+          toast.error(res.message || "Something went wrong");
         }
       })
-      .catch(() => toast.error("Something went wrong"));
+      // .catch(() => toast.error("Something went wrong"));
   };
 
   const login = (email, password) => {
@@ -107,10 +107,10 @@ export const UserProvider = ({ children }) => {
           toast.success("Login successful");
           nav("/");
         } else {
-          toast.error(res.error || "Invalid credentials");
+          toast.error(res.message || "Invalid credentials");
         }
       })
-      .catch(() => toast.error("Something went wrong"));
+      // .catch(() => toast.error("Something went wrong"));
   };
 
   const handleLogout = () => {
