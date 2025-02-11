@@ -25,8 +25,8 @@ const ProjectRequest = () => {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  const publicKey = 'pk_live_9d093b52e09ff0b847d1e490f6ad1f1add87c150';
-  // const publicKey = 'pk_test_00e40d5cd3e321a68b22aad7e1c42a62f8587d4c';
+  // const publicKey = 'pk_live_9d093b52e09ff0b847d1e490f6ad1f1add87c150';
+  const publicKey = 'pk_test_00e40d5cd3e321a68b22aad7e1c42a62f8587d4c';
   const email = currentUser?.email || ''; 
   const [paymentRef] = useState(`ref_${Math.floor(Math.random() * 1000000000)}`);
 
