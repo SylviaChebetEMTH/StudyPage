@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export const UserContext = createContext();
 
-toast.configure();
+// toast.configure();
 
 const fetchWithAuth = async (url, options = {}) => {
   let token = localStorage.getItem("token");
