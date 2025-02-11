@@ -89,7 +89,7 @@ export const UserProvider = ({ children }) => {
           toast.error(res.message || "Something went wrong");
         }
       })
-      .catch(() => toast.error("Something went wrong"));
+      // .catch(() => toast.error("Something went wrong"));
   };
 
   const login = (email, password) => {
