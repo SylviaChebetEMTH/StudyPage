@@ -1,7 +1,11 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const UserContext = createContext();
+
+toast.configure();
 
 const fetchWithAuth = async (url, options = {}) => {
   let token = localStorage.getItem("token");
@@ -25,7 +29,6 @@ const fetchWithAuth = async (url, options = {}) => {
     if (refreshResponse.ok) {
       const refreshData = await refreshResponse.json();
       localStorage.setItem("token", refreshData.access_token);
-
       options.headers["Authorization"] = `Bearer ${refreshData.access_token}`;
       response = await fetch(url, options);
     } else {
@@ -33,95 +36,67 @@ const fetchWithAuth = async (url, options = {}) => {
       localStorage.removeItem("refresh_token");
     }
   }
-
   return response;
 };
+
 export const useUserContext = () => useContext(UserContext);
+
 export const UserProvider = ({ children }) => {
-  
   const nav = useNavigate();
-  const [authToken, setAuthToken] = useState(
-    () => localStorage.getItem("token") || null
-  );
+  const [authToken, setAuthToken] = useState(() => localStorage.getItem("token") || null);
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fetchCurrentUser = async () => {
     if (authToken) {
       try {
-        const response = await fetchWithAuth(
-          "https://studypage.onrender.com/current_user",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetchWithAuth("https://studypage.onrender.com/current_user", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
         const data = await response.json();
         if (response.ok) {
           setCurrentUser(data);
-          if (data.is_admin) {
-            nav("/admin/dashboard");
-          } else {
-            nav("/");
-          }
+          nav(data.is_admin ? "/admin/dashboard" : "/");
         } else {
-          console.error("Failed to fetch current user:", data.message);
+          toast.error(data.message || "Failed to fetch current user");
           handleLogout();
         }
       } catch (error) {
-        console.error("Error fetching current user:", error);
+        toast.error("Error fetching current user");
         handleLogout();
       }
     }
     setLoading(false);
   };
+
   useEffect(() => {
     fetchCurrentUser();
   }, [authToken]);
 
-  const signup = (username, email, phone_number = '', password) => {
+  const signup = (username, email, phone_number = "", password) => {
     fetch("https://studypage.onrender.com/register", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-        email,
-        phone_number,
-        password,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, phone_number, password }),
     })
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
+          toast.success(res.success);
           nav("/login");
-          alert(res.success);
-        } else if (res.error) {
-          alert(res.error);  
         } else {
-          alert("Something went wrong");
+          toast.error(res.error || "Something went wrong");
         }
       })
-      .catch((error) => {
-        console.error("Error during signup:", error);
-        alert("Something went wrong");
-      });
+      .catch(() => toast.error("Something went wrong"));
   };
-
 
   const login = (email, password) => {
     fetch("https://studypage.onrender.com/login", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -129,18 +104,14 @@ export const UserProvider = ({ children }) => {
           setAuthToken(res.access_token);
           localStorage.setItem("token", res.access_token);
           localStorage.setItem("refresh_token", res.refresh_token);
-          console.log("Logged in token:", res.access_token);
+          toast.success("Login successful");
           nav("/");
-          alert("Login success");
-        } else if (res.error) {
-          alert(res.error);
         } else {
-          alert("Invalid password or username");
+          toast.error(res.error || "Invalid credentials");
         }
-      });
+      })
+      .catch(() => toast.error("Something went wrong"));
   };
-  
-  
 
   const handleLogout = () => {
     setAuthToken(null);
@@ -153,18 +124,18 @@ export const UserProvider = ({ children }) => {
   const logout = () => {
     fetchWithAuth("https://studypage.onrender.com/logout", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
+          toast.success("Logged out successfully");
           handleLogout();
         } else {
-          alert("Something went wrong");
+          toast.error("Something went wrong");
         }
-      });
+      })
+      .catch(() => toast.error("Something went wrong"));
   };
 
   const contextData = {
@@ -178,7 +149,5 @@ export const UserProvider = ({ children }) => {
     loading,
   };
 
-  return (
-    <UserContext.Provider value={contextData}>{children}</UserContext.Provider>
-  );
+  return <UserContext.Provider value={contextData}>{children}</UserContext.Provider>;
 };
