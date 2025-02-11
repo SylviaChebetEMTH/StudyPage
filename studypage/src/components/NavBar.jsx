@@ -32,7 +32,6 @@ export const NavBar = () => {
             setIsMenuOpen(false); 
         };
     
-    
     const chatLink = currentUser?.is_admin ? "/adminchat" : "/chat";
 
     const toggleMenu = () => {

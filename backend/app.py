@@ -196,8 +196,8 @@ def handle_options_request():
         return response
 
 
-# PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
-PAYSTACK_SECRET_KEY =os.environ.get('PAYSTACK_SECRET_KEY')
+PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
+# PAYSTACK_SECRET_KEY =os.environ.get('PAYSTACK_SECRET_KEY')
 @app.route('/verify-payment', methods=['POST'])
 def verify_payment():
     """
