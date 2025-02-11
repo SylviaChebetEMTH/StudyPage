@@ -41,6 +41,7 @@ import PrivacyPolicy from "./components/PrivacyPolicy";
 import Help from "./components/Help";
 import ForgotPassword from "./components/forms/ForgotPassword";
 import { SocketProvider } from "./components/contexts/SocketContext";
+import "react-toastify/dist/ReactToastify.css";
 
 function AppContent() {
   const { currentUser } = useContext(UserContext);
@@ -54,7 +55,7 @@ function AppContent() {
 
       {/* {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)} */}
       <div className="flex-grow">
-        <ToastContainer />
+        <ToastContainer position="top-right" autoClose={3000} />
         {/* <NavBar /> */}
         {/* <Routes>
           <Route path="/" element={<Home />} />
