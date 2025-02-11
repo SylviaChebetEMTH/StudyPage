@@ -130,7 +130,8 @@ export const UserProvider = ({ children }) => {
       .then((res) => {
         if (res.success) {
           toast.success("Logged out successfully");
-          handleLogout();
+          nav("/login")
+          // handleLogout();
         } else {
           toast.error("Something went wrong");
         }
