@@ -3,6 +3,8 @@ import { NavLink, Outlet, useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contexts/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faBook, faTasks, faEnvelope, faSignOutAlt, faUser, faBars } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UserProfile = (authToken) => {
     const { currentUser, logout } = useContext(UserContext);
@@ -12,10 +14,10 @@ const UserProfile = (authToken) => {
     const handleLogout = async () => {
         try {
             await logout();
-            alert("Logged out successfully");
+            toast.success("Logged out successfully");
             navigate("/");
         } catch (error) {
-            alert("Failed to log out. Please try again.");
+            toast.error("Failed to log out. Please try again.");
         }
     };
 

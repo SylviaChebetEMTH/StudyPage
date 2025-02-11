@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { X, Send, Star } from 'lucide-react';
 import { UserContext } from "../contexts/userContext";
 // import { UserContext } from '../contexts/userContext';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ExpertDetailModal = ({ expert, isOpen, onClose, currentUser }) => {
   const [comments, setComments] = useState([]);
@@ -30,7 +32,7 @@ const ExpertDetailModal = ({ expert, isOpen, onClose, currentUser }) => {
   const handleSubmitComment = async (e) => {
     e.preventDefault();
     if (!currentUser) {
-      alert('Please log in to leave a comment');
+      toast.error('Please log in to leave a comment');
       return;
     }
     if (!newComment.trim()) return;

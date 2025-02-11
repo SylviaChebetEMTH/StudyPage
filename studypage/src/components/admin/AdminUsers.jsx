@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { UserContext } from "../contexts/userContext";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AllUsers() {
   const { authToken } = useContext(UserContext);
@@ -45,9 +47,9 @@ function AllUsers() {
           },
         });
         setUsers(users.filter(user => user.id !== userId));
-        alert("User deleted successfully");
+        toast.success("User deleted successfully");
       } catch (err) {
-        alert(err.response ? err.response.data.message : "Failed to delete user.");
+        toast.error(err.response ? err.response.data.message : "Failed to delete user.");
       }
     }
   };
@@ -61,9 +63,9 @@ function AllUsers() {
         },
       });
       setUsers(users.map(user => (user.id === userId ? { ...user, is_admin: newIsAdmin } : user)));
-      alert("User updated successfully");
+      toast.success("User updated successfully");
     } catch (err) {
-      alert(err.response ? err.response.data.message : "Failed to update user.");
+      toast.error(err.response ? err.response.data.message : "Failed to update user.");
     }
   };
 
@@ -97,14 +99,14 @@ function AllUsers() {
           is_admin: false // Set default value for new users
         };
         setUsers([...users, newUserObj]); // Add the new user to the state
-        alert("User added successfully");
+        toast.success("User added successfully");
         setNewUser({ username: "", email: "", password: "" }); // Reset form
       } else {
-        alert("Failed to add user: User data is not returned");
+        toast.error("Failed to add user: User data is not returned");
       }
     } catch (err) {
       console.error(err); // Log the full error for debugging
-      alert(err.response ? err.response.data.message : "Failed to add user.");
+      toast.error(err.response ? err.response.data.message : "Failed to add user.");
     }
   };
 
