@@ -11,8 +11,8 @@ import signupImage from '../assets/signup.png';
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import loginVideo from '../assets/loginVideo.mp4';
-
-
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from 'react-toastify';
 
 
 export default function SignUp() {
@@ -43,7 +43,7 @@ export default function SignUp() {
 
         // Send the user data to your backend to handle signup/login
         const res = await axios.post("https://studypage.onrender.com/auth/google", user);
-        alert("Check your email to set your password.");
+        toast.error("Check your email to set your password.");
         if (res.data.is_admin) {
           navigate("/admin/dashboard");
         } else {
@@ -51,7 +51,7 @@ export default function SignUp() {
         }
       } catch (error) {
         console.error("Google Signup failed:", error);
-        alert('Google Signup failed. Please try again.');
+        toast.error('Google Signup failed. Please try again.');
       }
     },
     onError: () => console.error("Google Login Failed"),

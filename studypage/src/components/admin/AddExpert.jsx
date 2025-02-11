@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { Circles } from "react-loader-spinner";
 import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const CLOUDINARY_UPLOAD_PRESET = "dlp71jbrz";
 const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/dlp71jbrz/image/upload`;
@@ -118,13 +119,13 @@ function AddExpertPage() {
 
   const handleAddExpertSubmit = async (values) => {
     if (!currentUser.is_admin) {
-      alert("You do not have permission to add services.");
+      toast.error("You do not have permission to add services.");
       return;
     }
 
    
     if (!profilePicture) {
-      alert("Please upload a profile picture.");
+      toast.error("Please upload a profile picture.");
       return;
     }
 

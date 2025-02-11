@@ -9,6 +9,9 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import googleIcon from '../assets/googleIcon.png';
 import loginImage from "../assets/login.png";
 import loginVideo from '../assets/loginVideo.mp4';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export default function Login() {
   const { setAuthToken, setCurrentUser } = useContext(UserContext);
@@ -62,15 +65,15 @@ export default function Login() {
             }
           } else {
             // If no auth token exists, it means the user is new
-            alert("Check your email to set your password.");
+            toast.error("Check your email to set your password.");
           }
         } else {
           // Handle any other failure cases
-          alert("An error occurred. Please try again.");
+          toast.error("An error occurred. Please try again.");
         }
       } catch (error) {
         console.error("Google Signup failed:", error);
-        alert("Google Signup failed. Please try again.");
+        toast.error("Google Signup failed. Please try again.");
       }
     },
     onError: () => console.error("Google Login Failed"),
