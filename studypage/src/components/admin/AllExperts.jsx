@@ -107,7 +107,7 @@ export default function AllExperts() {
 
   const handleEditExpert = async (expertId) => {
     if (!currentUser.is_admin) {
-      alert("You do not have permission to edit expert.");
+      toast.error("You do not have permission to edit expert.");
       return;
     }
     setIsLoading(true);
@@ -223,7 +223,7 @@ export default function AllExperts() {
 
   const handleDeleteExpert = (expertId) => {
     if (!currentUser.is_admin) {
-      alert("You do not have permission to add services.");
+      toast.error("You do not have permission to add services.");
       return;
     }
     setIsLoading(true);

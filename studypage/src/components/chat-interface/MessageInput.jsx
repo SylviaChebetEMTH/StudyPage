@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaPaperclip, FaSmile, FaTimes } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const MessageInput = ({ sendMessage,setMessages,activeUser,authToken }) => {
   const [newMessage, setNewMessage] = useState("");
@@ -47,7 +48,7 @@ const handleFileChange = (event) => {
       setAttachments((prev) => [...prev, file]); // Add to attachments state
     } else {
       console.error('Selected file is not a supported type.');
-      alert("Only images and document files (PDF, Word) are allowed.");
+      toast.error("Only images and document files (PDF, Word) are allowed.");
     }
   });
 };

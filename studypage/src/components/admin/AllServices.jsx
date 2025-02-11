@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../contexts/userContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AllServices() {
     const [services, setServices] = useState([]);
@@ -94,11 +96,11 @@ export default function AllServices() {
 
     const handleEditService = (serviceId) => {
         if (!currentUser.is_admin) {
-            alert("You do not have permission to add services.");
+            toast.error("You do not have permission to add services.");
             return;
           }
           if (!updateValues.title || !updateValues.description || !updateValues.price || !updateValues.subject_name || !updateValues.project_type_name) {
-            alert("Please fill in all the fields.");
+            toast.error("Please fill in all the fields.");
             return;
         }
         // Convert price to a number
@@ -143,7 +145,7 @@ export default function AllServices() {
 
     const handleDeleteService = (serviceId) => {
         if (!currentUser.is_admin) {
-            alert("You do not have permission to add services.");
+            toast.error("You do not have permission to add services.");
             return;
           }
 
