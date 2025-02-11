@@ -57,7 +57,7 @@ function AppContent() {
 
       {/* {!isAuthPage && (isAdminPage ? <AdminNav /> : <NavBar />)} */}
       <div className="flex-grow">
-        <ToastContainer position="top-right" autoClose={3000}/>
+        <ToastContainer position="top-right" autoClose={2000}/>
         {/* <NavBar /> */}
         {/* <Routes>
           <Route path="/" element={<Home />} />
