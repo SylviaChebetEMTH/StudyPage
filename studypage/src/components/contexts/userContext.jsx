@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext();
 
-
 const fetchWithAuth = async (url, options = {}) => {
   let token = localStorage.getItem("token");
   options.headers = {
