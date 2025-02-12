@@ -35,7 +35,7 @@ from email import encoders
 SECRET_KEY = os.urandom(24)
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins=["http://localhost:3001", "https://www.studypage.cloud"])
+socketio = SocketIO(app, cors_allowed_origins="*")
 api = Api(app)
 app.config["SECRET_KEY"] = os.urandom(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('database_url')
