@@ -35,7 +35,7 @@ from email import encoders
 SECRET_KEY = os.urandom(24)
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins=["http://localhost:3001", "https://www.studypage.cloud"])
+socketio = SocketIO(app, cors_allowed_origins="*")
 api = Api(app)
 app.config["SECRET_KEY"] = os.urandom(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('database_url')
@@ -186,14 +186,13 @@ mail = Mail(app)
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 CORS(app, resources={r"/*": {"origins": ["http://localhost:3001", "https://www.studypage.cloud"]}})
 
-@app.before_request
-def handle_options_request():
-    if request.method == 'OPTIONS':
-        response = make_response()
-        # response.headers['Access-Control-Allow-Origin'] = 'https://www.studypage.cloud'
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-        return response
+@app.after_request
+def apply_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "http://localhost:3001"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    return response
+
 
 
 PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
