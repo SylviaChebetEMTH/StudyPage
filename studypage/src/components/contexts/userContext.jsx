@@ -59,7 +59,7 @@ export const UserProvider = ({ children }) => {
           setCurrentUser(data);
           nav(data.is_admin ? "/admin/dashboard" : "/");
         } else {
-          toast.error(data.message || "Failed to fetch current user");
+          toast.error(data.message || "Please sign in");
           handleLogout();
         }
       } catch (error) {
@@ -122,25 +122,31 @@ export const UserProvider = ({ children }) => {
   };
 
   const logout = () => {
-    nav("/login"); // Redirect user immediately
-  
-    fetchWithAuth("https://studypage.onrender.com/logout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.success) {
-          toast.success("Logged out successfully");
-        } else {
-          toast.error("Something went wrong");
-        }
-      })
-      .catch(() => toast.error("Something went wrong"))
-      .finally(() => {
-        handleLogout(); // Cleanup token and user data
-      });
+    handleLogout(); // Clear tokens & state
+    window.location.href = "/login"; // Hard refresh ensures fresh login state
   };
+  
+
+  // const logout = () => {
+  //   nav("/login"); // Redirect user immediately
+  
+  //   fetchWithAuth("https://studypage.onrender.com/logout", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       if (res.success) {
+  //         toast.success("Logged out successfully");
+  //       } else {
+  //         toast.error("Something went wrong");
+  //       }
+  //     })
+  //     .catch(() => toast.error("Something went wrong"))
+  //     .finally(() => {
+  //       handleLogout(); // Cleanup token and user data
+  //     });
+  // };
   
 
   const contextData = {

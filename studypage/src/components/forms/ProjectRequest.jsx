@@ -293,23 +293,6 @@ const ProjectRequest = () => {
             </select>
           )}
         </div>
-        {/* <div>
-          <label htmlFor="projectType" className="block text-sm font-medium">Project Type</label>
-          <select
-            id="projectType"
-            value={selectedProjectType}
-            onChange={(e) => setSelectedProjectType(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          >
-            <option value="">Select Project Type</option>
-            {projectTypes.map((type) => (
-              <option key={type.id} value={type.id}>{type.name}</option>
-            ))}
-          </select>
-        </div> */}
-
-        {/* Subject */}
         <div>
           <label htmlFor="subject" className="block text-sm font-medium">Subject</label>
           {isLoadingSubjects ? (
@@ -329,23 +312,6 @@ const ProjectRequest = () => {
             </select>
           )}
         </div>
-        {/* <div>
-          <label htmlFor="subject" className="block text-sm font-medium">Subject</label>
-          <select
-            id="subject"
-            value={selectedSubject}
-            onChange={(e) => setSelectedSubject(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          >
-            <option value="">Select Subject</option>
-            {subjects.map((subject) => (
-              <option key={subject.id} value={subject.id}>{subject.name}</option>
-            ))}
-          </select>
-        </div> */}
-
-        {/* Number of Pages */}
         <div>
           <label htmlFor="numberOfPages" className="block text-sm font-medium">Number of Pages</label>
           <input
@@ -433,6 +399,26 @@ const ProjectRequest = () => {
               <span className="animate-spin h-6 w-6 border-4 border-blue-500 border-t-transparent rounded-full"></span>
               <span className="ml-2 text-blue-500 font-semibold">Processing...</span>
             </div>
+          ) : totalPrice === 0 && numberOfPages > 0 ? (
+            <div className="text-red-500 font-semibold text-center mt-4">
+              Calculating total price... Please wait.
+            </div>
+          ) : (
+            <PaystackButton
+              className={`bg-blue-500 text-white p-2 rounded ${
+                !isFormValid ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600 transition duration-200"
+              }`}
+              {...componentProps}
+              disabled={!isFormValid}
+            />
+          )}
+        </div>
+        {/* <div className="flex justify-center mt-6">
+          {isSubmitting ? (
+            <div className="flex items-center">
+              <span className="animate-spin h-6 w-6 border-4 border-blue-500 border-t-transparent rounded-full"></span>
+              <span className="ml-2 text-blue-500 font-semibold">Processing...</span>
+            </div>
           ) : (
             <PaystackButton
               className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200"
@@ -440,7 +426,7 @@ const ProjectRequest = () => {
               disabled={!isFormValid}
             />
           )}
-        </div>
+        </div> */}
       </form>
     </div>
   );
