@@ -122,6 +122,8 @@ export const UserProvider = ({ children }) => {
   };
 
   const logout = () => {
+    nav("/login"); // Redirect user immediately
+  
     fetchWithAuth("https://studypage.onrender.com/logout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -130,14 +132,16 @@ export const UserProvider = ({ children }) => {
       .then((res) => {
         if (res.success) {
           toast.success("Logged out successfully");
-          nav("/login")
-          handleLogout();
         } else {
           toast.error("Something went wrong");
         }
       })
-      .catch(() => toast.error("Something went wrong"));
+      .catch(() => toast.error("Something went wrong"))
+      .finally(() => {
+        handleLogout(); // Cleanup token and user data
+      });
   };
+  
 
   const contextData = {
     currentUser,
