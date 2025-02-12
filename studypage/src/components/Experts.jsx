@@ -20,6 +20,13 @@ const ExpertPage = () => {
 
   // Function to fetch experts from backend
   const fetchExperts = async () => {
+    const storedExperts = localStorage.getItem('experts');
+    if (storedExperts){
+      setExperts(JSON.parse(storedExperts));
+      setFilteredExperts(JSON.parse(storedExperts));
+      setLoading(false);
+      return;
+    }
     try {
       const response = await fetch(`${API_URL}/experts`, {
         method: 'GET',
@@ -35,10 +42,11 @@ const ExpertPage = () => {
       const data = await response.json();
       const expertsArray = Array.isArray(data.experts) ? data.experts : [];
       setExperts(expertsArray);
-      console.log('arrayofexpertssghh',expertsArray);
+      // console.log('arrayofexpertssghh',expertsArray);
       setFilteredExperts(expertsArray); // Initialize filtered experts with all experts
+      localStorage.setItem('experts', JSON.stringify(expertsArray));
     } catch (error) {
-      console.error('Error fetching experts:', error);
+      // console.error('Error fetching experts:', error);
       setError('Failed to fetch experts.');
     } finally {
       setLoading(false);

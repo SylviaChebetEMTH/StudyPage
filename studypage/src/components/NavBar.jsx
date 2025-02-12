@@ -82,7 +82,7 @@ export const NavBar = () => {
                         </Link>
                         <Link
                             to="/expertspage"
-                            className="bg-transparent text-white py-2 px-2 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 hover:underline md:py-0"
+                            className="text-white hover:text-yellow-400 py-2 md:py-0"
                             currentUser={currentUser}
                             onClick={handleLinkClick}
                         >
@@ -100,11 +100,11 @@ export const NavBar = () => {
                     <div className="flex flex-col md:flex-row md:items-center md:space-x-4 text-center py-4 md:py-0">
                         <Link
                             to={accountLink}
-                            className="text-white hover:text-yellow-400 flex items-center justify-center text-xs"
+                            // className="text-white hover:text-yellow-400 flex items-center justify-center text-xs"
                             onClick={handleLinkClick}
                         >
-                            <FontAwesomeIcon icon={faUser} className="text-lg" />
-                            <span className="ml-1">
+                            {/* <FontAwesomeIcon icon={faUser} className="text-lg" /> */}
+                            <span className="text-white hover:text-yellow-400 py-2 md:py-0  ">
                                 {authToken ? 'My Account' : 'Login'}
                             </span>
                         </Link>
@@ -112,13 +112,14 @@ export const NavBar = () => {
                         <Link
                             to={chatLink}
                             state={{ authToken }}
-                            className="text-gray-700 hover:text-blue-700 flex items-center text-xs relative justify-center mt-4 md:mt-0"
+                            className="text-white hover:text-yellow-400 py-2 md:py-0"
                             onClick={handleLinkClick}
                         >
-                            <FontAwesomeIcon
+                            Messages
+                            {/* <FontAwesomeIcon
                                 icon={faCommentDots}
                                 className="text-lg text-green-700"
-                            />
+                            /> */}
                             {totalUnreadMessages > 0 && (
                                 <div className="absolute -top-2 -right-2 flex items-center justify-center">
                                     <FontAwesomeIcon

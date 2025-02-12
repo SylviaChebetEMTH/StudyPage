@@ -20,6 +20,10 @@ const ProjectRequest = () => {
   const [deadline, setDeadline] = useState('');
   const [expertId, setExpertId] = useState(state ? state.expertId : '');
   const [numberOfPages, setNumberOfPages] = useState('');
+  const [isLoadingSubjects, setIsLoadingSubjects] = useState(true);
+  const [isLoadingProjectTypes, setIsLoadingProjectTypes] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
@@ -32,28 +36,49 @@ const ProjectRequest = () => {
   const [paymentRef] = useState(`ref_${Math.floor(Math.random() * 1000000000)}`);
 
   const showError = (message) => {
-    setErrorMessage(message);
-    setTimeout(() => setErrorMessage(''), 3000);
+    toast.error(message || "Something went wrong. Please try again.");
   };
+  // const handleFileChange = (e) => {
+  //   setAttachments(e.target.files);
+  // };
   const handleFileChange = (e) => {
-    setAttachments(e.target.files);
+    const newFiles = Array.from(e.target.files); // Convert FileList to Array
+    setAttachments((prevFiles) => [...prevFiles, ...newFiles]); // Append new files
   };
+  
 
-  // Fetch Project Types
+  // Fetch Project Type
   useEffect(() => {
-    fetch('https://studypage.onrender.com/project-types')
-      .then((response) => response.json())
-      .then((data) => setProjectTypes(data))
-      .catch(() => toast.error('Error fetching project types.'));
-  }, []);
+  setIsLoadingProjectTypes(true);
+  fetch('https://studypage.onrender.com/project-types')
+    .then((response) => response.json())
+    .then((data) => {
+      setProjectTypes(data);
+      setIsLoadingProjectTypes(false);
+    })
+    .catch(() => {
+      toast.error('Error fetching project types.');
+      setIsLoadingProjectTypes(false);
+    });
+}, []);
+
 
   // Fetch Subjects
+  // const [isLoadingSubjects, setIsLoadingSubjects] = useState(true);
   useEffect(() => {
-    fetch('https://studypage.onrender.com/subjects')
-      .then((response) => response.json())
-      .then((data) => setSubjects(data))
-      .catch(() => toast.error('Error fetching subjects.'));
-  }, []);
+  setIsLoadingSubjects(true);
+  fetch('https://studypage.onrender.com/subjects')
+    .then((response) => response.json())
+    .then((data) => {
+      setSubjects(data);
+      setIsLoadingSubjects(false);
+    })
+    .catch(() => {
+      toast.error('Error fetching subjects.');
+      setIsLoadingSubjects(false);
+    });
+}, []);
+
 
   // Fetch Services
   useEffect(() => {
@@ -114,17 +139,18 @@ const ProjectRequest = () => {
   ]);
 
   const handleSuccess = useCallback(async (response) => {
-    const reference = response.reference; // Extract the Paystack reference
+    setIsSubmitting(true); // Show loading spinner
+    toast.info("Processing your request, please wait...");
+  
+    const reference = response.reference; // Extract Paystack reference
   
     try {
       // Step 1: Verify Payment with the Backend
       const verifyResponse = await fetch("https://studypage.onrender.com/verify-payment", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          reference, // Payment reference from Paystack
+          reference,
           projectDetails: {
             projectTitle,
             description,
@@ -139,11 +165,17 @@ const ProjectRequest = () => {
         }),
       });
   
+      if (!verifyResponse.ok) {
+        throw new Error("Payment verification failed. Please try again.");
+      }
+  
       const verifyData = await verifyResponse.json();
   
       if (!verifyData.success) {
-        throw new Error(verifyData.message || "Payment verification failed.");
+        throw new Error(verifyData.message || "Payment verification unsuccessful.");
       }
+  
+      console.log("Payment verified successfully:", verifyData);
   
       // Step 2: Submit Project After Payment Verification
       const formData = new FormData();
@@ -157,9 +189,8 @@ const ProjectRequest = () => {
       formData.append("service_id", selectedService?.id);
       formData.append("total_price", totalPrice);
   
-      for (let i = 0; i < attachments.length; i++) {
-        formData.append("attachments", attachments[i]);
-      }
+      // Append attachments
+      attachments.forEach((file) => formData.append("attachments[]", file));
   
       const projectResponse = await fetch("https://studypage.onrender.com/request_expert", {
         method: "POST",
@@ -171,11 +202,15 @@ const ProjectRequest = () => {
         throw new Error("Failed to submit the project request.");
       }
   
-      // Redirect to success page
-      navigate("/chat", { state: { totalPrice, reference } });
+      toast.success("Project submitted successfully! Redirecting...");
+  
+      setTimeout(() => {
+        navigate("/chat", { state: { totalPrice, reference } });
+      }, 2000);
     } catch (error) {
-      console.error("Error:", error);
-      showError(error.message || "An unexpected error occurred.");
+      toast.error(error.message || "An unexpected error occurred.");
+    } finally {
+      setIsSubmitting(false);
     }
   }, [
     projectTitle,
@@ -192,51 +227,6 @@ const ProjectRequest = () => {
     navigate,
   ]);
   
-  // const handleSuccess = useCallback(() => {
-  //   const formData = new FormData();
-  //   formData.append('project_title', projectTitle);
-  //   formData.append('project_description', description);
-  //   formData.append('project_type', selectedProjectType);
-  //   formData.append('subject', selectedSubject);
-  //   formData.append('deadline', deadline);
-  //   formData.append('expert_id', expertId);
-  //   formData.append('number_of_pages', numberOfPages);
-  //   formData.append('service_id', selectedService.id);
-  //   formData.append('total_price', totalPrice);
-
-  //   for (let i = 0; i < attachments.length; i++) {
-  //     formData.append('attachments', attachments[i]);
-  //   }
-
-  //   fetch('http://127.0.0.1:5000/request_expert', {
-  //     method: 'POST',
-  //     headers: { Authorization: `Bearer ${authToken}` },
-  //     body: formData,
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) throw new Error('Failed to submit the project request.');
-  //       return response.json();
-  //     })
-  //     .then(() => {
-  //       navigate('/payment/success', { state: { totalPrice, paymentRef } });
-  //     })
-  //     .catch(() => showError('There was an error submitting the project.'));
-  // }, [
-  //   projectTitle,
-  //   description,
-  //   selectedProjectType,
-  //   selectedSubject,
-  //   deadline,
-  //   expertId,
-  //   numberOfPages,
-  //   selectedService,
-  //   totalPrice,
-  //   attachments,
-  //   authToken,
-  //   navigate,
-  //   paymentRef,
-  // ]);
-
   const handleClose = useCallback(() => {
     showError('Payment cancelled.');
   }, []);
@@ -286,38 +276,42 @@ const ProjectRequest = () => {
         {/* Project Type */}
         <div>
           <label htmlFor="projectType" className="block text-sm font-medium">Project Type</label>
-          <select
-            id="projectType"
-            value={selectedProjectType}
-            onChange={(e) => setSelectedProjectType(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          >
-            <option value="">Select Project Type</option>
-            {projectTypes.map((type) => (
-              <option key={type.id} value={type.id}>{type.name}</option>
-            ))}
-          </select>
+          {isLoadingProjectTypes ? (
+            <p className="text-gray-500">Loading project types...</p>
+          ) : (
+            <select
+              id="projectType"
+              value={selectedProjectType}
+              onChange={(e) => setSelectedProjectType(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            >
+              <option value="">Select Project Type</option>
+              {projectTypes.map((type) => (
+                <option key={type.id} value={type.id}>{type.name}</option>
+              ))}
+            </select>
+          )}
         </div>
-
-        {/* Subject */}
         <div>
           <label htmlFor="subject" className="block text-sm font-medium">Subject</label>
-          <select
-            id="subject"
-            value={selectedSubject}
-            onChange={(e) => setSelectedSubject(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          >
-            <option value="">Select Subject</option>
-            {subjects.map((subject) => (
-              <option key={subject.id} value={subject.id}>{subject.name}</option>
-            ))}
-          </select>
+          {isLoadingSubjects ? (
+            <p className="text-gray-500">Loading subjects...</p>
+          ) : (
+            <select
+              id="subject"
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            >
+              <option value="">Select Subject</option>
+              {subjects.map((subject) => (
+                <option key={subject.id} value={subject.id}>{subject.name}</option>
+              ))}
+            </select>
+          )}
         </div>
-
-        {/* Number of Pages */}
         <div>
           <label htmlFor="numberOfPages" className="block text-sm font-medium">Number of Pages</label>
           <input
@@ -340,6 +334,16 @@ const ProjectRequest = () => {
             onChange={handleFileChange}
             className="w-full p-2 border border-gray-300 rounded"
           />
+            {attachments.length > 0 && (
+              <div className="mt-2">
+                <p className="font-medium">Selected Files:</p>
+                <ul className="list-disc pl-5 text-sm text-gray-700">
+                  {attachments.map((file, index) => (
+                    <li key={index}>{file.name}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
         </div>
 
         {/* Services */}
@@ -390,12 +394,39 @@ const ProjectRequest = () => {
           />
         </div>
         <div className="flex justify-center mt-6">
-          <PaystackButton
-            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200"
-            {...componentProps}
-            disabled={!isFormValid}
-          />
+          {isSubmitting ? (
+            <div className="flex items-center">
+              <span className="animate-spin h-6 w-6 border-4 border-blue-500 border-t-transparent rounded-full"></span>
+              <span className="ml-2 text-blue-500 font-semibold">Processing...</span>
+            </div>
+          ) : totalPrice === 0 && numberOfPages > 0 ? (
+            <div className="text-red-500 font-semibold text-center mt-4">
+              Calculating total price... Please wait.
+            </div>
+          ) : (
+            <PaystackButton
+              className={`bg-blue-500 text-white p-2 rounded ${
+                !isFormValid ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600 transition duration-200"
+              }`}
+              {...componentProps}
+              disabled={!isFormValid}
+            />
+          )}
         </div>
+        {/* <div className="flex justify-center mt-6">
+          {isSubmitting ? (
+            <div className="flex items-center">
+              <span className="animate-spin h-6 w-6 border-4 border-blue-500 border-t-transparent rounded-full"></span>
+              <span className="ml-2 text-blue-500 font-semibold">Processing...</span>
+            </div>
+          ) : (
+            <PaystackButton
+              className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200"
+              {...componentProps}
+              disabled={!isFormValid}
+            />
+          )}
+        </div> */}
       </form>
     </div>
   );
