@@ -35,7 +35,7 @@ from email import encoders
 SECRET_KEY = os.urandom(24)
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins=["http://localhost:3001", "https://www.studypage.cloud"])
 api = Api(app)
 app.config["SECRET_KEY"] = os.urandom(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('database_url')
@@ -184,16 +184,31 @@ jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 mail = Mail(app) 
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-CORS(app, resources={r"/*": {"origins": ["http://localhost:3001", "https://www.studypage.cloud"]}})
+CORS(app,supports_credentials=True)
 
 @app.after_request
 def apply_cors_headers(response):
-    response.headers["Access-Control-Allow-Origin"] = "http://localhost:3001"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    allowed_origins = ["http://localhost:3001", "https://www.studypage.cloud"]
+    request_origin = request.headers.get("Origin")
+    if request_origin in allowed_origins:
+        response.headers["Access-Control-Allow-Origin"] = request_origin 
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST,PUT,DELETE,OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
     return response
 
 
+@app.route('/conversations/<int:conversation_id>/messages', methods=['GET'])
+@jwt_required()
+def get_messages(conversation_id):
+    try:
+        conversation = Conversation.query.get_or_404(conversation_id)
+        messages = [message.to_dict() for message in conversation.messages]
+        return jsonify(messages), 200
+    except Exception as e:
+        # Log the error for debugging
+        app.logger.error(f"Error fetching messages: {e}")
+        return jsonify({"error": "An unexpected error occurred."}), 500
 
 PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
 # PAYSTACK_SECRET_KEY =os.environ.get('PAYSTACK_SECRET_KEY')
@@ -1323,18 +1338,6 @@ def get_user_requests():
     except Exception as e:
         print(f"Error occurred: {e}")
         return jsonify({'error': str(e)}), 500
-
-@app.route('/conversations/<int:conversation_id>/messages', methods=['GET'])
-@jwt_required()
-def get_messages(conversation_id):
-    try:
-        conversation = Conversation.query.get_or_404(conversation_id)
-        messages = [message.to_dict() for message in conversation.messages]
-        return jsonify(messages), 200
-    except Exception as e:
-        # Log the error for debugging
-        app.logger.error(f"Error fetching messages: {e}")
-        return jsonify({"error": "An unexpected error occurred."}), 500
 
 # @app.route('/conversations', methods=['GET'])
 # @jwt_required()
