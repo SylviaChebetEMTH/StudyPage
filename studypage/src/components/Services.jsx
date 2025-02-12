@@ -10,6 +10,12 @@ const Services = () => {
 
   // Function to fetch services from backend
   const fetchServices = async () => {
+    const storedServices = localStorage.getItem('services');
+    if (storedServices) {
+      setServices(JSON.parse(storedServices));
+      setLoading(false);
+      return;
+    }
     try {
       const response = await fetch(`${API_URL}/services`, {
         method: 'GET',
@@ -23,8 +29,10 @@ const Services = () => {
       }
 
       const data = await response.json();
-      console.log(data);
-      setServices(Array.isArray(data.services) ? data.services : []); 
+      // console.log(data);
+      const servicesArray = Array.isArray(data.services) ? data.services : []; 
+      setServices(servicesArray);
+      localStorage.setItem('services', JSON.stringify(servicesArray));
     } catch (error) {
       console.error('Error fetching services:', error);
       setError('Failed to fetch services.');
