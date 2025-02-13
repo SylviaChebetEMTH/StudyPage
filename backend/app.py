@@ -184,18 +184,23 @@ jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 mail = Mail(app) 
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-CORS(app,supports_credentials=True)
+ALLOWED_ORIGINS = ["http://localhost:3001", "https://www.studypage.cloud"]
+CORS(app, 
+     resources={r"/*": {"origins": ALLOWED_ORIGINS}},
+     supports_credentials=True,
+     allow_headers=["Content-Type", "Authorization"],
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
 @app.after_request
-def apply_cors_headers(response):
-    allowed_origins = ["http://localhost:3001", "https://www.studypage.cloud"]
-    request_origin = request.headers.get("Origin")
-    if request_origin in allowed_origins:
-        response.headers["Access-Control-Allow-Origin"] = request_origin 
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST,PUT,DELETE,OPTIONS"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-    response.headers["Access-Control-Allow-Credentials"] = "true"
+def after_request(response):
+    request_origin = request.headers.get('Origin')
+    if request_origin in ALLOWED_ORIGINS:
+        response.headers['Access-Control-Allow-Origin'] = request_origin
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
     return response
+
 
 
 @app.route('/conversations/<int:conversation_id>/messages', methods=['GET'])
