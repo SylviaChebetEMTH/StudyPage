@@ -24,6 +24,8 @@ import random
 import cloudinary
 import cloudinary.uploader
 from dotenv import load_dotenv
+from gevent import monkey
+monkey.patch_all()
 load_dotenv()
 
 import requests
@@ -67,6 +69,10 @@ def handle_connect():
 @socketio.on('disconnect')
 def handle_disconnect():
     print("Client disconnected")
+
+@socketio.on('user_connected')
+def handle_user_connection(data):
+    print(f"User connected: {data}")
 cloudinary.config(
     cloud_name=os.environ.get('cloud_name'),
     api_secret=os.environ.get('cloudinary_api_secret'),
@@ -2040,5 +2046,5 @@ def patch_service(id):
 api.add_resource(Projects, '/projects')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app,debug=True)
     
