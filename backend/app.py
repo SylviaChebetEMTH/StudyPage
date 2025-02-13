@@ -35,7 +35,6 @@ from email import encoders
 SECRET_KEY = os.urandom(24)
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins=["http://localhost:3001", "https://www.studypage.cloud"])
 api = Api(app)
 app.config["SECRET_KEY"] = os.urandom(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('database_url')
@@ -47,7 +46,27 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'studypage001@gmail.com'
 app.config['MAIL_PASSWORD'] = 'hbib knho xqon emrw'  
+ALLOWED_ORIGINS = ["http://localhost:3001", "https://www.studypage.cloud"]
+socketio = SocketIO(app,
+    cors_allowed_origins=ALLOWED_ORIGINS,
+    async_mode='gevent',  # Use gevent as async mode
+    ping_timeout=60,
+    ping_interval=25,
+    logger=True,  # Enable logging for debugging
+    engineio_logger=True  # Enable Engine.IO logging
+)
 
+@socketio.on_error()
+def error_handler(e):
+    print(f"SocketIO error: {str(e)}")
+
+@socketio.on('connect')
+def handle_connect():
+    print("Client connected")
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print("Client disconnected")
 cloudinary.config(
     cloud_name=os.environ.get('cloud_name'),
     api_secret=os.environ.get('cloudinary_api_secret'),
@@ -184,7 +203,6 @@ jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 mail = Mail(app) 
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-ALLOWED_ORIGINS = ["http://localhost:3001", "https://www.studypage.cloud"]
 CORS(app, 
      resources={r"/*": {"origins": ALLOWED_ORIGINS}},
      supports_credentials=True,
