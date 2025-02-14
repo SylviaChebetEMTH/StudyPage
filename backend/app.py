@@ -49,14 +49,14 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'studypage001@gmail.com'
 app.config['MAIL_PASSWORD'] = 'hbib knho xqon emrw'  
 ALLOWED_ORIGINS = ["http://localhost:3001", "https://www.studypage.cloud"]
-socketio = SocketIO(app,
-    cors_allowed_origins=ALLOWED_ORIGINS,
-    async_mode='gevent',  # Use gevent as async mode
-    ping_timeout=60,
-    ping_interval=25,
-    logger=True,  # Enable logging for debugging
-    engineio_logger=True  # Enable Engine.IO logging
-)
+socketio = SocketIO(app, cors_allowed_origins='*')
+#     cors_allowed_origins=ALLOWED_ORIGINS,
+#     async_mode='gevent',  # Use gevent as async mode
+#     ping_timeout=60,
+#     ping_interval=25,
+#     logger=True,  # Enable logging for debugging
+#     engineio_logger=True  # Enable Engine.IO logging
+# )
 
 @socketio.on_error()
 def error_handler(e):
@@ -219,13 +219,19 @@ CORS(app,
 def after_request(response):
     request_origin = request.headers.get('Origin')
     if request_origin in ALLOWED_ORIGINS:
-        response.headers['Access-Control-Allow-Origin'] = request_origin
+        response.headers['Access-Control-Allow-Origin'] = '*'
         response.headers['Access-Control-Allow-Credentials'] = 'true'
         response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
     return response
 
-
+@app.route('/conversations/<int:conversation_id>/messages', methods=['OPTIONS'])
+def handle_options(conversation_id):
+    response = make_response()
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    return response
 
 @app.route('/conversations/<int:conversation_id>/messages', methods=['GET'])
 @jwt_required()
