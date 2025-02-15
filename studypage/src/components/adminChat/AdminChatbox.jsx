@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import MessageBubble from "../chatInterface/MessageBubble.jsx";
 import MessageInput from "../chatInterface/MessageInput.jsx";
+import { UserContext } from "../contexts/userContext";
 
-const AdminChatBox = ({ conversationId, conversationDetails, authToken }) => {
+const AdminChatBox = ({ conversationId, conversationDetails }) => {
   const [messages, setMessages] = useState([]);
+  const { authToken } = useContext(UserContext);
   console.log('conversation details admin',conversationDetails)
 
   useEffect(() => {
