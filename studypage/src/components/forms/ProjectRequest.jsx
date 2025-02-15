@@ -194,7 +194,7 @@ const ProjectRequest = () => {
   
       const projectResponse = await fetch("https://studypage.onrender.com/request_expert", {
         method: "POST",
-        headers: { Authorization: `Bearer ${authToken}` },
+        // headers: { Authorization: `Bearer ${authToken}` },
         body: formData,
       });
   
@@ -223,7 +223,7 @@ const ProjectRequest = () => {
     selectedService,
     totalPrice,
     attachments,
-    authToken,
+    // authToken,
     navigate,
   ]);
   
