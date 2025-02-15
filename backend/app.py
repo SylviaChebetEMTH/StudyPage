@@ -1423,6 +1423,19 @@ def get_conversations():
             read=False
         ).count()
 
+        # Fetch all messages for this conversation
+        messages = [
+            {
+                'id': msg.id,
+                'sender_id': msg.sender_id,
+                'receiver_id': msg.receiver_id,
+                'content': msg.content,
+                'timestamp': msg.timestamp.isoformat(),
+                'is_file': bool(msg.file_path if hasattr(msg, 'file_path') else False),
+            }
+            for msg in MessageModel.query.filter_by(conversation_id=conversation.id).order_by(MessageModel.timestamp.asc()).all()
+        ]
+
         message_content = "No messages yet"
         if latest_message:
             if latest_message.attachments:
@@ -1433,6 +1446,7 @@ def get_conversations():
                     message_content += f": {latest_message.content}"
             else:
                 message_content = latest_message.content
+
         result.append({
             'id': conversation.id,
             'expert': {
@@ -1444,13 +1458,64 @@ def get_conversations():
                 'client_name': User.query.get(conversation.client_id).username
             },
             'latest_message': message_content,
-            'is_file': bool(latest_message and latest_message.file_path if hasattr(latest_message, 'file_path') else False),
             'timestamp': latest_message.timestamp.isoformat() if latest_message else None,
             'unread_count': unread_count,
+            'messages': messages  # ✅ Add full message history here
         })
 
     result.sort(key=lambda x: x['timestamp'] if x['timestamp'] else '', reverse=True)
     return jsonify(result)
+
+
+# @app.route('/conversations', methods=['GET'])
+# @jwt_required()
+# def get_conversations():
+#     user_id = get_jwt_identity()
+
+#     conversations = Conversation.query.filter(
+#         (Conversation.client_id == user_id) | (Conversation.expert_id == user_id)
+#     ).all()
+
+#     result = []
+#     for conversation in conversations:
+#         latest_message = MessageModel.query.filter_by(conversation_id=conversation.id).order_by(
+#             MessageModel.timestamp.desc()
+#         ).first()
+
+#         unread_count = MessageModel.query.filter_by(
+#             conversation_id=conversation.id,
+#             receiver_id=user_id,
+#             read=False
+#         ).count()
+
+#         message_content = "No messages yet"
+#         if latest_message:
+#             if latest_message.attachments:
+#                 num_attachments = len(latest_message.attachments.split(', '))
+#                 file_text = "files" if num_attachments > 1 else "file"
+#                 message_content = f"📎 Sent {num_attachments} {file_text}"
+#                 if latest_message.content:
+#                     message_content += f": {latest_message.content}"
+#             else:
+#                 message_content = latest_message.content
+#         result.append({
+#             'id': conversation.id,
+#             'expert': {
+#                 'id': conversation.expert_id,
+#                 'expert_name': Expert.query.get(conversation.expert_id).name
+#             },
+#             'client': {
+#                 'id': conversation.client_id,
+#                 'client_name': User.query.get(conversation.client_id).username
+#             },
+#             'latest_message': message_content,
+#             'is_file': bool(latest_message and latest_message.file_path if hasattr(latest_message, 'file_path') else False),
+#             'timestamp': latest_message.timestamp.isoformat() if latest_message else None,
+#             'unread_count': unread_count,
+#         })
+
+#     result.sort(key=lambda x: x['timestamp'] if x['timestamp'] else '', reverse=True)
+#     return jsonify(result)
 
 @app.route('/experts/<int:id>', methods=['GET'])
 def get_expert(id):
