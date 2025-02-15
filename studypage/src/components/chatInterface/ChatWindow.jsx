@@ -137,7 +137,8 @@ const ChatWindow = ({ activeUser, currentUser, auth, teacher, pic, isInModal, te
       setLoading(true); // Start loading
       try {
         const response = await fetch(
-          `https://backendstudypage.onrender.com/conversations/${activeUser.conversationId}/messages`,
+          // `https://backendstudypage.onrender.com/conversations/${activeUser.conversationId}/messages`,
+          "https://backendstudypage.onrender.com/conversations",
           {
             headers: { Authorization: `Bearer ${authToken}` },
           }
