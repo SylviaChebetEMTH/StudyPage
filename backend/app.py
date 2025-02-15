@@ -210,7 +210,6 @@ bcrypt = Bcrypt(app)
 mail = Mail(app) 
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 CORS(app, 
-     resources={r"/*": {"origins": ALLOWED_ORIGINS}},
      supports_credentials=True,
      allow_headers=["Content-Type", "Authorization"],
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
@@ -218,15 +217,22 @@ CORS(app,
 @app.after_request
 def after_request(response):
     request_origin = request.headers.get('Origin')
-    if request_origin in ALLOWED_ORIGINS:
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Credentials'] = 'true'
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+
+    # ✅ Allow all incoming requests from valid origins
+    if request_origin in ["http://localhost:3001", "https://www.studypage.cloud"]:
+        response.headers['Access-Control-Allow-Origin'] = request_origin  # Return the exact allowed origin
+    else:
+        response.headers['Access-Control-Allow-Origin'] = '*'  # Allow all origins (for debugging)
+
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    
     return response
 
-@app.route('/conversations/<int:conversation_id>/messages', methods=['OPTIONS'])
-def handle_options(conversation_id):
+
+@app.route('/conversations', methods=['OPTIONS'])
+def handle_options():
     response = make_response()
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
