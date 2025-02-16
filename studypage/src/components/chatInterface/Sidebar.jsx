@@ -17,6 +17,7 @@ const Sidebar = ({ setActiveUser }) => {
           headers: { Authorization: `Bearer ${authToken}` },
         });
         const data = await response.json();
+        console.log('sidebardata',data)
 
         const uniqueConversations = Array.from(
           new Set(data.map(conv => conv.id))
@@ -53,7 +54,7 @@ const Sidebar = ({ setActiveUser }) => {
               <ContactItem
                 key={conv.id}
                 contact={{
-                  expert_name: conv.expert?.expert_name || "Unknown Expert",
+                  expert_name: conv.expert?.name || "Unknown Expert",
                   expert_id: conv.expert?.id,
                   conversationId: conv.id,
                   client_name: conv.client?.client_name || "Unknown Client",

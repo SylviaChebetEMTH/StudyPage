@@ -92,8 +92,8 @@ const MessageBubble = ({ message, activeUser }) => {
     activeUser &&
     message &&
     (
-      (activeUser.client_name && activeUser.client_name !== message.sender) ||
-      (activeUser.isAdmin && activeUser.client && message.sender === activeUser.client)
+      (activeUser.client_name && activeUser.client_name === message.sender) ||
+      (activeUser.isAdmin && activeUser.client && message.sender !== activeUser.client)
     );
 
   const bubbleClass = classNames(

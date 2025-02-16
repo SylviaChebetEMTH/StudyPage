@@ -1,40 +1,50 @@
-
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { X } from 'lucide-react';
 import ChatWindow from './chatInterface/ChatWindow';
 import { UserContext } from './contexts/userContext';
 
 const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
-  // const { cur } = useContext(UserContext);
+  const { authToken } = useContext(UserContext);
+  const [conversationId, setConversationId] = useState(-1);
   const [activeUser, setActiveUser] = useState({
-    conversationId: -1, 
+    conversationId: -1,
     expert_id: teacher.id,
     expert_name: teacher.name,
     profilePicture: teacher.profilePicture
   });
-  localStorage.setItem('teacherpic','teacher.profilePicture')
-  // console.log('teacherpic',teacher.p)
-  const { authToken } = useContext(UserContext);
 
-  const requestId= async() => {
-    try {
-      const response = await fetch(`https://studypage.onrender.com/conversations/${teacher.id}`,
-        {
-          method: "GET",
-          headers: { Authorization: `Bearer ${authToken}`}
+  // Store teacher profile picture in localStorage
+  useEffect(() => {
+    localStorage.setItem('teacherpic', teacher.profilePicture);
+  }, [teacher.profilePicture]);
+
+  // Fetch conversation ID if it exists
+  useEffect(() => {
+    const fetchConversationId = async () => {
+      try {
+        const response = await fetch(
+          `https://studypage.onrender.com/conversationsid/${teacher.id}`,
+          {
+            method: "GET",
+            headers: { Authorization: `Bearer ${authToken}` }
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch conversation ID");
         }
-      )
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch id")
+        const data = await response.json();
+        if (data.length > 0) {
+          setConversationId(data[0].id);
+        }
+      } catch (error) {
+        console.error("Error fetching conversation ID:", error);
       }
-      const data = await response.json();
-      console.log(data.id)
-      const expertId = data.id
-    } catch (error){
-      console.error("Error fetching id")
-    }
-  }
+    };
+
+    fetchConversationId();
+  }, [teacher.id, authToken]);
 
   return (  
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -43,7 +53,7 @@ const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
         <div className="flex justify-between items-center p-4 border-b border-gray-700 bg-gray-900">
           <div className="flex items-center">
             <img 
-              src={teacher.profilePicture } 
+              src={teacher.profilePicture} 
               alt={teacher.name} 
               className="w-10 h-10 rounded-full mr-3"
             />
@@ -63,13 +73,13 @@ const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
         {/* Chat Window Container - Takes remaining height */}
         <div className="flex-1 overflow-hidden">
           <ChatWindow 
-            activeUser={activeUser} 
+            activeUser={{ ...activeUser, conversationId }} 
             auth={authToken}
             pic={teach}
             teacher={teacher}
             curreUser={curUser}
             isInModal={true}
-            // expertId={expertId}
+            converseId={conversationId}
           />
         </div>
       </div>
