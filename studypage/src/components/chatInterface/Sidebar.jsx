@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { UserContext } from "../contexts/userContext";
 import ContactItem from "./ContactItem";
 import { useSocket } from '../contexts/SocketContext';
+import { Link } from "react-router-dom";
 
 const Sidebar = ({ setActiveUser }) => {
   const [conversations, setConversations] = useState([]);
@@ -70,12 +71,17 @@ const Sidebar = ({ setActiveUser }) => {
               />
             ))
           ) : (
-            <div className="flex flex-col items-center justify-center h-full text-gray-400">
-              <svg className="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex flex-col items-center h-full text-gray-400">
+              {/* <svg className="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
+              </svg> */}
               <p className="text-center">No conversations yet</p>
-              <p className="text-sm text-gray-500 mt-2">Start a new chat to get going</p>
+              <p className="text-sm text-gray-500 mt-2">
+                Start a new chat at the{" "}
+                <Link to="/expertspage" className="text-blue-400 hover:underline">
+                  expert's page
+                </Link>
+              </p>
             </div>
           )
         )}
