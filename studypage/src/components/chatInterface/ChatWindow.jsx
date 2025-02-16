@@ -5,8 +5,8 @@ import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
 
 // Custom hook for managing conversations
-const useConversation = (authToken, conversationId,auth) => {
-  console.log('authauthauth',auth);
+const useConversation = (authToken, conversationId,auth,converseId) => {
+  console.log('authauthauth',converseId);
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ const useConversation = (authToken, conversationId,auth) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://studypage.onrender.com/conversations/${conversationId}/messages`,
+        `https://studypage.onrender.com/conversations/${conversationId || converseId }/messages`,
         {
           headers: { Authorization: `Bearer ${authToken || auth}` },
         }
