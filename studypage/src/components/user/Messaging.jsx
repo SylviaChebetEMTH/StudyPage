@@ -7,7 +7,7 @@ const Messaging = () => {
   // console.log('activeuser in messaging section',activeUser)
 
   return (
-    <div className="flex h-screen bg-gray-900">
+    <div className="flex h-screen bg-gray-600">
       {/* Sidebar */}
       <Sidebar setActiveUser={setActiveUser} />
 

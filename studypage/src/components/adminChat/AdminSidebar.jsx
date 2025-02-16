@@ -65,14 +65,19 @@
 // export default AdminSidebar;
 
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { FileIcon } from "lucide-react";
+import { UserContext } from "../contexts/userContext";
 
-const AdminSidebar = ({ onSelectConversation, authToken }) => {
+const AdminSidebar = ({ onSelectConversation }) => {
   const [conversations, setConversations] = useState([]);
+  const { authToken } = useContext(UserContext);
+  const [loading, setLoading] = useState(true); 
+  console.log("authToken in AdminSidebar", authToken);
 
   useEffect(() => {
     const fetchConversations = async () => {
+      setLoading(true); 
       try {
         const response = await fetch("https://studypage.onrender.com/admin/conversations", {
           headers: { Authorization: `Bearer ${authToken}` },
@@ -94,9 +99,9 @@ const AdminSidebar = ({ onSelectConversation, authToken }) => {
         console.error("Error fetching conversations:", error);
         setConversations([]);
       }
+      setLoading(false);
     };
 
-    
     fetchConversations();
   }, [authToken]);
 
