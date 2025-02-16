@@ -3,6 +3,7 @@ import { FileIcon, MessageCircle } from "lucide-react";
 import { useSocket } from '../contexts/SocketContext.js';
 import { useUserContext } from '../contexts/userContext'
 const ContactItem = ({ contact, setActiveUser }) => {
+  console.log('data in contactitem',contact)
   const { setUnreadCounts,setActiveConversation } = useSocket();
   const { authToken } = useUserContext();
   const handleClick = async () => {
@@ -56,7 +57,7 @@ const ContactItem = ({ contact, setActiveUser }) => {
       <div className="ml-3 lg:ml-4 flex-grow min-w-0">
         <div className="flex items-center justify-between">
           <p className="text-gray-200 font-medium truncate group-hover:text-white transition-colors text-sm lg:text-base">
-            {contact.expert_name}
+            {contact.expert}
           </p>
           <span className="text-xs text-gray-500 ml-2">
             {new Date(contact.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
