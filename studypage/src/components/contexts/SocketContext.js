@@ -10,19 +10,36 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [activeConversationId, setActiveConversationId] = useState(null);
 
-  // Initialize notification sound
-  const notificationSound = new Audio('./assets/mixkit-magic-notification-ring-2344.wav'); // Add your sound file
   useEffect(() => {
     if (!currentUser) return;
 
-    const newSocket = io('https://studypage.onrender.com');
+    const newSocket = io('https://studypage.onrender.com', { 
+      transports: ["websocket"], 
+      path: "/socket.io/" 
+    });
+
+    let keepAliveInterval;
 
     newSocket.on('connect', () => {
-      console.log('Connected to WebSocket server');
-      // Emit an event to associate the socket with the user
+      console.log('✅ Connected to WebSocket server');
+
+      // 🔄 Keep-alive ping every 30 seconds
+      keepAliveInterval = setInterval(() => {
+        if (newSocket.connected) {
+          console.log("🔄 Sending keep-alive ping");
+          newSocket.emit("ping");
+        }
+      }, 30000);
+
+      // Associate the socket with the user
       newSocket.emit('user_connected', { user_id: currentUser.id });
     });
 
+    newSocket.on("disconnect", (reason) => {
+      console.warn("❌ Disconnected from WebSocket:", reason);
+    });
+
+    // Handle new message event
     newSocket.on('new_message', (data) => {
       if (data.receiver_id === currentUser?.id) {
         // Only increment unread count if the conversation is not currently active
@@ -32,17 +49,17 @@ export const SocketProvider = ({ children }) => {
             [data.conversation_id]: (prev[data.conversation_id] || 0) + 1
           }));
 
-          // Play notification sound if the conversation is not active
+          // 🎵 Play notification sound
+          const notificationSound = new Audio('./assets/mixkit-magic-notification-ring-2344.wav');
           notificationSound.play().catch(error => {
-            console.error('Error playing notification sound:', error);
-            console.log('played')
+            console.error('⚠️ Error playing notification sound:', error);
           });
 
-          // Show browser notification
+          // 🔔 Show browser notification
           if (Notification.permission === 'granted') {
             new Notification('New Message', {
               body: data.message.content || 'You have a new message',
-              icon: './assets/mixkit-magic-notification-ring-2344.wav', // Add your icon
+              icon: './assets/icon.png', // Ensure this icon file exists
             });
           }
         }
@@ -52,24 +69,27 @@ export const SocketProvider = ({ children }) => {
     setSocket(newSocket);
 
     return () => {
+      console.log("🔌 Cleaning up WebSocket connection...");
       newSocket.disconnect();
+      clearInterval(keepAliveInterval); // ✅ Prevent memory leaks
     };
-  }, [currentUser ]);
+  }, [currentUser]);
 
   // Function to mark conversation as active
   const setActiveConversation = (conversationId) => {
     setActiveConversationId(conversationId);
-    // Reset unread count for this conversation
     setUnreadCounts(prev => ({
       ...prev,
       [conversationId]: 0
     }));
   };
 
-  // Request notification permissions on mount
+  // Request browser notification permission on mount
   useEffect(() => {
     if (Notification.permission === 'default') {
-      Notification.requestPermission();
+      Notification.requestPermission().then((permission) => {
+        console.log("🔔 Notification permission:", permission);
+      });
     }
   }, []);
 

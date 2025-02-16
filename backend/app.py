@@ -24,6 +24,8 @@ import random
 import cloudinary
 import cloudinary.uploader
 from dotenv import load_dotenv
+from gevent import monkey
+monkey.patch_all()
 load_dotenv()
 
 import requests
@@ -35,7 +37,6 @@ from email import encoders
 SECRET_KEY = os.urandom(24)
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
 api = Api(app)
 app.config["SECRET_KEY"] = os.urandom(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('database_url')
@@ -47,7 +48,31 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'studypage001@gmail.com'
 app.config['MAIL_PASSWORD'] = 'hbib knho xqon emrw'  
+ALLOWED_ORIGINS = ["http://localhost:3001", "https://www.studypage.cloud"]
+socketio = SocketIO(app, cors_allowed_origins='*')
+#     cors_allowed_origins=ALLOWED_ORIGINS,
+#     async_mode='gevent',  # Use gevent as async mode
+#     ping_timeout=60,
+#     ping_interval=25,
+#     logger=True,  # Enable logging for debugging
+#     engineio_logger=True  # Enable Engine.IO logging
+# )
 
+@socketio.on_error()
+def error_handler(e):
+    print(f"SocketIO error: {str(e)}")
+
+@socketio.on('connect')
+def handle_connect():
+    print("Client connected")
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print("Client disconnected")
+
+@socketio.on('user_connected')
+def handle_user_connection(data):
+    print(f"User connected: {data}")
 cloudinary.config(
     cloud_name=os.environ.get('cloud_name'),
     api_secret=os.environ.get('cloudinary_api_secret'),
@@ -184,17 +209,47 @@ jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 mail = Mail(app) 
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-CORS(app, resources={r"/*": {"origins": ["http://localhost:3001", "https://www.studypage.cloud"]}})
+CORS(app, 
+     supports_credentials=True,
+     allow_headers=["Content-Type", "Authorization"],
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
-@app.before_request
-def handle_options_request():
-    if request.method == 'OPTIONS':
-        response = make_response()
-        # response.headers['Access-Control-Allow-Origin'] = 'https://www.studypage.cloud'
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-        return response
+@app.after_request
+def after_request(response):
+    request_origin = request.headers.get('Origin')
 
+    # ✅ Allow all incoming requests from valid origins
+    if request_origin in ["http://localhost:3001", "https://www.studypage.cloud"]:
+        response.headers['Access-Control-Allow-Origin'] = request_origin  # Return the exact allowed origin
+    else:
+        response.headers['Access-Control-Allow-Origin'] = '*'  # Allow all origins (for debugging)
+
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    
+    return response
+
+
+@app.route('/conversations', methods=['OPTIONS'])
+def handle_options():
+    response = make_response()
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    return response
+
+@app.route('/conversations/<int:conversation_id>/messages', methods=['GET'])
+@jwt_required()
+def get_messages(conversation_id):
+    try:
+        conversation = Conversation.query.get_or_404(conversation_id)
+        messages = [message.to_dict() for message in conversation.messages]
+        return jsonify(messages), 200
+    except Exception as e:
+        # Log the error for debugging
+        app.logger.error(f"Error fetching messages: {e}")
+        return jsonify({"error": "An unexpected error occurred."}), 500
 
 PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
 # PAYSTACK_SECRET_KEY =os.environ.get('PAYSTACK_SECRET_KEY')
@@ -1325,95 +1380,161 @@ def get_user_requests():
         print(f"Error occurred: {e}")
         return jsonify({'error': str(e)}), 500
 
-@app.route('/conversations/<int:conversation_id>/messages', methods=['GET'])
+@app.route('/conversationsid/<int:expert_id>', methods=['GET'])
 @jwt_required()
-def get_messages(conversation_id):
-    try:
-        conversation = Conversation.query.get_or_404(conversation_id)
-        messages = [message.to_dict() for message in conversation.messages]
-        return jsonify(messages), 200
-    except Exception as e:
-        # Log the error for debugging
-        app.logger.error(f"Error fetching messages: {e}")
-        return jsonify({"error": "An unexpected error occurred."}), 500
+def get_conversations_id(expert_id):
+    user_id = get_jwt_identity()
 
-# @app.route('/conversations', methods=['GET'])
-# @jwt_required()
-# def get_conversations():
-#     user_id = get_jwt_identity()
+    # Query a single conversation (assuming one exists per user-expert pair)
+    conversation = Conversation.query.filter_by(client_id=user_id, expert_id=expert_id).first()
 
-#     # Query conversations where the user is either a client or linked to an expert
-#     conversations = Conversation.query.filter(
-#         (Conversation.client_id == user_id) | (Conversation.expert_id == user_id)
-#     ).all()
-
-#     # Prepare response with related expert details
-#     response = []
-#     for conv in conversations:
-#         expert = Expert.query.get(conv.expert_id)
-#         response.append({
-#             'id': conv.id,
-#             'client_id': conv.client_id,
-#             'expert_id': conv.expert_id,
-#             'project_id': conv.project_id,
-#             'created_at': conv.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-#             'expert': {
-#                 'id': expert.id,
-#                 'name': expert.name
-#             } if expert else None
-#         })
-
-#     return jsonify(response), 200
+    if conversation:
+        return jsonify([{"id": conversation.id}]), 200
+    else:
+        return jsonify([]), 200
 
 @app.route('/conversations', methods=['GET'])
 @jwt_required()
 def get_conversations():
     user_id = get_jwt_identity()
 
+    # Query conversations where the user is either a client or linked to an expert
     conversations = Conversation.query.filter(
         (Conversation.client_id == user_id) | (Conversation.expert_id == user_id)
     ).all()
 
-    result = []
-    for conversation in conversations:
-        latest_message = MessageModel.query.filter_by(conversation_id=conversation.id).order_by(
-            MessageModel.timestamp.desc()
-        ).first()
-
-        unread_count = MessageModel.query.filter_by(
-            conversation_id=conversation.id,
-            receiver_id=user_id,
-            read=False
-        ).count()
-
-        message_content = "No messages yet"
-        if latest_message:
-            if latest_message.attachments:
-                num_attachments = len(latest_message.attachments.split(', '))
-                file_text = "files" if num_attachments > 1 else "file"
-                message_content = f"📎 Sent {num_attachments} {file_text}"
-                if latest_message.content:
-                    message_content += f": {latest_message.content}"
-            else:
-                message_content = latest_message.content
-        result.append({
-            'id': conversation.id,
+    # Prepare response with related expert details
+    response = []
+    for conv in conversations:
+        expert = Expert.query.get(conv.expert_id)
+        response.append({
+            'id': conv.id,
+            'client_id': conv.client_id,
+            'expert_id': conv.expert_id,
+            'project_id': conv.project_id,
+            'created_at': conv.created_at.strftime('%Y-%m-%d %H:%M:%S'),
             'expert': {
-                'id': conversation.expert_id,
-                'expert_name': Expert.query.get(conversation.expert_id).name
-            },
-            'client': {
-                'id': conversation.client_id,
-                'client_name': User.query.get(conversation.client_id).username
-            },
-            'latest_message': message_content,
-            'is_file': bool(latest_message and latest_message.file_path if hasattr(latest_message, 'file_path') else False),
-            'timestamp': latest_message.timestamp.isoformat() if latest_message else None,
-            'unread_count': unread_count,
+                'id': expert.id,
+                'name': expert.name
+            } if expert else None
         })
 
-    result.sort(key=lambda x: x['timestamp'] if x['timestamp'] else '', reverse=True)
-    return jsonify(result)
+    return jsonify(response), 200
+
+# @app.route('/conversations', methods=['GET'])
+# @jwt_required()
+# def get_conversations():
+#     user_id = get_jwt_identity()
+
+#     conversations = Conversation.query.filter(
+#         (Conversation.client_id == user_id) | (Conversation.expert_id == user_id)
+#     ).all()
+
+#     result = []
+#     for conversation in conversations:
+#         latest_message = MessageModel.query.filter_by(conversation_id=conversation.id).order_by(
+#             MessageModel.timestamp.desc()
+#         ).first()
+
+#         unread_count = MessageModel.query.filter_by(
+#             conversation_id=conversation.id,
+#             receiver_id=user_id,
+#             read=False
+#         ).count()
+
+#         # Fetch all messages for this conversation
+#         messages = [
+#             {
+#                 'id': msg.id,
+#                 'sender_id': msg.sender_id,
+#                 'receiver_id': msg.receiver_id,
+#                 'content': msg.content,
+#                 'timestamp': msg.timestamp.isoformat(),
+#                 'is_file': bool(msg.file_path if hasattr(msg, 'file_path') else False),
+#             }
+#             for msg in MessageModel.query.filter_by(conversation_id=conversation.id).order_by(MessageModel.timestamp.asc()).all()
+#         ]
+
+#         message_content = "No messages yet"
+#         if latest_message:
+#             if latest_message.attachments:
+#                 num_attachments = len(latest_message.attachments.split(', '))
+#                 file_text = "files" if num_attachments > 1 else "file"
+#                 message_content = f"📎 Sent {num_attachments} {file_text}"
+#                 if latest_message.content:
+#                     message_content += f": {latest_message.content}"
+#             else:
+#                 message_content = latest_message.content
+
+#         result.append({
+#             'id': conversation.id,
+#             'expert': {
+#                 'id': conversation.expert_id,
+#                 'expert_name': Expert.query.get(conversation.expert_id).name
+#             },
+#             'client': {
+#                 'id': conversation.client_id,
+#                 'client_name': User.query.get(conversation.client_id).username
+#             },
+#             'latest_message': message_content,
+#             'timestamp': latest_message.timestamp.isoformat() if latest_message else None,
+#             'unread_count': unread_count,
+#             'messages': messages  # ✅ Add full message history here
+#         })
+
+#     result.sort(key=lambda x: x['timestamp'] if x['timestamp'] else '', reverse=True)
+#     return jsonify(result)
+
+
+# @app.route('/conversations', methods=['GET'])
+# @jwt_required()
+# def get_conversations():
+#     user_id = get_jwt_identity()
+
+#     conversations = Conversation.query.filter(
+#         (Conversation.client_id == user_id) | (Conversation.expert_id == user_id)
+#     ).all()
+
+#     result = []
+#     for conversation in conversations:
+#         latest_message = MessageModel.query.filter_by(conversation_id=conversation.id).order_by(
+#             MessageModel.timestamp.desc()
+#         ).first()
+
+#         unread_count = MessageModel.query.filter_by(
+#             conversation_id=conversation.id,
+#             receiver_id=user_id,
+#             read=False
+#         ).count()
+
+#         message_content = "No messages yet"
+#         if latest_message:
+#             if latest_message.attachments:
+#                 num_attachments = len(latest_message.attachments.split(', '))
+#                 file_text = "files" if num_attachments > 1 else "file"
+#                 message_content = f"📎 Sent {num_attachments} {file_text}"
+#                 if latest_message.content:
+#                     message_content += f": {latest_message.content}"
+#             else:
+#                 message_content = latest_message.content
+#         result.append({
+#             'id': conversation.id,
+#             'expert': {
+#                 'id': conversation.expert_id,
+#                 'expert_name': Expert.query.get(conversation.expert_id).name
+#             },
+#             'client': {
+#                 'id': conversation.client_id,
+#                 'client_name': User.query.get(conversation.client_id).username
+#             },
+#             'latest_message': message_content,
+#             'is_file': bool(latest_message and latest_message.file_path if hasattr(latest_message, 'file_path') else False),
+#             'timestamp': latest_message.timestamp.isoformat() if latest_message else None,
+#             'unread_count': unread_count,
+#         })
+
+#     result.sort(key=lambda x: x['timestamp'] if x['timestamp'] else '', reverse=True)
+#     return jsonify(result)
 
 @app.route('/experts/<int:id>', methods=['GET'])
 def get_expert(id):
@@ -2015,5 +2136,5 @@ def patch_service(id):
 api.add_resource(Projects, '/projects')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app,debug=True)
     
