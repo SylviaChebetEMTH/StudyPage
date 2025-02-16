@@ -5,7 +5,7 @@ import ChatWindow from './chatInterface/ChatWindow';
 import { UserContext } from './contexts/userContext';
 
 const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
-  const { currentUser, authToken } = useContext(UserContext);
+  // const { cur } = useContext(UserContext);
   const [activeUser, setActiveUser] = useState({
     conversationId: -1, 
     expert_id: teacher.id,
@@ -14,6 +14,27 @@ const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
   });
   localStorage.setItem('teacherpic','teacher.profilePicture')
   // console.log('teacherpic',teacher.p)
+  const { authToken } = useContext(UserContext);
+
+  const requestId= async() => {
+    try {
+      const response = await fetch(`https://studypage.onrender.com/conversations/${teacher.id}`,
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${authToken}`}
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch id")
+      }
+      const data = await response.json();
+      console.log(data.id)
+      const expertId = data.id
+    } catch (error){
+      console.error("Error fetching id")
+    }
+  }
 
   return (  
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -43,11 +64,12 @@ const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
         <div className="flex-1 overflow-hidden">
           <ChatWindow 
             activeUser={activeUser} 
-            auth={auth}
+            auth={authToken}
             pic={teach}
             teacher={teacher}
             curreUser={curUser}
             isInModal={true}
+            // expertId={expertId}
           />
         </div>
       </div>

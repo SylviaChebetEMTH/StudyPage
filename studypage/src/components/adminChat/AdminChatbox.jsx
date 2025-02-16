@@ -6,10 +6,12 @@ import { UserContext } from "../contexts/userContext";
 const AdminChatBox = ({ conversationId, conversationDetails }) => {
   const [messages, setMessages] = useState([]);
   const { authToken } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
   console.log('conversation details admin',conversationDetails)
 
   useEffect(() => {
     if (conversationId) {
+      setLoading(true);
       const fetchMessages = async () => {
         try {
           const response = await fetch(`https://studypage.onrender.com/conversations/${conversationId}/messages`, {
@@ -29,7 +31,7 @@ const AdminChatBox = ({ conversationId, conversationDetails }) => {
           console.error("Error fetching messages:", error);
         }
       };
-  
+      setLoading(false);
       fetchMessages();
     }
   }, [conversationId, authToken]);  

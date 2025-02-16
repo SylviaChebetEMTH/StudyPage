@@ -72,10 +72,12 @@ import { UserContext } from "../contexts/userContext";
 const AdminSidebar = ({ onSelectConversation }) => {
   const [conversations, setConversations] = useState([]);
   const { authToken } = useContext(UserContext);
+  const [loading, setLoading] = useState(true); 
   console.log("authToken in AdminSidebar", authToken);
 
   useEffect(() => {
     const fetchConversations = async () => {
+      setLoading(true); 
       try {
         const response = await fetch("https://studypage.onrender.com/admin/conversations", {
           headers: { Authorization: `Bearer ${authToken}` },
@@ -97,9 +99,9 @@ const AdminSidebar = ({ onSelectConversation }) => {
         console.error("Error fetching conversations:", error);
         setConversations([]);
       }
+      setLoading(false);
     };
 
-    
     fetchConversations();
   }, [authToken]);
 

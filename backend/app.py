@@ -1380,6 +1380,19 @@ def get_user_requests():
         print(f"Error occurred: {e}")
         return jsonify({'error': str(e)}), 500
 
+@app.route('/conversationsid/<int:expert_id>', methods=['GET'])
+@jwt_required()
+def get_conversations_id(expert_id):
+    user_id = get_jwt_identity()
+
+    # Query a single conversation (assuming one exists per user-expert pair)
+    conversation = Conversation.query.filter_by(client_id=user_id, expert_id=expert_id).first()
+
+    if conversation:
+        return jsonify([{"id": conversation.id}]), 200
+    else:
+        return jsonify([]), 200
+
 @app.route('/conversations', methods=['GET'])
 @jwt_required()
 def get_conversations():
