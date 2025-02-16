@@ -81,7 +81,7 @@ const Messaging = () => {
       {/* Mobile Menu Button */}
       <button 
         onClick={toggleSidebar}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition-colors"
+        className="lg:hidden fixed top-4 left-4 z-50 p-3 rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-lg"
       >
         {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
@@ -95,6 +95,7 @@ const Messaging = () => {
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         transition-transform duration-300 ease-in-out
         z-40 lg:z-auto
+        bg-gray-800
       `}>
         <Sidebar setActiveUser={(user) => {
           setActiveUser(user);
@@ -105,7 +106,7 @@ const Messaging = () => {
       {/* Overlay for mobile */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-30 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -129,15 +130,16 @@ const Messaging = () => {
                 d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
               />
             </svg>
-            <p className="text-lg lg:text-xl font-semibold text-center text-white">Select a conversation from the sidebar to begin</p>
-            <p className="text-gray-400 mt-2 text-center text-sm lg:text-base leading-relaxed max-w-lg">
-              <span className="font-bold text-gray-300">Important Notice</span><br/>
-              To ensure a secure and professional environment:<br/>
-              1. Do not exchange personal contact information or discuss work outside the platform.<br/>
-              <span className="text-red-400 font-semibold">Violations may result in account suspension.</span><br/>
-              2. Experts are strictly required to work only on projects that have been fully paid for.<br/>
-              Your cooperation helps us maintain a safe and trustworthy community. Thank you!
-            </p>
+            <p className="text-lg lg:text-xl font-semibold text-center text-white">Select a conversation to start messaging</p>
+            <div className="text-gray-400 mt-4 text-center text-sm lg:text-base max-w-lg">
+              <p className="font-bold text-gray-300 mb-2">Important Notice</p>
+              <ul className="list-inside space-y-1">
+                <li>1. Do not exchange personal contact information or discuss work outside the platform.</li>
+                <li>2. Experts must only work on fully paid projects.</li>
+                <li className="text-red-400 font-semibold">Violations may result in account suspension.</li>
+              </ul>
+              <p className="mt-2">Your cooperation helps maintain a safe and trustworthy community. Thank you!</p>
+            </div>
           </div>
         )}
       </div>
