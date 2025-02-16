@@ -129,8 +129,15 @@ const Messaging = () => {
                 d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
               />
             </svg>
-            <p className="text-lg lg:text-xl font-semibold text-center">Select a conversation to begin</p>
-            <p className="text-gray-500 mt-2 text-center text-sm lg:text-base">Choose from your recent chats in the sidebar</p>
+            <p className="text-lg lg:text-xl font-semibold text-center text-white">Select a conversation from the sidebar to begin</p>
+            <p className="text-gray-400 mt-2 text-center text-sm lg:text-base leading-relaxed max-w-lg">
+              <span className="font-bold text-gray-300">Important Notice</span><br/>
+              To ensure a secure and professional environment:<br/>
+              1. Do not exchange personal contact information or discuss work outside the platform.<br/>
+              <span className="text-red-400 font-semibold">Violations may result in account suspension.</span><br/>
+              2. Experts are strictly required to work only on projects that have been fully paid for.<br/>
+              Your cooperation helps us maintain a safe and trustworthy community. Thank you!
+            </p>
           </div>
         )}
       </div>
