@@ -1385,7 +1385,6 @@ def get_user_requests():
 def get_conversations_id(expert_id):
     user_id = get_jwt_identity()
 
-    # Query a single conversation (assuming one exists per user-expert pair)
     conversation = Conversation.query.filter_by(client_id=user_id, expert_id=expert_id).first()
 
     if conversation:
