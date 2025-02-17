@@ -93,6 +93,7 @@ export const UserProvider = ({ children }) => {
   };
 
   const login = (email, password) => {
+    setLoading(true);
     fetch("https://studypage.onrender.com/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -110,6 +111,7 @@ export const UserProvider = ({ children }) => {
           toast.error(res.message || "Invalid credentials");
         }
       })
+      setLoading(false)
       // .catch(() => toast.error("Something went wrong"));
   };
 
