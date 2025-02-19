@@ -20,6 +20,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   console.log("setAuthToken:", setAuthToken);
   console.log("setCurrentUser :", setCurrentUser);
