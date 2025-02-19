@@ -5,22 +5,21 @@ import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import googleIcon from '../assets/googleIcon.png';
 import loginImage from "../assets/login.png";
 import loginVideo from '../assets/loginVideo.mp4';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 export default function Login() {
   const { setAuthToken, setCurrentUser } = useContext(UserContext);
-  const { login } = useContext(UserContext);
+  const { login, loading } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(false);
 
   console.log("setAuthToken:", setAuthToken);
   console.log("setCurrentUser :", setCurrentUser);
@@ -84,28 +83,33 @@ export default function Login() {
     navigate("/forgot-password");
   };
 
-
-
   const handleSubmit = async (e) => {
-    setLoading(true);
     e.preventDefault();
+    // setLoading(true);
+    console.log("Loading state set to true");
+  
     try {
       const user = await login(email, password);
       if (user) {
-        if (user.is_admin === true) {
+        localStorage.setItem("isAdmin", user.is_admin);
+        
+        // Delay to ensure UI update before navigation
+        await new Promise(resolve => setTimeout(resolve, 500));
+  
+        if (user.is_admin) {
           navigate("/admin/dashboard");
-          localStorage.setItem('isAdmin', user.is_admin);
         } else {
           navigate("/");
         }
       }
     } catch (error) {
       console.error("Login failed:", error);
-
+    } finally {
+      // setLoading(false);
+      console.log("Loading state set to false");
     }
-    setLoading(false);
   };
-
+  
   const handleGoHome = () => {
     navigate("/");
   };
@@ -116,166 +120,132 @@ export default function Login() {
   return (
     <div className="login-container">
       <div className="relative min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <video
-        autoPlay
-        loop
-        muted
-        className="absolute top-0 left-0 w-full h-full object-cover -z-10"
-        onEnded={handleVideoEnd}
-      >
-        <source
-          src={loginVideo}
-          type="video/mp4"
-        />
-        Your browser does not support the video tag.
-      </video>
-
-        <div className="max-w-screen-lg w-full bg-white rounded-lg overflow-hidden shadow-md h-[550px] ">
-          <div className="flex flex-col md:flex-row">
-            {/* Right white half */}
-            <div className="md:w-1/2 bg-gray-800 text-white flex justify-center items-center px-4 py-8 md:px-8">
-              <div className="flex items-center justify-center md:h-full">
-                <div className="w-full max-w-md">
-                  <div className="text-center">
-                    <button
-                      onClick={handleGoHome}
-                      className="flex flex-start px-2 py-2 hover:text-yellow-400 text-white font-thin rounded"
-                    >
-                      Back to website
-                    </button>
-                  </div>
-                  <div className="bg-gray-800 overflow-hidden p-2">
-                    <h2 className="text-3xl font-semibold mb-4 text-center">
-                      Log in
-                    </h2>
-                    <form className="space-y-4" onSubmit={handleSubmit}>
-                      <div>
-                        <label
-                          htmlFor="email"
-                          className="block text-sm font-medium text-gray-300 hover:underline"
-                        >
-                          Email address
-                        </label>
-                        <input
-                          id="email"
-                          name="email"
-                          type="email"
-                          autoComplete="email"
-                          required
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
-                          placeholder="Your Email"
-                        />
-                      </div>
-                      <div className="relative">
-                        <label
-                          htmlFor="password"
-                          className="block text-sm font-medium text-gray-300 hover:underline"
-                        >
-                          Password
-                        </label>
-                        <input
-                          id="password"
-                          name="password"
-                          type={showPassword ? "text" : "password"}
-                          autoComplete="current-password"
-                          required
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          className="px-3 py-2 bg-gray-700 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 hover:ring-2 hover:ring-yellow-500"
-                          placeholder="Password"
-                        />
-                        <span
-                          className="absolute inset-y-0 right-0 pr-3 pt-4 flex items-center cursor-pointer text-gray-300"
-                          onClick={() => setShowPassword(!showPassword)}
-                        >
-                          <FontAwesomeIcon
-                            icon={showPassword ? faEyeSlash : faEye}
-                          />
-                        </span>
-                      </div>
-                      <div>
-                      <button
-                        type="submit"
-                        disabled={loading}
-                        className={`btn-primary w-full py-2 px-4 mt-4 text-white font-semibold rounded flex items-center justify-center ${
-                          loading ? "bg-yellow-500 cursor-not-allowed" : "bg-yellow-400 hover:bg-yellow-500"
-                        }`}
-                      >
-                        {loading ? (
-                          <>
-                            <div className="w-5 h-5 border-2 border-t-white border-white/50 rounded-full animate-spin mr-2"></div>
-                            Logging in...
-                          </>
-                        ) : (
-                          "Log in"
-                        )}
-                      </button>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <input
-                            id="remember-me"
-                            name="remember-me"
-                            type="checkbox"
-                            className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                          />
-                          <label
-                            htmlFor="remember-me"
-                            className="ml-2 block text-sm text-gray-300"
-                          >
-                            Remember me
-                          </label>
-                        </div>
-                        <div className="text-sm">
-                          <button
-                            onClick={handleNavigateToForgotPassword}
-                            className="font-medium text-blue-500 hover:text-blue-400"
-                          >
-                            Forgot your password?
-                          </button>
-                        </div>
-                      </div>
-                      <div>
-                        <div className="mt-6 text-center">
-                          <div className="text-gray-500">or</div>
-                          <div className="flex items-center justify-center mt-4 space-x-4 ">
-                            <button
-                              onClick={handleGoogleSignup} className="flex items-center justify-center py-1 px-3 w-auto text-gray-300 rounded-md shadow-sm text-sm border border-gray-200">
-                              <img src={googleIcon} alt="Google" className="w-6 h-6 mr-2" />
-                              Log in with Google
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-center mt-4">
-                        <span className="text-sm text-gray-500">
-                          Don't have an account?
-                        </span>{" "}
-                        <Link
-                          to="/signup"
-                          className="text-sm font-medium text-blue-500 hover:text-blue-400"
-                        >
-                          Sign up
-                        </Link>
-                      </div>
-
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className="bg-cover bg-center md:w-1/2"
-              style={{ backgroundImage: `url(${loginImage})` }}
+        {/* Background Video */}
+        <video
+          autoPlay
+          loop
+          muted
+          className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+          onEnded={handleVideoEnd}
+        >
+          <source src={loginVideo} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+  
+        {/* Login Card */}
+        <div className="max-w-4xl w-full bg-white rounded-xl overflow-hidden shadow-lg md:h-[600px] flex flex-col md:flex-row">
+          {/* Left Section - Login Form */}
+          <div className="md:w-1/2 bg-gray-900 text-white flex flex-col justify-center p-6 md:p-8">
+            {/* Back Button */}
+            <button
+              onClick={handleGoHome}
+              className="text-yellow-400 hover:text-yellow-300 text-sm flex items-center space-x-2 mb-4"
             >
-            </div>
+              <FontAwesomeIcon icon={faArrowLeft} />
+              <span>Back to website</span>
+            </button>
+  
+            {/* Login Header */}
+            <h2 className="text-3xl font-bold mb-6 text-center">Log in</h2>
+  
+            {/* Login Form */}
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              {/* Email Input */}
+              <div>
+                <label htmlFor="email" className="text-sm font-medium text-gray-400">Email address</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mt-1 block w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-white"
+                  placeholder="Your Email"
+                />
+              </div>
+  
+              {/* Password Input */}
+              <div className="relative">
+                <label htmlFor="password" className="text-sm font-medium text-gray-400">Password</label>
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="mt-1 block w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-white"
+                  placeholder="Password"
+                />
+                {/* Show/Hide Password Icon */}
+                <span
+                  className="absolute right-3 top-9 cursor-pointer text-gray-400 hover:text-gray-300"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                </span>
+              </div>
+  
+              {/* Login Button */}
+              <button
+                type="button" // Prevents form submission interfering
+                disabled={loading}
+                onClick={handleSubmit}
+                className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center transition ${
+                  loading ? "bg-yellow-500 cursor-not-allowed" : "bg-yellow-400 hover:bg-yellow-500"
+                }`}
+              >
+                {loading ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-t-white border-white/50 rounded-full animate-spin mr-2"></div>
+                    Logging in...
+                  </>
+                ) : (
+                  "Log in"
+                )}
+              </button>
 
+              {/* Remember Me & Forgot Password */}
+              <div className="flex items-center justify-between text-sm mt-3">
+                <label className="flex items-center space-x-2">
+                  <input type="checkbox" className="form-checkbox text-yellow-400" />
+                  <span>Remember me</span>
+                </label>
+                <button
+                  onClick={handleNavigateToForgotPassword}
+                  className="text-blue-400 hover:text-blue-300"
+                >
+                  Forgot password?
+                </button>
+              </div>
+  
+              {/* Divider */}
+              <div className="mt-6 text-center text-gray-500">or</div>
+  
+              {/* Social Login */}
+              <button
+                onClick={handleGoogleSignup}
+                className="mt-4 flex items-center justify-center py-2 px-3 w-full border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-800 transition"
+              >
+                <img src={googleIcon} alt="Google" className="w-5 h-5 mr-2" />
+                Log in with Google
+              </button>
+  
+              <div className="text-center mt-4 text-sm text-gray-400">
+                Don't have an account?{" "}
+                <Link to="/signup" className="text-blue-400 hover:text-blue-300">
+                  Sign up
+                </Link>
+              </div>
+            </form>
           </div>
+  
+          {/* Right Section - Image */}
+          <div className="hidden md:block md:w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${loginImage})` }} />
         </div>
       </div>
     </div>
   );
+  
 }
-

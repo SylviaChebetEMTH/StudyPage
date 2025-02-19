@@ -117,15 +117,15 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
           onClick={() => onHire(expert.id)}
           className="w-full bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors duration-300 flex items-center justify-center gap-2"
         >
-          <span>Hire Expert</span>
+          <span>Submit Project</span>
           <span className="text-sm">→</span>
         </button>
         {currentUser && (
           <button
             onClick={() => setShowChatModal(true)}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-500 transition-colors duration-300 flex items-center justify-center gap-2 mt-2"
+            className="w-full bg-blue-900 text-white py-2 px-4 rounded-lg hover:bg-blue-500 transition-colors duration-300 flex items-center justify-center gap-2 mt-2"
           >
-            <span>Start Chat</span>
+            <span>Chat</span>
             <IoMdChatbubbles />
           </button>
         )}

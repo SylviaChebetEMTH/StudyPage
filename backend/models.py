@@ -88,7 +88,6 @@ class ProjectType(db.Model):
             'name': self.name,
         }
 
-    # Relationship to services
     services = db.relationship('Service', backref='project_type')
 
 class Conversation(db.Model):
