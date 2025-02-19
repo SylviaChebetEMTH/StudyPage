@@ -4,6 +4,8 @@ import { Star } from 'lucide-react';
 import ChatModal from './ChatModal';
 import ExpertDetailModal from './admin/ExpertDetailModal'
 import { UserContext } from './contexts/userContext';
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // studypage/src/components/admin/ExpertDetailModal.jsx
 const ExpertCard = ({ expert, onHire, currentUser }) => {
   const [isHovered, setIsHovered] = useState(null);
@@ -118,7 +120,7 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
           className="w-full bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors duration-300 flex items-center justify-center gap-2"
         >
           <span>Submit Project</span>
-          <span className="text-sm">→</span>
+          <FontAwesomeIcon icon={faArrowRight} />
         </button>
         {currentUser && (
           <button
