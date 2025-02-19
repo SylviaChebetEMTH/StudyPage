@@ -45,7 +45,7 @@ export const UserProvider = ({ children }) => {
   const nav = useNavigate();
   const [authToken, setAuthToken] = useState(() => localStorage.getItem("token") || null);
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fetchCurrentUser = async () => {
     if (authToken) {
@@ -91,29 +91,57 @@ export const UserProvider = ({ children }) => {
       })
       // .catch(() => toast.error("Something went wrong"));
   };
-
-  const login = (email, password) => {
-    setLoading(true);
-    fetch("https://studypage.onrender.com/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.access_token) {
-          setAuthToken(res.access_token);
-          localStorage.setItem("token", res.access_token);
-          localStorage.setItem("refresh_token", res.refresh_token);
-          toast.success("Login successful");
-          nav("/");
-        } else {
-          toast.error(res.message || "Invalid credentials");
-        }
-      })
-      setLoading(false)
-      // .catch(() => toast.error("Something went wrong"));
+  const login = async (email, password) => {
+    setLoading(true); // Start loading
+  
+    try {
+      const response = await fetch("https://studypage.onrender.com/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+  
+      const res = await response.json();
+  
+      if (response.ok && res.access_token) {
+        setAuthToken(res.access_token);
+        localStorage.setItem("token", res.access_token);
+        localStorage.setItem("refresh_token", res.refresh_token);
+        toast.success("Login successful");
+        nav("/");
+      } else {
+        toast.error(res.message || "Invalid credentials");
+      }
+    } catch (error) {
+      console.error("Login request failed:", error);
+      toast.error("Network error. Please try again.");
+    } finally {
+      setLoading(false); // Stop loading in all cases
+    }
   };
+  
+  // const login = (email, password) => {
+  //   // setLoading(true);
+  //   fetch("https://studypage.onrender.com/login", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({ email, password }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       if (res.access_token) {
+  //         setAuthToken(res.access_token);
+  //         localStorage.setItem("token", res.access_token);
+  //         localStorage.setItem("refresh_token", res.refresh_token);
+  //         toast.success("Login successful");
+  //         nav("/");
+  //       } else {
+  //         toast.error(res.message || "Invalid credentials");
+  //       }
+  //     })
+  //     // setLoading(false)
+  //     // .catch(() => toast.error("Something went wrong"));
+  // };
 
   const handleLogout = () => {
     setAuthToken(null);
@@ -127,28 +155,7 @@ export const UserProvider = ({ children }) => {
     handleLogout(); // Clear tokens & state
     window.location.href = "/login"; // Hard refresh ensures fresh login state
   };
-  
 
-  // const logout = () => {
-  //   nav("/login"); // Redirect user immediately
-  
-  //   fetchWithAuth("https://studypage.onrender.com/logout", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       if (res.success) {
-  //         toast.success("Logged out successfully");
-  //       } else {
-  //         toast.error("Something went wrong");
-  //       }
-  //     })
-  //     .catch(() => toast.error("Something went wrong"))
-  //     .finally(() => {
-  //       handleLogout(); // Cleanup token and user data
-  //     });
-  // };
   
 
   const contextData = {

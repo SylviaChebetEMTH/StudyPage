@@ -4,6 +4,8 @@ import { Star } from 'lucide-react';
 import ChatModal from './ChatModal';
 import ExpertDetailModal from './admin/ExpertDetailModal'
 import { UserContext } from './contexts/userContext';
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // studypage/src/components/admin/ExpertDetailModal.jsx
 const ExpertCard = ({ expert, onHire, currentUser }) => {
   const [isHovered, setIsHovered] = useState(null);
@@ -117,15 +119,15 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
           onClick={() => onHire(expert.id)}
           className="w-full bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors duration-300 flex items-center justify-center gap-2"
         >
-          <span>Hire Expert</span>
-          <span className="text-sm">→</span>
+          <span>Submit Project</span>
+          <FontAwesomeIcon icon={faArrowRight} />
         </button>
         {currentUser && (
           <button
             onClick={() => setShowChatModal(true)}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-500 transition-colors duration-300 flex items-center justify-center gap-2 mt-2"
+            className="w-full bg-blue-900 text-white py-2 px-4 rounded-lg hover:bg-blue-500 transition-colors duration-300 flex items-center justify-center gap-2 mt-2"
           >
-            <span>Start Chat</span>
+            <span>Chat</span>
             <IoMdChatbubbles />
           </button>
         )}
