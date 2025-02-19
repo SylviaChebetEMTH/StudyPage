@@ -87,6 +87,7 @@ export default function Login() {
 
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
       const user = await login(email, password);
@@ -102,6 +103,7 @@ export default function Login() {
       console.error("Login failed:", error);
 
     }
+    setLoading(false);
   };
 
   const handleGoHome = () => {
@@ -194,12 +196,22 @@ export default function Login() {
                         </span>
                       </div>
                       <div>
-                        <button
-                          type="submit"
-                          className="btn-primary w-full py-2 px-4 mt-4 bg-yellow-400 hover:bg-yellow-500 text-white font-semibold rounded"
-                        >
-                          Log in
-                        </button>
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className={`btn-primary w-full py-2 px-4 mt-4 text-white font-semibold rounded flex items-center justify-center ${
+                          loading ? "bg-yellow-500 cursor-not-allowed" : "bg-yellow-400 hover:bg-yellow-500"
+                        }`}
+                      >
+                        {loading ? (
+                          <>
+                            <div className="w-5 h-5 border-2 border-t-white border-white/50 rounded-full animate-spin mr-2"></div>
+                            Logging in...
+                          </>
+                        ) : (
+                          "Log in"
+                        )}
+                      </button>
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
