@@ -1,7 +1,10 @@
 import json
 import os
 
-OUTPUT_FILE = "services.json"
+OUTPUT_FILE = "data/services.json"
+
+if not os.path.exists("data"):
+    os.makedirs("data")
 
 if os.path.exists(OUTPUT_FILE):
     print(f"⚠️ {OUTPUT_FILE} already exists. Skipping generation.")
