@@ -373,11 +373,20 @@ const ProjectRequest = () => {
         {/* Pricing Breakdown */}
         {selectedService && numberOfPages > 0 && (
           <div className="mt-4 p-3 bg-white rounded shadow">
+            <div className="mb-6 p-4 bg-gray-100 border-l-4 border-blue-500 rounded-lg shadow-md">
+              <h4 className="text-lg font-bold text-gray-800">🔒 Protected Payments with Escrow</h4>
+              <p className="text-gray-600 text-sm">
+                Our platform uses an escrow system to protect your payments. Funds are only released to the Experts 
+                when it's confirmed that the work meets your expectations.
+              </p>
+            </div>
             <h3 className="font-bold">Pricing Breakdown</h3>
             <p>Base Price: ${selectedService.base_price.toFixed(2)}</p>
             <p>Pages: {numberOfPages}</p>
             <p>Price per Page: ${selectedService.price_per_page.toFixed(2)}</p>
             <p className="font-bold text-lg">Total Price: ${totalPrice.toFixed(2)}</p>
+
+            {/* Escrow Protection Section */}
           </div>
         )}
 

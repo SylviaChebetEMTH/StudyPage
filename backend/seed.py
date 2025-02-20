@@ -22,7 +22,6 @@ def seed_database():
     )
     admin1.set_password('admin_password')
 
-    # Create project types
     project_types = [
         ProjectType(name='Annotated Bibliography'),
         ProjectType(name='Application Essay'),
@@ -112,7 +111,7 @@ def seed_database():
         biography='Mike has a background in engineering and technical documentation.',
         education='MS in Engineering',
         languages='English, Spanish',
-        project_type=project_types[1],  # Linking expert to the second project type
+        project_type=project_types[1], 
         profile_picture='https://media.istockphoto.com/id/1337575989/photo/close-up-of-young-red-bearded-man-posing-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=CMWClxp0azh3lzE0tR3GjZzwjXxedmzNjmvvtlCbx9U='
     )
 
@@ -294,7 +293,6 @@ def seed_database():
     )
 
 ]
-
 
     # Create services with pricing per page
     # services = [

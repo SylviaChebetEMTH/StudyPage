@@ -48,9 +48,9 @@ const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
 
   return (  
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-gray-900 w-full max-w-4xl h-[80vh] rounded-lg flex flex-col overflow-hidden">
+      <div className="bg-gray-900 w-full max-w-4xl h-[80vh] rounded-lg flex flex-col overflow-auto">
         {/* Fixed Header */}
-        <div className="flex justify-between items-center p-4 border-b border-gray-700 bg-gray-900">
+        <div className="flex-shrink-0 flex justify-between items-center p-4 border-b border-gray-700 bg-gray-900">
           <div className="flex items-center">
             <img 
               src={teacher.profilePicture} 
@@ -71,7 +71,7 @@ const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
         </div>
 
         {/* Chat Window Container - Takes remaining height */}
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-auto">
           <ChatWindow 
             activeUser={{ ...activeUser, conversationId }} 
             auth={authToken}

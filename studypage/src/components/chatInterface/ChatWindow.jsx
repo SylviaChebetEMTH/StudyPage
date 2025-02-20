@@ -497,7 +497,7 @@ const ChatWindow = ({ activeUser, currentUser, auth, teacher, pic, isInModal, te
   return (
     <div
       className={`${isInModal ? "h-full" : "h-screen"} flex flex-col bg-gray-900 
-                  ${window.innerWidth < 768 ? "fixed inset-0" : ""}`}
+                  ${window.innerWidth < 768 && !isInModal ? "fixed inset-0" : ""}`}
     >
       {!isInModal && (
         <div className="bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between">
