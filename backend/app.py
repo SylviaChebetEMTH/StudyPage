@@ -230,7 +230,6 @@ def after_request(response):
     
     return response
 
-
 @app.route('/conversations', methods=['OPTIONS'])
 def handle_options():
     response = make_response()
