@@ -4,11 +4,11 @@ import os
 OUTPUT_FILE = "services.json"
 print(f"📂 Saving services.json to: {OUTPUT_FILE}")
 
-# if os.path.exists(OUTPUT_FILE):
-#     print("🗑️ Deleting old services.json...")
-#     os.remove(OUTPUT_FILE)
-#     print(f"⚠️ {OUTPUT_FILE} already exists. Skipping generation.")
-# else:
+if os.path.exists(OUTPUT_FILE):
+    print(" Deleting old services.json...")
+    os.remove(OUTPUT_FILE)
+print(f"⚠️ {OUTPUT_FILE} already exists. Skipping generation.")
+
 project_types = {
     "Annotated Bibliography": ["English", "Literature", "History", "Philosophy"],
     "Application Essay": ["English", "Education", "Business", "Law"],
