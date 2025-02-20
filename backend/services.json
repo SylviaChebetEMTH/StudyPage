@@ -1,0 +1,1570 @@
+[
+    {
+        "title": "Annotated Bibliography - English",
+        "description": "Help with Annotated Bibliography in English",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 1,
+        "subject_id": 18
+    },
+    {
+        "title": "Annotated Bibliography - Literature",
+        "description": "Help with Annotated Bibliography in Literature",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 1,
+        "subject_id": 26
+    },
+    {
+        "title": "Annotated Bibliography - History",
+        "description": "Help with Annotated Bibliography in History",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 1,
+        "subject_id": 22
+    },
+    {
+        "title": "Annotated Bibliography - Philosophy",
+        "description": "Help with Annotated Bibliography in Philosophy",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 1,
+        "subject_id": 29
+    },
+    {
+        "title": "Application Essay - English",
+        "description": "Help with Application Essay in English",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 2,
+        "subject_id": 18
+    },
+    {
+        "title": "Application Essay - Education",
+        "description": "Help with Application Essay in Education",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 2,
+        "subject_id": 16
+    },
+    {
+        "title": "Application Essay - Business",
+        "description": "Help with Application Essay in Business",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 2,
+        "subject_id": 9
+    },
+    {
+        "title": "Application Essay - Law",
+        "description": "Help with Application Essay in Law",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 2,
+        "subject_id": 25
+    },
+    {
+        "title": "Article - Communications",
+        "description": "Help with Article in Communications",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 3,
+        "subject_id": 11
+    },
+    {
+        "title": "Article - English",
+        "description": "Help with Article in English",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 3,
+        "subject_id": 18
+    },
+    {
+        "title": "Article - Creative Writing",
+        "description": "Help with Article in Creative Writing",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 3,
+        "subject_id": 12
+    },
+    {
+        "title": "Business Plan - Business",
+        "description": "Help with Business Plan in Business",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 4,
+        "subject_id": 9
+    },
+    {
+        "title": "Business Plan - Finance",
+        "description": "Help with Business Plan in Finance",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 4,
+        "subject_id": 20
+    },
+    {
+        "title": "Business Plan - Economics",
+        "description": "Help with Business Plan in Economics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 4,
+        "subject_id": 15
+    },
+    {
+        "title": "Case Study - Business",
+        "description": "Help with Case Study in Business",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 5,
+        "subject_id": 9
+    },
+    {
+        "title": "Case Study - Law",
+        "description": "Help with Case Study in Law",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 5,
+        "subject_id": 25
+    },
+    {
+        "title": "Case Study - Political Science",
+        "description": "Help with Case Study in Political Science",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 5,
+        "subject_id": 31
+    },
+    {
+        "title": "Case Study - Psychology",
+        "description": "Help with Case Study in Psychology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 5,
+        "subject_id": 32
+    },
+    {
+        "title": "Case Study - Public Administration",
+        "description": "Help with Case Study in Public Administration",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 5,
+        "subject_id": 33
+    },
+    {
+        "title": "Code - Information Technology",
+        "description": "Help with Code in Information Technology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 6,
+        "subject_id": 23
+    },
+    {
+        "title": "Code - Web Development",
+        "description": "Help with Code in Web Development",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 6,
+        "subject_id": 37
+    },
+    {
+        "title": "Code - Engineering",
+        "description": "Help with Code in Engineering",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 6,
+        "subject_id": 17
+    },
+    {
+        "title": "Content Writing - English",
+        "description": "Help with Content Writing in English",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 7,
+        "subject_id": 18
+    },
+    {
+        "title": "Content Writing - Creative Writing",
+        "description": "Help with Content Writing in Creative Writing",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 7,
+        "subject_id": 12
+    },
+    {
+        "title": "Coursework - Mathematics",
+        "description": "Help with Coursework in Mathematics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 8,
+        "subject_id": 27
+    },
+    {
+        "title": "Coursework - Statistics",
+        "description": "Help with Coursework in Statistics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 8,
+        "subject_id": 35
+    },
+    {
+        "title": "Coursework - Engineering",
+        "description": "Help with Coursework in Engineering",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 8,
+        "subject_id": 17
+    },
+    {
+        "title": "Coursework - Biology",
+        "description": "Help with Coursework in Biology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 8,
+        "subject_id": 8
+    },
+    {
+        "title": "Creative Writing - Creative Writing",
+        "description": "Help with Creative Writing in Creative Writing",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 9,
+        "subject_id": 12
+    },
+    {
+        "title": "Creative Writing - English",
+        "description": "Help with Creative Writing in English",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 9,
+        "subject_id": 18
+    },
+    {
+        "title": "Creative Writing - Literature",
+        "description": "Help with Creative Writing in Literature",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 9,
+        "subject_id": 26
+    },
+    {
+        "title": "Dissertation - Accounting",
+        "description": "Help with Dissertation in Accounting",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 1
+    },
+    {
+        "title": "Dissertation - Algebra",
+        "description": "Help with Dissertation in Algebra",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 2
+    },
+    {
+        "title": "Dissertation - Anatomy",
+        "description": "Help with Dissertation in Anatomy",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 3
+    },
+    {
+        "title": "Dissertation - Anthropology",
+        "description": "Help with Dissertation in Anthropology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 4
+    },
+    {
+        "title": "Dissertation - Architecture",
+        "description": "Help with Dissertation in Architecture",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 5
+    },
+    {
+        "title": "Dissertation - Art",
+        "description": "Help with Dissertation in Art",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 6
+    },
+    {
+        "title": "Dissertation - Biochemistry",
+        "description": "Help with Dissertation in Biochemistry",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 7
+    },
+    {
+        "title": "Dissertation - Biology",
+        "description": "Help with Dissertation in Biology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 8
+    },
+    {
+        "title": "Dissertation - Business",
+        "description": "Help with Dissertation in Business",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 9
+    },
+    {
+        "title": "Dissertation - Chemistry",
+        "description": "Help with Dissertation in Chemistry",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 10
+    },
+    {
+        "title": "Dissertation - Communications",
+        "description": "Help with Dissertation in Communications",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 11
+    },
+    {
+        "title": "Dissertation - Creative Writing",
+        "description": "Help with Dissertation in Creative Writing",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 12
+    },
+    {
+        "title": "Dissertation - Criminal Justice",
+        "description": "Help with Dissertation in Criminal Justice",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 13
+    },
+    {
+        "title": "Dissertation - Cultural Studies",
+        "description": "Help with Dissertation in Cultural Studies",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 14
+    },
+    {
+        "title": "Dissertation - Economics",
+        "description": "Help with Dissertation in Economics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 15
+    },
+    {
+        "title": "Dissertation - Education",
+        "description": "Help with Dissertation in Education",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 16
+    },
+    {
+        "title": "Dissertation - Engineering",
+        "description": "Help with Dissertation in Engineering",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 17
+    },
+    {
+        "title": "Dissertation - English",
+        "description": "Help with Dissertation in English",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 18
+    },
+    {
+        "title": "Dissertation - Environmental Science",
+        "description": "Help with Dissertation in Environmental Science",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 19
+    },
+    {
+        "title": "Dissertation - Finance",
+        "description": "Help with Dissertation in Finance",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 20
+    },
+    {
+        "title": "Dissertation - Geography",
+        "description": "Help with Dissertation in Geography",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 21
+    },
+    {
+        "title": "Dissertation - History",
+        "description": "Help with Dissertation in History",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 22
+    },
+    {
+        "title": "Dissertation - Information Technology",
+        "description": "Help with Dissertation in Information Technology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 23
+    },
+    {
+        "title": "Dissertation - International Relations",
+        "description": "Help with Dissertation in International Relations",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 24
+    },
+    {
+        "title": "Dissertation - Law",
+        "description": "Help with Dissertation in Law",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 25
+    },
+    {
+        "title": "Dissertation - Literature",
+        "description": "Help with Dissertation in Literature",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 26
+    },
+    {
+        "title": "Dissertation - Mathematics",
+        "description": "Help with Dissertation in Mathematics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 27
+    },
+    {
+        "title": "Dissertation - Nursing",
+        "description": "Help with Dissertation in Nursing",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 28
+    },
+    {
+        "title": "Dissertation - Philosophy",
+        "description": "Help with Dissertation in Philosophy",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 29
+    },
+    {
+        "title": "Dissertation - Physics",
+        "description": "Help with Dissertation in Physics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 30
+    },
+    {
+        "title": "Dissertation - Political Science",
+        "description": "Help with Dissertation in Political Science",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 31
+    },
+    {
+        "title": "Dissertation - Psychology",
+        "description": "Help with Dissertation in Psychology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 32
+    },
+    {
+        "title": "Dissertation - Public Administration",
+        "description": "Help with Dissertation in Public Administration",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 33
+    },
+    {
+        "title": "Dissertation - Sociology",
+        "description": "Help with Dissertation in Sociology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 34
+    },
+    {
+        "title": "Dissertation - Statistics",
+        "description": "Help with Dissertation in Statistics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 35
+    },
+    {
+        "title": "Dissertation - Theology",
+        "description": "Help with Dissertation in Theology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 36
+    },
+    {
+        "title": "Dissertation - Web Development",
+        "description": "Help with Dissertation in Web Development",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 10,
+        "subject_id": 37
+    },
+    {
+        "title": "Editing - English",
+        "description": "Help with Editing in English",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 11,
+        "subject_id": 18
+    },
+    {
+        "title": "Editing - Communications",
+        "description": "Help with Editing in Communications",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 11,
+        "subject_id": 11
+    },
+    {
+        "title": "Editing - Creative Writing",
+        "description": "Help with Editing in Creative Writing",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 11,
+        "subject_id": 12
+    },
+    {
+        "title": "Essay - Accounting",
+        "description": "Help with Essay in Accounting",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 1
+    },
+    {
+        "title": "Essay - Algebra",
+        "description": "Help with Essay in Algebra",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 2
+    },
+    {
+        "title": "Essay - Anatomy",
+        "description": "Help with Essay in Anatomy",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 3
+    },
+    {
+        "title": "Essay - Anthropology",
+        "description": "Help with Essay in Anthropology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 4
+    },
+    {
+        "title": "Essay - Architecture",
+        "description": "Help with Essay in Architecture",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 5
+    },
+    {
+        "title": "Essay - Art",
+        "description": "Help with Essay in Art",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 6
+    },
+    {
+        "title": "Essay - Biochemistry",
+        "description": "Help with Essay in Biochemistry",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 7
+    },
+    {
+        "title": "Essay - Biology",
+        "description": "Help with Essay in Biology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 8
+    },
+    {
+        "title": "Essay - Business",
+        "description": "Help with Essay in Business",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 9
+    },
+    {
+        "title": "Essay - Chemistry",
+        "description": "Help with Essay in Chemistry",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 10
+    },
+    {
+        "title": "Essay - Communications",
+        "description": "Help with Essay in Communications",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 11
+    },
+    {
+        "title": "Essay - Creative Writing",
+        "description": "Help with Essay in Creative Writing",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 12
+    },
+    {
+        "title": "Essay - Criminal Justice",
+        "description": "Help with Essay in Criminal Justice",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 13
+    },
+    {
+        "title": "Essay - Cultural Studies",
+        "description": "Help with Essay in Cultural Studies",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 14
+    },
+    {
+        "title": "Essay - Economics",
+        "description": "Help with Essay in Economics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 15
+    },
+    {
+        "title": "Essay - Education",
+        "description": "Help with Essay in Education",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 16
+    },
+    {
+        "title": "Essay - Engineering",
+        "description": "Help with Essay in Engineering",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 17
+    },
+    {
+        "title": "Essay - English",
+        "description": "Help with Essay in English",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 18
+    },
+    {
+        "title": "Essay - Environmental Science",
+        "description": "Help with Essay in Environmental Science",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 19
+    },
+    {
+        "title": "Essay - Finance",
+        "description": "Help with Essay in Finance",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 20
+    },
+    {
+        "title": "Essay - Geography",
+        "description": "Help with Essay in Geography",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 21
+    },
+    {
+        "title": "Essay - History",
+        "description": "Help with Essay in History",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 22
+    },
+    {
+        "title": "Essay - Information Technology",
+        "description": "Help with Essay in Information Technology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 23
+    },
+    {
+        "title": "Essay - International Relations",
+        "description": "Help with Essay in International Relations",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 24
+    },
+    {
+        "title": "Essay - Law",
+        "description": "Help with Essay in Law",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 25
+    },
+    {
+        "title": "Essay - Literature",
+        "description": "Help with Essay in Literature",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 26
+    },
+    {
+        "title": "Essay - Mathematics",
+        "description": "Help with Essay in Mathematics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 27
+    },
+    {
+        "title": "Essay - Nursing",
+        "description": "Help with Essay in Nursing",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 28
+    },
+    {
+        "title": "Essay - Philosophy",
+        "description": "Help with Essay in Philosophy",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 29
+    },
+    {
+        "title": "Essay - Physics",
+        "description": "Help with Essay in Physics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 30
+    },
+    {
+        "title": "Essay - Political Science",
+        "description": "Help with Essay in Political Science",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 31
+    },
+    {
+        "title": "Essay - Psychology",
+        "description": "Help with Essay in Psychology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 32
+    },
+    {
+        "title": "Essay - Public Administration",
+        "description": "Help with Essay in Public Administration",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 33
+    },
+    {
+        "title": "Essay - Sociology",
+        "description": "Help with Essay in Sociology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 34
+    },
+    {
+        "title": "Essay - Statistics",
+        "description": "Help with Essay in Statistics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 35
+    },
+    {
+        "title": "Essay - Theology",
+        "description": "Help with Essay in Theology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 36
+    },
+    {
+        "title": "Essay - Web Development",
+        "description": "Help with Essay in Web Development",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 12,
+        "subject_id": 37
+    },
+    {
+        "title": "Excel assignment - Accounting",
+        "description": "Help with Excel assignment in Accounting",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 13,
+        "subject_id": 1
+    },
+    {
+        "title": "Excel assignment - Finance",
+        "description": "Help with Excel assignment in Finance",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 13,
+        "subject_id": 20
+    },
+    {
+        "title": "Excel assignment - Economics",
+        "description": "Help with Excel assignment in Economics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 13,
+        "subject_id": 15
+    },
+    {
+        "title": "Excel assignment - Statistics",
+        "description": "Help with Excel assignment in Statistics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 13,
+        "subject_id": 35
+    },
+    {
+        "title": "Math solving - Mathematics",
+        "description": "Help with Math solving in Mathematics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 14,
+        "subject_id": 27
+    },
+    {
+        "title": "Math solving - Statistics",
+        "description": "Help with Math solving in Statistics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 14,
+        "subject_id": 35
+    },
+    {
+        "title": "Math solving - Finance",
+        "description": "Help with Math solving in Finance",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 14,
+        "subject_id": 20
+    },
+    {
+        "title": "Math solving - Engineering",
+        "description": "Help with Math solving in Engineering",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 14,
+        "subject_id": 17
+    },
+    {
+        "title": "Outline - English",
+        "description": "Help with Outline in English",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 15,
+        "subject_id": 18
+    },
+    {
+        "title": "Outline - History",
+        "description": "Help with Outline in History",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 15,
+        "subject_id": 22
+    },
+    {
+        "title": "Outline - Education",
+        "description": "Help with Outline in Education",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 15,
+        "subject_id": 16
+    },
+    {
+        "title": "Personal Statement - Education",
+        "description": "Help with Personal Statement in Education",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 16,
+        "subject_id": 16
+    },
+    {
+        "title": "Personal Statement - English",
+        "description": "Help with Personal Statement in English",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 16,
+        "subject_id": 18
+    },
+    {
+        "title": "Personal Statement - Law",
+        "description": "Help with Personal Statement in Law",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 16,
+        "subject_id": 25
+    },
+    {
+        "title": "Presentation - Accounting",
+        "description": "Help with Presentation in Accounting",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 1
+    },
+    {
+        "title": "Presentation - Algebra",
+        "description": "Help with Presentation in Algebra",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 2
+    },
+    {
+        "title": "Presentation - Anatomy",
+        "description": "Help with Presentation in Anatomy",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 3
+    },
+    {
+        "title": "Presentation - Anthropology",
+        "description": "Help with Presentation in Anthropology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 4
+    },
+    {
+        "title": "Presentation - Architecture",
+        "description": "Help with Presentation in Architecture",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 5
+    },
+    {
+        "title": "Presentation - Art",
+        "description": "Help with Presentation in Art",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 6
+    },
+    {
+        "title": "Presentation - Biochemistry",
+        "description": "Help with Presentation in Biochemistry",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 7
+    },
+    {
+        "title": "Presentation - Biology",
+        "description": "Help with Presentation in Biology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 8
+    },
+    {
+        "title": "Presentation - Business",
+        "description": "Help with Presentation in Business",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 9
+    },
+    {
+        "title": "Presentation - Chemistry",
+        "description": "Help with Presentation in Chemistry",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 10
+    },
+    {
+        "title": "Presentation - Communications",
+        "description": "Help with Presentation in Communications",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 11
+    },
+    {
+        "title": "Presentation - Creative Writing",
+        "description": "Help with Presentation in Creative Writing",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 12
+    },
+    {
+        "title": "Presentation - Criminal Justice",
+        "description": "Help with Presentation in Criminal Justice",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 13
+    },
+    {
+        "title": "Presentation - Cultural Studies",
+        "description": "Help with Presentation in Cultural Studies",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 14
+    },
+    {
+        "title": "Presentation - Economics",
+        "description": "Help with Presentation in Economics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 15
+    },
+    {
+        "title": "Presentation - Education",
+        "description": "Help with Presentation in Education",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 16
+    },
+    {
+        "title": "Presentation - Engineering",
+        "description": "Help with Presentation in Engineering",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 17
+    },
+    {
+        "title": "Presentation - English",
+        "description": "Help with Presentation in English",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 18
+    },
+    {
+        "title": "Presentation - Environmental Science",
+        "description": "Help with Presentation in Environmental Science",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 19
+    },
+    {
+        "title": "Presentation - Finance",
+        "description": "Help with Presentation in Finance",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 20
+    },
+    {
+        "title": "Presentation - Geography",
+        "description": "Help with Presentation in Geography",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 21
+    },
+    {
+        "title": "Presentation - History",
+        "description": "Help with Presentation in History",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 22
+    },
+    {
+        "title": "Presentation - Information Technology",
+        "description": "Help with Presentation in Information Technology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 23
+    },
+    {
+        "title": "Presentation - International Relations",
+        "description": "Help with Presentation in International Relations",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 24
+    },
+    {
+        "title": "Presentation - Law",
+        "description": "Help with Presentation in Law",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 25
+    },
+    {
+        "title": "Presentation - Literature",
+        "description": "Help with Presentation in Literature",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 26
+    },
+    {
+        "title": "Presentation - Mathematics",
+        "description": "Help with Presentation in Mathematics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 27
+    },
+    {
+        "title": "Presentation - Nursing",
+        "description": "Help with Presentation in Nursing",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 28
+    },
+    {
+        "title": "Presentation - Philosophy",
+        "description": "Help with Presentation in Philosophy",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 29
+    },
+    {
+        "title": "Presentation - Physics",
+        "description": "Help with Presentation in Physics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 30
+    },
+    {
+        "title": "Presentation - Political Science",
+        "description": "Help with Presentation in Political Science",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 31
+    },
+    {
+        "title": "Presentation - Psychology",
+        "description": "Help with Presentation in Psychology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 32
+    },
+    {
+        "title": "Presentation - Public Administration",
+        "description": "Help with Presentation in Public Administration",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 33
+    },
+    {
+        "title": "Presentation - Sociology",
+        "description": "Help with Presentation in Sociology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 34
+    },
+    {
+        "title": "Presentation - Statistics",
+        "description": "Help with Presentation in Statistics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 35
+    },
+    {
+        "title": "Presentation - Theology",
+        "description": "Help with Presentation in Theology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 36
+    },
+    {
+        "title": "Presentation - Web Development",
+        "description": "Help with Presentation in Web Development",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 17,
+        "subject_id": 37
+    },
+    {
+        "title": "Proposal - Accounting",
+        "description": "Help with Proposal in Accounting",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 1
+    },
+    {
+        "title": "Proposal - Algebra",
+        "description": "Help with Proposal in Algebra",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 2
+    },
+    {
+        "title": "Proposal - Anatomy",
+        "description": "Help with Proposal in Anatomy",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 3
+    },
+    {
+        "title": "Proposal - Anthropology",
+        "description": "Help with Proposal in Anthropology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 4
+    },
+    {
+        "title": "Proposal - Architecture",
+        "description": "Help with Proposal in Architecture",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 5
+    },
+    {
+        "title": "Proposal - Art",
+        "description": "Help with Proposal in Art",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 6
+    },
+    {
+        "title": "Proposal - Biochemistry",
+        "description": "Help with Proposal in Biochemistry",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 7
+    },
+    {
+        "title": "Proposal - Biology",
+        "description": "Help with Proposal in Biology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 8
+    },
+    {
+        "title": "Proposal - Business",
+        "description": "Help with Proposal in Business",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 9
+    },
+    {
+        "title": "Proposal - Chemistry",
+        "description": "Help with Proposal in Chemistry",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 10
+    },
+    {
+        "title": "Proposal - Communications",
+        "description": "Help with Proposal in Communications",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 11
+    },
+    {
+        "title": "Proposal - Creative Writing",
+        "description": "Help with Proposal in Creative Writing",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 12
+    },
+    {
+        "title": "Proposal - Criminal Justice",
+        "description": "Help with Proposal in Criminal Justice",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 13
+    },
+    {
+        "title": "Proposal - Cultural Studies",
+        "description": "Help with Proposal in Cultural Studies",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 14
+    },
+    {
+        "title": "Proposal - Economics",
+        "description": "Help with Proposal in Economics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 15
+    },
+    {
+        "title": "Proposal - Education",
+        "description": "Help with Proposal in Education",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 16
+    },
+    {
+        "title": "Proposal - Engineering",
+        "description": "Help with Proposal in Engineering",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 17
+    },
+    {
+        "title": "Proposal - English",
+        "description": "Help with Proposal in English",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 18
+    },
+    {
+        "title": "Proposal - Environmental Science",
+        "description": "Help with Proposal in Environmental Science",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 19
+    },
+    {
+        "title": "Proposal - Finance",
+        "description": "Help with Proposal in Finance",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 20
+    },
+    {
+        "title": "Proposal - Geography",
+        "description": "Help with Proposal in Geography",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 21
+    },
+    {
+        "title": "Proposal - History",
+        "description": "Help with Proposal in History",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 22
+    },
+    {
+        "title": "Proposal - Information Technology",
+        "description": "Help with Proposal in Information Technology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 23
+    },
+    {
+        "title": "Proposal - International Relations",
+        "description": "Help with Proposal in International Relations",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 24
+    },
+    {
+        "title": "Proposal - Law",
+        "description": "Help with Proposal in Law",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 25
+    },
+    {
+        "title": "Proposal - Literature",
+        "description": "Help with Proposal in Literature",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 26
+    },
+    {
+        "title": "Proposal - Mathematics",
+        "description": "Help with Proposal in Mathematics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 27
+    },
+    {
+        "title": "Proposal - Nursing",
+        "description": "Help with Proposal in Nursing",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 28
+    },
+    {
+        "title": "Proposal - Philosophy",
+        "description": "Help with Proposal in Philosophy",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 29
+    },
+    {
+        "title": "Proposal - Physics",
+        "description": "Help with Proposal in Physics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 30
+    },
+    {
+        "title": "Proposal - Political Science",
+        "description": "Help with Proposal in Political Science",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 31
+    },
+    {
+        "title": "Proposal - Psychology",
+        "description": "Help with Proposal in Psychology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 32
+    },
+    {
+        "title": "Proposal - Public Administration",
+        "description": "Help with Proposal in Public Administration",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 33
+    },
+    {
+        "title": "Proposal - Sociology",
+        "description": "Help with Proposal in Sociology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 34
+    },
+    {
+        "title": "Proposal - Statistics",
+        "description": "Help with Proposal in Statistics",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 35
+    },
+    {
+        "title": "Proposal - Theology",
+        "description": "Help with Proposal in Theology",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 36
+    },
+    {
+        "title": "Proposal - Web Development",
+        "description": "Help with Proposal in Web Development",
+        "base_price": 5.0,
+        "price_per_page": 10.0,
+        "project_type_id": 18,
+        "subject_id": 37
+    }
+]
