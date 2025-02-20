@@ -1,7 +1,7 @@
 import json
 import os
 
-OUTPUT_FILE = "data/services.json"
+OUTPUT_FILE = "service_data/services.json"
 
 if not os.path.exists("data"):
     os.makedirs("data")
