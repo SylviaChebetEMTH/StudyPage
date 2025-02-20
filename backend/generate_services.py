@@ -1,7 +1,7 @@
 import json
 import os
 
-OUTPUT_FILE = "service_data/services.json"
+OUTPUT_FILE = os.path.join("service_data", "services.json")
 print(f"📂 Saving services.json to: {OUTPUT_FILE}")
 
 if os.path.exists(OUTPUT_FILE):
