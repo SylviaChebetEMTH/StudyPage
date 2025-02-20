@@ -3,9 +3,6 @@ import os
 
 OUTPUT_FILE = "service_data/services.json"
 
-if not os.path.exists("data"):
-    os.makedirs("data")
-
 if os.path.exists(OUTPUT_FILE):
     print(f"⚠️ {OUTPUT_FILE} already exists. Skipping generation.")
 else:
