@@ -1712,33 +1712,33 @@ def get_services():
 
 #     if not title or not description or price is None or project_type_id is None or subject_id is None:
 #         return jsonify({"message": "Title, description, price, project type, and subject are required."}), 400
-    project_type_id = request.args.get('project_type', type=int)
-    subject_id = request.args.get('subject', type=int)
-    print(f"Received project_type_id: {project_type_id}, subject_id: {subject_id}")
+    # project_type_id = request.args.get('project_type', type=int)
+    # subject_id = request.args.get('subject', type=int)
+    # print(f"Received project_type_id: {project_type_id}, subject_id: {subject_id}")
 
-    query = Service.query
+    # query = Service.query
 
-    if project_type_id:
-        query = query.filter_by(project_type_id=project_type_id)
-    if subject_id:
-        query = query.filter_by(subject_id=subject_id)
+    # if project_type_id:
+    #     query = query.filter_by(project_type_id=project_type_id)
+    # if subject_id:
+    #     query = query.filter_by(subject_id=subject_id)
 
-    print(f"Query: {query}")
+    # print(f"Query: {query}")
 
-    services = query.all()
-    return jsonify({
-        "services": [
-            {
-                'id': service.id,
-                'title': service.title,
-                'description': service.description,
-                'base_price': service.base_price,
-                'price_per_page': service.price_per_page,
-                'project_type_id': service.project_type_id,
-                'subject_id': service.subject_id
-            } for service in services
-        ] 
-    }), 200
+    # services = query.all()
+    # return jsonify({
+    #     "services": [
+    #         {
+    #             'id': service.id,
+    #             'title': service.title,
+    #             'description': service.description,
+    #             'base_price': service.base_price,
+    #             'price_per_page': service.price_per_page,
+    #             'project_type_id': service.project_type_id,
+    #             'subject_id': service.subject_id
+    #         } for service in services
+    #     ] 
+    # }), 200
 
 # @app.route('/services', methods=['POST'])
 # def add_service():
@@ -1803,56 +1803,49 @@ def get_services():
 #         return jsonify({"message": "Failed to add service.", "error": str(e)}), 500
 
 @app.route('/services', methods=['POST'])
-def add_service():
+def add_services():
     if not request.is_json:
         return jsonify({"message": "Invalid request. JSON data required."}), 400
 
     data = request.get_json()
 
-    title = data.get('title')
-    description = data.get('description')
-    base_price = data.get('base_price')  # Expecting base_price in the request
-    price_per_page = data.get('price_per_page')  # Expecting price_per_page in the request
-    base_price = data.get('base_price')  # Expecting base_price in the request
-    price_per_page = data.get('price_per_page')  # Expecting price_per_page in the request
-    project_type_id = data.get('project_type_id')  # Capture project_type_id
-    subject_id = data.get('subject_id')  # Capture subject_id
+    # Ensure data is a list (for bulk insert)
+    if not isinstance(data, list):
+        return jsonify({"message": "Invalid format. Expected a list of services."}), 400
 
-    # Validate required fields
-    if not title or base_price is None or price_per_page is None or project_type_id is None or subject_id is None:
-        return jsonify({"message": "Title, base price, price per page, project type, and subject are required."}), 400
-    # Validate required fields
+    services_to_add = []
 
-    # Create a new Service instance
-    # Create a new Service instance
-    new_service = Service(
-        title=title,
-        description=description,
-        base_price=base_price,
-        price_per_page=price_per_page,
-        project_type_id=project_type_id,
-        subject_id=subject_id
-    )
+    for service_data in data:
+        title = service_data.get('title')
+        description = service_data.get('description')
+        base_price = service_data.get('base_price')
+        price_per_page = service_data.get('price_per_page')
+        project_type_id = service_data.get('project_type_id')
+        subject_id = service_data.get('subject_id')
+
+        # Validate required fields
+        if not title or base_price is None or price_per_page is None or project_type_id is None or subject_id is None:
+            return jsonify({"message": "Missing required fields in one or more services."}), 400
+
+        new_service = Service(
+            title=title,
+            description=description,
+            base_price=base_price,
+            price_per_page=price_per_page,
+            project_type_id=project_type_id,
+            subject_id=subject_id
+        )
+        services_to_add.append(new_service)
 
     try:
-        db.session.add(new_service)
+        db.session.bulk_save_objects(services_to_add)  # Bulk insert for performance
         db.session.commit()
-        return jsonify({
-            "message": "Service added successfully!",
-            "service": {
-                'id': new_service.id,
-                'title': new_service.title,
-                'description': new_service.description,
-                'base_price': new_service.base_price,
-                'price_per_page': new_service.price_per_page,
-                'project_type_id': new_service.project_type_id,
-                'subject_id': new_service.subject_id
-            }
-        }), 201
+        return jsonify({"message": f"{len(services_to_add)} services added successfully!"}), 201
     except Exception as e:
         db.session.rollback()
-        print("Error adding service:", str(e))
-        return jsonify({"message": "Failed to add service.", "error": str(e)}), 500
+        print("Error adding services:", str(e))
+        return jsonify({"message": "Failed to add services.", "error": str(e)}), 500
+
 
 @app.route('/services', methods=['DELETE'])
 def delete_all_services():
