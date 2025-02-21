@@ -22,7 +22,6 @@ def seed_database():
     )
     admin1.set_password('admin_password')
 
-    # Create project types
     project_types = [
         ProjectType(name='Annotated Bibliography'),
         ProjectType(name='Application Essay'),
@@ -294,7 +293,6 @@ def seed_database():
     )
 
 ]
-
 
     # Create services with pricing per page
     # services = [
