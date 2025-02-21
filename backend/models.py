@@ -31,6 +31,12 @@ class User(db.Model):
         """Checks if the password matches the hashed password"""
         return bcrypt.check_password_hash(self.password, password)
 
+expert_subjects = db.Table(
+    'expert_subjects',
+    db.Column('expert_id', db.Integer, db.ForeignKey('experts.id'), primary_key=True),
+    db.Column('subject_id', db.Integer, db.ForeignKey('subjects.id'), primary_key=True)
+)
+
 class Expert(db.Model):
     __tablename__ = 'experts'
     id = db.Column(db.Integer, primary_key=True)
@@ -47,7 +53,7 @@ class Expert(db.Model):
     project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'))
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
     project_type = db.relationship('ProjectType', backref='experts')
-    subject = db.relationship('Subject', backref='experts')
+    subjects = db.relationship('Subject', secondary=expert_subjects, backref='experts')
     rating_avg = db.Column(db.Float, default=0.0)
     total_reviews = db.Column(db.Integer, default=0)
     success_rate = db.Column(db.Float, default=0.0)
