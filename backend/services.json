@@ -1,4268 +1,641 @@
 [
     {
-        "title": "Annotated Bibliography - English",
-        "description": "Professional Annotated Bibliography assistance in English",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
+        "title": "Dissertation - Engineering",
+        "description": "Professional Dissertation assistance in Engineering",
+        "base_price": 35.0,
+        "price_per_page": 49.0,
         "project_type_id": 1,
-        "subject_id": 21,
-        "unit": "Annotated Bibliography"
-    },
-    {
-        "title": "Annotated Bibliography - Literature",
-        "description": "Professional Annotated Bibliography assistance in Literature",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 1,
-        "subject_id": 34,
-        "unit": "Annotated Bibliography"
-    },
-    {
-        "title": "Annotated Bibliography - History",
-        "description": "Professional Annotated Bibliography assistance in History",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 1,
-        "subject_id": 28,
-        "unit": "Annotated Bibliography"
-    },
-    {
-        "title": "Annotated Bibliography - Philosophy",
-        "description": "Professional Annotated Bibliography assistance in Philosophy",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 1,
-        "subject_id": 42,
-        "unit": "Annotated Bibliography"
-    },
-    {
-        "title": "Annotated Bibliography - Sociology",
-        "description": "Professional Annotated Bibliography assistance in Sociology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 1,
-        "subject_id": 50,
-        "unit": "Annotated Bibliography"
-    },
-    {
-        "title": "Annotated Bibliography - Psychology",
-        "description": "Professional Annotated Bibliography assistance in Psychology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 1,
-        "subject_id": 45,
-        "unit": "Annotated Bibliography"
-    },
-    {
-        "title": "Annotated Bibliography - Political Science",
-        "description": "Professional Annotated Bibliography assistance in Political Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 1,
-        "subject_id": 44,
-        "unit": "Annotated Bibliography"
-    },
-    {
-        "title": "Annotated Bibliography - Education",
-        "description": "Professional Annotated Bibliography assistance in Education",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 1,
-        "subject_id": 19,
-        "unit": "Annotated Bibliography"
-    },
-    {
-        "title": "Annotated Bibliography - Nursing",
-        "description": "Professional Annotated Bibliography assistance in Nursing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 1,
-        "subject_id": 39,
-        "unit": "Annotated Bibliography"
-    },
-    {
-        "title": "Annotated Bibliography - Business",
-        "description": "Professional Annotated Bibliography assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 1,
-        "subject_id": 9,
-        "unit": "Annotated Bibliography"
-    },
-    {
-        "title": "Application Essay - English",
-        "description": "Professional Application Essay assistance in English",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 2,
-        "subject_id": 21,
-        "unit": "Application Essay"
-    },
-    {
-        "title": "Application Essay - Education",
-        "description": "Professional Application Essay assistance in Education",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 2,
-        "subject_id": 19,
-        "unit": "Application Essay"
-    },
-    {
-        "title": "Application Essay - Business",
-        "description": "Professional Application Essay assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 2,
-        "subject_id": 9,
-        "unit": "Application Essay"
-    },
-    {
-        "title": "Application Essay - Law",
-        "description": "Professional Application Essay assistance in Law",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 2,
-        "subject_id": 33,
-        "unit": "Application Essay"
-    },
-    {
-        "title": "Application Essay - Medicine",
-        "description": "Professional Application Essay assistance in Medicine",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 2,
-        "subject_id": 38,
-        "unit": "Application Essay"
-    },
-    {
-        "title": "Application Essay - Nursing",
-        "description": "Professional Application Essay assistance in Nursing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 2,
-        "subject_id": 39,
-        "unit": "Application Essay"
-    },
-    {
-        "title": "Application Essay - Engineering",
-        "description": "Professional Application Essay assistance in Engineering",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 2,
-        "subject_id": 20,
-        "unit": "Application Essay"
-    },
-    {
-        "title": "Application Essay - Information Technology",
-        "description": "Professional Application Essay assistance in Information Technology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 2,
-        "subject_id": 29,
-        "unit": "Application Essay"
-    },
-    {
-        "title": "Application Essay - Architecture",
-        "description": "Professional Application Essay assistance in Architecture",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 2,
-        "subject_id": 5,
-        "unit": "Application Essay"
-    },
-    {
-        "title": "Article - Communications",
-        "description": "Professional Article assistance in Communications",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 3,
-        "subject_id": 11,
-        "unit": "Article"
-    },
-    {
-        "title": "Article - English",
-        "description": "Professional Article assistance in English",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 3,
-        "subject_id": 21,
-        "unit": "Article"
-    },
-    {
-        "title": "Article - Creative Writing",
-        "description": "Professional Article assistance in Creative Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 3,
-        "subject_id": 13,
-        "unit": "Article"
-    },
-    {
-        "title": "Article - Journalism",
-        "description": "Professional Article assistance in Journalism",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 3,
-        "subject_id": 32,
-        "unit": "Article"
-    },
-    {
-        "title": "Article - Business",
-        "description": "Professional Article assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 3,
-        "subject_id": 9,
-        "unit": "Article"
-    },
-    {
-        "title": "Article - Marketing",
-        "description": "Professional Article assistance in Marketing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 3,
-        "subject_id": 36,
-        "unit": "Article"
-    },
-    {
-        "title": "Article - Political Science",
-        "description": "Professional Article assistance in Political Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 3,
-        "subject_id": 44,
-        "unit": "Article"
-    },
-    {
-        "title": "Article - International Relations",
-        "description": "Professional Article assistance in International Relations",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 3,
-        "subject_id": 31,
-        "unit": "Article"
-    },
-    {
-        "title": "Business Plan - Business",
-        "description": "Professional Business Plan assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 4,
-        "subject_id": 9,
-        "unit": "Business Plan"
-    },
-    {
-        "title": "Business Plan - Finance",
-        "description": "Professional Business Plan assistance in Finance",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 4,
-        "subject_id": 25,
-        "unit": "Business Plan"
-    },
-    {
-        "title": "Business Plan - Economics",
-        "description": "Professional Business Plan assistance in Economics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 4,
-        "subject_id": 18,
-        "unit": "Business Plan"
-    },
-    {
-        "title": "Business Plan - Marketing",
-        "description": "Professional Business Plan assistance in Marketing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 4,
-        "subject_id": 36,
-        "unit": "Business Plan"
-    },
-    {
-        "title": "Business Plan - Management",
-        "description": "Professional Business Plan assistance in Management",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 4,
-        "subject_id": 35,
-        "unit": "Business Plan"
-    },
-    {
-        "title": "Business Plan - Entrepreneurship",
-        "description": "Professional Business Plan assistance in Entrepreneurship",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 4,
-        "subject_id": 22,
-        "unit": "Business Plan"
-    },
-    {
-        "title": "Business Plan - International Business",
-        "description": "Professional Business Plan assistance in International Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 4,
-        "subject_id": 30,
-        "unit": "Business Plan"
-    },
-    {
-        "title": "Case Study - Business",
-        "description": "Professional Case Study assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 5,
-        "subject_id": 9,
-        "unit": "Case Study"
-    },
-    {
-        "title": "Case Study - Law",
-        "description": "Professional Case Study assistance in Law",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 5,
-        "subject_id": 33,
-        "unit": "Case Study"
-    },
-    {
-        "title": "Case Study - Political Science",
-        "description": "Professional Case Study assistance in Political Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 5,
-        "subject_id": 44,
-        "unit": "Case Study"
-    },
-    {
-        "title": "Case Study - Psychology",
-        "description": "Professional Case Study assistance in Psychology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 5,
-        "subject_id": 45,
-        "unit": "Case Study"
-    },
-    {
-        "title": "Case Study - Public Administration",
-        "description": "Professional Case Study assistance in Public Administration",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 5,
-        "subject_id": 46,
-        "unit": "Case Study"
-    },
-    {
-        "title": "Case Study - Marketing",
-        "description": "Professional Case Study assistance in Marketing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 5,
-        "subject_id": 36,
-        "unit": "Case Study"
-    },
-    {
-        "title": "Case Study - Finance",
-        "description": "Professional Case Study assistance in Finance",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 5,
-        "subject_id": 25,
-        "unit": "Case Study"
-    },
-    {
-        "title": "Case Study - Healthcare Administration",
-        "description": "Professional Case Study assistance in Healthcare Administration",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 5,
-        "subject_id": 27,
-        "unit": "Case Study"
-    },
-    {
-        "title": "Case Study - Education",
-        "description": "Professional Case Study assistance in Education",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 5,
-        "subject_id": 19,
-        "unit": "Case Study"
-    },
-    {
-        "title": "Case Study - Sociology",
-        "description": "Professional Case Study assistance in Sociology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 5,
-        "subject_id": 50,
-        "unit": "Case Study"
-    },
-    {
-        "title": "Code - Computer Science",
-        "description": "Professional Code assistance in Computer Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 6,
-        "subject_id": 12,
-        "unit": "Code"
-    },
-    {
-        "title": "Code - Information Technology",
-        "description": "Professional Code assistance in Information Technology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 6,
-        "subject_id": 29,
-        "unit": "Code"
-    },
-    {
-        "title": "Code - Web Development",
-        "description": "Professional Code assistance in Web Development",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 6,
-        "subject_id": 55,
-        "unit": "Code"
-    },
-    {
-        "title": "Code - Engineering",
-        "description": "Professional Code assistance in Engineering",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 6,
-        "subject_id": 20,
-        "unit": "Code"
-    },
-    {
-        "title": "Code - Mathematics",
-        "description": "Professional Code assistance in Mathematics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 6,
-        "subject_id": 37,
-        "unit": "Code"
-    },
-    {
-        "title": "Code - Statistics",
-        "description": "Professional Code assistance in Statistics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 6,
-        "subject_id": 51,
-        "unit": "Code"
-    },
-    {
-        "title": "Content Writing - English",
-        "description": "Professional Content Writing assistance in English",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 7,
-        "subject_id": 21,
-        "unit": "Content Writing"
-    },
-    {
-        "title": "Content Writing - Creative Writing",
-        "description": "Professional Content Writing assistance in Creative Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 7,
-        "subject_id": 13,
-        "unit": "Content Writing"
-    },
-    {
-        "title": "Content Writing - Marketing",
-        "description": "Professional Content Writing assistance in Marketing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 7,
-        "subject_id": 36,
-        "unit": "Content Writing"
-    },
-    {
-        "title": "Content Writing - Journalism",
-        "description": "Professional Content Writing assistance in Journalism",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 7,
-        "subject_id": 32,
-        "unit": "Content Writing"
-    },
-    {
-        "title": "Content Writing - Communications",
-        "description": "Professional Content Writing assistance in Communications",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 7,
-        "subject_id": 11,
-        "unit": "Content Writing"
-    },
-    {
-        "title": "Content Writing - Digital Media",
-        "description": "Professional Content Writing assistance in Digital Media",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 7,
-        "subject_id": 17,
-        "unit": "Content Writing"
-    },
-    {
-        "title": "Content Writing - Public Relations",
-        "description": "Professional Content Writing assistance in Public Relations",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 7,
-        "subject_id": 47,
-        "unit": "Content Writing"
-    },
-    {
-        "title": "Coursework - Mathematics",
-        "description": "Professional Coursework assistance in Mathematics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 8,
-        "subject_id": 37,
-        "unit": "Coursework"
-    },
-    {
-        "title": "Coursework - Statistics",
-        "description": "Professional Coursework assistance in Statistics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 8,
-        "subject_id": 51,
-        "unit": "Coursework"
-    },
-    {
-        "title": "Coursework - Engineering",
-        "description": "Professional Coursework assistance in Engineering",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 8,
-        "subject_id": 20,
-        "unit": "Coursework"
-    },
-    {
-        "title": "Coursework - Biology",
-        "description": "Professional Coursework assistance in Biology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 8,
-        "subject_id": 8,
-        "unit": "Coursework"
-    },
-    {
-        "title": "Coursework - Physics",
-        "description": "Professional Coursework assistance in Physics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 8,
-        "subject_id": 43,
-        "unit": "Coursework"
-    },
-    {
-        "title": "Coursework - Chemistry",
-        "description": "Professional Coursework assistance in Chemistry",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 8,
-        "subject_id": 10,
-        "unit": "Coursework"
-    },
-    {
-        "title": "Coursework - Computer Science",
-        "description": "Professional Coursework assistance in Computer Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 8,
-        "subject_id": 12,
-        "unit": "Coursework"
-    },
-    {
-        "title": "Coursework - Economics",
-        "description": "Professional Coursework assistance in Economics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 8,
-        "subject_id": 18,
-        "unit": "Coursework"
-    },
-    {
-        "title": "Coursework - Business",
-        "description": "Professional Coursework assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 8,
-        "subject_id": 9,
-        "unit": "Coursework"
-    },
-    {
-        "title": "Coursework - Psychology",
-        "description": "Professional Coursework assistance in Psychology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 8,
-        "subject_id": 45,
-        "unit": "Coursework"
-    },
-    {
-        "title": "Coursework - Sociology",
-        "description": "Professional Coursework assistance in Sociology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 8,
-        "subject_id": 50,
-        "unit": "Coursework"
-    },
-    {
-        "title": "Coursework - Literature",
-        "description": "Professional Coursework assistance in Literature",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 8,
-        "subject_id": 34,
-        "unit": "Coursework"
-    },
-    {
-        "title": "Coursework - History",
-        "description": "Professional Coursework assistance in History",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 8,
-        "subject_id": 28,
-        "unit": "Coursework"
-    },
-    {
-        "title": "Coursework - Political Science",
-        "description": "Professional Coursework assistance in Political Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 8,
-        "subject_id": 44,
-        "unit": "Coursework"
-    },
-    {
-        "title": "Creative Writing - Creative Writing",
-        "description": "Professional Creative Writing assistance in Creative Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 9,
-        "subject_id": 13,
-        "unit": "Creative Writing"
-    },
-    {
-        "title": "Creative Writing - English",
-        "description": "Professional Creative Writing assistance in English",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 9,
-        "subject_id": 21,
-        "unit": "Creative Writing"
-    },
-    {
-        "title": "Creative Writing - Literature",
-        "description": "Professional Creative Writing assistance in Literature",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 9,
-        "subject_id": 34,
-        "unit": "Creative Writing"
-    },
-    {
-        "title": "Creative Writing - Communications",
-        "description": "Professional Creative Writing assistance in Communications",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 9,
-        "subject_id": 11,
-        "unit": "Creative Writing"
-    },
-    {
-        "title": "Creative Writing - Journalism",
-        "description": "Professional Creative Writing assistance in Journalism",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 9,
-        "subject_id": 32,
-        "unit": "Creative Writing"
-    },
-    {
-        "title": "Creative Writing - Theater Arts",
-        "description": "Professional Creative Writing assistance in Theater Arts",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 9,
-        "subject_id": 53,
-        "unit": "Creative Writing"
-    },
-    {
-        "title": "Creative Writing - Film Studies",
-        "description": "Professional Creative Writing assistance in Film Studies",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 9,
-        "subject_id": 24,
-        "unit": "Creative Writing"
-    },
-    {
-        "title": "Data Analysis - Statistics",
-        "description": "Professional Data Analysis assistance in Statistics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 10,
-        "subject_id": 51,
-        "unit": "Data Analysis"
-    },
-    {
-        "title": "Data Analysis - Mathematics",
-        "description": "Professional Data Analysis assistance in Mathematics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 10,
-        "subject_id": 37,
-        "unit": "Data Analysis"
-    },
-    {
-        "title": "Data Analysis - Economics",
-        "description": "Professional Data Analysis assistance in Economics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 10,
-        "subject_id": 18,
-        "unit": "Data Analysis"
-    },
-    {
-        "title": "Data Analysis - Business",
-        "description": "Professional Data Analysis assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 10,
-        "subject_id": 9,
-        "unit": "Data Analysis"
-    },
-    {
-        "title": "Data Analysis - Psychology",
-        "description": "Professional Data Analysis assistance in Psychology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 10,
-        "subject_id": 45,
-        "unit": "Data Analysis"
-    },
-    {
-        "title": "Data Analysis - Sociology",
-        "description": "Professional Data Analysis assistance in Sociology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 10,
-        "subject_id": 50,
-        "unit": "Data Analysis"
-    },
-    {
-        "title": "Data Analysis - Marketing",
-        "description": "Professional Data Analysis assistance in Marketing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 10,
-        "subject_id": 36,
-        "unit": "Data Analysis"
-    },
-    {
-        "title": "Data Analysis - Research Methods",
-        "description": "Professional Data Analysis assistance in Research Methods",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 10,
-        "subject_id": 48,
-        "unit": "Data Analysis"
-    },
-    {
-        "title": "Dissertation - Accounting",
-        "description": "Professional Dissertation assistance in Accounting",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
         "subject_id": 1,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Algebra",
-        "description": "Professional Dissertation assistance in Algebra",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 2,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Anatomy",
-        "description": "Professional Dissertation assistance in Anatomy",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 3,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Anthropology",
-        "description": "Professional Dissertation assistance in Anthropology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 4,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Architecture",
-        "description": "Professional Dissertation assistance in Architecture",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 5,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Art",
-        "description": "Professional Dissertation assistance in Art",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 6,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Biochemistry",
-        "description": "Professional Dissertation assistance in Biochemistry",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 7,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Biology",
-        "description": "Professional Dissertation assistance in Biology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 8,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Business",
-        "description": "Professional Dissertation assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 9,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Chemistry",
-        "description": "Professional Dissertation assistance in Chemistry",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 10,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Communications",
-        "description": "Professional Dissertation assistance in Communications",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 11,
         "unit": "Dissertation"
     },
     {
         "title": "Dissertation - Computer Science",
         "description": "Professional Dissertation assistance in Computer Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 12,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Creative Writing",
-        "description": "Professional Dissertation assistance in Creative Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 13,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Criminal Justice",
-        "description": "Professional Dissertation assistance in Criminal Justice",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 14,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Cultural Studies",
-        "description": "Professional Dissertation assistance in Cultural Studies",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 15,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Data Analysis",
-        "description": "Professional Dissertation assistance in Data Analysis",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 16,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Digital Media",
-        "description": "Professional Dissertation assistance in Digital Media",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 17,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Economics",
-        "description": "Professional Dissertation assistance in Economics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 18,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Education",
-        "description": "Professional Dissertation assistance in Education",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 19,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Engineering",
-        "description": "Professional Dissertation assistance in Engineering",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 20,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - English",
-        "description": "Professional Dissertation assistance in English",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 21,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Entrepreneurship",
-        "description": "Professional Dissertation assistance in Entrepreneurship",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 22,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Environmental Science",
-        "description": "Professional Dissertation assistance in Environmental Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 23,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Film Studies",
-        "description": "Professional Dissertation assistance in Film Studies",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 24,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Finance",
-        "description": "Professional Dissertation assistance in Finance",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 25,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Geography",
-        "description": "Professional Dissertation assistance in Geography",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 26,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Healthcare Administration",
-        "description": "Professional Dissertation assistance in Healthcare Administration",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 27,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - History",
-        "description": "Professional Dissertation assistance in History",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 28,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Information Technology",
-        "description": "Professional Dissertation assistance in Information Technology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 29,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - International Business",
-        "description": "Professional Dissertation assistance in International Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 30,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - International Relations",
-        "description": "Professional Dissertation assistance in International Relations",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 31,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Journalism",
-        "description": "Professional Dissertation assistance in Journalism",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 32,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Law",
-        "description": "Professional Dissertation assistance in Law",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 33,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Literature",
-        "description": "Professional Dissertation assistance in Literature",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 34,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Management",
-        "description": "Professional Dissertation assistance in Management",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 35,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Marketing",
-        "description": "Professional Dissertation assistance in Marketing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 36,
+        "base_price": 35.0,
+        "price_per_page": 49.0,
+        "project_type_id": 1,
+        "subject_id": 2,
         "unit": "Dissertation"
     },
     {
         "title": "Dissertation - Mathematics",
         "description": "Professional Dissertation assistance in Mathematics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 37,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Medicine",
-        "description": "Professional Dissertation assistance in Medicine",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 38,
+        "base_price": 35.0,
+        "price_per_page": 49.0,
+        "project_type_id": 1,
+        "subject_id": 6,
         "unit": "Dissertation"
     },
     {
         "title": "Dissertation - Nursing",
         "description": "Professional Dissertation assistance in Nursing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 39,
+        "base_price": 32.5,
+        "price_per_page": 45.5,
+        "project_type_id": 1,
+        "subject_id": 13,
         "unit": "Dissertation"
     },
     {
-        "title": "Dissertation - Operations Management",
-        "description": "Professional Dissertation assistance in Operations Management",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 40,
-        "unit": "Dissertation"
+        "title": "Thesis - Nursing",
+        "description": "Professional Thesis assistance in Nursing",
+        "base_price": 26.0,
+        "price_per_page": 39.0,
+        "project_type_id": 2,
+        "subject_id": 13,
+        "unit": "Thesis"
     },
     {
-        "title": "Dissertation - Operations Research",
-        "description": "Professional Dissertation assistance in Operations Research",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 41,
-        "unit": "Dissertation"
+        "title": "Thesis - Biology",
+        "description": "Professional Thesis assistance in Biology",
+        "base_price": 24.0,
+        "price_per_page": 36.0,
+        "project_type_id": 2,
+        "subject_id": 17,
+        "unit": "Thesis"
     },
     {
-        "title": "Dissertation - Philosophy",
-        "description": "Professional Dissertation assistance in Philosophy",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 42,
-        "unit": "Dissertation"
+        "title": "Thesis - Physics",
+        "description": "Professional Thesis assistance in Physics",
+        "base_price": 28.0,
+        "price_per_page": 42.0,
+        "project_type_id": 2,
+        "subject_id": 5,
+        "unit": "Thesis"
     },
     {
-        "title": "Dissertation - Physics",
-        "description": "Professional Dissertation assistance in Physics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
+        "title": "Research Paper - Economics",
+        "description": "Professional Research Paper assistance in Economics",
+        "base_price": 18.0,
+        "price_per_page": 30.0,
+        "project_type_id": 3,
+        "subject_id": 22,
+        "unit": "Research Paper"
+    },
+    {
+        "title": "Research Paper - Business",
+        "description": "Professional Research Paper assistance in Business",
+        "base_price": 18.0,
+        "price_per_page": 30.0,
+        "project_type_id": 3,
+        "subject_id": 26,
+        "unit": "Research Paper"
+    },
+    {
+        "title": "Research Paper - Law",
+        "description": "Professional Research Paper assistance in Law",
+        "base_price": 19.5,
+        "price_per_page": 32.5,
+        "project_type_id": 3,
+        "subject_id": 23,
+        "unit": "Research Paper"
+    },
+    {
+        "title": "Research Paper - Psychology",
+        "description": "Professional Research Paper assistance in Psychology",
+        "base_price": 15.0,
+        "price_per_page": 25.0,
+        "project_type_id": 3,
+        "subject_id": 34,
+        "unit": "Research Paper"
+    },
+    {
+        "title": "Business Plan - Finance",
+        "description": "Professional Business Plan assistance in Finance",
+        "base_price": 23.4,
+        "price_per_page": 36.4,
+        "project_type_id": 4,
+        "subject_id": 21,
+        "unit": "Business Plan"
+    },
+    {
+        "title": "Business Plan - Marketing",
+        "description": "Professional Business Plan assistance in Marketing",
+        "base_price": 21.6,
+        "price_per_page": 33.6,
+        "project_type_id": 4,
+        "subject_id": 29,
+        "unit": "Business Plan"
+    },
+    {
+        "title": "Business Plan - Operations Management",
+        "description": "Professional Business Plan assistance in Operations Management",
+        "base_price": 21.6,
+        "price_per_page": 33.6,
+        "project_type_id": 4,
+        "subject_id": 30,
+        "unit": "Business Plan"
+    },
+    {
+        "title": "Case Study - Criminal Justice",
+        "description": "Professional Case Study assistance in Criminal Justice",
+        "base_price": 19.5,
+        "price_per_page": 32.5,
+        "project_type_id": 5,
+        "subject_id": 24,
+        "unit": "Case Study"
+    },
+    {
+        "title": "Case Study - Business",
+        "description": "Professional Case Study assistance in Business",
+        "base_price": 18.0,
+        "price_per_page": 30.0,
+        "project_type_id": 5,
+        "subject_id": 26,
+        "unit": "Case Study"
+    },
+    {
+        "title": "Case Study - Law",
+        "description": "Professional Case Study assistance in Law",
+        "base_price": 19.5,
+        "price_per_page": 32.5,
+        "project_type_id": 5,
+        "subject_id": 23,
+        "unit": "Case Study"
+    },
+    {
+        "title": "Technical Report - Engineering",
+        "description": "Professional Technical Report assistance in Engineering",
+        "base_price": 21.0,
+        "price_per_page": 35.0,
+        "project_type_id": 6,
+        "subject_id": 1,
+        "unit": "Technical Report"
+    },
+    {
+        "title": "Technical Report - Computer Science",
+        "description": "Professional Technical Report assistance in Computer Science",
+        "base_price": 21.0,
+        "price_per_page": 35.0,
+        "project_type_id": 6,
+        "subject_id": 2,
+        "unit": "Technical Report"
+    },
+    {
+        "title": "Technical Report - Physics",
+        "description": "Professional Technical Report assistance in Physics",
+        "base_price": 21.0,
+        "price_per_page": 35.0,
+        "project_type_id": 6,
+        "subject_id": 5,
+        "unit": "Technical Report"
+    },
+    {
+        "title": "Data Analysis - Statistics",
+        "description": "Professional Data Analysis assistance in Statistics",
+        "base_price": 28.0,
+        "price_per_page": 42.0,
+        "project_type_id": 7,
+        "subject_id": 8,
+        "unit": "Data Analysis"
+    },
+    {
+        "title": "Data Analysis - Operations Research",
+        "description": "Professional Data Analysis assistance in Operations Research",
+        "base_price": 28.0,
+        "price_per_page": 42.0,
+        "project_type_id": 7,
+        "subject_id": 9,
+        "unit": "Data Analysis"
+    },
+    {
+        "title": "Data Analysis - Data Analysis",
+        "description": "Professional Data Analysis assistance in Data Analysis",
+        "base_price": 26.0,
+        "price_per_page": 39.0,
+        "project_type_id": 7,
+        "subject_id": 10,
+        "unit": "Data Analysis"
+    },
+    {
+        "title": "Lab Report - Biology",
+        "description": "Professional Lab Report assistance in Biology",
+        "base_price": 18.0,
+        "price_per_page": 30.0,
+        "project_type_id": 8,
+        "subject_id": 17,
+        "unit": "Lab Report"
+    },
+    {
+        "title": "Lab Report - Chemistry",
+        "description": "Professional Lab Report assistance in Chemistry",
+        "base_price": 19.5,
+        "price_per_page": 32.5,
+        "project_type_id": 8,
+        "subject_id": 15,
+        "unit": "Lab Report"
+    },
+    {
+        "title": "Lab Report - Environmental Science",
+        "description": "Professional Lab Report assistance in Environmental Science",
+        "base_price": 18.0,
+        "price_per_page": 30.0,
+        "project_type_id": 8,
+        "subject_id": 19,
+        "unit": "Lab Report"
+    },
+    {
+        "title": "Code - Computer Science",
+        "description": "Professional Code assistance in Computer Science",
+        "base_price": 35.0,
+        "price_per_page": 49.0,
+        "project_type_id": 9,
+        "subject_id": 2,
+        "unit": "Code"
+    },
+    {
+        "title": "Code - Information Technology",
+        "description": "Professional Code assistance in Information Technology",
+        "base_price": 35.0,
+        "price_per_page": 49.0,
+        "project_type_id": 9,
+        "subject_id": 3,
+        "unit": "Code"
+    },
+    {
+        "title": "Code - Web Development",
+        "description": "Professional Code assistance in Web Development",
+        "base_price": 35.0,
+        "price_per_page": 49.0,
+        "project_type_id": 9,
+        "subject_id": 4,
+        "unit": "Code"
+    },
+    {
+        "title": "Math Solving - Mathematics",
+        "description": "Professional Math Solving assistance in Mathematics",
+        "base_price": 28.0,
+        "price_per_page": 42.0,
+        "project_type_id": 10,
+        "subject_id": 6,
+        "unit": "Math Solving"
+    },
+    {
+        "title": "Math Solving - Statistics",
+        "description": "Professional Math Solving assistance in Statistics",
+        "base_price": 28.0,
+        "price_per_page": 42.0,
+        "project_type_id": 10,
+        "subject_id": 8,
+        "unit": "Math Solving"
+    },
+    {
+        "title": "Math Solving - Algebra",
+        "description": "Professional Math Solving assistance in Algebra",
+        "base_price": 28.0,
+        "price_per_page": 42.0,
+        "project_type_id": 10,
+        "subject_id": 7,
+        "unit": "Math Solving"
+    },
+    {
+        "title": "Literature Review - English",
+        "description": "Professional Literature Review assistance in English",
+        "base_price": 12.0,
+        "price_per_page": 22.0,
         "project_type_id": 11,
+        "subject_id": 31,
+        "unit": "Literature Review"
+    },
+    {
+        "title": "Literature Review - History",
+        "description": "Professional Literature Review assistance in History",
+        "base_price": 12.0,
+        "price_per_page": 22.0,
+        "project_type_id": 11,
+        "subject_id": 32,
+        "unit": "Literature Review"
+    },
+    {
+        "title": "Literature Review - Literature",
+        "description": "Professional Literature Review assistance in Literature",
+        "base_price": 12.0,
+        "price_per_page": 22.0,
+        "project_type_id": 11,
+        "subject_id": 33,
+        "unit": "Literature Review"
+    },
+    {
+        "title": "Essay - English",
+        "description": "Professional Essay assistance in English",
+        "base_price": 8.0,
+        "price_per_page": 15.0,
+        "project_type_id": 12,
+        "subject_id": 31,
+        "unit": "Essay"
+    },
+    {
+        "title": "Essay - History",
+        "description": "Professional Essay assistance in History",
+        "base_price": 8.0,
+        "price_per_page": 15.0,
+        "project_type_id": 12,
+        "subject_id": 32,
+        "unit": "Essay"
+    },
+    {
+        "title": "Essay - Sociology",
+        "description": "Professional Essay assistance in Sociology",
+        "base_price": 8.0,
+        "price_per_page": 15.0,
+        "project_type_id": 12,
+        "subject_id": 35,
+        "unit": "Essay"
+    },
+    {
+        "title": "Article - Journalism",
+        "description": "Professional Article assistance in Journalism",
+        "base_price": 8.0,
+        "price_per_page": 15.0,
+        "project_type_id": 13,
         "subject_id": 43,
-        "unit": "Dissertation"
+        "unit": "Article"
     },
     {
-        "title": "Dissertation - Political Science",
-        "description": "Professional Dissertation assistance in Political Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 44,
-        "unit": "Dissertation"
+        "title": "Article - Communications",
+        "description": "Professional Article assistance in Communications",
+        "base_price": 8.0,
+        "price_per_page": 15.0,
+        "project_type_id": 13,
+        "subject_id": 38,
+        "unit": "Article"
     },
     {
-        "title": "Dissertation - Psychology",
-        "description": "Professional Dissertation assistance in Psychology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 45,
-        "unit": "Dissertation"
+        "title": "Article - Public Relations",
+        "description": "Professional Article assistance in Public Relations",
+        "base_price": 8.0,
+        "price_per_page": 15.0,
+        "project_type_id": 13,
+        "subject_id": 39,
+        "unit": "Article"
     },
     {
-        "title": "Dissertation - Public Administration",
-        "description": "Professional Dissertation assistance in Public Administration",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 46,
-        "unit": "Dissertation"
+        "title": "Creative Writing - English",
+        "description": "Professional Creative Writing assistance in English",
+        "base_price": 10.0,
+        "price_per_page": 18.0,
+        "project_type_id": 14,
+        "subject_id": 31,
+        "unit": "Creative Writing"
     },
     {
-        "title": "Dissertation - Public Relations",
-        "description": "Professional Dissertation assistance in Public Relations",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
+        "title": "Creative Writing - Literature",
+        "description": "Professional Creative Writing assistance in Literature",
+        "base_price": 10.0,
+        "price_per_page": 18.0,
+        "project_type_id": 14,
+        "subject_id": 33,
+        "unit": "Creative Writing"
+    },
+    {
+        "title": "Content Writing - Marketing",
+        "description": "Professional Content Writing assistance in Marketing",
+        "base_price": 9.6,
+        "price_per_page": 18.0,
+        "project_type_id": 15,
+        "subject_id": 29,
+        "unit": "Content Writing"
+    },
+    {
+        "title": "Content Writing - Communications",
+        "description": "Professional Content Writing assistance in Communications",
+        "base_price": 8.0,
+        "price_per_page": 15.0,
+        "project_type_id": 15,
+        "subject_id": 38,
+        "unit": "Content Writing"
+    },
+    {
+        "title": "Content Writing - Digital Media",
+        "description": "Professional Content Writing assistance in Digital Media",
+        "base_price": 8.0,
+        "price_per_page": 15.0,
+        "project_type_id": 15,
         "subject_id": 47,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Research Methods",
-        "description": "Professional Dissertation assistance in Research Methods",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 48,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Social Work",
-        "description": "Professional Dissertation assistance in Social Work",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 49,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Sociology",
-        "description": "Professional Dissertation assistance in Sociology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 50,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Statistics",
-        "description": "Professional Dissertation assistance in Statistics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 51,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Technical Writing",
-        "description": "Professional Dissertation assistance in Technical Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 52,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Theater Arts",
-        "description": "Professional Dissertation assistance in Theater Arts",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 53,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Theology",
-        "description": "Professional Dissertation assistance in Theology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 54,
-        "unit": "Dissertation"
-    },
-    {
-        "title": "Dissertation - Web Development",
-        "description": "Professional Dissertation assistance in Web Development",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 11,
-        "subject_id": 55,
-        "unit": "Dissertation"
+        "unit": "Content Writing"
     },
     {
         "title": "Editing - English",
         "description": "Professional Editing assistance in English",
         "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 12,
-        "subject_id": 21,
-        "unit": "Editing"
-    },
-    {
-        "title": "Editing - Communications",
-        "description": "Professional Editing assistance in Communications",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 12,
-        "subject_id": 11,
-        "unit": "Editing"
-    },
-    {
-        "title": "Editing - Creative Writing",
-        "description": "Professional Editing assistance in Creative Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 12,
-        "subject_id": 13,
+        "price_per_page": 12.0,
+        "project_type_id": 16,
+        "subject_id": 31,
         "unit": "Editing"
     },
     {
         "title": "Editing - Journalism",
         "description": "Professional Editing assistance in Journalism",
         "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 12,
-        "subject_id": 32,
+        "price_per_page": 12.0,
+        "project_type_id": 16,
+        "subject_id": 43,
         "unit": "Editing"
-    },
-    {
-        "title": "Editing - Technical Writing",
-        "description": "Professional Editing assistance in Technical Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 12,
-        "subject_id": 52,
-        "unit": "Editing"
-    },
-    {
-        "title": "Essay - Accounting",
-        "description": "Professional Essay assistance in Accounting",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 1,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Algebra",
-        "description": "Professional Essay assistance in Algebra",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 2,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Anatomy",
-        "description": "Professional Essay assistance in Anatomy",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 3,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Anthropology",
-        "description": "Professional Essay assistance in Anthropology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 4,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Architecture",
-        "description": "Professional Essay assistance in Architecture",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 5,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Art",
-        "description": "Professional Essay assistance in Art",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 6,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Biochemistry",
-        "description": "Professional Essay assistance in Biochemistry",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 7,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Biology",
-        "description": "Professional Essay assistance in Biology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 8,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Business",
-        "description": "Professional Essay assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 9,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Chemistry",
-        "description": "Professional Essay assistance in Chemistry",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 10,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Communications",
-        "description": "Professional Essay assistance in Communications",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 11,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Computer Science",
-        "description": "Professional Essay assistance in Computer Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 12,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Creative Writing",
-        "description": "Professional Essay assistance in Creative Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 13,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Criminal Justice",
-        "description": "Professional Essay assistance in Criminal Justice",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 14,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Cultural Studies",
-        "description": "Professional Essay assistance in Cultural Studies",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 15,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Data Analysis",
-        "description": "Professional Essay assistance in Data Analysis",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 16,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Digital Media",
-        "description": "Professional Essay assistance in Digital Media",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 17,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Economics",
-        "description": "Professional Essay assistance in Economics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 18,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Education",
-        "description": "Professional Essay assistance in Education",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 19,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Engineering",
-        "description": "Professional Essay assistance in Engineering",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 20,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - English",
-        "description": "Professional Essay assistance in English",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 21,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Entrepreneurship",
-        "description": "Professional Essay assistance in Entrepreneurship",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 22,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Environmental Science",
-        "description": "Professional Essay assistance in Environmental Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 23,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Film Studies",
-        "description": "Professional Essay assistance in Film Studies",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 24,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Finance",
-        "description": "Professional Essay assistance in Finance",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 25,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Geography",
-        "description": "Professional Essay assistance in Geography",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 26,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Healthcare Administration",
-        "description": "Professional Essay assistance in Healthcare Administration",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 27,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - History",
-        "description": "Professional Essay assistance in History",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 28,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Information Technology",
-        "description": "Professional Essay assistance in Information Technology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 29,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - International Business",
-        "description": "Professional Essay assistance in International Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 30,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - International Relations",
-        "description": "Professional Essay assistance in International Relations",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 31,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Journalism",
-        "description": "Professional Essay assistance in Journalism",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 32,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Law",
-        "description": "Professional Essay assistance in Law",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 33,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Literature",
-        "description": "Professional Essay assistance in Literature",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 34,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Management",
-        "description": "Professional Essay assistance in Management",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 35,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Marketing",
-        "description": "Professional Essay assistance in Marketing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 36,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Mathematics",
-        "description": "Professional Essay assistance in Mathematics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 37,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Medicine",
-        "description": "Professional Essay assistance in Medicine",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 38,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Nursing",
-        "description": "Professional Essay assistance in Nursing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 39,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Operations Management",
-        "description": "Professional Essay assistance in Operations Management",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 40,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Operations Research",
-        "description": "Professional Essay assistance in Operations Research",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 41,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Philosophy",
-        "description": "Professional Essay assistance in Philosophy",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 42,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Physics",
-        "description": "Professional Essay assistance in Physics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 43,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Political Science",
-        "description": "Professional Essay assistance in Political Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 44,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Psychology",
-        "description": "Professional Essay assistance in Psychology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 45,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Public Administration",
-        "description": "Professional Essay assistance in Public Administration",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 46,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Public Relations",
-        "description": "Professional Essay assistance in Public Relations",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 47,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Research Methods",
-        "description": "Professional Essay assistance in Research Methods",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 48,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Social Work",
-        "description": "Professional Essay assistance in Social Work",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 49,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Sociology",
-        "description": "Professional Essay assistance in Sociology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 50,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Statistics",
-        "description": "Professional Essay assistance in Statistics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 51,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Technical Writing",
-        "description": "Professional Essay assistance in Technical Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 52,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Theater Arts",
-        "description": "Professional Essay assistance in Theater Arts",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 53,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Theology",
-        "description": "Professional Essay assistance in Theology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 54,
-        "unit": "Essay"
-    },
-    {
-        "title": "Essay - Web Development",
-        "description": "Professional Essay assistance in Web Development",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 13,
-        "subject_id": 55,
-        "unit": "Essay"
-    },
-    {
-        "title": "Excel Assignment - Accounting",
-        "description": "Professional Excel Assignment assistance in Accounting",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 14,
-        "subject_id": 1,
-        "unit": "Excel Assignment"
-    },
-    {
-        "title": "Excel Assignment - Finance",
-        "description": "Professional Excel Assignment assistance in Finance",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 14,
-        "subject_id": 25,
-        "unit": "Excel Assignment"
-    },
-    {
-        "title": "Excel Assignment - Economics",
-        "description": "Professional Excel Assignment assistance in Economics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 14,
-        "subject_id": 18,
-        "unit": "Excel Assignment"
-    },
-    {
-        "title": "Excel Assignment - Statistics",
-        "description": "Professional Excel Assignment assistance in Statistics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 14,
-        "subject_id": 51,
-        "unit": "Excel Assignment"
-    },
-    {
-        "title": "Excel Assignment - Business",
-        "description": "Professional Excel Assignment assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 14,
-        "subject_id": 9,
-        "unit": "Excel Assignment"
-    },
-    {
-        "title": "Excel Assignment - Data Analysis",
-        "description": "Professional Excel Assignment assistance in Data Analysis",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 14,
-        "subject_id": 16,
-        "unit": "Excel Assignment"
-    },
-    {
-        "title": "Excel Assignment - Operations Management",
-        "description": "Professional Excel Assignment assistance in Operations Management",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 14,
-        "subject_id": 40,
-        "unit": "Excel Assignment"
-    },
-    {
-        "title": "Lab Report - Biology",
-        "description": "Professional Lab Report assistance in Biology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 15,
-        "subject_id": 8,
-        "unit": "Lab Report"
-    },
-    {
-        "title": "Lab Report - Chemistry",
-        "description": "Professional Lab Report assistance in Chemistry",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 15,
-        "subject_id": 10,
-        "unit": "Lab Report"
-    },
-    {
-        "title": "Lab Report - Physics",
-        "description": "Professional Lab Report assistance in Physics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 15,
-        "subject_id": 43,
-        "unit": "Lab Report"
-    },
-    {
-        "title": "Lab Report - Engineering",
-        "description": "Professional Lab Report assistance in Engineering",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 15,
-        "subject_id": 20,
-        "unit": "Lab Report"
-    },
-    {
-        "title": "Lab Report - Environmental Science",
-        "description": "Professional Lab Report assistance in Environmental Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 15,
-        "subject_id": 23,
-        "unit": "Lab Report"
-    },
-    {
-        "title": "Lab Report - Psychology",
-        "description": "Professional Lab Report assistance in Psychology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 15,
-        "subject_id": 45,
-        "unit": "Lab Report"
-    },
-    {
-        "title": "Lab Report - Computer Science",
-        "description": "Professional Lab Report assistance in Computer Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 15,
-        "subject_id": 12,
-        "unit": "Lab Report"
-    },
-    {
-        "title": "Literature Review - English",
-        "description": "Professional Literature Review assistance in English",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 16,
-        "subject_id": 21,
-        "unit": "Literature Review"
-    },
-    {
-        "title": "Literature Review - Literature",
-        "description": "Professional Literature Review assistance in Literature",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 16,
-        "subject_id": 34,
-        "unit": "Literature Review"
-    },
-    {
-        "title": "Literature Review - Psychology",
-        "description": "Professional Literature Review assistance in Psychology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 16,
-        "subject_id": 45,
-        "unit": "Literature Review"
-    },
-    {
-        "title": "Literature Review - Sociology",
-        "description": "Professional Literature Review assistance in Sociology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 16,
-        "subject_id": 50,
-        "unit": "Literature Review"
-    },
-    {
-        "title": "Literature Review - Education",
-        "description": "Professional Literature Review assistance in Education",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 16,
-        "subject_id": 19,
-        "unit": "Literature Review"
-    },
-    {
-        "title": "Literature Review - Business",
-        "description": "Professional Literature Review assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 16,
-        "subject_id": 9,
-        "unit": "Literature Review"
-    },
-    {
-        "title": "Literature Review - Medicine",
-        "description": "Professional Literature Review assistance in Medicine",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 16,
-        "subject_id": 38,
-        "unit": "Literature Review"
-    },
-    {
-        "title": "Literature Review - Nursing",
-        "description": "Professional Literature Review assistance in Nursing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 16,
-        "subject_id": 39,
-        "unit": "Literature Review"
-    },
-    {
-        "title": "Literature Review - Research Methods",
-        "description": "Professional Literature Review assistance in Research Methods",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 16,
-        "subject_id": 48,
-        "unit": "Literature Review"
-    },
-    {
-        "title": "Math Solving - Mathematics",
-        "description": "Professional Math Solving assistance in Mathematics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 17,
-        "subject_id": 37,
-        "unit": "Math Solving"
-    },
-    {
-        "title": "Math Solving - Statistics",
-        "description": "Professional Math Solving assistance in Statistics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 17,
-        "subject_id": 51,
-        "unit": "Math Solving"
-    },
-    {
-        "title": "Math Solving - Physics",
-        "description": "Professional Math Solving assistance in Physics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 17,
-        "subject_id": 43,
-        "unit": "Math Solving"
-    },
-    {
-        "title": "Math Solving - Engineering",
-        "description": "Professional Math Solving assistance in Engineering",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 17,
-        "subject_id": 20,
-        "unit": "Math Solving"
-    },
-    {
-        "title": "Math Solving - Economics",
-        "description": "Professional Math Solving assistance in Economics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 17,
-        "subject_id": 18,
-        "unit": "Math Solving"
-    },
-    {
-        "title": "Math Solving - Finance",
-        "description": "Professional Math Solving assistance in Finance",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 17,
-        "subject_id": 25,
-        "unit": "Math Solving"
-    },
-    {
-        "title": "Math Solving - Computer Science",
-        "description": "Professional Math Solving assistance in Computer Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 17,
-        "subject_id": 12,
-        "unit": "Math Solving"
-    },
-    {
-        "title": "Math Solving - Operations Research",
-        "description": "Professional Math Solving assistance in Operations Research",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 17,
-        "subject_id": 41,
-        "unit": "Math Solving"
     },
     {
         "title": "Outline - English",
         "description": "Professional Outline assistance in English",
         "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 18,
-        "subject_id": 21,
+        "price_per_page": 12.0,
+        "project_type_id": 17,
+        "subject_id": 31,
         "unit": "Outline"
     },
     {
         "title": "Outline - History",
         "description": "Professional Outline assistance in History",
         "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 18,
-        "subject_id": 28,
-        "unit": "Outline"
-    },
-    {
-        "title": "Outline - Education",
-        "description": "Professional Outline assistance in Education",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 18,
-        "subject_id": 19,
+        "price_per_page": 12.0,
+        "project_type_id": 17,
+        "subject_id": 32,
         "unit": "Outline"
     },
     {
         "title": "Outline - Research Methods",
         "description": "Professional Outline assistance in Research Methods",
         "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 18,
-        "subject_id": 48,
-        "unit": "Outline"
-    },
-    {
-        "title": "Outline - Literature",
-        "description": "Professional Outline assistance in Literature",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 18,
-        "subject_id": 34,
-        "unit": "Outline"
-    },
-    {
-        "title": "Outline - Political Science",
-        "description": "Professional Outline assistance in Political Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 18,
-        "subject_id": 44,
-        "unit": "Outline"
-    },
-    {
-        "title": "Outline - Sociology",
-        "description": "Professional Outline assistance in Sociology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 18,
+        "price_per_page": 12.0,
+        "project_type_id": 17,
         "subject_id": 50,
         "unit": "Outline"
     },
     {
-        "title": "Personal Statement - Education",
-        "description": "Professional Personal Statement assistance in Education",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 19,
-        "subject_id": 19,
-        "unit": "Personal Statement"
-    },
-    {
-        "title": "Personal Statement - English",
-        "description": "Professional Personal Statement assistance in English",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 19,
-        "subject_id": 21,
-        "unit": "Personal Statement"
-    },
-    {
-        "title": "Personal Statement - Law",
-        "description": "Professional Personal Statement assistance in Law",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 19,
-        "subject_id": 33,
-        "unit": "Personal Statement"
-    },
-    {
-        "title": "Personal Statement - Medicine",
-        "description": "Professional Personal Statement assistance in Medicine",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 19,
-        "subject_id": 38,
-        "unit": "Personal Statement"
-    },
-    {
-        "title": "Personal Statement - Nursing",
-        "description": "Professional Personal Statement assistance in Nursing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 19,
-        "subject_id": 39,
-        "unit": "Personal Statement"
-    },
-    {
-        "title": "Personal Statement - Business",
-        "description": "Professional Personal Statement assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 19,
-        "subject_id": 9,
-        "unit": "Personal Statement"
-    },
-    {
-        "title": "Personal Statement - Engineering",
-        "description": "Professional Personal Statement assistance in Engineering",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 19,
-        "subject_id": 20,
-        "unit": "Personal Statement"
-    },
-    {
-        "title": "Personal Statement - Psychology",
-        "description": "Professional Personal Statement assistance in Psychology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 19,
-        "subject_id": 45,
-        "unit": "Personal Statement"
-    },
-    {
-        "title": "Personal Statement - Social Work",
-        "description": "Professional Personal Statement assistance in Social Work",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 19,
-        "subject_id": 49,
-        "unit": "Personal Statement"
-    },
-    {
-        "title": "Presentation - Accounting",
-        "description": "Professional Presentation assistance in Accounting",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 1,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Algebra",
-        "description": "Professional Presentation assistance in Algebra",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 2,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Anatomy",
-        "description": "Professional Presentation assistance in Anatomy",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 3,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Anthropology",
-        "description": "Professional Presentation assistance in Anthropology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 4,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Architecture",
-        "description": "Professional Presentation assistance in Architecture",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 5,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Art",
-        "description": "Professional Presentation assistance in Art",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 6,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Biochemistry",
-        "description": "Professional Presentation assistance in Biochemistry",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 7,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Biology",
-        "description": "Professional Presentation assistance in Biology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 8,
-        "unit": "Presentation"
-    },
-    {
         "title": "Presentation - Business",
         "description": "Professional Presentation assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 9,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Chemistry",
-        "description": "Professional Presentation assistance in Chemistry",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 10,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Communications",
-        "description": "Professional Presentation assistance in Communications",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 11,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Computer Science",
-        "description": "Professional Presentation assistance in Computer Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 12,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Creative Writing",
-        "description": "Professional Presentation assistance in Creative Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 13,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Criminal Justice",
-        "description": "Professional Presentation assistance in Criminal Justice",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 14,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Cultural Studies",
-        "description": "Professional Presentation assistance in Cultural Studies",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 15,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Data Analysis",
-        "description": "Professional Presentation assistance in Data Analysis",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 16,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Digital Media",
-        "description": "Professional Presentation assistance in Digital Media",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 17,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Economics",
-        "description": "Professional Presentation assistance in Economics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 18,
+        "base_price": 14.4,
+        "price_per_page": 24.0,
+        "project_type_id": 18,
+        "subject_id": 26,
         "unit": "Presentation"
     },
     {
         "title": "Presentation - Education",
         "description": "Professional Presentation assistance in Education",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 19,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Engineering",
-        "description": "Professional Presentation assistance in Engineering",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 20,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - English",
-        "description": "Professional Presentation assistance in English",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 21,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Entrepreneurship",
-        "description": "Professional Presentation assistance in Entrepreneurship",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 22,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Environmental Science",
-        "description": "Professional Presentation assistance in Environmental Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 23,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Film Studies",
-        "description": "Professional Presentation assistance in Film Studies",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 24,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Finance",
-        "description": "Professional Presentation assistance in Finance",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 25,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Geography",
-        "description": "Professional Presentation assistance in Geography",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 26,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Healthcare Administration",
-        "description": "Professional Presentation assistance in Healthcare Administration",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 27,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - History",
-        "description": "Professional Presentation assistance in History",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 28,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Information Technology",
-        "description": "Professional Presentation assistance in Information Technology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 29,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - International Business",
-        "description": "Professional Presentation assistance in International Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 30,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - International Relations",
-        "description": "Professional Presentation assistance in International Relations",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 31,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Journalism",
-        "description": "Professional Presentation assistance in Journalism",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 32,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Law",
-        "description": "Professional Presentation assistance in Law",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 33,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Literature",
-        "description": "Professional Presentation assistance in Literature",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 34,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Management",
-        "description": "Professional Presentation assistance in Management",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 35,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Marketing",
-        "description": "Professional Presentation assistance in Marketing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 36,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Mathematics",
-        "description": "Professional Presentation assistance in Mathematics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
+        "base_price": 12.0,
+        "price_per_page": 20.0,
+        "project_type_id": 18,
         "subject_id": 37,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Medicine",
-        "description": "Professional Presentation assistance in Medicine",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 38,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Nursing",
-        "description": "Professional Presentation assistance in Nursing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 39,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Operations Management",
-        "description": "Professional Presentation assistance in Operations Management",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 40,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Operations Research",
-        "description": "Professional Presentation assistance in Operations Research",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 41,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Philosophy",
-        "description": "Professional Presentation assistance in Philosophy",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 42,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Physics",
-        "description": "Professional Presentation assistance in Physics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 43,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Political Science",
-        "description": "Professional Presentation assistance in Political Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 44,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Psychology",
-        "description": "Professional Presentation assistance in Psychology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 45,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Public Administration",
-        "description": "Professional Presentation assistance in Public Administration",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 46,
         "unit": "Presentation"
     },
     {
         "title": "Presentation - Public Relations",
         "description": "Professional Presentation assistance in Public Relations",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 47,
+        "base_price": 12.0,
+        "price_per_page": 20.0,
+        "project_type_id": 18,
+        "subject_id": 39,
         "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Research Methods",
-        "description": "Professional Presentation assistance in Research Methods",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 48,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Social Work",
-        "description": "Professional Presentation assistance in Social Work",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 49,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Sociology",
-        "description": "Professional Presentation assistance in Sociology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 50,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Statistics",
-        "description": "Professional Presentation assistance in Statistics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 51,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Technical Writing",
-        "description": "Professional Presentation assistance in Technical Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 52,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Theater Arts",
-        "description": "Professional Presentation assistance in Theater Arts",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 53,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Theology",
-        "description": "Professional Presentation assistance in Theology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 54,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Presentation - Web Development",
-        "description": "Professional Presentation assistance in Web Development",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 20,
-        "subject_id": 55,
-        "unit": "Presentation"
-    },
-    {
-        "title": "Proposal - Accounting",
-        "description": "Professional Proposal assistance in Accounting",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 1,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Algebra",
-        "description": "Professional Proposal assistance in Algebra",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 2,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Anatomy",
-        "description": "Professional Proposal assistance in Anatomy",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 3,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Anthropology",
-        "description": "Professional Proposal assistance in Anthropology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 4,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Architecture",
-        "description": "Professional Proposal assistance in Architecture",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 5,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Art",
-        "description": "Professional Proposal assistance in Art",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 6,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Biochemistry",
-        "description": "Professional Proposal assistance in Biochemistry",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 7,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Biology",
-        "description": "Professional Proposal assistance in Biology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 8,
-        "unit": "Proposal"
     },
     {
         "title": "Proposal - Business",
         "description": "Professional Proposal assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 9,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Chemistry",
-        "description": "Professional Proposal assistance in Chemistry",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 10,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Communications",
-        "description": "Professional Proposal assistance in Communications",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 11,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Computer Science",
-        "description": "Professional Proposal assistance in Computer Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 12,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Creative Writing",
-        "description": "Professional Proposal assistance in Creative Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 13,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Criminal Justice",
-        "description": "Professional Proposal assistance in Criminal Justice",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 14,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Cultural Studies",
-        "description": "Professional Proposal assistance in Cultural Studies",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 15,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Data Analysis",
-        "description": "Professional Proposal assistance in Data Analysis",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 16,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Digital Media",
-        "description": "Professional Proposal assistance in Digital Media",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 17,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Economics",
-        "description": "Professional Proposal assistance in Economics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 18,
+        "base_price": 14.4,
+        "price_per_page": 26.4,
+        "project_type_id": 19,
+        "subject_id": 26,
         "unit": "Proposal"
     },
     {
         "title": "Proposal - Education",
         "description": "Professional Proposal assistance in Education",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 19,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Engineering",
-        "description": "Professional Proposal assistance in Engineering",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 20,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - English",
-        "description": "Professional Proposal assistance in English",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 21,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Entrepreneurship",
-        "description": "Professional Proposal assistance in Entrepreneurship",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 22,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Environmental Science",
-        "description": "Professional Proposal assistance in Environmental Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 23,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Film Studies",
-        "description": "Professional Proposal assistance in Film Studies",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 24,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Finance",
-        "description": "Professional Proposal assistance in Finance",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 25,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Geography",
-        "description": "Professional Proposal assistance in Geography",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 26,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Healthcare Administration",
-        "description": "Professional Proposal assistance in Healthcare Administration",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 27,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - History",
-        "description": "Professional Proposal assistance in History",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 28,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Information Technology",
-        "description": "Professional Proposal assistance in Information Technology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 29,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - International Business",
-        "description": "Professional Proposal assistance in International Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 30,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - International Relations",
-        "description": "Professional Proposal assistance in International Relations",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 31,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Journalism",
-        "description": "Professional Proposal assistance in Journalism",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 32,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Law",
-        "description": "Professional Proposal assistance in Law",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 33,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Literature",
-        "description": "Professional Proposal assistance in Literature",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 34,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Management",
-        "description": "Professional Proposal assistance in Management",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 35,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Marketing",
-        "description": "Professional Proposal assistance in Marketing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 36,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Mathematics",
-        "description": "Professional Proposal assistance in Mathematics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
+        "base_price": 12.0,
+        "price_per_page": 22.0,
+        "project_type_id": 19,
         "subject_id": 37,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Medicine",
-        "description": "Professional Proposal assistance in Medicine",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 38,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Nursing",
-        "description": "Professional Proposal assistance in Nursing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 39,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Operations Management",
-        "description": "Professional Proposal assistance in Operations Management",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 40,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Operations Research",
-        "description": "Professional Proposal assistance in Operations Research",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 41,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Philosophy",
-        "description": "Professional Proposal assistance in Philosophy",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 42,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Physics",
-        "description": "Professional Proposal assistance in Physics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 43,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Political Science",
-        "description": "Professional Proposal assistance in Political Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 44,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Psychology",
-        "description": "Professional Proposal assistance in Psychology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 45,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Public Administration",
-        "description": "Professional Proposal assistance in Public Administration",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 46,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Public Relations",
-        "description": "Professional Proposal assistance in Public Relations",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 47,
         "unit": "Proposal"
     },
     {
         "title": "Proposal - Research Methods",
         "description": "Professional Proposal assistance in Research Methods",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 48,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Social Work",
-        "description": "Professional Proposal assistance in Social Work",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 49,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Sociology",
-        "description": "Professional Proposal assistance in Sociology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
+        "base_price": 12.0,
+        "price_per_page": 22.0,
+        "project_type_id": 19,
         "subject_id": 50,
         "unit": "Proposal"
     },
     {
-        "title": "Proposal - Statistics",
-        "description": "Professional Proposal assistance in Statistics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 51,
-        "unit": "Proposal"
+        "title": "Personal Statement - Education",
+        "description": "Professional Personal Statement assistance in Education",
+        "base_price": 15.0,
+        "price_per_page": 25.0,
+        "project_type_id": 20,
+        "subject_id": 37,
+        "unit": "Personal Statement"
     },
     {
-        "title": "Proposal - Technical Writing",
-        "description": "Professional Proposal assistance in Technical Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 52,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Theater Arts",
-        "description": "Professional Proposal assistance in Theater Arts",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 53,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Theology",
-        "description": "Professional Proposal assistance in Theology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 54,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Proposal - Web Development",
-        "description": "Professional Proposal assistance in Web Development",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 21,
-        "subject_id": 55,
-        "unit": "Proposal"
-    },
-    {
-        "title": "Research Paper - Accounting",
-        "description": "Professional Research Paper assistance in Accounting",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 1,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Algebra",
-        "description": "Professional Research Paper assistance in Algebra",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 2,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Anatomy",
-        "description": "Professional Research Paper assistance in Anatomy",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 3,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Anthropology",
-        "description": "Professional Research Paper assistance in Anthropology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 4,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Architecture",
-        "description": "Professional Research Paper assistance in Architecture",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 5,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Art",
-        "description": "Professional Research Paper assistance in Art",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 6,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Biochemistry",
-        "description": "Professional Research Paper assistance in Biochemistry",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 7,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Biology",
-        "description": "Professional Research Paper assistance in Biology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 8,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Business",
-        "description": "Professional Research Paper assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 9,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Chemistry",
-        "description": "Professional Research Paper assistance in Chemistry",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 10,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Communications",
-        "description": "Professional Research Paper assistance in Communications",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 11,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Computer Science",
-        "description": "Professional Research Paper assistance in Computer Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 12,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Creative Writing",
-        "description": "Professional Research Paper assistance in Creative Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 13,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Criminal Justice",
-        "description": "Professional Research Paper assistance in Criminal Justice",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 14,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Cultural Studies",
-        "description": "Professional Research Paper assistance in Cultural Studies",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 15,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Data Analysis",
-        "description": "Professional Research Paper assistance in Data Analysis",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 16,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Digital Media",
-        "description": "Professional Research Paper assistance in Digital Media",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 17,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Economics",
-        "description": "Professional Research Paper assistance in Economics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 18,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Education",
-        "description": "Professional Research Paper assistance in Education",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 19,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Engineering",
-        "description": "Professional Research Paper assistance in Engineering",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 20,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - English",
-        "description": "Professional Research Paper assistance in English",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 21,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Entrepreneurship",
-        "description": "Professional Research Paper assistance in Entrepreneurship",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 22,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Environmental Science",
-        "description": "Professional Research Paper assistance in Environmental Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
+        "title": "Personal Statement - Law",
+        "description": "Professional Personal Statement assistance in Law",
+        "base_price": 19.5,
+        "price_per_page": 32.5,
+        "project_type_id": 20,
         "subject_id": 23,
-        "unit": "Research Paper"
+        "unit": "Personal Statement"
     },
     {
-        "title": "Research Paper - Film Studies",
-        "description": "Professional Research Paper assistance in Film Studies",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 24,
-        "unit": "Research Paper"
+        "title": "Application Essay - Education",
+        "description": "Professional Application Essay assistance in Education",
+        "base_price": 15.0,
+        "price_per_page": 25.0,
+        "project_type_id": 21,
+        "subject_id": 37,
+        "unit": "Application Essay"
     },
     {
-        "title": "Research Paper - Finance",
-        "description": "Professional Research Paper assistance in Finance",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 25,
-        "unit": "Research Paper"
+        "title": "Application Essay - Law",
+        "description": "Professional Application Essay assistance in Law",
+        "base_price": 19.5,
+        "price_per_page": 32.5,
+        "project_type_id": 21,
+        "subject_id": 23,
+        "unit": "Application Essay"
     },
     {
-        "title": "Research Paper - Geography",
-        "description": "Professional Research Paper assistance in Geography",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
+        "title": "Application Essay - Business",
+        "description": "Professional Application Essay assistance in Business",
+        "base_price": 18.0,
+        "price_per_page": 30.0,
+        "project_type_id": 21,
         "subject_id": 26,
-        "unit": "Research Paper"
+        "unit": "Application Essay"
     },
     {
-        "title": "Research Paper - Healthcare Administration",
-        "description": "Professional Research Paper assistance in Healthcare Administration",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 27,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - History",
-        "description": "Professional Research Paper assistance in History",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 28,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Information Technology",
-        "description": "Professional Research Paper assistance in Information Technology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 29,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - International Business",
-        "description": "Professional Research Paper assistance in International Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 30,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - International Relations",
-        "description": "Professional Research Paper assistance in International Relations",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
+        "title": "Annotated Bibliography - English",
+        "description": "Professional Annotated Bibliography assistance in English",
+        "base_price": 10.0,
+        "price_per_page": 18.0,
         "project_type_id": 22,
         "subject_id": 31,
-        "unit": "Research Paper"
+        "unit": "Annotated Bibliography"
     },
     {
-        "title": "Research Paper - Journalism",
-        "description": "Professional Research Paper assistance in Journalism",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
+        "title": "Annotated Bibliography - History",
+        "description": "Professional Annotated Bibliography assistance in History",
+        "base_price": 10.0,
+        "price_per_page": 18.0,
         "project_type_id": 22,
         "subject_id": 32,
-        "unit": "Research Paper"
+        "unit": "Annotated Bibliography"
     },
     {
-        "title": "Research Paper - Law",
-        "description": "Professional Research Paper assistance in Law",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 33,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Literature",
-        "description": "Professional Research Paper assistance in Literature",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 34,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Management",
-        "description": "Professional Research Paper assistance in Management",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 35,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Marketing",
-        "description": "Professional Research Paper assistance in Marketing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 36,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Mathematics",
-        "description": "Professional Research Paper assistance in Mathematics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 37,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Medicine",
-        "description": "Professional Research Paper assistance in Medicine",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 38,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Nursing",
-        "description": "Professional Research Paper assistance in Nursing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 39,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Operations Management",
-        "description": "Professional Research Paper assistance in Operations Management",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 40,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Operations Research",
-        "description": "Professional Research Paper assistance in Operations Research",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 41,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Philosophy",
-        "description": "Professional Research Paper assistance in Philosophy",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 42,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Physics",
-        "description": "Professional Research Paper assistance in Physics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 43,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Political Science",
-        "description": "Professional Research Paper assistance in Political Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 44,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Psychology",
-        "description": "Professional Research Paper assistance in Psychology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 45,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Public Administration",
-        "description": "Professional Research Paper assistance in Public Administration",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 46,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Public Relations",
-        "description": "Professional Research Paper assistance in Public Relations",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 47,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Research Methods",
-        "description": "Professional Research Paper assistance in Research Methods",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 48,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Social Work",
-        "description": "Professional Research Paper assistance in Social Work",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 49,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Sociology",
-        "description": "Professional Research Paper assistance in Sociology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
+        "title": "Annotated Bibliography - Research Methods",
+        "description": "Professional Annotated Bibliography assistance in Research Methods",
+        "base_price": 10.0,
+        "price_per_page": 18.0,
         "project_type_id": 22,
         "subject_id": 50,
-        "unit": "Research Paper"
+        "unit": "Annotated Bibliography"
     },
     {
-        "title": "Research Paper - Statistics",
-        "description": "Professional Research Paper assistance in Statistics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 51,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Technical Writing",
-        "description": "Professional Research Paper assistance in Technical Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 52,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Theater Arts",
-        "description": "Professional Research Paper assistance in Theater Arts",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 53,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Theology",
-        "description": "Professional Research Paper assistance in Theology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 54,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Research Paper - Web Development",
-        "description": "Professional Research Paper assistance in Web Development",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 22,
-        "subject_id": 55,
-        "unit": "Research Paper"
-    },
-    {
-        "title": "Technical Report - Engineering",
-        "description": "Professional Technical Report assistance in Engineering",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
+        "title": "Coursework - Mathematics",
+        "description": "Professional Coursework assistance in Mathematics",
+        "base_price": 16.8,
+        "price_per_page": 28.0,
         "project_type_id": 23,
-        "subject_id": 20,
-        "unit": "Technical Report"
-    },
-    {
-        "title": "Technical Report - Information Technology",
-        "description": "Professional Technical Report assistance in Information Technology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 23,
-        "subject_id": 29,
-        "unit": "Technical Report"
-    },
-    {
-        "title": "Technical Report - Computer Science",
-        "description": "Professional Technical Report assistance in Computer Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 23,
-        "subject_id": 12,
-        "unit": "Technical Report"
-    },
-    {
-        "title": "Technical Report - Environmental Science",
-        "description": "Professional Technical Report assistance in Environmental Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 23,
-        "subject_id": 23,
-        "unit": "Technical Report"
-    },
-    {
-        "title": "Technical Report - Architecture",
-        "description": "Professional Technical Report assistance in Architecture",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 23,
-        "subject_id": 5,
-        "unit": "Technical Report"
-    },
-    {
-        "title": "Technical Report - Technical Writing",
-        "description": "Professional Technical Report assistance in Technical Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 23,
-        "subject_id": 52,
-        "unit": "Technical Report"
-    },
-    {
-        "title": "Thesis - Accounting",
-        "description": "Professional Thesis assistance in Accounting",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 1,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Algebra",
-        "description": "Professional Thesis assistance in Algebra",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 2,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Anatomy",
-        "description": "Professional Thesis assistance in Anatomy",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 3,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Anthropology",
-        "description": "Professional Thesis assistance in Anthropology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 4,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Architecture",
-        "description": "Professional Thesis assistance in Architecture",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 5,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Art",
-        "description": "Professional Thesis assistance in Art",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
         "subject_id": 6,
-        "unit": "Thesis"
+        "unit": "Coursework"
     },
     {
-        "title": "Thesis - Biochemistry",
-        "description": "Professional Thesis assistance in Biochemistry",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 7,
-        "unit": "Thesis"
+        "title": "Coursework - Physics",
+        "description": "Professional Coursework assistance in Physics",
+        "base_price": 16.8,
+        "price_per_page": 28.0,
+        "project_type_id": 23,
+        "subject_id": 5,
+        "unit": "Coursework"
     },
     {
-        "title": "Thesis - Biology",
-        "description": "Professional Thesis assistance in Biology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 8,
-        "unit": "Thesis"
+        "title": "Coursework - Engineering",
+        "description": "Professional Coursework assistance in Engineering",
+        "base_price": 16.8,
+        "price_per_page": 28.0,
+        "project_type_id": 23,
+        "subject_id": 1,
+        "unit": "Coursework"
     },
     {
-        "title": "Thesis - Business",
-        "description": "Professional Thesis assistance in Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 9,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Chemistry",
-        "description": "Professional Thesis assistance in Chemistry",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 10,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Communications",
-        "description": "Professional Thesis assistance in Communications",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 11,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Computer Science",
-        "description": "Professional Thesis assistance in Computer Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 12,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Creative Writing",
-        "description": "Professional Thesis assistance in Creative Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 13,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Criminal Justice",
-        "description": "Professional Thesis assistance in Criminal Justice",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 14,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Cultural Studies",
-        "description": "Professional Thesis assistance in Cultural Studies",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 15,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Data Analysis",
-        "description": "Professional Thesis assistance in Data Analysis",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 16,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Digital Media",
-        "description": "Professional Thesis assistance in Digital Media",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 17,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Economics",
-        "description": "Professional Thesis assistance in Economics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 18,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Education",
-        "description": "Professional Thesis assistance in Education",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 19,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Engineering",
-        "description": "Professional Thesis assistance in Engineering",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 20,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - English",
-        "description": "Professional Thesis assistance in English",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
+        "title": "Excel Assignment - Finance",
+        "description": "Professional Excel Assignment assistance in Finance",
+        "base_price": 19.5,
+        "price_per_page": 32.5,
         "project_type_id": 24,
         "subject_id": 21,
-        "unit": "Thesis"
+        "unit": "Excel Assignment"
     },
     {
-        "title": "Thesis - Entrepreneurship",
-        "description": "Professional Thesis assistance in Entrepreneurship",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
+        "title": "Excel Assignment - Economics",
+        "description": "Professional Excel Assignment assistance in Economics",
+        "base_price": 18.0,
+        "price_per_page": 30.0,
         "project_type_id": 24,
         "subject_id": 22,
-        "unit": "Thesis"
+        "unit": "Excel Assignment"
     },
     {
-        "title": "Thesis - Environmental Science",
-        "description": "Professional Thesis assistance in Environmental Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
+        "title": "Excel Assignment - Statistics",
+        "description": "Professional Excel Assignment assistance in Statistics",
+        "base_price": 21.0,
+        "price_per_page": 35.0,
         "project_type_id": 24,
-        "subject_id": 23,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Film Studies",
-        "description": "Professional Thesis assistance in Film Studies",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 24,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Finance",
-        "description": "Professional Thesis assistance in Finance",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 25,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Geography",
-        "description": "Professional Thesis assistance in Geography",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 26,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Healthcare Administration",
-        "description": "Professional Thesis assistance in Healthcare Administration",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 27,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - History",
-        "description": "Professional Thesis assistance in History",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 28,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Information Technology",
-        "description": "Professional Thesis assistance in Information Technology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 29,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - International Business",
-        "description": "Professional Thesis assistance in International Business",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 30,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - International Relations",
-        "description": "Professional Thesis assistance in International Relations",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 31,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Journalism",
-        "description": "Professional Thesis assistance in Journalism",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 32,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Law",
-        "description": "Professional Thesis assistance in Law",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 33,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Literature",
-        "description": "Professional Thesis assistance in Literature",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 34,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Management",
-        "description": "Professional Thesis assistance in Management",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 35,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Marketing",
-        "description": "Professional Thesis assistance in Marketing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 36,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Mathematics",
-        "description": "Professional Thesis assistance in Mathematics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 37,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Medicine",
-        "description": "Professional Thesis assistance in Medicine",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 38,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Nursing",
-        "description": "Professional Thesis assistance in Nursing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 39,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Operations Management",
-        "description": "Professional Thesis assistance in Operations Management",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 40,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Operations Research",
-        "description": "Professional Thesis assistance in Operations Research",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 41,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Philosophy",
-        "description": "Professional Thesis assistance in Philosophy",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 42,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Physics",
-        "description": "Professional Thesis assistance in Physics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 43,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Political Science",
-        "description": "Professional Thesis assistance in Political Science",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 44,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Psychology",
-        "description": "Professional Thesis assistance in Psychology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 45,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Public Administration",
-        "description": "Professional Thesis assistance in Public Administration",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 46,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Public Relations",
-        "description": "Professional Thesis assistance in Public Relations",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 47,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Research Methods",
-        "description": "Professional Thesis assistance in Research Methods",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 48,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Social Work",
-        "description": "Professional Thesis assistance in Social Work",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 49,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Sociology",
-        "description": "Professional Thesis assistance in Sociology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 50,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Statistics",
-        "description": "Professional Thesis assistance in Statistics",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 51,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Technical Writing",
-        "description": "Professional Thesis assistance in Technical Writing",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 52,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Theater Arts",
-        "description": "Professional Thesis assistance in Theater Arts",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 53,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Theology",
-        "description": "Professional Thesis assistance in Theology",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 54,
-        "unit": "Thesis"
-    },
-    {
-        "title": "Thesis - Web Development",
-        "description": "Professional Thesis assistance in Web Development",
-        "base_price": 5.0,
-        "price_per_page": 10.0,
-        "project_type_id": 24,
-        "subject_id": 55,
-        "unit": "Thesis"
+        "subject_id": 8,
+        "unit": "Excel Assignment"
     }
 ]
