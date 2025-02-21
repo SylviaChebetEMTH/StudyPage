@@ -1552,7 +1552,6 @@ def partial_update_expert(id):
             return jsonify({'message': 'Subject not found'}), 404
     if 'profilePicture' in data:
         expert.profile_picture = data['profilePicture']
-    
 
     db.session.commit()
     # Return the updated expert data
@@ -1667,6 +1666,7 @@ def delete_expert(id):
 #         service_list.append(service_data)
 
 #     return jsonify({'services': service_list})
+
 @app.route('/services', methods=['GET'])
 def get_services():
     project_type_id = request.args.get('project_type', type=int)
