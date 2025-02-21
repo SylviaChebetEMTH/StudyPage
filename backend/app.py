@@ -1846,7 +1846,6 @@ def add_services():
         print("Error adding services:", str(e))
         return jsonify({"message": "Failed to add services.", "error": str(e)}), 500
 
-
 @app.route('/services', methods=['DELETE'])
 def delete_all_services():
     try:
@@ -1906,6 +1905,15 @@ def delete_project_type(id):
         print("Error occurred:", e)
         return jsonify({'message': str(e)}), 500
 
+@app.route('/project-types', methods=['DELETE'])
+def delete_all_project_types():
+    try:
+        num_deleted = ProjectType.query.delete()  # Deletes all records
+        db.session.commit()
+        return jsonify({"message": f"✅ {num_deleted} project types deleted successfully!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "Failed to delete project types.", "error": str(e)}), 500
 
 @app.route('/subjects', methods=['GET'])
 def get_subjects():
