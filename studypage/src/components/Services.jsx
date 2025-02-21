@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faCode, faFlask, faCalculator } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from 'react-router-dom';
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -9,8 +10,15 @@ const Services = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProjectType, setSelectedProjectType] = useState("");
   const [visibleCount, setVisibleCount] = useState(6);
+  const navigate = useNavigate()
 
   const API_URL = 'https://studypage.onrender.com';
+
+  const move = (projectTypeId, subjectId)=> {
+    localStorage.setItem("selectedProjectType", projectTypeId);
+    localStorage.setItem("selectedSubject", subjectId);
+    navigate('/expertspage')
+  }
 
   // Icons for different subjects
   const subjectIcons = {
@@ -147,7 +155,7 @@ const Services = () => {
               <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded">
                 ${service.price_per_page} per page
               </span>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" onClick={() => move(service.project_type_id, service.subject_id)} >
                 Request Service
               </button>
             </div>
