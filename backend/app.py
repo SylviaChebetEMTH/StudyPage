@@ -1915,15 +1915,15 @@ def delete_project_type(id):
         print("Error occurred:", e)
         return jsonify({'message': str(e)}), 500
 
-@app.route('/project-types', methods=['DELETE'])
-def delete_all_project_types():
-    try:
-        num_deleted = ProjectType.query.delete()  # Deletes all records
-        db.session.commit()
-        return jsonify({"message": f"✅ {num_deleted} project types deleted successfully!"}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"message": "Failed to delete project types.", "error": str(e)}), 500
+# @app.route('/project-types', methods=['DELETE'])
+# def delete_all_project_types():
+#     try:
+#         num_deleted = ProjectType.query.delete()  # Deletes all records
+#         db.session.commit()
+#         return jsonify({"message": f"✅ {num_deleted} project types deleted successfully!"}), 200
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({"message": "Failed to delete project types.", "error": str(e)}), 500
 
 @app.route('/subjects', methods=['GET'])
 def get_subjects():
@@ -1948,15 +1948,15 @@ def create_subject():
         print(f"Error creating subject: {e}")
         return jsonify({'message': 'Failed to create subject'}), 500
 
-@app.route('/subjects', methods=['DELETE'])
-def delete_all_subjects():
-    try:
-        num_deleted = Subject.query.delete()  # Deletes all records
-        db.session.commit()
-        return jsonify({"message": f"✅ {num_deleted} subjects deleted successfully!"}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"message": "Failed to delete subjects.", "error": str(e)}), 500
+# @app.route('/subjects', methods=['DELETE'])
+# def delete_all_subjects():
+#     try:
+#         num_deleted = Subject.query.delete()  # Deletes all records
+#         db.session.commit()
+#         return jsonify({"message": f"✅ {num_deleted} subjects deleted successfully!"}), 200
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({"message": "Failed to delete subjects.", "error": str(e)}), 500
 
 # PUT route to update a subject by its ID
 @app.route('/subjects/<int:id>', methods=['PUT'])
