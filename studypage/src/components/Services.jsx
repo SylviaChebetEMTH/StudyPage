@@ -107,6 +107,7 @@ const Services = () => {
 
       {/* Search and Filter */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 max-w-screen-xl mx-auto">
+  {/* Search Input */}
         <input
           type="text"
           placeholder="Search services..."
@@ -115,19 +116,21 @@ const Services = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
 
+        {/* Project Type Dropdown */}
         <select
           className="p-2 border rounded w-full md:w-1/3"
           value={selectedProjectType}
           onChange={(e) => setSelectedProjectType(e.target.value)}
         >
-          <option value="" className='text-blue-700' >All Project Types</option>
-          {[...new Set(services.map(s => s.project_type_id))].map(type => (
-            <option key={type} value={type}> {type}</option>
+          <option value="" className='text-blue-700'>All Project Types</option>
+          {[
+            ...new Set(services.map(s => ({ id: s.project_type_id, title: s.project_type_title })))
+          ].map(type => (
+            <option key={type.id} value={type.id}>{type.title}</option>
           ))}
         </select>
       </div>
 
-      {/* Services Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-screen-xl mx-auto">
         {filteredServices.slice(0, visibleCount).map((service) => (
           <div
