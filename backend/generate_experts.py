@@ -1,5 +1,5 @@
 import random
-from app import db
+from app import db, app
 from models import Expert, ProjectType, Subject
 
 FIRST_NAMES = ["James", "Sarah", "Michael", "Emily", "David", "Sophia", "John", "Emma", "Daniel", "Olivia"]
@@ -49,5 +49,5 @@ def generate_experts():
     print(f"✅ Successfully added {len(experts)} experts!")
 
 if __name__ == "__main__":
-    with db.app.app_context():
+    with app.app_context():
         generate_experts()
