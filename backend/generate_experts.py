@@ -1,6 +1,6 @@
 import random
 from app import db
-from app.models import Expert, ProjectType, Subject
+from models import Expert, ProjectType, Subject
 
 FIRST_NAMES = ["James", "Sarah", "Michael", "Emily", "David", "Sophia", "John", "Emma", "Daniel", "Olivia"]
 LAST_NAMES = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Davis", "Miller", "Wilson", "Anderson"]
