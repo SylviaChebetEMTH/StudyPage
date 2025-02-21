@@ -39,8 +39,9 @@ def generate_experts():
                 languages="English, French",
                 profile_picture=random.choice(profile_pics),
                 project_type=project_type,
-                subjects=assigned_subjects
+                # subjects=assigned_subjects
             )
+            expert.subjects = assigned_subjects
             experts.append(expert)
 
     # Bulk insert all experts
