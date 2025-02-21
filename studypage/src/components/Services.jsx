@@ -107,7 +107,6 @@ const Services = () => {
 
       {/* Search and Filter */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 max-w-screen-xl mx-auto">
-  {/* Search Input */}
         <input
           type="text"
           placeholder="Search services..."
@@ -116,7 +115,6 @@ const Services = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
 
-        {/* Project Type Dropdown */}
         <select
           className="p-2 border rounded w-full md:w-1/3"
           value={selectedProjectType}

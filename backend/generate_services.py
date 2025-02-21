@@ -157,33 +157,100 @@ if os.path.exists(OUTPUT_FILE):
     os.remove(OUTPUT_FILE)
 
 project_types = {
-    "Annotated Bibliography": ["English", "Literature", "History", "Philosophy"],
-    "Application Essay": ["English", "Education", "Business", "Law"],
-    "Article": ["Communications", "English", "Creative Writing", "Journalism"],
-    "Business Plan": ["Business", "Finance", "Economics"],
-    "Case Study": ["Business", "Law", "Political Science", "Psychology", "Public Administration"],
-    "Code": ["Information Technology", "Web Development", "Engineering"],
-    "Content Writing": ["English", "Creative Writing", "Marketing", "Journalism"],
-    "Coursework": ["Mathematics", "Statistics", "Engineering", "Biology"],
-    "Creative Writing": ["Creative Writing", "English", "Literature"],
-    "Dissertation": ["All"], 
-    "Editing": ["English", "Communications", "Creative Writing", "Journalism"],
-    "Essay": ["All"], 
-    "Excel assignment": ["Accounting", "Finance", "Economics", "Statistics"],
-    "Math solving": ["Mathematics", "Statistics", "Finance", "Engineering"],
-    "Outline": ["English", "History", "Education"],
-    "Personal Statement": ["Education", "English", "Law"],
-    "Presentation": ["All"], 
-    "Proposal": ["All"], 
+    "Annotated Bibliography": [
+        "English", "Literature", "History", "Philosophy", "Sociology", 
+        "Psychology", "Political Science", "Education", "Nursing", "Business"
+    ],
+    "Application Essay": [
+        "English", "Education", "Business", "Law", "Medicine", "Nursing",
+        "Engineering", "Information Technology", "Architecture"
+    ],
+    "Article": [
+        "Communications", "English", "Creative Writing", "Journalism",
+        "Business", "Marketing", "Political Science", "International Relations"
+    ],
+    "Business Plan": [
+        "Business", "Finance", "Economics", "Marketing", "Management",
+        "Entrepreneurship", "International Business"
+    ],
+    "Case Study": [
+        "Business", "Law", "Political Science", "Psychology", "Public Administration",
+        "Marketing", "Finance", "Healthcare Administration", "Education", "Sociology"
+    ],
+    "Code": [
+        "Computer Science", "Information Technology", "Web Development", 
+        "Engineering", "Mathematics", "Data Science", "Statistics"
+    ],
+    "Content Writing": [
+        "English", "Creative Writing", "Marketing", "Journalism",
+        "Communications", "Digital Media", "Public Relations"
+    ],
+    "Coursework": [
+        "Mathematics", "Statistics", "Engineering", "Biology", "Physics",
+        "Chemistry", "Computer Science", "Economics", "Business", "Psychology",
+        "Sociology", "Literature", "History", "Political Science"
+    ],
+    "Creative Writing": [
+        "Creative Writing", "English", "Literature", "Communications",
+        "Journalism", "Theater Arts", "Film Studies"
+    ],
+    "Data Analysis": [
+        "Statistics", "Mathematics", "Economics", "Business", "Psychology",
+        "Sociology", "Marketing", "Research Methods"
+    ],
+    "Dissertation": ["All"],
+    "Editing": [
+        "English", "Communications", "Creative Writing", "Journalism",
+        "Academic Writing", "Technical Writing"
+    ],
+    "Essay": ["All"],
+    "Excel Assignment": [
+        "Accounting", "Finance", "Economics", "Statistics", "Business",
+        "Data Analysis", "Operations Management"
+    ],
+    "Lab Report": [
+        "Biology", "Chemistry", "Physics", "Engineering", "Environmental Science",
+        "Psychology", "Computer Science"
+    ],
+    "Literature Review": [
+        "English", "Literature", "Psychology", "Sociology", "Education",
+        "Business", "Medicine", "Nursing", "Research Methods"
+    ],
+    "Math Solving": [
+        "Mathematics", "Statistics", "Physics", "Engineering", "Economics",
+        "Finance", "Computer Science", "Operations Research"
+    ],
+    "Outline": [
+        "English", "History", "Education", "Research Methods", "Literature",
+        "Political Science", "Sociology"
+    ],
+    "Personal Statement": [
+        "Education", "English", "Law", "Medicine", "Nursing", "Business",
+        "Engineering", "Psychology", "Social Work"
+    ],
+    "Presentation": ["All"],
+    "Proposal": ["All"],
+    "Research Paper": ["All"],
+    "Technical Report": [
+        "Engineering", "Information Technology", "Computer Science",
+        "Environmental Science", "Architecture", "Technical Writing"
+    ],
+    "Thesis": ["All"]
 }
 
 subjects = [
-    "Accounting", "Algebra", "Anatomy", "Anthropology", "Architecture", "Art", "Biochemistry", "Biology", "Business",
-    "Chemistry", "Communications", "Creative Writing", "Criminal Justice", "Cultural Studies", "Economics",
-    "Education", "Engineering", "English", "Environmental Science", "Finance", "Geography", "History",
-    "Information Technology", "International Relations", "Law", "Literature", "Mathematics", "Nursing", "Philosophy",
-    "Physics", "Political Science", "Psychology", "Public Administration", "Sociology", "Statistics", "Theology",
-    "Web Development"
+    "Accounting", "Algebra", "Anatomy", "Anthropology", "Architecture", "Art",
+    "Biochemistry", "Biology", "Business", "Chemistry", "Communications",
+    "Computer Science", "Creative Writing", "Criminal Justice", "Cultural Studies",
+    "Data Analysis", "Digital Media", "Economics", "Education", "Engineering",
+    "English", "Entrepreneurship", "Environmental Science", "Film Studies",
+    "Finance", "Geography", "Healthcare Administration", "History",
+    "Information Technology", "International Business", "International Relations",
+    "Journalism", "Law", "Literature", "Management", "Marketing", "Mathematics",
+    "Medicine", "Nursing", "Operations Management", "Operations Research",
+    "Philosophy", "Physics", "Political Science", "Psychology", "Public Administration",
+    "Public Relations", "Research Methods", "Social Work", "Sociology", "Statistics",
+    "Technical Writing", "Theater Arts", "Theology", "Web Development"
 ]
 
 services = []
@@ -195,22 +262,23 @@ subject_id_map = {name: i+1 for i, name in enumerate(subjects)}
 
 for project_type, related_subjects in project_types.items():
     project_type_id = project_id_map[project_type]
-
+    
     if "All" in related_subjects:
         matched_subjects = subjects
     else:
         matched_subjects = related_subjects
-
+    
     for subject in matched_subjects:
         if subject in subject_id_map:
             subject_id = subject_id_map[subject]
             services.append({
                 "title": f"{project_type} - {subject}",
-                "description": f"Help with {project_type} in {subject}",
+                "description": f"Professional {project_type} assistance in {subject}",
                 "base_price": base_price,
                 "price_per_page": price_per_page,
                 "project_type_id": project_type_id,
-                "subject_id": subject_id
+                "subject_id": subject_id,
+                "unit": project_type
             })
 
 try:
@@ -220,10 +288,9 @@ try:
 except Exception as e:
     print(f"Error writing to file: {e}")
 
-# Explicitly check if the file is written correctly
 if os.path.exists(OUTPUT_FILE):
     with open(OUTPUT_FILE, "r") as f:
         content = f.read()
-        print(f"File content: {content[:100]}...")  # Print first 100 characters of the file
+        print(f"File content: {content[:100]}...")
 else:
     print("File was not created.")

@@ -1857,7 +1857,6 @@ def delete_all_services():
         db.session.rollback()
         return jsonify({"message": "Failed to delete services.", "error": str(e)}), 500
 
-
 @app.route('/project-types', methods=['GET'])
 def get_project_types():
     try:
@@ -1930,7 +1929,6 @@ def create_subject():
     except Exception as e:
         print(f"Error creating subject: {e}")
         return jsonify({'message': 'Failed to create subject'}), 500
-
 
 # PUT route to update a subject by its ID
 @app.route('/subjects/<int:id>', methods=['PUT'])
