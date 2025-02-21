@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faCode, faFlask, faCalculator } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from 'react-router-dom';
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -9,8 +10,15 @@ const Services = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProjectType, setSelectedProjectType] = useState("");
   const [visibleCount, setVisibleCount] = useState(6);
+  const navigate = useNavigate()
 
   const API_URL = 'https://studypage.onrender.com';
+
+  const move = (projectTypeId, subjectId)=> {
+    localStorage.setItem("selectedProjectType", projectTypeId);
+    localStorage.setItem("selectedSubject", subjectId);
+    navigate('/expertspage')
+  }
 
   // Icons for different subjects
   const subjectIcons = {
@@ -31,7 +39,7 @@ const Services = () => {
 
   // Function to fetch services from the backend
   const fetchServices = async () => {
-    const storedServices = localStorage.getItem('services');
+    const storedServices = localStorage.getItem('service');
     if (storedServices) {
       setServices(JSON.parse(storedServices));
       setLoading(false);
@@ -48,6 +56,7 @@ const Services = () => {
       }
 
       const data = await response.json();
+      console.log('services retrieved',data.services)
       const servicesArray = Array.isArray(data.services) ? data.services : []; 
       setServices(servicesArray);
       localStorage.setItem('services', JSON.stringify(servicesArray));
@@ -114,7 +123,6 @@ const Services = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-
         <select
           className="p-2 border rounded w-full md:w-1/3"
           value={selectedProjectType}
@@ -122,13 +130,14 @@ const Services = () => {
         >
           <option value="" className='text-blue-700'>All Project Types</option>
           {[
-            ...new Set(services.map(s => ({ id: s.project_type_id, title: s.project_type_title })))
+            ...new Map(
+              services.map(s => [s.project_type_id, { id: s.project_type_id, title: s.unit }])
+            ).values()
           ].map(type => (
             <option key={type.id} value={type.id}>{type.title}</option>
           ))}
         </select>
       </div>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-screen-xl mx-auto">
         {filteredServices.slice(0, visibleCount).map((service) => (
           <div
@@ -146,7 +155,7 @@ const Services = () => {
               <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded">
                 ${service.price_per_page} per page
               </span>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" onClick={() => move(service.project_type_id, service.subject_id)} >
                 Request Service
               </button>
             </div>

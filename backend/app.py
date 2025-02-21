@@ -316,6 +316,16 @@ def get_expert_comments(expert_id):
         } for comment in comments]
     })
 
+@app.route('/experts', methods=['DELETE'])
+def delete_all_subjects():
+    try:
+        num_deleted = Subject.query.delete()  # Deletes all records
+        db.session.commit()
+        return jsonify({"message": f"✅ {num_deleted} subjects deleted successfully!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "Failed to delete subjects.", "error": str(e)}), 500
+
 @app.route('/experts/<int:expert_id>/comments/<int:currentUser_id>', methods=['POST'])
 # @jwt_required()
 def add_expert_comment(expert_id,currentUser_id):
@@ -1465,42 +1475,123 @@ def get_expert(id):
 @app.route("/experts", methods=["POST"])
 def add_expert():
     data = request.get_json()
-    project_type_id = data.get("project_type_id")
-    subject_id = data.get("subject_id")
-
-    print(f"Received project_type_id: {project_type_id}, subject_id: {subject_id}")  # Debug log
-
-    if len(project_type_id) > 5 or len(subject_id) > 5:
-        return {"message": "You can select up to 5 project types and 5 subjects."}, 400
-    
+    project_type_id = data.get("project_type_id")  # Only 1 project type per expert
     profile_picture = data.get("profile_picture")
+
     if not profile_picture:
         return jsonify({"error": "Profile picture is required"}), 400
 
+    # Get project type and its related subjects
     project_type = ProjectType.query.get(project_type_id)
-    subject = Subject.query.get(subject_id)
+    if not project_type:
+        return jsonify({"error": "Invalid project type"}), 400
 
-    if not project_type or not subject:
-        return jsonify({"error": "Invalid project type or subject"}), 400
-    
-    # Create and save the expert
-    new_expert = Expert(
-        name=data["name"],
-        title=data["title"],
-        expertise=data["expertise"],
-        description=data["description"],
-        biography=data["biography"],
-        education=data["education"],
-        languages=data["languages"],
-        profile_picture=profile_picture,
-        project_type=project_type,
-        subject=subject
-    )
+    related_subjects = Subject.query.filter(Subject.id.in_(
+        [s.id for s in project_type.subjects]
+    )).all()
 
-    db.session.add(new_expert)
+    all_subjects = list(related_subjects)
+    random.shuffle(all_subjects)
+
+    num_experts_per_type = 3
+    subjects_per_expert = len(all_subjects) // num_experts_per_type
+    remainder = len(all_subjects) % num_experts_per_type 
+
+    assigned_subjects = []
+    for i in range(num_experts_per_type):
+        start_index = i * subjects_per_expert
+        end_index = start_index + subjects_per_expert
+        expert_subjects = all_subjects[start_index:end_index]
+
+        if remainder > 0:
+            expert_subjects.append(all_subjects[-remainder])
+            remainder -= 1
+
+        assigned_subjects.append(expert_subjects)
+
+    experts = []
+    for i in range(num_experts_per_type):
+        expert = Expert(
+            name=f"Expert {i+1} for {project_type.name}",
+            title=f"{project_type.name} Specialist",
+            expertise=f"Expert in {', '.join([s.name for s in assigned_subjects[i]])}",
+            description=f"Highly skilled in {project_type.name} for {', '.join([s.name for s in assigned_subjects[i]])}.",
+            biography="Experienced professional with years of expertise.",
+            education="PhD in relevant field",
+            languages="English",
+            profile_picture=profile_picture,
+            project_type=project_type,
+            subjects=assigned_subjects[i]
+        )
+        db.session.add(expert)
+        experts.append(expert)
+
     db.session.commit()
 
-    return jsonify({"message": "Expert added successfully!"}), 201
+    return jsonify({"message": "Experts added successfully!", "experts": [e.name for e in experts]}), 201
+
+@app.route("/experts/search", methods=["GET"])
+def search_experts():
+    project_type_id = request.args.get("project_type_id", type=int)
+    subject_id = request.args.get("subject_id", type=int)
+
+    experts = Expert.query.filter(
+        Expert.project_type_id == project_type_id,
+        Expert.subjects.any(id=subject_id)
+    ).limit(3).all()
+
+    if not experts:
+        return jsonify({"message": "No experts available for this category."}), 404
+
+    return jsonify([
+        {
+            "id": expert.id,
+            "name": expert.name,
+            "title": expert.title,
+            "profile_picture": expert.profile_picture,
+            "expertise": expert.expertise
+        } for expert in experts
+    ])
+
+# @app.route("/experts", methods=["POST"])
+# def add_expert():
+#     data = request.get_json()
+#     project_type_id = data.get("project_type_id")
+#     subject_id = data.get("subject_id")
+
+#     print(f"Received project_type_id: {project_type_id}, subject_id: {subject_id}")  # Debug log
+
+#     if len(project_type_id) > 5 or len(subject_id) > 5:
+#         return {"message": "You can select up to 5 project types and 5 subjects."}, 400
+    
+#     profile_picture = data.get("profile_picture")
+#     if not profile_picture:
+#         return jsonify({"error": "Profile picture is required"}), 400
+
+#     project_type = ProjectType.query.get(project_type_id)
+#     subject = Subject.query.get(subject_id)
+
+#     if not project_type or not subject:
+#         return jsonify({"error": "Invalid project type or subject"}), 400
+    
+#     # Create and save the expert
+#     new_expert = Expert(
+#         name=data["name"],
+#         title=data["title"],
+#         expertise=data["expertise"],
+#         description=data["description"],
+#         biography=data["biography"],
+#         education=data["education"],
+#         languages=data["languages"],
+#         profile_picture=profile_picture,
+#         project_type=project_type,
+#         subject=subject
+#     )
+
+#     db.session.add(new_expert)
+#     db.session.commit()
+
+#     return jsonify({"message": "Expert added successfully!"}), 201
 
 
 @app.route('/experts/<int:id>', methods=['PATCH'])
@@ -1692,7 +1783,8 @@ def get_services():
                 'base_price': service.base_price,
                 'price_per_page': service.price_per_page,
                 'project_type_id': service.project_type_id,
-                'subject_id': service.subject_id
+                'subject_id': service.subject_id,
+                'unit': service.unit
             } for service in services
         ] 
     }), 200
@@ -1822,6 +1914,7 @@ def add_services():
         price_per_page = service_data.get('price_per_page')
         project_type_id = service_data.get('project_type_id')
         subject_id = service_data.get('subject_id')
+        unit = service_data.get('unit')
 
         # Validate required fields
         if not title or base_price is None or price_per_page is None or project_type_id is None or subject_id is None:
@@ -1833,7 +1926,8 @@ def add_services():
             base_price=base_price,
             price_per_page=price_per_page,
             project_type_id=project_type_id,
-            subject_id=subject_id
+            subject_id=subject_id,
+            unit=unit
         )
         services_to_add.append(new_service)
 
@@ -1845,7 +1939,6 @@ def add_services():
         db.session.rollback()
         print("Error adding services:", str(e))
         return jsonify({"message": "Failed to add services.", "error": str(e)}), 500
-
 
 @app.route('/services', methods=['DELETE'])
 def delete_all_services():
@@ -1906,6 +1999,15 @@ def delete_project_type(id):
         print("Error occurred:", e)
         return jsonify({'message': str(e)}), 500
 
+# @app.route('/project-types', methods=['DELETE'])
+# def delete_all_project_types():
+#     try:
+#         num_deleted = ProjectType.query.delete()  # Deletes all records
+#         db.session.commit()
+#         return jsonify({"message": f"✅ {num_deleted} project types deleted successfully!"}), 200
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({"message": "Failed to delete project types.", "error": str(e)}), 500
 
 @app.route('/subjects', methods=['GET'])
 def get_subjects():
@@ -1929,6 +2031,16 @@ def create_subject():
     except Exception as e:
         print(f"Error creating subject: {e}")
         return jsonify({'message': 'Failed to create subject'}), 500
+
+# @app.route('/subjects', methods=['DELETE'])
+# def delete_all_subjects():
+#     try:
+#         num_deleted = Subject.query.delete()  # Deletes all records
+#         db.session.commit()
+#         return jsonify({"message": f"✅ {num_deleted} subjects deleted successfully!"}), 200
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({"message": "Failed to delete subjects.", "error": str(e)}), 500
 
 # PUT route to update a subject by its ID
 @app.route('/subjects/<int:id>', methods=['PUT'])
