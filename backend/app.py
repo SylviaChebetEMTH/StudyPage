@@ -1475,42 +1475,123 @@ def get_expert(id):
 @app.route("/experts", methods=["POST"])
 def add_expert():
     data = request.get_json()
-    project_type_id = data.get("project_type_id")
-    subject_id = data.get("subject_id")
-
-    print(f"Received project_type_id: {project_type_id}, subject_id: {subject_id}")  # Debug log
-
-    if len(project_type_id) > 5 or len(subject_id) > 5:
-        return {"message": "You can select up to 5 project types and 5 subjects."}, 400
-    
+    project_type_id = data.get("project_type_id")  # Only 1 project type per expert
     profile_picture = data.get("profile_picture")
+
     if not profile_picture:
         return jsonify({"error": "Profile picture is required"}), 400
 
+    # Get project type and its related subjects
     project_type = ProjectType.query.get(project_type_id)
-    subject = Subject.query.get(subject_id)
+    if not project_type:
+        return jsonify({"error": "Invalid project type"}), 400
 
-    if not project_type or not subject:
-        return jsonify({"error": "Invalid project type or subject"}), 400
-    
-    # Create and save the expert
-    new_expert = Expert(
-        name=data["name"],
-        title=data["title"],
-        expertise=data["expertise"],
-        description=data["description"],
-        biography=data["biography"],
-        education=data["education"],
-        languages=data["languages"],
-        profile_picture=profile_picture,
-        project_type=project_type,
-        subject=subject
-    )
+    related_subjects = Subject.query.filter(Subject.id.in_(
+        [s.id for s in project_type.subjects]
+    )).all()
 
-    db.session.add(new_expert)
+    all_subjects = list(related_subjects)
+    random.shuffle(all_subjects)
+
+    num_experts_per_type = 3
+    subjects_per_expert = len(all_subjects) // num_experts_per_type
+    remainder = len(all_subjects) % num_experts_per_type 
+
+    assigned_subjects = []
+    for i in range(num_experts_per_type):
+        start_index = i * subjects_per_expert
+        end_index = start_index + subjects_per_expert
+        expert_subjects = all_subjects[start_index:end_index]
+
+        if remainder > 0:
+            expert_subjects.append(all_subjects[-remainder])
+            remainder -= 1
+
+        assigned_subjects.append(expert_subjects)
+
+    experts = []
+    for i in range(num_experts_per_type):
+        expert = Expert(
+            name=f"Expert {i+1} for {project_type.name}",
+            title=f"{project_type.name} Specialist",
+            expertise=f"Expert in {', '.join([s.name for s in assigned_subjects[i]])}",
+            description=f"Highly skilled in {project_type.name} for {', '.join([s.name for s in assigned_subjects[i]])}.",
+            biography="Experienced professional with years of expertise.",
+            education="PhD in relevant field",
+            languages="English",
+            profile_picture=profile_picture,
+            project_type=project_type,
+            subjects=assigned_subjects[i]
+        )
+        db.session.add(expert)
+        experts.append(expert)
+
     db.session.commit()
 
-    return jsonify({"message": "Expert added successfully!"}), 201
+    return jsonify({"message": "Experts added successfully!", "experts": [e.name for e in experts]}), 201
+
+@app.route("/experts/search", methods=["GET"])
+def search_experts():
+    project_type_id = request.args.get("project_type_id", type=int)
+    subject_id = request.args.get("subject_id", type=int)
+
+    experts = Expert.query.filter(
+        Expert.project_type_id == project_type_id,
+        Expert.subjects.any(id=subject_id)
+    ).limit(3).all()
+
+    if not experts:
+        return jsonify({"message": "No experts available for this category."}), 404
+
+    return jsonify([
+        {
+            "id": expert.id,
+            "name": expert.name,
+            "title": expert.title,
+            "profile_picture": expert.profile_picture,
+            "expertise": expert.expertise
+        } for expert in experts
+    ])
+
+# @app.route("/experts", methods=["POST"])
+# def add_expert():
+#     data = request.get_json()
+#     project_type_id = data.get("project_type_id")
+#     subject_id = data.get("subject_id")
+
+#     print(f"Received project_type_id: {project_type_id}, subject_id: {subject_id}")  # Debug log
+
+#     if len(project_type_id) > 5 or len(subject_id) > 5:
+#         return {"message": "You can select up to 5 project types and 5 subjects."}, 400
+    
+#     profile_picture = data.get("profile_picture")
+#     if not profile_picture:
+#         return jsonify({"error": "Profile picture is required"}), 400
+
+#     project_type = ProjectType.query.get(project_type_id)
+#     subject = Subject.query.get(subject_id)
+
+#     if not project_type or not subject:
+#         return jsonify({"error": "Invalid project type or subject"}), 400
+    
+#     # Create and save the expert
+#     new_expert = Expert(
+#         name=data["name"],
+#         title=data["title"],
+#         expertise=data["expertise"],
+#         description=data["description"],
+#         biography=data["biography"],
+#         education=data["education"],
+#         languages=data["languages"],
+#         profile_picture=profile_picture,
+#         project_type=project_type,
+#         subject=subject
+#     )
+
+#     db.session.add(new_expert)
+#     db.session.commit()
+
+#     return jsonify({"message": "Expert added successfully!"}), 201
 
 
 @app.route('/experts/<int:id>', methods=['PATCH'])
