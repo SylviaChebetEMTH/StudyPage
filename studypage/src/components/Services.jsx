@@ -31,7 +31,7 @@ const Services = () => {
 
   // Function to fetch services from the backend
   const fetchServices = async () => {
-    const storedServices = localStorage.getItem('services');
+    const storedServices = localStorage.getItem('service');
     if (storedServices) {
       setServices(JSON.parse(storedServices));
       setLoading(false);
@@ -48,6 +48,7 @@ const Services = () => {
       }
 
       const data = await response.json();
+      console.log('services retrieved',data.services)
       const servicesArray = Array.isArray(data.services) ? data.services : []; 
       setServices(servicesArray);
       localStorage.setItem('services', JSON.stringify(servicesArray));

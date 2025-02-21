@@ -1702,7 +1702,8 @@ def get_services():
                 'base_price': service.base_price,
                 'price_per_page': service.price_per_page,
                 'project_type_id': service.project_type_id,
-                'subject_id': service.subject_id
+                'subject_id': service.subject_id,
+                'unit': service.unit
             } for service in services
         ] 
     }), 200
@@ -1832,6 +1833,7 @@ def add_services():
         price_per_page = service_data.get('price_per_page')
         project_type_id = service_data.get('project_type_id')
         subject_id = service_data.get('subject_id')
+        unit = service_data.get('unit')
 
         # Validate required fields
         if not title or base_price is None or price_per_page is None or project_type_id is None or subject_id is None:
@@ -1843,7 +1845,8 @@ def add_services():
             base_price=base_price,
             price_per_page=price_per_page,
             project_type_id=project_type_id,
-            subject_id=subject_id
+            subject_id=subject_id,
+            unit=unit
         )
         services_to_add.append(new_service)
 
