@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from 'react-toastify';
 
 const ProjectRequest = () => {
-  const { currentUser,authToken } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const { state } = useLocation();
   const navigate = useNavigate();
 
@@ -14,23 +14,19 @@ const ProjectRequest = () => {
   const [description, setDescription] = useState('');
   const [projectTypes, setProjectTypes] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [relatedSubjects, setRelatedSubjects] = useState([]); // New: Dynamically filtered subjects
   const [selectedProjectType, setSelectedProjectType] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [attachments, setAttachments] = useState([]);
   const [deadline, setDeadline] = useState('');
   const [expertId, setExpertId] = useState(state ? state.expertId : '');
   const [numberOfPages, setNumberOfPages] = useState('');
-  const [isLoadingSubjects, setIsLoadingSubjects] = useState(true);
-  const [isLoadingProjectTypes, setIsLoadingProjectTypes] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  // const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [errorMessage, setErrorMessage] = useState('');
-  // const publicKey = 'pk_live_9d093b52e09ff0b847d1e490f6ad1f1add87c150';
+  const API_URL = 'https://studypage.onrender.com';
   const publicKey = 'pk_test_00e40d5cd3e321a68b22aad7e1c42a62f8587d4c';
   const email = currentUser?.email || ''; 
   const [paymentRef] = useState(`ref_${Math.floor(Math.random() * 1000000000)}`);
@@ -38,70 +34,76 @@ const ProjectRequest = () => {
   const showError = (message) => {
     toast.error(message || "Something went wrong. Please try again.");
   };
-  // const handleFileChange = (e) => {
-  //   setAttachments(e.target.files);
-  // };
+
   const handleFileChange = (e) => {
-    const newFiles = Array.from(e.target.files); // Convert FileList to Array
-    setAttachments((prevFiles) => [...prevFiles, ...newFiles]); // Append new files
+    const newFiles = Array.from(e.target.files);
+    setAttachments((prevFiles) => [...prevFiles, ...newFiles]);
   };
-  
 
-  // Fetch Project Type
+  /** 📌 Step 1: Fetch Project Types */
   useEffect(() => {
-  setIsLoadingProjectTypes(true);
-  fetch('https://studypage.onrender.com/project-types')
-    .then((response) => response.json())
-    .then((data) => {
-      setProjectTypes(data);
-      setIsLoadingProjectTypes(false);
-    })
-    .catch(() => {
-      toast.error('Error fetching project types.');
-      setIsLoadingProjectTypes(false);
-    });
-}, []);
+    fetch(`${API_URL}/project-types`)
+      .then((response) => response.json())
+      .then(setProjectTypes)
+      .catch(() => toast.error('Error fetching project types.'));
+  }, []);
 
-
-  // Fetch Subjects
-  // const [isLoadingSubjects, setIsLoadingSubjects] = useState(true);
+  /** 📌 Step 2: Fetch All Subjects */
   useEffect(() => {
-  setIsLoadingSubjects(true);
-  fetch('https://studypage.onrender.com/subjects')
-    .then((response) => response.json())
-    .then((data) => {
-      setSubjects(data);
-      setIsLoadingSubjects(false);
-    })
-    .catch(() => {
-      toast.error('Error fetching subjects.');
-      setIsLoadingSubjects(false);
-    });
-}, []);
+    fetch(`${API_URL}/subjects`)
+      .then((response) => response.json())
+      .then(setSubjects)
+      .catch(() => toast.error('Error fetching subjects.'));
+  }, []);
 
+  /** 📌 Step 3: Fetch Services & Update Related Subjects */
+  useEffect(() => {
+    if (selectedProjectType) {
+      setIsLoading(true);
+      fetch(`${API_URL}/services?project_type=${selectedProjectType}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (!data.services || data.services.length === 0) {
+            showError('No services found for the selected project type.');
+            setServices([]);
+            setRelatedSubjects([]);
+          } else {
+            setServices(data.services);
+            setRelatedSubjects(
+              subjects.filter(subj => data.services.some(svc => svc.subject_id === subj.id))
+            );
+            setSelectedSubject(''); // Reset subject selection when project type changes
+          }
+        })
+        .catch(() => showError('Error fetching services.'))
+        .finally(() => setIsLoading(false));
+    } else {
+      setServices([]);
+      setRelatedSubjects([]);
+      setSelectedSubject('');
+    }
+  }, [selectedProjectType, subjects]);
 
-  // Fetch Services
+  /** 📌 Step 4: Fetch Service Details When Project Type & Subject Selected */
   useEffect(() => {
     if (selectedProjectType && selectedSubject) {
-      fetch(`https://studypage.onrender.com/services?project_type=${selectedProjectType}&subject=${selectedSubject}`)
+      fetch(`${API_URL}/services?project_type=${selectedProjectType}&subject=${selectedSubject}`)
         .then((response) => response.json())
         .then((data) => {
           if (!data.services || data.services.length === 0) {
             showError('No services found for the selected criteria.');
             setServices([]);
+            setSelectedService(null);
           } else {
             setServices(data.services);
             setSelectedService(data.services[0]);
           }
         })
         .catch(() => showError('Error fetching services.'));
-    } else {
-      setServices([]);
-      setSelectedService(null);
     }
   }, [selectedProjectType, selectedSubject]);
 
-  // Recalculate Total Price
+  /** 📌 Step 5: Calculate Total Price */
   useEffect(() => {
     if (selectedService && numberOfPages) {
       const calculatedPrice = selectedService.base_price + selectedService.price_per_page * parseFloat(numberOfPages);
@@ -112,21 +114,16 @@ const ProjectRequest = () => {
   }, [selectedService, numberOfPages]);
 
   const isFormValid = useMemo(() => {
-    if (
-      !projectTitle ||
-      !description ||
-      !selectedProjectType ||
-      !selectedSubject ||
-      !deadline ||
-      !expertId ||
-      !numberOfPages
-    ) {
-      return false;
-    }
-    if (attachments.length === 0) {
-      return false;
-    }
-    return true;
+    return !!(
+      projectTitle &&
+      description &&
+      selectedProjectType &&
+      selectedSubject &&
+      deadline &&
+      expertId &&
+      numberOfPages &&
+      attachments.length > 0
+    );
   }, [
     projectTitle,
     description,
@@ -139,18 +136,16 @@ const ProjectRequest = () => {
   ]);
 
   const handleSuccess = useCallback(async (response) => {
-    setIsSubmitting(true); // Show loading spinner
+    setIsLoading(true);
     toast.info("Processing your request, please wait...");
-  
-    const reference = response.reference; // Extract Paystack reference
-  
+
     try {
-      // Step 1: Verify Payment with the Backend
-      const verifyResponse = await fetch("https://studypage.onrender.com/verify-payment", {
+      // Step 1: Verify Payment
+      const verifyResponse = await fetch(`${API_URL}/verify-payment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          reference,
+          reference: response.reference,
           projectDetails: {
             projectTitle,
             description,
@@ -164,20 +159,18 @@ const ProjectRequest = () => {
           },
         }),
       });
-  
+
       if (!verifyResponse.ok) {
         throw new Error("Payment verification failed. Please try again.");
       }
-  
+
       const verifyData = await verifyResponse.json();
-  
+
       if (!verifyData.success) {
         throw new Error(verifyData.message || "Payment verification unsuccessful.");
       }
-  
-      console.log("Payment verified successfully:", verifyData);
-  
-      // Step 2: Submit Project After Payment Verification
+
+      // Step 2: Submit Project
       const formData = new FormData();
       formData.append("project_title", projectTitle);
       formData.append("project_description", description);
@@ -188,29 +181,26 @@ const ProjectRequest = () => {
       formData.append("number_of_pages", numberOfPages);
       formData.append("service_id", selectedService?.id);
       formData.append("total_price", totalPrice);
-  
-      // Append attachments
+
       attachments.forEach((file) => formData.append("attachments[]", file));
-  
-      const projectResponse = await fetch("https://studypage.onrender.com/request_expert", {
+
+      const projectResponse = await fetch(`${API_URL}/request_expert`, {
         method: "POST",
-        // headers: { Authorization: `Bearer ${authToken}` },
         body: formData,
       });
-  
+
       if (!projectResponse.ok) {
         throw new Error("Failed to submit the project request.");
       }
-  
+
       toast.success("Project submitted successfully! Redirecting...");
-  
       setTimeout(() => {
-        navigate("/chat", { state: { totalPrice, reference } });
+        navigate("/chat", { state: { totalPrice, reference: response.reference } });
       }, 2000);
     } catch (error) {
       toast.error(error.message || "An unexpected error occurred.");
     } finally {
-      setIsSubmitting(false);
+      setIsLoading(false);
     }
   }, [
     projectTitle,
@@ -223,10 +213,9 @@ const ProjectRequest = () => {
     selectedService,
     totalPrice,
     attachments,
-    // authToken,
     navigate,
   ]);
-  
+
   const handleClose = useCallback(() => {
     showError('Payment cancelled.');
   }, []);
@@ -247,10 +236,8 @@ const ProjectRequest = () => {
     <div className="container mx-auto p-8 bg-gray-300 shadow-md rounded-lg max-w-4xl m-6">
       <h2 className="text-2xl font-bold mb-4">Request Expert</h2>
 
-      {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
-
-      <form onSubmit={(e) => e.preventDefault()} >
-                <div>
+      <form onSubmit={(e) => e.preventDefault()}>
+        <div>
           <label htmlFor="projectTitle" className="block text-sm font-medium">Project Title</label>
           <input
             type="text"
@@ -273,45 +260,41 @@ const ProjectRequest = () => {
           ></textarea>
         </div>
 
-        {/* Project Type */}
+        {/* Project Type Selection */}
         <div>
           <label htmlFor="projectType" className="block text-sm font-medium">Project Type</label>
-          {isLoadingProjectTypes ? (
-            <p className="text-gray-500">Loading project types...</p>
-          ) : (
-            <select
-              id="projectType"
-              value={selectedProjectType}
-              onChange={(e) => setSelectedProjectType(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
-              required
-            >
-              <option value="">Select Project Type</option>
-              {projectTypes.map((type) => (
-                <option key={type.id} value={type.id}>{type.name}</option>
-              ))}
-            </select>
-          )}
+          <select
+            id="projectType"
+            value={selectedProjectType}
+            onChange={(e) => setSelectedProjectType(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded"
+            required
+          >
+            <option value="">Select Project Type</option>
+            {projectTypes.map((type) => (
+              <option key={type.id} value={type.id}>{type.name}</option>
+            ))}
+          </select>
         </div>
+
+        {/* Related Subjects (Filtered by Project Type) */}
         <div>
           <label htmlFor="subject" className="block text-sm font-medium">Subject</label>
-          {isLoadingSubjects ? (
-            <p className="text-gray-500">Loading subjects...</p>
-          ) : (
-            <select
-              id="subject"
-              value={selectedSubject}
-              onChange={(e) => setSelectedSubject(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
-              required
-            >
-              <option value="">Select Subject</option>
-              {subjects.map((subject) => (
-                <option key={subject.id} value={subject.id}>{subject.name}</option>
-              ))}
-            </select>
-          )}
+          <select
+            id="subject"
+            value={selectedSubject}
+            onChange={(e) => setSelectedSubject(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded"
+            disabled={!selectedProjectType}
+            required
+          >
+            <option value="">Select Subject</option>
+            {relatedSubjects.map((subject) => (
+              <option key={subject.id} value={subject.id}>{subject.name}</option>
+            ))}
+          </select>
         </div>
+
         <div>
           <label htmlFor="numberOfPages" className="block text-sm font-medium">Number of Pages</label>
           <input
@@ -334,16 +317,16 @@ const ProjectRequest = () => {
             onChange={handleFileChange}
             className="w-full p-2 border border-gray-300 rounded"
           />
-            {attachments.length > 0 && (
-              <div className="mt-2">
-                <p className="font-medium">Selected Files:</p>
-                <ul className="list-disc pl-5 text-sm text-gray-700">
-                  {attachments.map((file, index) => (
-                    <li key={index}>{file.name}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+          {attachments.length > 0 && (
+            <div className="mt-2">
+              <p className="font-medium">Selected Files:</p>
+              <ul className="list-disc pl-5 text-sm text-gray-700">
+                {attachments.map((file, index) => (
+                  <li key={index}>{file.name}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         {/* Services */}
@@ -385,8 +368,6 @@ const ProjectRequest = () => {
             <p>Pages: {numberOfPages}</p>
             <p>Price per Page: ${selectedService.price_per_page.toFixed(2)}</p>
             <p className="font-bold text-lg">Total Price: ${totalPrice.toFixed(2)}</p>
-
-            {/* Escrow Protection Section */}
           </div>
         )}
 
@@ -402,15 +383,13 @@ const ProjectRequest = () => {
             required
           />
         </div>
+
+        {/* Submit Button */}
         <div className="flex justify-center mt-6">
-          {isSubmitting ? (
+          {isLoading ? (
             <div className="flex items-center">
               <span className="animate-spin h-6 w-6 border-4 border-blue-500 border-t-transparent rounded-full"></span>
               <span className="ml-2 text-blue-500 font-semibold">Processing...</span>
-            </div>
-          ) : totalPrice === 0 && numberOfPages > 0 ? (
-            <div className="text-red-500 font-semibold text-center mt-4">
-              Calculating total price... Please wait.
             </div>
           ) : (
             <PaystackButton
@@ -422,20 +401,6 @@ const ProjectRequest = () => {
             />
           )}
         </div>
-        {/* <div className="flex justify-center mt-6">
-          {isSubmitting ? (
-            <div className="flex items-center">
-              <span className="animate-spin h-6 w-6 border-4 border-blue-500 border-t-transparent rounded-full"></span>
-              <span className="ml-2 text-blue-500 font-semibold">Processing...</span>
-            </div>
-          ) : (
-            <PaystackButton
-              className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200"
-              {...componentProps}
-              disabled={!isFormValid}
-            />
-          )}
-        </div> */}
       </form>
     </div>
   );

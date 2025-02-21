@@ -119,7 +119,7 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
           onClick={() => onHire(expert.id)}
           className="w-full bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors duration-300 flex items-center justify-center gap-2"
         >
-          <span>Submit Project</span>
+          <span>Request Service</span>
           <FontAwesomeIcon icon={faArrowRight} />
         </button>
         {currentUser && (

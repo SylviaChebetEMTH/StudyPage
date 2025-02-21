@@ -1552,7 +1552,6 @@ def partial_update_expert(id):
             return jsonify({'message': 'Subject not found'}), 404
     if 'profilePicture' in data:
         expert.profile_picture = data['profilePicture']
-    
 
     db.session.commit()
     # Return the updated expert data
@@ -1667,6 +1666,7 @@ def delete_expert(id):
 #         service_list.append(service_data)
 
 #     return jsonify({'services': service_list})
+
 @app.route('/services', methods=['GET'])
 def get_services():
     project_type_id = request.args.get('project_type', type=int)
@@ -1846,7 +1846,6 @@ def add_services():
         print("Error adding services:", str(e))
         return jsonify({"message": "Failed to add services.", "error": str(e)}), 500
 
-
 @app.route('/services', methods=['DELETE'])
 def delete_all_services():
     try:
@@ -1856,7 +1855,6 @@ def delete_all_services():
     except Exception as e:
         db.session.rollback()
         return jsonify({"message": "Failed to delete services.", "error": str(e)}), 500
-
 
 @app.route('/project-types', methods=['GET'])
 def get_project_types():
@@ -1907,6 +1905,15 @@ def delete_project_type(id):
         print("Error occurred:", e)
         return jsonify({'message': str(e)}), 500
 
+@app.route('/project-types', methods=['DELETE'])
+def delete_all_project_types():
+    try:
+        num_deleted = ProjectType.query.delete()  # Deletes all records
+        db.session.commit()
+        return jsonify({"message": f"✅ {num_deleted} project types deleted successfully!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "Failed to delete project types.", "error": str(e)}), 500
 
 @app.route('/subjects', methods=['GET'])
 def get_subjects():
@@ -1931,6 +1938,15 @@ def create_subject():
         print(f"Error creating subject: {e}")
         return jsonify({'message': 'Failed to create subject'}), 500
 
+@app.route('/subjects', methods=['DELETE'])
+def delete_all_subjects():
+    try:
+        num_deleted = Subject.query.delete()  # Deletes all records
+        db.session.commit()
+        return jsonify({"message": f"✅ {num_deleted} subjects deleted successfully!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "Failed to delete subjects.", "error": str(e)}), 500
 
 # PUT route to update a subject by its ID
 @app.route('/subjects/<int:id>', methods=['PUT'])
