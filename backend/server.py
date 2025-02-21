@@ -1,9 +1,10 @@
+
 from gevent import monkey
 monkey.patch_all()
 
 import os
 from app import app, db, socketio
-from app.models import ProjectType, Subject  # Import your models
+from models import ProjectType, Subject 
 
 def seed_database():
     """Seed database with project types and subjects if they don’t exist."""
