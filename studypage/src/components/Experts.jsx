@@ -308,6 +308,8 @@ const ExpertSelectionPage = () => {
   // const { projectTypeId, subjectId } = location.state || {};
   const projectTypeId = localStorage.getItem("selectedProjectType");
   const subjectId = localStorage.getItem("selectedSubject");
+  console.log('projecttype',projectTypeId)
+  console.log('subject id retrieved',subjectId)
 
   useEffect(() => {
     if (!projectTypeId || !subjectId) {
