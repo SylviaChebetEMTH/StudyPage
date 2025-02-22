@@ -48,6 +48,15 @@ def generate_experts():
     db.session.commit()
     print(f"✅ Successfully added {len(experts)} experts!")
 
+project_types = ProjectType.query.all()
+subjects = Subject.query.all()
+
+print(f"📢 Found {len(project_types)} project types and {len(subjects)} subjects.")  # Debugging
+
+if not project_types or not subjects:
+    print("❌ ERROR: No project types or subjects found. Check your database!")
+    exit(1)
+
 if __name__ == "__main__":
     with app.app_context():
         generate_experts()
