@@ -317,14 +317,14 @@ def get_expert_comments(expert_id):
     })
 
 @app.route('/experts', methods=['DELETE'])
-def delete_all_subjects():
+def delete_all_experts():
     try:
-        num_deleted = Subject.query.delete()  # Deletes all records
+        num_deleted = Expert.query.delete()  # Deletes all records
         db.session.commit()
-        return jsonify({"message": f"✅ {num_deleted} subjects deleted successfully!"}), 200
+        return jsonify({"message": f"✅ {num_deleted} experts deleted successfully!"}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({"message": "Failed to delete subjects.", "error": str(e)}), 500
+        return jsonify({"message": "Failed to delete experts.", "error": str(e)}), 500
 
 @app.route('/experts/<int:expert_id>/comments/<int:currentUser_id>', methods=['POST'])
 # @jwt_required()
