@@ -2155,4 +2155,9 @@ api.add_resource(Projects, '/projects')
 
 if __name__ == '__main__':
     socketio.run(app,debug=True)
-    
+
+#cloud_name dliyoq5nf
+#cloudinary_api_key 729815478551777
+#cloudinary_api_secret SIAh1rVO5qGtgrCrnxq3Jg2QFns
+# database_url postgresql://study_b3sy_user:Re1YO53KgRQRbrnz1GIxoPgSLxc70wZk@dpg-cuso4k7noe9s7391d5tg-a/study_b3sy
+# flask db init && flask db migrate -m "Reset migrations" && flask db upgrade && python server.py && python generate_experts.py
