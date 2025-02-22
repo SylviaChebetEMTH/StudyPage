@@ -69,11 +69,9 @@ import random
 from app import db, app
 from models import Expert, ProjectType, Subject
 
-# Sample names for generating experts
 FIRST_NAMES = ["James", "Sarah", "Michael", "Emily", "David", "Sophia", "John", "Emma", "Daniel", "Olivia"]
 LAST_NAMES = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Davis", "Miller", "Wilson", "Anderson"]
 
-# Sample profile pictures
 PROFILE_PICS = [
     "https://randomuser.me/api/portraits/men/1.jpg",
     "https://randomuser.me/api/portraits/women/2.jpg",
@@ -84,13 +82,11 @@ PROFILE_PICS = [
 def generate_experts():
     print("🌱 Generating experts...")
 
-    # Prevent duplication: If experts exist, stop execution
     existing_experts = Expert.query.count()
     if existing_experts > 0:
         print(f"⚠️ Skipping expert generation: {existing_experts} experts already exist.")
         return
 
-    # Fetch all project types & subjects from DB
     project_types = ProjectType.query.all()
     subjects = Subject.query.all()
 
@@ -101,14 +97,14 @@ def generate_experts():
     experts = []
 
     for project_type in project_types:
-        assigned_subjects = random.sample(subjects, k=min(4, len(subjects)))  # Assign up to 4 random subjects
+        assigned_subjects = random.sample(subjects, k=min(4, len(subjects)))  
 
-        for _ in range(3):  # Generate 3 experts per project type
+        for _ in range(3): 
             first_name = random.choice(FIRST_NAMES)
             last_name = random.choice(LAST_NAMES)
             full_name = f"{first_name} {last_name}"
 
-            subject = random.choice(assigned_subjects)  # Select one subject per expert
+            subject = random.choice(assigned_subjects) 
 
             expert = Expert(
                 name=full_name,
@@ -120,12 +116,11 @@ def generate_experts():
                 languages="English, French",
                 profile_picture=random.choice(PROFILE_PICS),
                 project_type_id=project_type.id,
-                subject_id=subject.id  # Ensure this is a valid ID
+                subject_id=subject.id 
             )
 
             experts.append(expert)
 
-    # Bulk insert all experts
     db.session.bulk_save_objects(experts)
     db.session.commit()
     print(f"✅ Successfully added {len(experts)} experts!")
