@@ -39,12 +39,12 @@ const Services = () => {
 
   // Function to fetch services from the backend
   const fetchServices = async () => {
-    const storedServices = localStorage.getItem('service');
-    if (storedServices) {
-      setServices(JSON.parse(storedServices));
-      setLoading(false);
-      return;
-    }
+    // const storedServices = localStorage.getItem('service');
+    // if (storedServices) {
+    //   setServices(JSON.parse(storedServices));
+    //   setLoading(false);
+    //   return;
+    // }
     try {
       const response = await fetch(`${API_URL}/services`, {
         method: 'GET',
