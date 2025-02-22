@@ -85,7 +85,7 @@ def generate_experts():
 
     # Prevent duplication: If experts exist, stop execution
     existing_experts = Expert.query.count()
-    if existing_experts > 0:
+    if existing_experts == 72:
         print(f"⚠️ Skipping expert generation: {existing_experts} experts already exist.")
         return
 
