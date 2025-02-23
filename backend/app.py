@@ -1630,13 +1630,12 @@ def search_experts():
                 "message": "Invalid project type or subject ID"
             }), 400
 
-        # Query experts using the many-to-many relationship
+        # Query experts using many-to-many and one-to-many relationships
         experts = (
             Expert.query
-            .join(Expert.subjects)  # Join the many-to-many relationship
             .filter(
-                Expert.project_types == project_type_id,  # One-to-many lookup
-                Expert.subjects.any(id=subject_id)  # Many-to-many lookup
+                Expert.project_type_id == project_type_id,  # One-to-many lookup
+                Expert.subjects.contains(subject)  # Many-to-many lookup
             )
             .options(
                 joinedload(Expert.project_type),  # Eager load project type
