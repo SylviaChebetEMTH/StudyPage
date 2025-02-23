@@ -1635,7 +1635,7 @@ def search_experts():
             Expert.query
             .join(Expert.subjects)  # Join the many-to-many relationship
             .filter(
-                Expert.project_type_id == project_type_id,  # One-to-many lookup
+                Expert.project_types == project_type_id,  # One-to-many lookup
                 Expert.subjects.any(id=subject_id)  # Many-to-many lookup
             )
             .options(
