@@ -223,3 +223,6 @@ def generate_experts():
     except Exception as e:
         db.session.rollback()
         print(f"❌ Error saving experts: {str(e)}")
+if __name__ == "__main__":
+    with app.app_context():
+        generate_experts()
