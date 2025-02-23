@@ -1630,17 +1630,17 @@ def search_experts():
                 "message": "Invalid project type or subject ID"
             }), 400
 
-        # Query experts using many-to-many relationship
+        # Query experts using the many-to-many relationship
         experts = (
             Expert.query
-            .join(expert_subjects)  # Join expert-subject association table
+            .join(Expert.subjects)  # Join many-to-many relationship
             .filter(
-                expert_subjects.c.subject_id == subject_id,  
-                Expert.project_type_id == project_type_id  # Now correctly referencing the relationship
+                Expert.project_type.has(id=project_type_id),  # Correct way to check many-to-one relationship
+                Subject.id == subject_id  # Correctly reference many-to-many
             )
             .options(
-                joinedload(Expert.project_type),  # Load related project type
-                joinedload(Expert.subjects)  # Load related subjects
+                joinedload(Expert.project_type),  # Eager load project type
+                joinedload(Expert.subjects)  # Eager load subjects
             )
             .order_by(Expert.id)
             .limit(3)
