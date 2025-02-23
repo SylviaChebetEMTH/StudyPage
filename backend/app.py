@@ -1535,9 +1535,14 @@ def search_experts():
     project_type_id = request.args.get("project_type_id", type=int)
     subject_id = request.args.get("subject_id", type=int)
 
+    # Ensure that project_type_id and subject_id are provided
+    if not project_type_id or not subject_id:
+        return jsonify({"message": "Missing project_type_id or subject_id."}), 400
+
+    # Correct Query: Directly compare `subject_id`
     experts = Expert.query.filter(
         Expert.project_type_id == project_type_id,
-        Expert.subjects.any(id=subject_id)
+        Expert.subject_id == subject_id  # FIXED: Directly filter instead of using `.any()`
     ).limit(3).all()
 
     if not experts:
@@ -1552,6 +1557,7 @@ def search_experts():
             "expertise": expert.expertise
         } for expert in experts
     ])
+
 
 # @app.route("/experts", methods=["POST"])
 # def add_expert():
