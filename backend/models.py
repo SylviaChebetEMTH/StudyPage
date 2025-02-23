@@ -31,6 +31,12 @@ class User(db.Model):
         """Checks if the password matches the hashed password"""
         return bcrypt.check_password_hash(self.password, password)
 
+expert_project_types = db.Table(
+    'expert_project_types',
+    db.Column('expert_id', db.Integer, db.ForeignKey('experts.id'), primary_key=True),
+    db.Column('project_type_id', db.Integer, db.ForeignKey('project_types.id'), primary_key=True)
+)
+
 expert_subjects = db.Table(
     'expert_subjects',
     db.Column('expert_id', db.Integer, db.ForeignKey('experts.id'), primary_key=True),
@@ -42,22 +48,43 @@ class Expert(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     title = db.Column(db.String(120), nullable=False)
-    expertise = db.Column(db.Text, nullable=False)  # Allow longer text
+    expertise = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text)
     biography = db.Column(db.Text, nullable=True)
     education = db.Column(db.String(255), nullable=True)
     languages = db.Column(db.String(255), nullable=True)
-    profile_picture = db.Column(db.Text, nullable=True)  # Store long URLs
+    profile_picture = db.Column(db.Text, nullable=True)
 
-    # Relationships
-    project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'))
-    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
-    project_type = db.relationship('ProjectType', backref='experts')
+    # Many-to-Many Relationships
+    project_types = db.relationship('ProjectType', secondary=expert_project_types, backref='experts')
     subjects = db.relationship('Subject', secondary=expert_subjects, backref='experts')
+
     rating_avg = db.Column(db.Float, default=0.0)
     total_reviews = db.Column(db.Integer, default=0)
     success_rate = db.Column(db.Float, default=0.0)
     is_ai_free = db.Column(db.Boolean, default=False)
+
+# class Expert(db.Model):
+#     __tablename__ = 'experts'
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(120), nullable=False)
+#     title = db.Column(db.String(120), nullable=False)
+#     expertise = db.Column(db.Text, nullable=False)  # Allow longer text
+#     description = db.Column(db.Text)
+#     biography = db.Column(db.Text, nullable=True)
+#     education = db.Column(db.String(255), nullable=True)
+#     languages = db.Column(db.String(255), nullable=True)
+#     profile_picture = db.Column(db.Text, nullable=True)  # Store long URLs
+
+#     # Relationships
+#     project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'))
+#     # subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
+#     project_types = db.relationship('ProjectType', backref='experts')
+#     subjects = db.relationship('Subject', secondary=expert_subjects, backref='experts')
+#     rating_avg = db.Column(db.Float, default=0.0)
+#     total_reviews = db.Column(db.Integer, default=0)
+#     success_rate = db.Column(db.Float, default=0.0)
+#     is_ai_free = db.Column(db.Boolean, default=False)
 
 class Rating(db.Model):
     __tablename__ = 'ratings'
@@ -119,26 +146,6 @@ class Subject(db.Model):
 
     # Relationship to services
     services = db.relationship('Service', backref='subject')  # Adjusted to single subject relationship
-
-
-# class Service(db.Model):
-#     __tablename__ = 'services'
-#     id = db.Column(db.Integer, primary_key=True)
-#     title = db.Column(db.String(100), nullable=False)
-#     description = db.Column(db.Text)
-#     price = db.Column(db.Float, nullable=False)  # Base price or price per unit (e.g., page)
-#     unit = db.Column(db.String(50), nullable=True)  # e.g., "per page", "per hour", etc.
-
-#     # Foreign key for subject
-#     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)  # Added subject_id
-
-#     # Relationship to project types
-#     project_type_id = db.Column(db.Integer, db.ForeignKey('project_types.id'), nullable=False)
-
-#     def get_price(self, quantity=1):
-#         """Calculate price based on quantity (e.g., number of pages)"""
-#         return self.price * quantity
-
 class Service(db.Model):
     __tablename__ = 'services'
     id = db.Column(db.Integer, primary_key=True)
