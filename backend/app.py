@@ -6,7 +6,7 @@ from functools import wraps
 import traceback
 from sqlalchemy.orm import joinedload
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, create_refresh_token, get_jwt, verify_jwt_in_request, decode_token
-from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject, Message as MessageModel, Conversation, Comment, expert_subjects
+from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject, Message as MessageModel, Conversation, Comment, expert_subjects, expert_project_types
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_mail import Mail, Message
@@ -1610,7 +1610,7 @@ def search_experts():
         project_type_id = request.args.get("project_type_id", type=int)
         subject_id = request.args.get("subject_id", type=int)
 
-        # Input validation
+        # Validate required parameters
         if not project_type_id or not subject_id:
             return jsonify({
                 "error": "Missing required parameters",
@@ -1630,15 +1630,17 @@ def search_experts():
                 "message": "Invalid project type or subject ID"
             }), 400
 
-        # Query experts using many-to-many and one-to-many relationships
+        # Query experts who are linked to both the project type and subject
         experts = (
             Expert.query
+            .join(expert_project_types)  # Join expert-project association table
+            .join(expert_subjects)  # Join expert-subject association table
             .filter(
-                Expert.project_type_id == project_type_id,  # One-to-many lookup
-                Expert.subjects.contains(subject)  # Many-to-many lookup
+                expert_project_types.c.project_type_id == project_type_id,  
+                expert_subjects.c.subject_id == subject_id
             )
             .options(
-                joinedload(Expert.project_type),  # Eager load project type
+                joinedload(Expert.project_types),  # Eager load project types
                 joinedload(Expert.subjects)  # Eager load subjects
             )
             .order_by(Expert.id)
@@ -1661,8 +1663,8 @@ def search_experts():
                     "title": expert.title,
                     "profile_picture": expert.profile_picture,
                     "expertise": expert.expertise,
-                    "project_type": expert.project_type.name if expert.project_type else None,
-                    "subjects": [subject.name for subject in expert.subjects]
+                    "project_types": [pt.name for pt in expert.project_types],
+                    "subjects": [sub.name for sub in expert.subjects]
                 } for expert in experts
             ],
             "meta": {
