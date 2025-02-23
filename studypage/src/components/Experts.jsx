@@ -328,9 +328,16 @@ const ExpertSelectionPage = () => {
         }
         
         const data = await response.json();
-        setExperts(data);
+        console.log("API Response:", data); // Debugging
+    
+        if (!data.experts || data.experts.length === 0) {
+          throw new Error("No experts available for this category.");
+        }
+    
+        setExperts(data.experts); // ✅ Set the experts array properly
       } catch (error) {
-        setError('No experts available for this category.');
+        console.error("Error fetching experts:", error.message);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
