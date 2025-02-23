@@ -1632,15 +1632,17 @@ def search_experts():
                 "message": "No service found for this project type and subject combination"
             }), 400
 
-        # Query experts with optimization
-        experts = Expert.query.filter(
+        # Query experts with modified filter conditions
+        experts = Expert.query.join(
+            expert_subjects
+        ).filter(
             Expert.project_type_id == project_type_id,
-            Expert.subject_id == subject_id
+            expert_subjects.c.subject_id == subject_id
         ).options(
             joinedload(Expert.project_type),
-            joinedload(Expert.subject)
+            joinedload(Expert.subjects)
         ).order_by(
-            Expert.id  # Consistent ordering
+            Expert.id
         ).limit(3).all()
         
         if not experts:
@@ -1649,7 +1651,7 @@ def search_experts():
                 "message": "No experts available for this category"
             }), 404
             
-        # Format response
+        # Modified response formatting to handle the many-to-many relationship
         response = {
             "experts": [
                 {
@@ -1659,7 +1661,7 @@ def search_experts():
                     "profile_picture": expert.profile_picture,
                     "expertise": expert.expertise,
                     "project_type": expert.project_type.name,
-                    "subject": expert.subject.name
+                    "subjects": [subject.name for subject in expert.subjects]
                 } for expert in experts
             ],
             "meta": {

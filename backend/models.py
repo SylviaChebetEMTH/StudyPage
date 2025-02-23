@@ -59,7 +59,6 @@ class Expert(db.Model):
     success_rate = db.Column(db.Float, default=0.0)
     is_ai_free = db.Column(db.Boolean, default=False)
 
-
 class Rating(db.Model):
     __tablename__ = 'ratings'
     id = db.Column(db.Integer, primary_key=True)
