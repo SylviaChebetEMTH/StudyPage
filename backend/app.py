@@ -1633,10 +1633,10 @@ def search_experts():
         # Query experts using the many-to-many relationship
         experts = (
             Expert.query
-            .join(Expert.subjects)  # Join many-to-many relationship
+            .join(Expert.subjects)  # Join the many-to-many relationship
             .filter(
-                Expert.project_types.has(id=project_type_id),  # Correct way to check many-to-one relationship
-                Subject.id == subject_id  # Correctly reference many-to-many
+                Expert.project_type_id == project_type_id,  # One-to-many lookup
+                Expert.subjects.any(id=subject_id)  # Many-to-many lookup
             )
             .options(
                 joinedload(Expert.project_type),  # Eager load project type
