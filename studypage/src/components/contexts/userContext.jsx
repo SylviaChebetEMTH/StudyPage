@@ -63,7 +63,7 @@ export const UserProvider = ({ children }) => {
           handleLogout();
         }
       } catch (error) {
-        toast.error("Error fetching current user");
+        toast.error("Please sign in");
         handleLogout();
       }
     }

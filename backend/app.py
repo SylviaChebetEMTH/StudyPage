@@ -1528,7 +1528,7 @@ def add_expert():
                 education="PhD in relevant field",
                 languages="English",
                 profile_picture=profile_picture,
-                project_type=project_type,
+                project_types=[project_type],
                 subjects=expert_subjects
             )
             
@@ -1544,64 +1544,6 @@ def add_expert():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": f"Failed to create experts: {str(e)}"}), 500
-
-# @app.route("/experts", methods=["POST"])
-# def add_expert():
-#     data = request.get_json()
-#     project_type_id = data.get("project_type_id")  # Only 1 project type per expert
-#     profile_picture = data.get("profile_picture")
-
-#     if not profile_picture:
-#         return jsonify({"error": "Profile picture is required"}), 400
-
-#     # Get project type and its related subjects
-#     project_type = ProjectType.query.get(project_type_id)
-#     if not project_type:
-#         return jsonify({"error": "Invalid project type"}), 400
-
-#     related_subjects = Subject.query.filter(Subject.id.in_(
-#         [s.id for s in project_type.subjects]
-#     )).all()
-
-#     all_subjects = list(related_subjects)
-#     random.shuffle(all_subjects)
-
-#     num_experts_per_type = 3
-#     subjects_per_expert = len(all_subjects) // num_experts_per_type
-#     remainder = len(all_subjects) % num_experts_per_type 
-
-#     assigned_subjects = []
-#     for i in range(num_experts_per_type):
-#         start_index = i * subjects_per_expert
-#         end_index = start_index + subjects_per_expert
-#         expert_subjects = all_subjects[start_index:end_index]
-
-#         if remainder > 0:
-#             expert_subjects.append(all_subjects[-remainder])
-#             remainder -= 1
-
-#         assigned_subjects.append(expert_subjects)
-
-#     experts = []
-#     for i in range(num_experts_per_type):
-#         expert = Expert(
-#             name=f"Expert {i+1} for {project_type.name}",
-#             title=f"{project_type.name} Specialist",
-#             expertise=f"Expert in {', '.join([s.name for s in assigned_subjects[i]])}",
-#             description=f"Highly skilled in {project_type.name} for {', '.join([s.name for s in assigned_subjects[i]])}.",
-#             biography="Experienced professional with years of expertise.",
-#             education="PhD in relevant field",
-#             languages="English",
-#             profile_picture=profile_picture,
-#             project_type=project_type,
-#             subjects=assigned_subjects[i]
-#         )
-#         db.session.add(expert)
-#         experts.append(expert)
-
-#     db.session.commit()
-
-#     return jsonify({"message": "Experts added successfully!", "experts": [e.name for e in experts]}), 201
 
 @app.route("/experts/search", methods=["GET"])
 def search_experts():
