@@ -1606,10 +1606,10 @@ def add_expert():
 @app.route("/experts/search", methods=["GET"])
 def search_experts():
     try:
-        # Get and validate query parameters
+        # Get query parameters
         project_type_id = request.args.get("project_type_id", type=int)
         subject_id = request.args.get("subject_id", type=int)
-        
+
         # Input validation
         if not project_type_id or not subject_id:
             return jsonify({
@@ -1619,39 +1619,41 @@ def search_experts():
                     "subject_id": "Required" if not subject_id else None
                 }
             }), 400
-            
-        # Verify project type and subject exist and are related through services
-        service_exists = Service.query.filter(
-            Service.project_type_id == project_type_id,
-            Service.subject_id == subject_id
-        ).first()
-        
-        if not service_exists:
+
+        # Verify project type and subject exist
+        project_type = ProjectType.query.get(project_type_id)
+        subject = Subject.query.get(subject_id)
+
+        if not project_type or not subject:
             return jsonify({
-                "error": "Invalid combination",
-                "message": "No service found for this project type and subject combination"
+                "error": "Invalid selection",
+                "message": "Invalid project type or subject ID"
             }), 400
 
-        # Query experts with modified filter conditions
-        experts = Expert.query.join(
-            expert_subjects
-        ).filter(
-            Expert.project_type_id == project_type_id,
-            expert_subjects.c.subject_id == subject_id
-        ).options(
-            joinedload(Expert.project_type),
-            joinedload(Expert.subjects)
-        ).order_by(
-            Expert.id
-        ).limit(3).all()
-        
+        # Query experts using many-to-many relationship
+        experts = (
+            Expert.query
+            .join(expert_subjects)  # Join expert-subject association table
+            .filter(
+                expert_subjects.c.subject_id == subject_id,  
+                Expert.project_type_id == project_type_id  # Now correctly referencing the relationship
+            )
+            .options(
+                joinedload(Expert.project_type),  # Load related project type
+                joinedload(Expert.subjects)  # Load related subjects
+            )
+            .order_by(Expert.id)
+            .limit(3)
+            .all()
+        )
+
         if not experts:
             return jsonify({
                 "error": "Not found",
                 "message": "No experts available for this category"
             }), 404
-            
-        # Modified response formatting to handle the many-to-many relationship
+
+        # Format response
         response = {
             "experts": [
                 {
@@ -1660,7 +1662,7 @@ def search_experts():
                     "title": expert.title,
                     "profile_picture": expert.profile_picture,
                     "expertise": expert.expertise,
-                    "project_type": expert.project_type.name,
+                    "project_type": expert.project_type.name if expert.project_type else None,
                     "subjects": [subject.name for subject in expert.subjects]
                 } for expert in experts
             ],
@@ -1670,9 +1672,9 @@ def search_experts():
                 "subject_id": subject_id
             }
         }
-        
+
         return jsonify(response), 200
-        
+
     except Exception as e:
         return jsonify({
             "error": "Server error",
