@@ -1559,7 +1559,11 @@ def search_experts():
                     "name": expert.name,
                     "title": expert.title,
                     "profile_picture": expert.profile_picture,
-                    "expertise": expert.expertise
+                    "expertise": expert.expertise,
+                    "education": expert.education,
+                    "biography": expert.biography,
+                    "description": expert.description,
+                    "languages": expert.languages
                 } for expert in experts
             ]
         }

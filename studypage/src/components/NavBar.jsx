@@ -62,7 +62,7 @@ export const NavBar = () => {
                 <div
                     className={`${
                         isMenuOpen ? 'block' : 'hidden'
-                    } absolute top-16 left-0 w-full bg-gray-900 z-50 md:static md:flex md:items-center md:justify-between md:w-auto space-x-4`}
+                    } absolute top-16 left-0 w-full bg-gray-900 z-50 md:static md:flex md:items-center md:justify-between md:w-auto space-x-10`}
                 >
                     <div className="flex flex-col md:flex-row md:space-x-8 text-center md:items-center">
                         <Link
@@ -80,14 +80,14 @@ export const NavBar = () => {
                         >
                             Services
                         </Link>
-                        <Link
+                        {/* <Link
                             to="/expertspage"
                             className="text-white hover:text-yellow-400 py-2 md:py-0"
                             currentUser={currentUser}
                             onClick={handleLinkClick}
                         >
                             Our Experts
-                        </Link>
+                        </Link> */}
                         <Link
                             to="/about"
                             className="text-white hover:text-yellow-400 py-2 md:py-0"
