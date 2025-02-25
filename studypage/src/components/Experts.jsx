@@ -103,9 +103,9 @@
 //     const fetchProjectTypes = async () => {
 //       try {
 //         const response = await fetch(`${API_URL}/project-types`, {
-//           headers: {
-//             Authorization: `Bearer ${authToken}`,
-//           },
+          // headers: {
+          //   Authorization: `Bearer ${authToken}`,
+          // },
 //         });
 
 //         if (!response.ok) {

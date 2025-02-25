@@ -25,6 +25,7 @@ const ProjectRequest = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const { authToken } = useContext(UserContext);
 
   const API_URL = 'https://studypage.onrender.com';
   const publicKey = 'pk_test_00e40d5cd3e321a68b22aad7e1c42a62f8587d4c';
@@ -190,6 +191,9 @@ const ProjectRequest = () => {
       const projectResponse = await fetch(`${API_URL}/request_expert`, {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
       });
 
       if (!projectResponse.ok) {
@@ -217,6 +221,7 @@ const ProjectRequest = () => {
     totalPrice,
     attachments,
     navigate,
+    authToken
   ]);
 
   const handleClose = useCallback(() => {
