@@ -1059,7 +1059,7 @@ def admn_send_message(conversation_id):
         experts_id = conversation.expert_id
         experts_name = expert.user.username
         # experts_name = User.query.get(experts_id).username
-        experts_email = User.query.get(experts_id).email
+        # experts_email = User.query.get(experts_id).email
 
         content = request.form.get('content')
         files = request.files.getlist('attachments')
@@ -1095,10 +1095,10 @@ def admn_send_message(conversation_id):
 
         sender = User.query.get(sender_id)
         email_subject = "New Message Notification"
+                # Sender: {experts_name} (Email: {experts_email})
         email_body = f"""
         A new message has been sent by expert {experts_name}.
 
-        Sender: {experts_name} (Email: {experts_email})
         Content: {content or 'No content'}
         Attachments: {', '.join(attachments) if attachments else 'None'}
 
