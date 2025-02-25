@@ -43,6 +43,12 @@ expert_subjects = db.Table(
     db.Column('subject_id', db.Integer, db.ForeignKey('subjects.id'), primary_key=True)
 )
 
+expert_services = db.Table(
+    "expert_services",
+    db.Column("expert_id", db.Integer, db.ForeignKey("experts.id"), primary_key=True),
+    db.Column("service_id", db.Integer, db.ForeignKey("services.id"), primary_key=True),
+)
+
 class Expert(db.Model):
     __tablename__ = 'experts'
     id = db.Column(db.Integer, primary_key=True)
@@ -55,6 +61,7 @@ class Expert(db.Model):
     languages = db.Column(db.String(255), nullable=True)
     profile_picture = db.Column(db.Text, nullable=True)
 
+    services = db.relationship("Service", secondary=expert_services, backref="experts")
     # Many-to-Many Relationships
     project_types = db.relationship('ProjectType', secondary=expert_project_types, backref='experts')
     subjects = db.relationship('Subject', secondary=expert_subjects, backref='experts')
