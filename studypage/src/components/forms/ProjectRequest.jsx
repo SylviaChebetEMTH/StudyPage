@@ -185,6 +185,7 @@ const ProjectRequest = () => {
       formData.append("number_of_pages", numberOfPages);
       formData.append("service_id", selectedService?.id);
       formData.append("total_price", totalPrice);
+      formData.append("sender_type", "student");
 
       attachments.forEach((file) => formData.append("attachments[]", file));
 

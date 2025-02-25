@@ -456,6 +456,7 @@ const ChatWindow = ({ activeUser, currentUser, auth, teacher, pic, isInModal, te
 
       const formData = new FormData();
       formData.append("content", content);
+      // formData.append("sender_type", "user");
       attachments.forEach((file) => formData.append("attachments", file));
 
       const response = await fetch(
