@@ -306,10 +306,12 @@ const ExpertSelectionPage = () => {
 
   // Extract the selected project type and subject from history/state
   // const { projectTypeId, subjectId } = location.state || {};
-  const projectTypeId = localStorage.getItem("selectedProjectType");
-  // const subjectId = localStorage.getItem("selectedSubject");
+  const projectTypeId = localStorage.getItem("selectedProjectTypeId");
+  const subjectId = localStorage.getItem("selectedSubjectId");
+  const serviceId = localStorage.getItem("serviceId");
   console.log('projecttype',projectTypeId)
-  // console.log('subject id retrieved',subjectId)
+  console.log('subject id retrieved',subjectId)
+  console.log('service id retrieved',serviceId)
 
   useEffect(() => {
     if (!projectTypeId) {
@@ -321,7 +323,7 @@ const ExpertSelectionPage = () => {
     // Fetch experts based on the student's previous selection
     const fetchExperts = async () => {
       try {
-        const response = await fetch(`${API_URL}/experts/search?service_id=${projectTypeId}`);
+        const response = await fetch(`${API_URL}/experts/search?service_id=${serviceId}`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch experts');
@@ -368,7 +370,7 @@ const ExpertSelectionPage = () => {
               Choose an Expert
             </h1>
             <p className="text-sm sm:text-lg text-white max-w-xl mx-auto mb-6">
-              All experts are verified and experienced in their field.
+            Most of our experts are lecturers and teachers from various institutions, offering their expertise as freelance professionals.
             </p>
           </div>
         </div>

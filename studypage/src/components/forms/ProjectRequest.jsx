@@ -15,8 +15,8 @@ const ProjectRequest = () => {
   const [projectTypes, setProjectTypes] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [relatedSubjects, setRelatedSubjects] = useState([]); // New: Dynamically filtered subjects
-  const [selectedProjectType, setSelectedProjectType] = useState('');
-  const [selectedSubject, setSelectedSubject] = useState('');
+  // const [selectedProjectType, setSelectedProjectType] = useState('');
+  // const [selectedSubject, setSelectedSubject] = useState('');
   const [attachments, setAttachments] = useState([]);
   const [deadline, setDeadline] = useState('');
   const [expertId, setExpertId] = useState(state ? state.expertId : '');
@@ -30,6 +30,9 @@ const ProjectRequest = () => {
   const publicKey = 'pk_test_00e40d5cd3e321a68b22aad7e1c42a62f8587d4c';
   const email = currentUser?.email || ''; 
   const [paymentRef] = useState(`ref_${Math.floor(Math.random() * 1000000000)}`);
+
+  const selectedProjectType = localStorage.getItem("selectedProjectTypeId");
+  const selectedSubject = localStorage.getItem("selectedSubjectId");
 
   const showError = (message) => {
     toast.error(message || "Something went wrong. Please try again.");
@@ -72,7 +75,7 @@ const ProjectRequest = () => {
             setRelatedSubjects(
               subjects.filter(subj => data.services.some(svc => svc.subject_id === subj.id))
             );
-            setSelectedSubject(''); // Reset subject selection when project type changes
+            // setSelectedSubject(''); 
           }
         })
         .catch(() => showError('Error fetching services.'))
@@ -80,7 +83,7 @@ const ProjectRequest = () => {
     } else {
       setServices([]);
       setRelatedSubjects([]);
-      setSelectedSubject('');
+      // setSelectedSubject('');
     }
   }, [selectedProjectType, subjects]);
 
@@ -266,7 +269,7 @@ const ProjectRequest = () => {
           <select
             id="projectType"
             value={selectedProjectType}
-            onChange={(e) => setSelectedProjectType(e.target.value)}
+            // onChange={(e) => setSelectedProjectType(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded"
             required
           >
@@ -283,7 +286,7 @@ const ProjectRequest = () => {
           <select
             id="subject"
             value={selectedSubject}
-            onChange={(e) => setSelectedSubject(e.target.value)}
+            // onChange={(e) => setSelectedSubject(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded"
             disabled={!selectedProjectType}
             required

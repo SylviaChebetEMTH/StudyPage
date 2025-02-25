@@ -980,8 +980,8 @@ def request_expert():
     project = ProjectRequest(
         project_title=data.get('project_title'),
         project_description=data.get('project_description'),
-        project_type_id=data.get('project_type'),
-        subject_id=data.get('subject'),
+        project_type_id=data.get('project_type', type=int),
+        subject_id=data.get('subject', type=int),
         deadline=deadline,
         expert_id=data.get('expert_id'),
         user_id=get_jwt_identity(),

@@ -14,9 +14,10 @@ const Services = () => {
 
   const API_URL = 'https://studypage.onrender.com';
 
-  const move = (projectTypeId)=> {
-    localStorage.setItem("selectedProjectType", projectTypeId);
-    // localStorage.setItem("selectedSubject", subjectId);
+  const move = (projectTypeId, subjectId, serviceId)=> {
+    localStorage.setItem("selectedProjectTypeId", projectTypeId);
+    localStorage.setItem("serviceId", serviceId);
+    localStorage.setItem("selectedSubjectId", subjectId);
     navigate('/expertspage')
   }
 
@@ -39,12 +40,12 @@ const Services = () => {
 
   // Function to fetch services from the backend
   const fetchServices = async () => {
-    // const storedServices = localStorage.getItem('service');
-    // if (storedServices) {
-    //   setServices(JSON.parse(storedServices));
-    //   setLoading(false);
-    //   return;
-    // }
+    const storedServices = localStorage.getItem('service');
+    if (storedServices) {
+      setServices(JSON.parse(storedServices));
+      setLoading(false);
+      return;
+    }
     try {
       const response = await fetch(`${API_URL}/services`, {
         method: 'GET',
@@ -155,7 +156,7 @@ const Services = () => {
               <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded">
                 ${service.price_per_page} per page
               </span>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" onClick={() => move(service.id)} >
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" onClick={() => move(service.project_type_id,service.id,service.subject_id)} >
                 Request Service
               </button>
             </div>
