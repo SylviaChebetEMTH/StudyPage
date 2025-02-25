@@ -1024,8 +1024,9 @@ def request_expert():
         content=f"New project submitted: {project.project_title}\nDescription: {project.project_description}\nDeadline: {project.deadline.strftime('%Y-%m-%d')}",
         attachments=project.attachments,
         receiver_id=data.get('expert_id'),
-        expert_id=data.get('expert_id'),
-        sender_type=data.get('sender_type')
+        # expert_id=data.get('expert_id'),
+        sender_type=data.get('sender_type'),
+        receiver_type=data.get('receiver_type')
     )
     db.session.add(message)
     db.session.commit()
@@ -1203,7 +1204,9 @@ def send_message(conversation_id):
             sender_id=sender_id,
             receiver_id=conversation.client_id if sender_id != conversation.client_id else conversation.expert_id,
             content=content,
-            attachments=', '.join(attachments) if attachments else None
+            attachments=', '.join(attachments) if attachments else None,
+            receiver_type='expert',
+            sender_type='user'
         )
         db.session.add(message)
         db.session.commit()
