@@ -191,38 +191,19 @@ class ProjectRequest(db.Model):
 
 class Message(db.Model):
     __tablename__ = 'messages'
-    
     id = db.Column(db.Integer, primary_key=True)
     conversation_id = db.Column(db.Integer, db.ForeignKey('conversations.id'), nullable=False)
-
-    # ✅ Sender: Can be either a User or an Expert
-    sender_id = db.Column(db.Integer, nullable=False)
-    sender_type = db.Column(db.String(10), nullable=False)  # "user" or "expert"
-
-    # ✅ Receiver: Can be either a User or an Expert
-    receiver_id = db.Column(db.Integer, nullable=True)
-    receiver_type = db.Column(db.String(10), nullable=True)  # "user" or "expert"
-
+    sender_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    expert_id = db.Column(db.Integer, db.ForeignKey('experts.id'), nullable=True)
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     attachments = db.Column(db.String, nullable=True)
+    sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_messages')
+    receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_messages')
+    expert = db.relationship('Expert', backref='messages')  # Optional expert relationship
     read = db.Column(db.Boolean, default=False)
 
-    def get_sender(self):
-        """Returns the sender as a User or Expert object"""
-        if self.sender_type == "user":
-            return User.query.get(self.sender_id)
-        elif self.sender_type == "expert":
-            return Expert.query.get(self.sender_id)
-        return None
-
-    def get_receiver(self):
-        """Returns the receiver as a User or Expert object"""
-        if self.receiver_type == "user":
-            return User.query.get(self.receiver_id)
-        elif self.receiver_type == "expert":
-            return Expert.query.get(self.receiver_id)
-        return None
     def __repr__(self):
         return f'<Message from {self.sender.username} to {self.receiver.username if self.receiver else self.expert.name}>'
 
