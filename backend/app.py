@@ -1056,8 +1056,9 @@ def admn_send_message(conversation_id):
         recievers_id = conversation.client_id
         receivers_email = User.query.get(recievers_id).email
         experts_id = conversation.expert_id
-        experts_name = User.query.get(experts_id).username
-        experts_email = User.query.get(experts_id).email
+        experts_name = Expert.query.get(experts_id).name
+        # experts_email = User.query.get(experts_id).email
+        # experts_email = 'studypage.'
 
         content = request.form.get('content')
         files = request.files.getlist('attachments')
@@ -1093,10 +1094,11 @@ def admn_send_message(conversation_id):
 
         sender = User.query.get(sender_id)
         email_subject = "New Message Notification"
+        # Sender: {experts_name} (Email: {experts_email})
         email_body = f"""
         A new message has been sent by expert {experts_name}.
+        
 
-        Sender: {experts_name} (Email: {experts_email})
         Content: {content or 'No content'}
         Attachments: {', '.join(attachments) if attachments else 'None'}
 
@@ -1254,7 +1256,7 @@ def admin_get_conversations():
                             .first())
             
             client = User.query.get(conv.client_id)
-            expert = User.query.get(conv.expert_id)
+            expert = Expert.query.get(conv.expert_id)
 
             message_content = "No messages yet"
             if latest_message:
@@ -1271,7 +1273,7 @@ def admin_get_conversations():
             conversation_data = {
                 "conversation_id": conv.id,
                 "client": client.username if client else "Unknown",
-                "expert": expert.username if expert else "Unassigned",
+                "expert": expert.name if expert else "Unassigned",
                 "last_message": message_content,
                 "is_file": bool(latest_message and latest_message.file_path if hasattr(latest_message, 'file_path') else False),
                 "last_timestamp": latest_message.timestamp.strftime('%Y-%m-%d %H:%M:%S') if latest_message else None,
