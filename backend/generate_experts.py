@@ -177,7 +177,7 @@
 from random import choice, sample
 from flask import current_app
 from app import db, app
-from models import Expert, Service, expert_services
+from models import Expert, Service, expert_services, User
 import logging
 
 # Set up logging
@@ -321,7 +321,14 @@ def generate_experts():
                 last_name = choice(last_names)
                 full_name = f"{first_name} {last_name}"
 
+                new_user = User(
+                    username=full_name,
+                    is_admin=False
+                    )
+                db.session.add(new_user)
+                db.session.commit()
                 expert = Expert(
+                    id=new_user.id,
                     name=full_name,
                     title=f"{service.title} Specialist",
                     expertise=f"Expert in {service.title}",
