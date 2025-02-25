@@ -307,12 +307,12 @@ const ExpertSelectionPage = () => {
   // Extract the selected project type and subject from history/state
   // const { projectTypeId, subjectId } = location.state || {};
   const projectTypeId = localStorage.getItem("selectedProjectType");
-  const subjectId = localStorage.getItem("selectedSubject");
+  // const subjectId = localStorage.getItem("selectedSubject");
   console.log('projecttype',projectTypeId)
-  console.log('subject id retrieved',subjectId)
+  // console.log('subject id retrieved',subjectId)
 
   useEffect(() => {
-    if (!projectTypeId || !subjectId) {
+    if (!projectTypeId) {
       setError('Invalid request. No selection history found.');
       setLoading(false);
       return;
@@ -321,7 +321,7 @@ const ExpertSelectionPage = () => {
     // Fetch experts based on the student's previous selection
     const fetchExperts = async () => {
       try {
-        const response = await fetch(`${API_URL}/experts/search?project_type_id=${projectTypeId}&subject_id=${subjectId}`);
+        const response = await fetch(`${API_URL}/experts/search?service_id=${projectTypeId}`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch experts');
@@ -344,7 +344,7 @@ const ExpertSelectionPage = () => {
     };
 
     fetchExperts();
-  }, [projectTypeId, subjectId]);
+  }, [projectTypeId]);
 
   if (loading) {
     return (
@@ -368,7 +368,7 @@ const ExpertSelectionPage = () => {
               Choose an Expert
             </h1>
             <p className="text-sm sm:text-lg text-white max-w-xl mx-auto mb-6">
-              Select an expert based on your project type and subject preference.
+              All experts are verified and experienced in their field.
             </p>
           </div>
         </div>

@@ -38,7 +38,7 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
       {/* Image Container */}
       <div className="relative h-64 overflow-hidden">
         <img
-          src={expert.profilePicture}
+          src={expert.profile_picture}
           alt={expert.name}
           className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
         />

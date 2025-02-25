@@ -14,9 +14,9 @@ const Services = () => {
 
   const API_URL = 'https://studypage.onrender.com';
 
-  const move = (projectTypeId, subjectId)=> {
+  const move = (projectTypeId)=> {
     localStorage.setItem("selectedProjectType", projectTypeId);
-    localStorage.setItem("selectedSubject", subjectId);
+    // localStorage.setItem("selectedSubject", subjectId);
     navigate('/expertspage')
   }
 
@@ -155,7 +155,7 @@ const Services = () => {
               <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded">
                 ${service.price_per_page} per page
               </span>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" onClick={() => move(service.project_type_id, service.subject_id)} >
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" onClick={() => move(service.id)} >
                 Request Service
               </button>
             </div>
