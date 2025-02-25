@@ -6,7 +6,7 @@ from functools import wraps
 import traceback
 from sqlalchemy.orm import joinedload
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, create_refresh_token, get_jwt, verify_jwt_in_request, decode_token
-from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject, Message as MessageModel, Conversation, Comment, expert_subjects, expert_project_types
+from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject, Message as MessageModel, Conversation, Comment, expert_subjects, expert_project_types, expert_services
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_mail import Mail, Message
@@ -1523,227 +1523,131 @@ def add_expert():
         db.session.rollback()
         return jsonify({"error": f"Failed to create expert: {str(e)}"}), 500
 
-
-# @app.route("/experts", methods=["POST"])
-# def add_expert():
-#     data = request.get_json()
-    
-#     if not data:
-#         return jsonify({"error": "No data provided"}), 400
-        
-#     project_type_id = data.get("project_type_id")
-#     profile_picture = data.get("profile_picture")
-    
-#     if not project_type_id:
-#         return jsonify({"error": "Project type ID is required"}), 400
-#     if not profile_picture:
-#         return jsonify({"error": "Profile picture is required"}), 400
-    
-#     try:
-#         # Get project type and validate
-#         project_type = ProjectType.query.get(project_type_id)
-#         if not project_type:
-#             return jsonify({"error": "Invalid project type"}), 400
-            
-#         # Get subjects associated with this project type through services
-#         related_subjects = db.session.query(Subject).join(Service).filter(
-#             Service.project_type_id == project_type_id
-#         ).distinct().all()
-        
-#         if not related_subjects:
-#             return jsonify({"error": "No subjects found for this project type"}), 400
-            
-#         # Distribute subjects among experts
-#         num_experts = 3
-#         experts = []
-        
-#         # Calculate subjects per expert (more evenly distributed)
-#         total_subjects = len(related_subjects)
-#         base_subjects_per_expert = total_subjects // num_experts
-#         extra_subjects = total_subjects % num_experts
-        
-#         current_subject_index = 0
-        
-#         for i in range(num_experts):
-#             # Calculate how many subjects this expert gets
-#             num_subjects = base_subjects_per_expert + (1 if i < extra_subjects else 0)
-#             expert_subjects = related_subjects[current_subject_index:current_subject_index + num_subjects]
-#             current_subject_index += num_subjects
-            
-#             expert = Expert(
-#                 name=f"Expert {i+1} for {project_type.name}",
-#                 title=f"{project_type.name} Specialist",
-#                 expertise=f"Expert in {', '.join([s.name for s in expert_subjects])}",
-#                 description=f"Highly skilled in {project_type.name} for {', '.join([s.name for s in expert_subjects])}.",
-#                 biography="Experienced professional with years of expertise.",
-#                 education="PhD in relevant field",
-#                 languages="English",
-#                 profile_picture=profile_picture,
-#                 project_types=[project_type],
-#                 subjects=expert_subjects
-#             )
-            
-#             db.session.add(expert)
-#             experts.append(expert)
-        
-#         db.session.commit()
-#         return jsonify({
-#             "message": "Experts added successfully!",
-#             "experts": [{"name": e.name, "subjects": [s.name for s in e.subjects]} for e in experts]
-#         }), 201
-        
-#     except Exception as e:
-#         db.session.rollback()
-#         return jsonify({"error": f"Failed to create experts: {str(e)}"}), 500
-
 @app.route("/experts/search", methods=["GET"])
 def search_experts():
     try:
         # Get query parameters
-        project_type_id = request.args.get("project_type_id", type=int)
-        subject_id = request.args.get("subject_id", type=int)
+        service_id = request.args.get("service_id", type=int)
 
-        # Validate required parameters
-        if not project_type_id or not subject_id:
-            return jsonify({
-                "error": "Missing required parameters",
-                "details": {
-                    "project_type_id": "Required" if not project_type_id else None,
-                    "subject_id": "Required" if not subject_id else None
-                }
-            }), 400
+        if not service_id:
+            return jsonify({"error": "Service ID is required"}), 400
 
-        # Verify project type and subject exist
-        project_type = ProjectType.query.get(project_type_id)
-        subject = Subject.query.get(subject_id)
+        # Validate service
+        service = Service.query.get(service_id)
+        if not service:
+            return jsonify({"error": "Invalid service ID"}), 400
 
-        if not project_type or not subject:
-            return jsonify({
-                "error": "Invalid selection",
-                "message": "Invalid project type or subject ID"
-            }), 400
-
-        # Query experts who are linked to both the project type and subject
+        # Query experts linked to this service
         experts = (
             Expert.query
-            .join(expert_project_types)  # Join expert-project association table
-            .join(expert_subjects)  # Join expert-subject association table
-            .filter(
-                expert_project_types.c.project_type_id == project_type_id,  
-                expert_subjects.c.subject_id == subject_id
-            )
-            .options(
-                joinedload(Expert.project_types),  # Eager load project types
-                joinedload(Expert.subjects)  # Eager load subjects
-            )
+            .join(expert_services)
+            .filter(expert_services.c.service_id == service_id)
             .order_by(Expert.id)
             .limit(3)
             .all()
         )
 
         if not experts:
-            return jsonify({
-                "error": "Not found",
-                "message": "No experts available for this category"
-            }), 404
+            return jsonify({"error": "No experts available for this service"}), 404
 
         # Format response
         response = {
+            "service": service.title,
             "experts": [
                 {
                     "id": expert.id,
                     "name": expert.name,
                     "title": expert.title,
                     "profile_picture": expert.profile_picture,
-                    "expertise": expert.expertise,
-                    "project_types": [pt.name for pt in expert.project_types],
-                    "subjects": [sub.name for sub in expert.subjects]
+                    "expertise": expert.expertise
                 } for expert in experts
-            ],
-            "meta": {
-                "count": len(experts),
-                "project_type_id": project_type_id,
-                "subject_id": subject_id
-            }
+            ]
         }
 
         return jsonify(response), 200
 
     except Exception as e:
-        return jsonify({
-            "error": "Server error",
-            "message": str(e)
-        }), 500
+        return jsonify({"error": "Server error", "message": str(e)}), 500
+
 
 # @app.route("/experts/search", methods=["GET"])
 # def search_experts():
-#     project_type_id = request.args.get("project_type_id", type=int)
-#     subject_id = request.args.get("subject_id", type=int)
+#     try:
+#         # Get query parameters
+#         project_type_id = request.args.get("project_type_id", type=int)
+#         subject_id = request.args.get("subject_id", type=int)
 
-#     # Ensure that project_type_id and subject_id are provided
-#     if not project_type_id or not subject_id:
-#         return jsonify({"message": "Missing project_type_id or subject_id."}), 400
+#         # Validate required parameters
+#         if not project_type_id or not subject_id:
+#             return jsonify({
+#                 "error": "Missing required parameters",
+#                 "details": {
+#                     "project_type_id": "Required" if not project_type_id else None,
+#                     "subject_id": "Required" if not subject_id else None
+#                 }
+#             }), 400
 
-#     # Correct Query: Directly compare `subject_id`
-#     experts = Expert.query.filter(
-#         Expert.project_type_id == project_type_id,
-#         Expert.subject_id == subject_id  # FIXED: Directly filter instead of using `.any()`
-#     ).limit(3).all()
+#         # Verify project type and subject exist
+#         project_type = ProjectType.query.get(project_type_id)
+#         subject = Subject.query.get(subject_id)
 
-#     if not experts:
-#         return jsonify({"message": "No experts available for this category."}), 404
+#         if not project_type or not subject:
+#             return jsonify({
+#                 "error": "Invalid selection",
+#                 "message": "Invalid project type or subject ID"
+#             }), 400
 
-#     return jsonify([
-#         {
-#             "id": expert.id,
-#             "name": expert.name,
-#             "title": expert.title,
-#             "profile_picture": expert.profile_picture,
-#             "expertise": expert.expertise
-#         } for expert in experts
-#     ])
+#         # Query experts who are linked to both the project type and subject
+#         experts = (
+#             Expert.query
+#             .join(expert_project_types)  # Join expert-project association table
+#             .join(expert_subjects)  # Join expert-subject association table
+#             .filter(
+#                 expert_project_types.c.project_type_id == project_type_id,  
+#                 expert_subjects.c.subject_id == subject_id
+#             )
+#             .options(
+#                 joinedload(Expert.project_types),  # Eager load project types
+#                 joinedload(Expert.subjects)  # Eager load subjects
+#             )
+#             .order_by(Expert.id)
+#             .limit(3)
+#             .all()
+#         )
 
+#         if not experts:
+#             return jsonify({
+#                 "error": "Not found",
+#                 "message": "No experts available for this category"
+#             }), 404
 
-# @app.route("/experts", methods=["POST"])
-# def add_expert():
-#     data = request.get_json()
-#     project_type_id = data.get("project_type_id")
-#     subject_id = data.get("subject_id")
+#         # Format response
+#         response = {
+#             "experts": [
+#                 {
+#                     "id": expert.id,
+#                     "name": expert.name,
+#                     "title": expert.title,
+#                     "profile_picture": expert.profile_picture,
+#                     "expertise": expert.expertise,
+#                     "project_types": [pt.name for pt in expert.project_types],
+#                     "subjects": [sub.name for sub in expert.subjects]
+#                 } for expert in experts
+#             ],
+#             "meta": {
+#                 "count": len(experts),
+#                 "project_type_id": project_type_id,
+#                 "subject_id": subject_id
+#             }
+#         }
 
-#     print(f"Received project_type_id: {project_type_id}, subject_id: {subject_id}")  # Debug log
+#         return jsonify(response), 200
 
-#     if len(project_type_id) > 5 or len(subject_id) > 5:
-#         return {"message": "You can select up to 5 project types and 5 subjects."}, 400
-    
-#     profile_picture = data.get("profile_picture")
-#     if not profile_picture:
-#         return jsonify({"error": "Profile picture is required"}), 400
-
-#     project_type = ProjectType.query.get(project_type_id)
-#     subject = Subject.query.get(subject_id)
-
-#     if not project_type or not subject:
-#         return jsonify({"error": "Invalid project type or subject"}), 400
-    
-#     # Create and save the expert
-#     new_expert = Expert(
-#         name=data["name"],
-#         title=data["title"],
-#         expertise=data["expertise"],
-#         description=data["description"],
-#         biography=data["biography"],
-#         education=data["education"],
-#         languages=data["languages"],
-#         profile_picture=profile_picture,
-#         project_type=project_type,
-#         subject=subject
-#     )
-
-#     db.session.add(new_expert)
-#     db.session.commit()
-
-#     return jsonify({"message": "Expert added successfully!"}), 201
-
+#     except Exception as e:
+#         return jsonify({
+#             "error": "Server error",
+#             "message": str(e)
+#         }), 500
 
 @app.route('/experts/<int:id>', methods=['PATCH'])
 @jwt_required()
