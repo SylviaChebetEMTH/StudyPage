@@ -1476,74 +1476,125 @@ def get_expert(id):
 @app.route("/experts", methods=["POST"])
 def add_expert():
     data = request.get_json()
-    
+
     if not data:
         return jsonify({"error": "No data provided"}), 400
-        
-    project_type_id = data.get("project_type_id")
+
+    service_id = data.get("service_id")
     profile_picture = data.get("profile_picture")
-    
-    if not project_type_id:
-        return jsonify({"error": "Project type ID is required"}), 400
+
+    if not service_id:
+        return jsonify({"error": "Service ID is required"}), 400
     if not profile_picture:
         return jsonify({"error": "Profile picture is required"}), 400
-    
+
     try:
-        # Get project type and validate
-        project_type = ProjectType.query.get(project_type_id)
-        if not project_type:
-            return jsonify({"error": "Invalid project type"}), 400
-            
-        # Get subjects associated with this project type through services
-        related_subjects = db.session.query(Subject).join(Service).filter(
-            Service.project_type_id == project_type_id
-        ).distinct().all()
-        
-        if not related_subjects:
-            return jsonify({"error": "No subjects found for this project type"}), 400
-            
-        # Distribute subjects among experts
-        num_experts = 3
-        experts = []
-        
-        # Calculate subjects per expert (more evenly distributed)
-        total_subjects = len(related_subjects)
-        base_subjects_per_expert = total_subjects // num_experts
-        extra_subjects = total_subjects % num_experts
-        
-        current_subject_index = 0
-        
-        for i in range(num_experts):
-            # Calculate how many subjects this expert gets
-            num_subjects = base_subjects_per_expert + (1 if i < extra_subjects else 0)
-            expert_subjects = related_subjects[current_subject_index:current_subject_index + num_subjects]
-            current_subject_index += num_subjects
-            
-            expert = Expert(
-                name=f"Expert {i+1} for {project_type.name}",
-                title=f"{project_type.name} Specialist",
-                expertise=f"Expert in {', '.join([s.name for s in expert_subjects])}",
-                description=f"Highly skilled in {project_type.name} for {', '.join([s.name for s in expert_subjects])}.",
-                biography="Experienced professional with years of expertise.",
-                education="PhD in relevant field",
-                languages="English",
-                profile_picture=profile_picture,
-                project_types=[project_type],
-                subjects=expert_subjects
-            )
-            
-            db.session.add(expert)
-            experts.append(expert)
-        
+        # Get service and validate
+        service = Service.query.get(service_id)
+        if not service:
+            return jsonify({"error": "Invalid service ID"}), 400
+
+        expert = Expert(
+            name=data.get("name", "Expert"),
+            title=f"{service.title} Specialist",
+            expertise=f"Expert in {service.title}",
+            description=data.get("description", f"Expert in {service.title}"),
+            biography=data.get("biography", "Experienced professional."),
+            education=data.get("education", "PhD in relevant field"),
+            languages=data.get("languages", "English"),
+            profile_picture=profile_picture
+        )
+
+        # Associate expert with the service
+        expert.services.append(service)
+
+        db.session.add(expert)
         db.session.commit()
+
         return jsonify({
-            "message": "Experts added successfully!",
-            "experts": [{"name": e.name, "subjects": [s.name for s in e.subjects]} for e in experts]
+            "message": "Expert added successfully!",
+            "expert": {
+                "name": expert.name,
+                "service": service.title
+            }
         }), 201
-        
+
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": f"Failed to create experts: {str(e)}"}), 500
+        return jsonify({"error": f"Failed to create expert: {str(e)}"}), 500
+
+
+# @app.route("/experts", methods=["POST"])
+# def add_expert():
+#     data = request.get_json()
+    
+#     if not data:
+#         return jsonify({"error": "No data provided"}), 400
+        
+#     project_type_id = data.get("project_type_id")
+#     profile_picture = data.get("profile_picture")
+    
+#     if not project_type_id:
+#         return jsonify({"error": "Project type ID is required"}), 400
+#     if not profile_picture:
+#         return jsonify({"error": "Profile picture is required"}), 400
+    
+#     try:
+#         # Get project type and validate
+#         project_type = ProjectType.query.get(project_type_id)
+#         if not project_type:
+#             return jsonify({"error": "Invalid project type"}), 400
+            
+#         # Get subjects associated with this project type through services
+#         related_subjects = db.session.query(Subject).join(Service).filter(
+#             Service.project_type_id == project_type_id
+#         ).distinct().all()
+        
+#         if not related_subjects:
+#             return jsonify({"error": "No subjects found for this project type"}), 400
+            
+#         # Distribute subjects among experts
+#         num_experts = 3
+#         experts = []
+        
+#         # Calculate subjects per expert (more evenly distributed)
+#         total_subjects = len(related_subjects)
+#         base_subjects_per_expert = total_subjects // num_experts
+#         extra_subjects = total_subjects % num_experts
+        
+#         current_subject_index = 0
+        
+#         for i in range(num_experts):
+#             # Calculate how many subjects this expert gets
+#             num_subjects = base_subjects_per_expert + (1 if i < extra_subjects else 0)
+#             expert_subjects = related_subjects[current_subject_index:current_subject_index + num_subjects]
+#             current_subject_index += num_subjects
+            
+#             expert = Expert(
+#                 name=f"Expert {i+1} for {project_type.name}",
+#                 title=f"{project_type.name} Specialist",
+#                 expertise=f"Expert in {', '.join([s.name for s in expert_subjects])}",
+#                 description=f"Highly skilled in {project_type.name} for {', '.join([s.name for s in expert_subjects])}.",
+#                 biography="Experienced professional with years of expertise.",
+#                 education="PhD in relevant field",
+#                 languages="English",
+#                 profile_picture=profile_picture,
+#                 project_types=[project_type],
+#                 subjects=expert_subjects
+#             )
+            
+#             db.session.add(expert)
+#             experts.append(expert)
+        
+#         db.session.commit()
+#         return jsonify({
+#             "message": "Experts added successfully!",
+#             "experts": [{"name": e.name, "subjects": [s.name for s in e.subjects]} for e in experts]
+#         }), 201
+        
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({"error": f"Failed to create experts: {str(e)}"}), 500
 
 @app.route("/experts/search", methods=["GET"])
 def search_experts():
