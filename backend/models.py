@@ -18,11 +18,12 @@ class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
-    email = db.Column(db.String(100), nullable=False, unique=True)
-    password = db.Column(db.String(128), nullable=False)
+    email = db.Column(db.String(100), nullable=True, unique=True)
+    password = db.Column(db.String(128), nullable=True)
     is_admin = db.Column(db.Boolean, default=False)
     phone_number = db.Column(db.String(20))
 
+    expert_profile = db.relationship("Expert", uselist=False, back_populates="user")
     def set_password(self, password):
         """Hashes the password using Flask-Bcrypt"""
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -51,7 +52,7 @@ expert_services = db.Table(
 
 class Expert(db.Model):
     __tablename__ = 'experts'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     title = db.Column(db.String(120), nullable=False)
     expertise = db.Column(db.Text, nullable=False)
@@ -61,6 +62,7 @@ class Expert(db.Model):
     languages = db.Column(db.String(255), nullable=True)
     profile_picture = db.Column(db.Text, nullable=True)
 
+    user = db.relationship("User", back_populates="expert_profile")
     services = db.relationship("Service", secondary=expert_services, backref="experts")
     # Many-to-Many Relationships
     project_types = db.relationship('ProjectType', secondary=expert_project_types, backref='experts')

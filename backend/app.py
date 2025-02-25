@@ -1049,6 +1049,7 @@ def request_expert():
 @app.route('/conversationsadmin/<int:conversation_id>/messages', methods=['POST'])
 @jwt_required()
 def admn_send_message(conversation_id):
+    expert = Expert.query.get(experts_id)
     try:
         sender_id = get_jwt_identity()
 
@@ -1056,7 +1057,8 @@ def admn_send_message(conversation_id):
         recievers_id = conversation.client_id
         receivers_email = User.query.get(recievers_id).email
         experts_id = conversation.expert_id
-        experts_name = User.query.get(experts_id).username
+        experts_name = expert.user.username
+        # experts_name = User.query.get(experts_id).username
         experts_email = User.query.get(experts_id).email
 
         content = request.form.get('content')
@@ -1494,7 +1496,14 @@ def add_expert():
         if not service:
             return jsonify({"error": "Invalid service ID"}), 400
 
+        new_user = User(
+            username=data.get('name'),
+            is_admin=False
+        )
+        db.session.add(new_user)
+        db.session.commit()
         expert = Expert(
+            id=new_user.id,
             name=data.get("name", "Expert"),
             title=f"{service.title} Specialist",
             expertise=f"Expert in {service.title}",
@@ -1502,9 +1511,9 @@ def add_expert():
             biography=data.get("biography", "Experienced professional."),
             education=data.get("education", "PhD in relevant field"),
             languages=data.get("languages", "English"),
-            profile_picture=profile_picture
+            profile_picture=profile_picture,
+            user=new_user
         )
-
         # Associate expert with the service
         expert.services.append(service)
 
