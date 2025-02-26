@@ -11,7 +11,7 @@ const Services = () => {
   const [selectedProjectType, setSelectedProjectType] = useState("");
   const [visibleCount, setVisibleCount] = useState(6);
   const navigate = useNavigate()
-
+  
   const API_URL = 'https://studypage.onrender.com';
 
   const move = (projectTypeId, subjectId, serviceId)=> {

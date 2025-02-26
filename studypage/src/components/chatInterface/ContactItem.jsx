@@ -40,7 +40,7 @@ const ContactItem = ({ contact, setActiveUser }) => {
 
   return (
     <div
-      className="group flex items-center p-2 lg:p-3 rounded-lg hover:bg-gray-700/50 cursor-pointer transition-all duration-200"
+      className="group flex items-center p-2 lg:p-3 rounded-lg hover:bg-gray-600 cursor-pointer bg-gray-700/50 transition-all duration-200"
       onClick={handleClick}
     >
       <div className="flex-shrink-0">
@@ -54,7 +54,7 @@ const ContactItem = ({ contact, setActiveUser }) => {
         </div>
       </div>
 
-      <div className="ml-3 lg:ml-4 flex-grow min-w-0">
+      <div className="ml-3 lg:ml-4 flex-grow min-w-0  ">
         <div className="flex items-center justify-between">
           <p className="text-gray-200 font-medium truncate group-hover:text-white transition-colors text-sm lg:text-base">
             {contact.expert_name}
@@ -66,9 +66,9 @@ const ContactItem = ({ contact, setActiveUser }) => {
 
         <div className="flex items-center gap-2 mt-1">
           {contact.condition ? (
-            <FileIcon className="w-3 h-3 text-gray-400" />
+            <FileIcon className="w-10 h-10 text-gray-400" />
           ) : (
-            <MessageCircle className="w-3 h-3 text-gray-400" />
+            <MessageCircle className="w-4 h-5 text-gray-400" />
           )}
           <p className="text-gray-400 text-xs lg:text-sm truncate">
             {contact.message || "No messages yet"}
