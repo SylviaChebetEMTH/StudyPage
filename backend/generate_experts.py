@@ -281,8 +281,8 @@ def generate_experts():
 
         experts_created = 0
         for service in services:
-            # ✅ Match experts based on subject & project type
-            matched_experts = Expert.query.join(Expert.project_types).join(Expert.subjects).filter(
+            # ✅ Strictly match experts to their relevant services
+            matched_experts = Expert.query.filter(
                 Expert.project_types.any(id=service.project_type_id),
                 Expert.subjects.any(id=service.subject_id)
             ).all()
@@ -301,142 +301,56 @@ def generate_experts():
             num_to_assign = 3 - existing_experts
             assigned_experts = set()
             logger.info(f"🔹 Assigning {num_to_assign} experts to '{service.title}'")
-            used_pics_male, used_pics_female = set(), set()
-
-            # ✅ Reuse existing matched experts before creating new ones
-            while len(assigned_experts) < num_to_assign:
-                if matched_experts:
-                    expert = matched_experts.pop(0)  # ✅ Pick an expert from the matched list
-                    if expert in assigned_experts:
-                        continue  # Avoid duplicates
-                else:
-                    # ✅ If no matching expert exists, create a new one
-                    is_male = choice([True, False])
-
-                    if is_male:
-                        first_name = choice(male_first_names)
-                        available_pics = list(set(profile_pics_male) - used_pics_male)
-                        if not available_pics:
-                            used_pics_male.clear()
-                            available_pics = profile_pics_male
-                        profile_picture = choice(available_pics)
-                        used_pics_male.add(profile_picture)
-                    else:
-                        first_name = choice(female_first_names)
-                        available_pics = list(set(profile_pics_female) - used_pics_female)
-                        if not available_pics:
-                            used_pics_female.clear()
-                            available_pics = profile_pics_female
-                        profile_picture = choice(available_pics)
-                        used_pics_female.add(profile_picture)
-
-                    last_name = choice(last_names)
-                    full_name = f"{first_name} {last_name}"
-
-                    # ✅ Create a new user for the expert
-                    new_user = User(
-                        username=full_name,
-                        is_admin=False
-                    )
-                    db.session.add(new_user)
-                    db.session.commit()
-
-                    # ✅ Create a new expert profile
-                    expert = Expert(
-                        id=new_user.id,
-                        name=full_name,
-                        title=f"{service.title} Specialist",
-                        expertise=f"Expert in {service.title}",
-                        description=f"{full_name} specializes in {service.title}.",
-                        biography="Highly skilled professional with years of experience.",
-                        education="PhD in relevant field",
-                        languages="English, French",
-                        profile_picture=profile_picture,
-                    )
-                    db.session.add(expert)
-                    db.session.commit()
-                    logger.info(f"✅ Created expert: {full_name} for '{service.title}' with image {profile_picture}")
-
-                # ✅ Assign expert to the service
-                if service not in expert.services:
+            
+            # ✅ First, try to use already matched experts
+            for expert in matched_experts:
+                if len(assigned_experts) >= num_to_assign:
+                    break
+                if expert not in assigned_experts and service not in expert.services:
                     expert.services.append(service)
                     db.session.commit()
                     assigned_experts.add(expert)
+                    logger.info(f"✅ Assigned existing expert {expert.name} to '{service.title}'")
+
+            # ✅ If not enough matched experts, create new ones
+            while len(assigned_experts) < num_to_assign:
+                is_male = choice([True, False])
+                first_name = choice(male_first_names if is_male else female_first_names)
+                last_name = choice(last_names)
+                full_name = f"{first_name} {last_name}"
+
+                # ✅ Create a new user for the expert
+                new_user = User(
+                    username=full_name,
+                    is_admin=False
+                )
+                db.session.add(new_user)
+                db.session.commit()
+
+                # ✅ Create a new expert profile
+                expert = Expert(
+                    id=new_user.id,
+                    name=full_name,
+                    title=f"{service.title} Specialist",
+                    expertise=f"Expert in {service.title}",
+                    description=f"{full_name} specializes in {service.title}.",
+                    biography="Highly skilled professional with years of experience.",
+                    education="PhD in relevant field",
+                    languages="English, French",
+                    profile_picture="https://example.com/profile.jpg",
+                )
+                db.session.add(expert)
+                db.session.commit()
+
+                # ✅ Assign expert to the service
+                expert.services.append(service)
+                db.session.commit()
+                assigned_experts.add(expert)
+
+                logger.info(f"✅ Created expert: {full_name} for '{service.title}'")
 
         logger.info(f"✅ Successfully assigned experts to services!")
         return True
-
-        # for service in services:
-        #     matched_experts = Expert.query.join(Expert.project_types).join(Expert.subjects).filter(
-        #         Expert.project_types.any(id=service.project_type_id),
-        #         Expert.subjects.any(id=service.subject_id)
-        #     ).all()
-
-        #     existing_experts = (
-        #         Expert.query
-        #         .join(expert_services)
-        #         .filter(expert_services.c.service_id == service.id)
-        #         .count()
-        #     )
-
-        #     if existing_experts >= 3:
-        #         logger.info(f"✅ Service '{service.title}' already has {existing_experts} experts.")
-        #         continue
-
-        #     num_to_create = 3 - existing_experts
-        #     logger.info(f"🔹 Creating {num_to_create} experts for '{service.title}'")
-        #     used_pics_male, used_pics_female = set(), set()
-
-        #     for i in range(num_to_create):
-        #         # ✅ Randomly decide gender (50% chance male or female)
-        #         is_male = choice([True, False])
-
-        #         if is_male:
-        #             first_name = choice(male_first_names)
-        #             available_pics = list(set(profile_pics_male) - used_pics_male)
-        #             if not available_pics:
-        #                 used_pics_male.clear()
-        #                 available_pics = profile_pics_male
-        #             profile_picture = choice(available_pics)
-        #             used_pics_male.add(profile_picture)
-        #         else:
-        #             first_name = choice(female_first_names)
-        #             available_pics = list(set(profile_pics_female) - used_pics_female)
-        #             if not available_pics:
-        #                 used_pics_female.clear()
-        #                 available_pics = profile_pics_female
-        #             profile_picture = choice(available_pics)
-        #             used_pics_female.add(profile_picture)
-
-        #         last_name = choice(last_names)
-        #         full_name = f"{first_name} {last_name}"
-
-        #         new_user = User(
-        #             username=full_name,
-        #             is_admin=False
-        #             )
-        #         db.session.add(new_user)
-        #         db.session.commit()
-        #         expert = Expert(
-        #             id=new_user.id,
-        #             name=full_name,
-        #             title=f"{service.title} Specialist",
-        #             expertise=f"Expert in {service.title}",
-        #             description=f"{full_name} specializes in {service.title}.",
-        #             biography="Highly skilled professional with years of experience.",
-        #             education="PhD in relevant field",
-        #             languages="English, French",
-        #             profile_picture=profile_picture,
-        #         )
-
-        #         expert.services.append(service)
-        #         db.session.add(expert)
-        #         db.session.commit()
-        #         experts_created += 1
-        #         logger.info(f"✅ Created expert: {full_name} for '{service.title}' with image {profile_picture}")
-
-        # logger.info(f"✅ Successfully created {experts_created} new experts!")
-        # return True
 
     except Exception as e:
         logger.error(f"❌ Error during expert generation: {str(e)}")
