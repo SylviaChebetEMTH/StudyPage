@@ -200,7 +200,7 @@
 from random import choice, sample
 from flask import current_app
 from app import db, app
-from models import Expert, Service, expert_services, User, ProjectType, Subject
+from models import Expert, Service, expert_services, User, ProjectType, Subject, expert_project_types, expert_subjects
 import logging
 
 # Set up logging
@@ -302,103 +302,111 @@ def generate_experts():
             "https://t3.ftcdn.net/jpg/05/28/52/94/240_F_528529413_Cjkpm5Ccyr4iwf75vGfOvI4vNJE4rXDu.jpg",
         ]
 
-        experts_created = 0
         for service in services:
-            # Get the associated project type and subject
+            logger.info(f"🔍 Processing service: {service.title} (ID: {service.id})")
+            
+            # Get the project type and subject for this service
             project_type = ProjectType.query.get(service.project_type_id)
             subject = Subject.query.get(service.subject_id)
             
             if not project_type or not subject:
-                logger.error(f"❌ Missing project type or subject for service {service.title}")
+                logger.error(f"❌ Could not find project type {service.project_type_id} or subject {service.subject_id} for service {service.id}")
                 continue
                 
-            logger.info(f"Processing service: {service.title} (Project: {project_type.name}, Subject: {subject.name})")
+            logger.info(f"📋 Service details: Project Type: {project_type.name} (ID: {project_type.id}), Subject: {subject.name} (ID: {subject.id})")
             
-            # Check existing experts count for this service
-            existing_experts = (
-                Expert.query
-                .join(expert_services)
-                .filter(expert_services.c.service_id == service.id)
-                .count()
-            )
-
-            if existing_experts >= 3:
-                logger.info(f"✅ Service '{service.title}' already has {existing_experts} experts.")
+            # Check how many experts are already assigned to this service
+            existing_experts_count = db.session.query(expert_services).filter(
+                expert_services.c.service_id == service.id
+            ).count()
+            
+            logger.info(f"👤 Service has {existing_experts_count} existing experts")
+            
+            # If we already have 3 experts, skip to the next service
+            if existing_experts_count >= 3:
+                logger.info(f"✅ Service '{service.title}' already has {existing_experts_count} experts - skipping")
                 continue
-
-            num_to_assign = 3 - existing_experts
-            logger.info(f"🔹 Assigning {num_to_assign} experts to '{service.title}'")
-            used_pics_male, used_pics_female = set(), set()
-
-            for i in range(num_to_assign):
+                
+            # Determine how many more experts we need
+            num_experts_needed = 3 - existing_experts_count
+            logger.info(f"➕ Need to create {num_experts_needed} more experts for this service")
+            
+            # Create new experts for this service
+            for i in range(num_experts_needed):
+                # Generate expert details
                 is_male = choice([True, False])
-
+                
                 if is_male:
                     first_name = choice(male_first_names)
-                    available_pics = list(set(profile_pics_male) - used_pics_male)
-                    if not available_pics:
-                        used_pics_male.clear()
-                        available_pics = profile_pics_male
-                    profile_picture = choice(available_pics)
-                    used_pics_male.add(profile_picture)
+                    profile_picture = choice(profile_pics_male)
                 else:
                     first_name = choice(female_first_names)
-                    available_pics = list(set(profile_pics_female) - used_pics_female)
-                    if not available_pics:
-                        used_pics_female.clear()
-                        available_pics = profile_pics_female
-                    profile_picture = choice(available_pics)
-                    used_pics_female.add(profile_picture)
-
+                    profile_picture = choice(profile_pics_female)
+                    
                 last_name = choice(last_names)
                 full_name = f"{first_name} {last_name}"
+                username = f"{first_name.lower()}_{last_name.lower()}"
                 
-                # Craft a more specific title and expertise based on the service
-                expert_title = f"{project_type.name} Specialist in {subject.name}"
-                expert_expertise = f"Expert in {project_type.name} for {subject.name}"
-                expert_description = f"{full_name} specializes in {project_type.name} work related to {subject.name}."
-
-                # ✅ Create a new user for the expert
-                new_user = User(
-                    username=full_name.lower().replace(' ', '_'),
+                logger.info(f"🧑‍🎓 Creating expert: {full_name} for service '{service.title}'")
+                
+                # Create user
+                user = User(
+                    username=username,
                     is_admin=False
                 )
-                db.session.add(new_user)
-                db.session.flush()  # Get ID without committing
-
-                # ✅ Create a new expert profile
+                db.session.add(user)
+                db.session.flush()  # Get the ID without committing
+                
+                # Create expert with specific project type and subject expertise
                 expert = Expert(
-                    id=new_user.id,
+                    id=user.id,
                     name=full_name,
-                    title=expert_title,
-                    expertise=expert_expertise,
-                    description=expert_description,
-                    biography=f"Highly skilled professional with years of experience in {subject.name}.",
+                    title=f"{project_type.name} Specialist in {subject.name}",
+                    expertise=f"Expert in {project_type.name} for {subject.name}",
+                    description=f"Specialized in providing {project_type.name} services in the field of {subject.name}.",
+                    biography=f"Professional with extensive experience in {subject.name}, specializing in {project_type.name} projects.",
                     education=f"PhD in {subject.name}",
-                    languages="English, French",
-                    profile_picture=profile_picture,
+                    languages="English",
+                    profile_picture=profile_picture
                 )
                 
-                # Add project type and subject to the expert
-                expert.project_types.append(project_type)
-                expert.subjects.append(subject)
+                # Explicitly associate expert with this specific project type and subject
+                db.session.execute(
+                    expert_project_types.insert().values(
+                        expert_id=expert.id,
+                        project_type_id=project_type.id
+                    )
+                )
+                
+                db.session.execute(
+                    expert_subjects.insert().values(
+                        expert_id=expert.id,
+                        subject_id=subject.id
+                    )
+                )
+                
+                # Explicitly associate expert with this service
+                db.session.execute(
+                    expert_services.insert().values(
+                        expert_id=expert.id,
+                        service_id=service.id
+                    )
+                )
                 
                 db.session.add(expert)
-                db.session.flush()
-
-                # ✅ Assign expert to the service
-                expert.services.append(service)
+                logger.info(f"✅ Created expert {full_name} (ID: {expert.id}) for service '{service.title}'")
                 
-                logger.info(f"✅ Created expert: {full_name} for '{service.title}' with image {profile_picture}")
-            
-            # Commit all changes for this service at once
+            # Commit after processing each service
             db.session.commit()
+            logger.info(f"💾 Committed {num_experts_needed} new experts for service '{service.title}'")
 
-        logger.info(f"✅ Successfully assigned experts to services!")
+        logger.info("✨ Expert generation completed successfully!")
         return True
-
+        
     except Exception as e:
         logger.error(f"❌ Error during expert generation: {str(e)}")
+        import traceback
+        logger.error(traceback.format_exc())
         db.session.rollback()
         return False
 
@@ -406,4 +414,6 @@ if __name__ == "__main__":
     with app.app_context():
         success = generate_experts()
         if not success:
-            logger.error("Expert generation failed!")
+            logger.error("❌ Expert generation failed!")
+        else:
+            logger.info("✅ Expert generation succeeded!")
