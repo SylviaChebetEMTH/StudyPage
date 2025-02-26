@@ -39,26 +39,57 @@ const Services = () => {
   );
 
   // Function to fetch services from the backend
-  const fetchServices = async () => {
-    const storedServices = localStorage.getItem('service');
-    if (storedServices) {
-      setServices(JSON.parse(storedServices));
-      setLoading(false);
-      return;
-    }
+  // const fetchServices = async () => {
+    // const storedServices = localStorage.getItem('service');
+    // if (storedServices) {
+    //   setServices(JSON.parse(storedServices));
+    //   setLoading(false);
+    //   return;
+    // }
+  //   try {
+  //     const response = await fetch(`${API_URL}/services`, {
+  //       method: 'GET',
+  //       headers: { 'Content-Type': 'application/json' },
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error('Network response was not ok');
+  //     }
+
+  //     const data = await response.json();
+  //     console.log('services retrieved',data.services)
+  //     const servicesArray = Array.isArray(data.services) ? data.services : []; 
+  //     setServices(servicesArray);
+  //     localStorage.setItem('services', JSON.stringify(servicesArray));
+  //   } catch (error) {
+  //     console.error('Error fetching services:', error);
+  //     setError('Failed to fetch services.');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  const fetchServices = async (projectTypeId = null, subjectId = null) => {
+    setLoading(true);
+  
+    // Construct query parameters dynamically
+    const queryParams = new URLSearchParams();
+    if (projectTypeId) queryParams.append("project_type", projectTypeId);
+    if (subjectId) queryParams.append("subject", subjectId);
+  
     try {
-      const response = await fetch(`${API_URL}/services`, {
+      const response = await fetch(`${API_URL}/services?${queryParams.toString()}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
-
+  
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
+  
       const data = await response.json();
-      console.log('services retrieved',data.services)
-      const servicesArray = Array.isArray(data.services) ? data.services : []; 
+      console.log('Services retrieved:', data.services);
+  
+      const servicesArray = Array.isArray(data.services) ? data.services : [];
       setServices(servicesArray);
       localStorage.setItem('services', JSON.stringify(servicesArray));
     } catch (error) {
@@ -67,8 +98,7 @@ const Services = () => {
     } finally {
       setLoading(false);
     }
-  };
-
+  };  
   useEffect(() => {
     fetchServices();
   }, []);
