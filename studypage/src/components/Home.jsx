@@ -45,6 +45,11 @@ export default function Home() {
           <p className="text-gray-400 text-lg">
             Your one-stop platform for all study resources. Learn, Grow, Succeed! Unlock endless opportunities and achieve your academic goals.
           </p>
+          <Link to="/services">
+              <button className="bg-yellow-500 hover:bg-yellow-600 mt-10 text-white font-semibold py-3 px-6 rounded-md shadow-md">
+                Request Service
+              </button>
+            </Link>
         </div>
         <div className="md:w-1/2 relative lg:w-1/2 mt-8 lg:mt-0">
           <div className="bg-orange-800 w-full h-full absolute -z-10 rounded-md translate-x-6 translate-y-6"></div>
@@ -153,9 +158,9 @@ export default function Home() {
               </li>
             </ul>
 
-            <Link to="/expertspage">
+            <Link to="/services">
               <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-md shadow-md">
-                Hire an Expert
+                Request Service
               </button>
             </Link>
           </div>
