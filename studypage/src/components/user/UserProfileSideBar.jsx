@@ -411,7 +411,7 @@ const UserProfile = ({ authToken }) => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 md:p-8 pt-4 md:ml-0">
+        <main className="flex-1 p-4 md:p-8 pt-4 md:ml-0">
           <div className="bg-white rounded-lg shadow-md min-h-screen">
             <Outlet />
           </div>
