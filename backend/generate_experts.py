@@ -328,7 +328,7 @@ def generate_experts():
             ).count()
             
             logger.info(f"👤 Service has {existing_experts_count} existing experts")
-            
+             
             # If we already have 3 experts, skip to the next service
             if existing_experts_count >= 3:
                 logger.info(f"✅ Service '{service.title}' already has {existing_experts_count} experts - skipping")

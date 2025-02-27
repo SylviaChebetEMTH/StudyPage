@@ -5,7 +5,7 @@
         "base_price": 35.0,
         "price_per_page": 49.0,
         "project_type_id": 1,
-        "subject_id": 1,
+        "subject_id": 20,
         "unit": "Dissertation"
     },
     {
@@ -14,7 +14,7 @@
         "base_price": 35.0,
         "price_per_page": 49.0,
         "project_type_id": 1,
-        "subject_id": 2,
+        "subject_id": 12,
         "unit": "Dissertation"
     },
     {
@@ -23,7 +23,7 @@
         "base_price": 35.0,
         "price_per_page": 49.0,
         "project_type_id": 1,
-        "subject_id": 6,
+        "subject_id": 37,
         "unit": "Dissertation"
     },
     {
@@ -32,7 +32,7 @@
         "base_price": 32.5,
         "price_per_page": 45.5,
         "project_type_id": 1,
-        "subject_id": 13,
+        "subject_id": 39,
         "unit": "Dissertation"
     },
     {
@@ -41,7 +41,7 @@
         "base_price": 26.0,
         "price_per_page": 39.0,
         "project_type_id": 2,
-        "subject_id": 13,
+        "subject_id": 39,
         "unit": "Thesis"
     },
     {
@@ -50,7 +50,7 @@
         "base_price": 24.0,
         "price_per_page": 36.0,
         "project_type_id": 2,
-        "subject_id": 17,
+        "subject_id": 8,
         "unit": "Thesis"
     },
     {
@@ -59,7 +59,7 @@
         "base_price": 28.0,
         "price_per_page": 42.0,
         "project_type_id": 2,
-        "subject_id": 5,
+        "subject_id": 43,
         "unit": "Thesis"
     },
     {
@@ -68,7 +68,7 @@
         "base_price": 18.0,
         "price_per_page": 30.0,
         "project_type_id": 3,
-        "subject_id": 22,
+        "subject_id": 18,
         "unit": "Research Paper"
     },
     {
@@ -77,7 +77,7 @@
         "base_price": 18.0,
         "price_per_page": 30.0,
         "project_type_id": 3,
-        "subject_id": 26,
+        "subject_id": 9,
         "unit": "Research Paper"
     },
     {
@@ -86,7 +86,7 @@
         "base_price": 19.5,
         "price_per_page": 32.5,
         "project_type_id": 3,
-        "subject_id": 23,
+        "subject_id": 33,
         "unit": "Research Paper"
     },
     {
@@ -95,7 +95,7 @@
         "base_price": 15.0,
         "price_per_page": 25.0,
         "project_type_id": 3,
-        "subject_id": 34,
+        "subject_id": 45,
         "unit": "Research Paper"
     },
     {
@@ -104,7 +104,7 @@
         "base_price": 23.4,
         "price_per_page": 36.4,
         "project_type_id": 4,
-        "subject_id": 21,
+        "subject_id": 25,
         "unit": "Business Plan"
     },
     {
@@ -113,7 +113,7 @@
         "base_price": 21.6,
         "price_per_page": 33.6,
         "project_type_id": 4,
-        "subject_id": 29,
+        "subject_id": 36,
         "unit": "Business Plan"
     },
     {
@@ -122,7 +122,7 @@
         "base_price": 21.6,
         "price_per_page": 33.6,
         "project_type_id": 4,
-        "subject_id": 30,
+        "subject_id": 40,
         "unit": "Business Plan"
     },
     {
@@ -131,7 +131,7 @@
         "base_price": 19.5,
         "price_per_page": 32.5,
         "project_type_id": 5,
-        "subject_id": 24,
+        "subject_id": 14,
         "unit": "Case Study"
     },
     {
@@ -140,7 +140,7 @@
         "base_price": 18.0,
         "price_per_page": 30.0,
         "project_type_id": 5,
-        "subject_id": 26,
+        "subject_id": 9,
         "unit": "Case Study"
     },
     {
@@ -149,7 +149,7 @@
         "base_price": 19.5,
         "price_per_page": 32.5,
         "project_type_id": 5,
-        "subject_id": 23,
+        "subject_id": 33,
         "unit": "Case Study"
     },
     {
@@ -158,7 +158,7 @@
         "base_price": 21.0,
         "price_per_page": 35.0,
         "project_type_id": 6,
-        "subject_id": 1,
+        "subject_id": 20,
         "unit": "Technical Report"
     },
     {
@@ -167,7 +167,7 @@
         "base_price": 21.0,
         "price_per_page": 35.0,
         "project_type_id": 6,
-        "subject_id": 2,
+        "subject_id": 12,
         "unit": "Technical Report"
     },
     {
@@ -176,7 +176,7 @@
         "base_price": 21.0,
         "price_per_page": 35.0,
         "project_type_id": 6,
-        "subject_id": 5,
+        "subject_id": 43,
         "unit": "Technical Report"
     },
     {
@@ -185,7 +185,7 @@
         "base_price": 28.0,
         "price_per_page": 42.0,
         "project_type_id": 7,
-        "subject_id": 8,
+        "subject_id": 51,
         "unit": "Data Analysis"
     },
     {
@@ -194,7 +194,7 @@
         "base_price": 28.0,
         "price_per_page": 42.0,
         "project_type_id": 7,
-        "subject_id": 9,
+        "subject_id": 41,
         "unit": "Data Analysis"
     },
     {
@@ -203,7 +203,7 @@
         "base_price": 26.0,
         "price_per_page": 39.0,
         "project_type_id": 7,
-        "subject_id": 10,
+        "subject_id": 16,
         "unit": "Data Analysis"
     },
     {
@@ -212,7 +212,7 @@
         "base_price": 18.0,
         "price_per_page": 30.0,
         "project_type_id": 8,
-        "subject_id": 17,
+        "subject_id": 8,
         "unit": "Lab Report"
     },
     {
@@ -221,7 +221,7 @@
         "base_price": 19.5,
         "price_per_page": 32.5,
         "project_type_id": 8,
-        "subject_id": 15,
+        "subject_id": 10,
         "unit": "Lab Report"
     },
     {
@@ -230,7 +230,7 @@
         "base_price": 18.0,
         "price_per_page": 30.0,
         "project_type_id": 8,
-        "subject_id": 19,
+        "subject_id": 23,
         "unit": "Lab Report"
     },
     {
@@ -239,7 +239,7 @@
         "base_price": 35.0,
         "price_per_page": 49.0,
         "project_type_id": 9,
-        "subject_id": 2,
+        "subject_id": 12,
         "unit": "Code"
     },
     {
@@ -248,7 +248,7 @@
         "base_price": 35.0,
         "price_per_page": 49.0,
         "project_type_id": 9,
-        "subject_id": 3,
+        "subject_id": 29,
         "unit": "Code"
     },
     {
@@ -257,7 +257,7 @@
         "base_price": 35.0,
         "price_per_page": 49.0,
         "project_type_id": 9,
-        "subject_id": 4,
+        "subject_id": 55,
         "unit": "Code"
     },
     {
@@ -266,7 +266,7 @@
         "base_price": 28.0,
         "price_per_page": 42.0,
         "project_type_id": 10,
-        "subject_id": 6,
+        "subject_id": 37,
         "unit": "Math Solving"
     },
     {
@@ -275,7 +275,7 @@
         "base_price": 28.0,
         "price_per_page": 42.0,
         "project_type_id": 10,
-        "subject_id": 8,
+        "subject_id": 51,
         "unit": "Math Solving"
     },
     {
@@ -284,7 +284,7 @@
         "base_price": 28.0,
         "price_per_page": 42.0,
         "project_type_id": 10,
-        "subject_id": 7,
+        "subject_id": 2,
         "unit": "Math Solving"
     },
     {
@@ -293,7 +293,7 @@
         "base_price": 12.0,
         "price_per_page": 22.0,
         "project_type_id": 11,
-        "subject_id": 31,
+        "subject_id": 21,
         "unit": "Literature Review"
     },
     {
@@ -302,7 +302,7 @@
         "base_price": 12.0,
         "price_per_page": 22.0,
         "project_type_id": 11,
-        "subject_id": 32,
+        "subject_id": 28,
         "unit": "Literature Review"
     },
     {
@@ -311,7 +311,7 @@
         "base_price": 12.0,
         "price_per_page": 22.0,
         "project_type_id": 11,
-        "subject_id": 33,
+        "subject_id": 34,
         "unit": "Literature Review"
     },
     {
@@ -320,7 +320,7 @@
         "base_price": 8.0,
         "price_per_page": 15.0,
         "project_type_id": 12,
-        "subject_id": 31,
+        "subject_id": 21,
         "unit": "Essay"
     },
     {
@@ -329,7 +329,7 @@
         "base_price": 8.0,
         "price_per_page": 15.0,
         "project_type_id": 12,
-        "subject_id": 32,
+        "subject_id": 28,
         "unit": "Essay"
     },
     {
@@ -338,7 +338,7 @@
         "base_price": 8.0,
         "price_per_page": 15.0,
         "project_type_id": 12,
-        "subject_id": 35,
+        "subject_id": 50,
         "unit": "Essay"
     },
     {
@@ -347,7 +347,7 @@
         "base_price": 8.0,
         "price_per_page": 15.0,
         "project_type_id": 13,
-        "subject_id": 43,
+        "subject_id": 32,
         "unit": "Article"
     },
     {
@@ -356,7 +356,7 @@
         "base_price": 8.0,
         "price_per_page": 15.0,
         "project_type_id": 13,
-        "subject_id": 38,
+        "subject_id": 11,
         "unit": "Article"
     },
     {
@@ -365,7 +365,7 @@
         "base_price": 8.0,
         "price_per_page": 15.0,
         "project_type_id": 13,
-        "subject_id": 39,
+        "subject_id": 47,
         "unit": "Article"
     },
     {
@@ -374,7 +374,7 @@
         "base_price": 10.0,
         "price_per_page": 18.0,
         "project_type_id": 14,
-        "subject_id": 31,
+        "subject_id": 21,
         "unit": "Creative Writing"
     },
     {
@@ -383,7 +383,7 @@
         "base_price": 10.0,
         "price_per_page": 18.0,
         "project_type_id": 14,
-        "subject_id": 33,
+        "subject_id": 34,
         "unit": "Creative Writing"
     },
     {
@@ -392,7 +392,7 @@
         "base_price": 9.6,
         "price_per_page": 18.0,
         "project_type_id": 15,
-        "subject_id": 29,
+        "subject_id": 36,
         "unit": "Content Writing"
     },
     {
@@ -401,7 +401,7 @@
         "base_price": 8.0,
         "price_per_page": 15.0,
         "project_type_id": 15,
-        "subject_id": 38,
+        "subject_id": 11,
         "unit": "Content Writing"
     },
     {
@@ -410,7 +410,7 @@
         "base_price": 8.0,
         "price_per_page": 15.0,
         "project_type_id": 15,
-        "subject_id": 47,
+        "subject_id": 17,
         "unit": "Content Writing"
     },
     {
@@ -419,7 +419,7 @@
         "base_price": 5.0,
         "price_per_page": 12.0,
         "project_type_id": 16,
-        "subject_id": 31,
+        "subject_id": 21,
         "unit": "Editing"
     },
     {
@@ -428,7 +428,7 @@
         "base_price": 5.0,
         "price_per_page": 12.0,
         "project_type_id": 16,
-        "subject_id": 43,
+        "subject_id": 32,
         "unit": "Editing"
     },
     {
@@ -437,7 +437,7 @@
         "base_price": 5.0,
         "price_per_page": 12.0,
         "project_type_id": 17,
-        "subject_id": 31,
+        "subject_id": 21,
         "unit": "Outline"
     },
     {
@@ -446,7 +446,7 @@
         "base_price": 5.0,
         "price_per_page": 12.0,
         "project_type_id": 17,
-        "subject_id": 32,
+        "subject_id": 28,
         "unit": "Outline"
     },
     {
@@ -455,7 +455,7 @@
         "base_price": 5.0,
         "price_per_page": 12.0,
         "project_type_id": 17,
-        "subject_id": 50,
+        "subject_id": 48,
         "unit": "Outline"
     },
     {
@@ -464,7 +464,7 @@
         "base_price": 14.4,
         "price_per_page": 24.0,
         "project_type_id": 18,
-        "subject_id": 26,
+        "subject_id": 9,
         "unit": "Presentation"
     },
     {
@@ -473,7 +473,7 @@
         "base_price": 12.0,
         "price_per_page": 20.0,
         "project_type_id": 18,
-        "subject_id": 37,
+        "subject_id": 19,
         "unit": "Presentation"
     },
     {
@@ -482,7 +482,7 @@
         "base_price": 12.0,
         "price_per_page": 20.0,
         "project_type_id": 18,
-        "subject_id": 39,
+        "subject_id": 47,
         "unit": "Presentation"
     },
     {
@@ -491,7 +491,7 @@
         "base_price": 14.4,
         "price_per_page": 26.4,
         "project_type_id": 19,
-        "subject_id": 26,
+        "subject_id": 9,
         "unit": "Proposal"
     },
     {
@@ -500,7 +500,7 @@
         "base_price": 12.0,
         "price_per_page": 22.0,
         "project_type_id": 19,
-        "subject_id": 37,
+        "subject_id": 19,
         "unit": "Proposal"
     },
     {
@@ -509,7 +509,7 @@
         "base_price": 12.0,
         "price_per_page": 22.0,
         "project_type_id": 19,
-        "subject_id": 50,
+        "subject_id": 48,
         "unit": "Proposal"
     },
     {
@@ -518,7 +518,7 @@
         "base_price": 15.0,
         "price_per_page": 25.0,
         "project_type_id": 20,
-        "subject_id": 37,
+        "subject_id": 19,
         "unit": "Personal Statement"
     },
     {
@@ -527,7 +527,7 @@
         "base_price": 19.5,
         "price_per_page": 32.5,
         "project_type_id": 20,
-        "subject_id": 23,
+        "subject_id": 33,
         "unit": "Personal Statement"
     },
     {
@@ -536,7 +536,7 @@
         "base_price": 15.0,
         "price_per_page": 25.0,
         "project_type_id": 21,
-        "subject_id": 37,
+        "subject_id": 19,
         "unit": "Application Essay"
     },
     {
@@ -545,7 +545,7 @@
         "base_price": 19.5,
         "price_per_page": 32.5,
         "project_type_id": 21,
-        "subject_id": 23,
+        "subject_id": 33,
         "unit": "Application Essay"
     },
     {
@@ -554,7 +554,7 @@
         "base_price": 18.0,
         "price_per_page": 30.0,
         "project_type_id": 21,
-        "subject_id": 26,
+        "subject_id": 9,
         "unit": "Application Essay"
     },
     {
@@ -563,7 +563,7 @@
         "base_price": 10.0,
         "price_per_page": 18.0,
         "project_type_id": 22,
-        "subject_id": 31,
+        "subject_id": 21,
         "unit": "Annotated Bibliography"
     },
     {
@@ -572,7 +572,7 @@
         "base_price": 10.0,
         "price_per_page": 18.0,
         "project_type_id": 22,
-        "subject_id": 32,
+        "subject_id": 28,
         "unit": "Annotated Bibliography"
     },
     {
@@ -581,7 +581,7 @@
         "base_price": 10.0,
         "price_per_page": 18.0,
         "project_type_id": 22,
-        "subject_id": 50,
+        "subject_id": 48,
         "unit": "Annotated Bibliography"
     },
     {
@@ -590,7 +590,7 @@
         "base_price": 16.8,
         "price_per_page": 28.0,
         "project_type_id": 23,
-        "subject_id": 6,
+        "subject_id": 37,
         "unit": "Coursework"
     },
     {
@@ -599,7 +599,7 @@
         "base_price": 16.8,
         "price_per_page": 28.0,
         "project_type_id": 23,
-        "subject_id": 5,
+        "subject_id": 43,
         "unit": "Coursework"
     },
     {
@@ -608,7 +608,7 @@
         "base_price": 16.8,
         "price_per_page": 28.0,
         "project_type_id": 23,
-        "subject_id": 1,
+        "subject_id": 20,
         "unit": "Coursework"
     },
     {
@@ -617,7 +617,7 @@
         "base_price": 19.5,
         "price_per_page": 32.5,
         "project_type_id": 24,
-        "subject_id": 21,
+        "subject_id": 25,
         "unit": "Excel Assignment"
     },
     {
@@ -626,7 +626,7 @@
         "base_price": 18.0,
         "price_per_page": 30.0,
         "project_type_id": 24,
-        "subject_id": 22,
+        "subject_id": 18,
         "unit": "Excel Assignment"
     },
     {
@@ -635,7 +635,7 @@
         "base_price": 21.0,
         "price_per_page": 35.0,
         "project_type_id": 24,
-        "subject_id": 8,
+        "subject_id": 51,
         "unit": "Excel Assignment"
     }
 ]
