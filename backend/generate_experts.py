@@ -200,8 +200,9 @@
 from random import choice, sample
 from flask import current_app
 from app import db, app
-from models import Expert, Service, expert_services, User, ProjectType, Subject, expert_project_types, expert_subjects
+from models import Expert, Service, expert_services, User, ProjectType, Subject, expert_subjects, expert_project_types
 import logging
+from sqlalchemy.exc import SQLAlchemyError
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -302,9 +303,15 @@ def generate_experts():
             "https://t3.ftcdn.net/jpg/05/28/52/94/240_F_528529413_Cjkpm5Ccyr4iwf75vGfOvI4vNJE4rXDu.jpg",
         ]
 
+        experts_created = 0
         for service in services:
             logger.info(f"🔍 Processing service: {service.title} (ID: {service.id})")
             
+            # Verify service has valid project type and subject
+            if not service.project_type_id or not service.subject_id:
+                logger.error(f"❌ Service {service.id} is missing project_type_id or subject_id")
+                continue
+                
             # Get the project type and subject for this service
             project_type = ProjectType.query.get(service.project_type_id)
             subject = Subject.query.get(service.subject_id)
@@ -321,7 +328,7 @@ def generate_experts():
             ).count()
             
             logger.info(f"👤 Service has {existing_experts_count} existing experts")
-            
+             
             # If we already have 3 experts, skip to the next service
             if existing_experts_count >= 3:
                 logger.info(f"✅ Service '{service.title}' already has {existing_experts_count} experts - skipping")
@@ -333,75 +340,124 @@ def generate_experts():
             
             # Create new experts for this service
             for i in range(num_experts_needed):
-                # Generate expert details
-                is_male = choice([True, False])
-                
-                if is_male:
-                    first_name = choice(male_first_names)
-                    profile_picture = choice(profile_pics_male)
-                else:
-                    first_name = choice(female_first_names)
-                    profile_picture = choice(profile_pics_female)
+                try:
+                    # Start a nested transaction
+                    nested = db.session.begin_nested()
                     
-                last_name = choice(last_names)
-                full_name = f"{first_name} {last_name}"
-                username = f"{first_name.lower()}_{last_name.lower()}"
-                
-                logger.info(f"🧑‍🎓 Creating expert: {full_name} for service '{service.title}'")
-                
-                # Create user
-                user = User(
-                    username=username,
-                    is_admin=False
-                )
-                db.session.add(user)
-                db.session.flush()  # Get the ID without committing
-                
-                # Create expert with specific project type and subject expertise
-                expert = Expert(
-                    id=user.id,
-                    name=full_name,
-                    title=f"{project_type.name} Specialist in {subject.name}",
-                    expertise=f"Expert in {project_type.name} for {subject.name}",
-                    description=f"Specialized in providing {project_type.name} services in the field of {subject.name}.",
-                    biography=f"Professional with extensive experience in {subject.name}, specializing in {project_type.name} projects.",
-                    education=f"PhD in {subject.name}",
-                    languages="English",
-                    profile_picture=profile_picture
-                )
-                
-                # Explicitly associate expert with this specific project type and subject
-                db.session.execute(
-                    expert_project_types.insert().values(
-                        expert_id=expert.id,
-                        project_type_id=project_type.id
-                    )
-                )
-                
-                db.session.execute(
-                    expert_subjects.insert().values(
-                        expert_id=expert.id,
-                        subject_id=subject.id
-                    )
-                )
-                
-                # Explicitly associate expert with this service
-                db.session.execute(
-                    expert_services.insert().values(
-                        expert_id=expert.id,
-                        service_id=service.id
-                    )
-                )
-                
-                db.session.add(expert)
-                logger.info(f"✅ Created expert {full_name} (ID: {expert.id}) for service '{service.title}'")
-                
+                    # Generate expert details
+                    is_male = choice([True, False])
+                    
+                    if is_male:
+                        first_name = choice(male_first_names)
+                        profile_picture = choice(profile_pics_male)
+                    else:
+                        first_name = choice(female_first_names)
+                        profile_picture = choice(profile_pics_female)
+                        
+                    last_name = choice(last_names)
+                    full_name = f"{first_name} {last_name}"
+                    username = f"{first_name.lower()}_{last_name.lower()}_{service.id}"
+                    
+                    logger.info(f"🧑‍🎓 Creating expert: {full_name} for service '{service.title}'")
+                    
+                    # Create user
+                    try:
+                        user = User(
+                            username=username,
+                            is_admin=False
+                        )
+                        db.session.add(user)
+                        db.session.flush()  # Get the ID without committing
+                        
+                        # Create expert
+                        expert = Expert(
+                            id=user.id,
+                            name=full_name,
+                            title=f"{project_type.name} Specialist in {subject.name}",
+                            expertise=f"Expert in {project_type.name} for {subject.name}",
+                            description=f"Specialized in providing {project_type.name} services in the field of {subject.name}.",
+                            biography=f"Professional with extensive experience in {subject.name}, specializing in {project_type.name} projects.",
+                            education=f"PhD in {subject.name}",
+                            languages="English",
+                            profile_picture=profile_picture
+                        )
+                        db.session.add(expert)
+                        db.session.flush()
+                        
+                        # Use ORM approach first, with error handling as backup
+                        try:
+                            expert.project_types.append(project_type)
+                            expert.subjects.append(subject)
+                            expert.services.append(service)
+                            db.session.flush()
+                        except SQLAlchemyError as e:
+                            logger.warning(f"ORM relationship adding failed, trying direct SQL: {str(e)}")
+                            # If ORM fails, try direct SQL
+                            try:
+                                # Check if relationships already exist to avoid duplicates
+                                existing_pt = db.session.query(expert_project_types).filter_by(
+                                    expert_id=expert.id, project_type_id=project_type.id
+                                ).first()
+                                
+                                if not existing_pt:
+                                    db.session.execute(
+                                        expert_project_types.insert().values(
+                                            expert_id=expert.id,
+                                            project_type_id=project_type.id
+                                        )
+                                    )
+                                
+                                existing_subj = db.session.query(expert_subjects).filter_by(
+                                    expert_id=expert.id, subject_id=subject.id
+                                ).first()
+                                
+                                if not existing_subj:
+                                    db.session.execute(
+                                        expert_subjects.insert().values(
+                                            expert_id=expert.id,
+                                            subject_id=subject.id
+                                        )
+                                    )
+                                
+                                existing_serv = db.session.query(expert_services).filter_by(
+                                    expert_id=expert.id, service_id=service.id
+                                ).first()
+                                
+                                if not existing_serv:
+                                    db.session.execute(
+                                        expert_services.insert().values(
+                                            expert_id=expert.id,
+                                            service_id=service.id
+                                        )
+                                    )
+                            except SQLAlchemyError as e2:
+                                logger.error(f"Direct SQL also failed: {str(e2)}")
+                                raise
+                        
+                        # Commit this nested transaction
+                        nested.commit()
+                        experts_created += 1
+                        logger.info(f"✅ Created expert {full_name} (ID: {expert.id}) for service '{service.title}'")
+                        
+                    except SQLAlchemyError as e:
+                        nested.rollback()
+                        logger.error(f"❌ Error creating expert: {str(e)}")
+                        continue
+                        
+                except Exception as e:
+                    logger.error(f"❌ Unexpected error during expert creation: {str(e)}")
+                    continue
+            
             # Commit after processing each service
-            db.session.commit()
-            logger.info(f"💾 Committed {num_experts_needed} new experts for service '{service.title}'")
+            try:
+                db.session.commit()
+                logger.info(f"💾 Committed changes for service '{service.title}'")
+            except SQLAlchemyError as e:
+                db.session.rollback()
+                logger.error(f"❌ Error committing service changes: {str(e)}")
 
-        logger.info("✨ Expert generation completed successfully!")
-        return True
+        logger.info(f"✨ Expert generation completed. Created {experts_created} new experts!")
+        return experts_created > 0
         
     except Exception as e:
         logger.error(f"❌ Error during expert generation: {str(e)}")
