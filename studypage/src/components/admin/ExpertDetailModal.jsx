@@ -377,7 +377,7 @@ const ExpertDetailModal = ({ expert, isOpen, onClose, currentUser }) => {
             <div className="space-y-3 text-sm">
               <div className="flex items-center gap-2">
                 <Award size={16} className="text-green-500" />
-                <p className="text-gray-700">Success Rate: <span className="font-medium">{expert.successRate}</span></p>
+                <p className="text-gray-700">Success Rate: <span className="font-medium text-xs text-green-600">{expert.successRate}  %  </span></p>
               </div>
               
               <div className="flex items-start gap-2">

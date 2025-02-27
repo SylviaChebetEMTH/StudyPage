@@ -3,6 +3,7 @@ import React from "react";
 import classNames from "classnames";
 
 const MessageBubble = ({ message, activeUser }) => {
+  console.log('Here is the message',message)
   const isSender =
     activeUser &&
     message &&

@@ -13,29 +13,6 @@ export default function Home() {
   }, []);
   return (
     <div className="homepage-container">
-
-      {/* <div
-        className="relative bg-cover bg-center h-screen"
-        style={{
-          backgroundImage: `url(https://img.freepik.com/free-photo/young-student-sitting-university-library-break-from-studying_496169-1232.jpg?t=st=1727969795~exp=1727973395~hmac=a4ebdf76a64d3ab12cb8c85b7edea028ac7516b9462538ab0d7cc1ff8377c012&w=740)`,
-        }}`
-      >
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative z-10 text-center text-white flex flex-col justify-center items-center h-full">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            Welcome to StudyPage
-          </h1>
-          <p className="text-lg md:text-xl mb-8">
-            Your one-stop platform for all study resources. Learn, Grow, Succeed!
-          </p>
-          <Link to="/explore">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition duration-300">
-              Explore Resources
-            </button>
-          </Link>
-        </div>
-      </div> */}
-
       <section className="bg-gray-900 flex flex-col lg:flex-row items-center justify-between px-10 py-16">
         <div className="lg:w-1/2 space-y-6">
           {/* <h4 className="text-yellow-500 uppercase font-medium" data-aos="flip-up" data-aos-duration="1000" data-aos-delay="0">Study Central</h4> */}
