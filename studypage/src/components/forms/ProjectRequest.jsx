@@ -676,7 +676,7 @@ const ProjectRequest = () => {
         <svg className="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
         </svg>
-        Submit
+        Submit Project  
       </h2>
       
       {/* Progress indicator */}
@@ -727,7 +727,11 @@ const ProjectRequest = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 transition-all hover:shadow-md">
           <h3 className="text-sm font-medium text-gray-500">Project Type</h3>
-          <p className="text-lg font-semibold text-gray-800">{selectedProjectTypeName || "Not selected"}</p>
+          <p className="text-lg font-semibold text-gray-800"> {services.map((service) => (
+                  <option className="text-lg font-semibold text-gray-800" key={service.id} value={service.id}>
+                    {service.unit }
+                  </option>
+                ))}</p>
         </div>
         <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 transition-all hover:shadow-md">
           <h3 className="text-sm font-medium text-gray-500">Subject</h3>
@@ -929,32 +933,36 @@ const ProjectRequest = () => {
           )}
 
           {/* Back and Next Buttons */}
-          <div className="mt-8 flex justify-between">
+          <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6">
+          {/* Back Button */}
+          <button
+            onClick={handlePrevStep}
+            className="flex items-center justify-center w-full sm:w-auto py-3 px-6 rounded-lg font-medium text-blue-600 border border-blue-600 hover:bg-blue-50 hover:text-blue-700 transition duration-200"
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Back
+          </button>
+
+          {/* Payment Button - Active */}
+          {isStep2Valid && (
+            <div className="w-full sm:w-auto">
+              <PaystackButton {...componentProps} className="w-full sm:w-auto py-3 px-6 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition duration-200" />
+            </div>
+          )}
+
+          {/* Payment Button - Disabled */}
+          {!isStep2Valid && (
             <button
-              onClick={handlePrevStep}
-              className="py-3 px-6 rounded-lg font-medium text-blue-600 border border-blue-600 hover:bg-blue-50 transition duration-200"
+              disabled
+              className="w-full sm:w-auto py-3 px-6 rounded-lg font-medium text-white bg-blue-300 cursor-not-allowed"
             >
-              <svg className="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-              </svg>
-              Back
+              Submit Project
             </button>
-            
-            {/* Proceed to Payment Button */}
-            {isStep2Valid && (
-              <PaystackButton {...componentProps} />
-            )}
-            
-            {/* Disabled Payment Button */}
-            {!isStep2Valid && (
-              <button
-                disabled
-                className="py-3 px-6 rounded-lg font-medium text-white bg-blue-300 cursor-not-allowed"
-              >
-                Submit Project
-              </button>
-            )}
-          </div>
+          )}
+        </div>
+
         </div>
       )}
     </div>
