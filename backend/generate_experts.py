@@ -181,11 +181,14 @@
 
 
 
+
 from random import choice, sample
 from flask import current_app
 from app import db, app
-from models import Expert, Service, expert_services, User, ProjectType,Subject
+from models import Expert, Service, expert_services, User
 import logging
+from random import uniform, randint
+import hashlib
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -286,39 +289,178 @@ def generate_experts():
             "https://t3.ftcdn.net/jpg/05/28/52/94/240_F_528529413_Cjkpm5Ccyr4iwf75vGfOvI4vNJE4rXDu.jpg",
         ]
 
+        professional_titles = {
+            "Dissertation": ["Dissertation Specialist", "Research Methodologist", "Doctoral Advisor"],
+            "Thesis": ["Thesis Consultant", "Research Scholar", "Academic Advisor"],
+            "Research Paper": ["Research Analyst", "Academic Writer", "Research Specialist"],
+            "Business Plan": ["Business Strategist", "Business Development Consultant", "Strategic Planning Expert"],
+            "Case Study": ["Case Study Specialist", "Analysis Expert", "Applied Research Consultant"],
+            "Technical Report": ["Technical Documentation Specialist", "Technical Writer", "Engineering Documentation Expert"],
+            "Data Analysis": ["Data Scientist", "Statistical Analyst", "Quantitative Research Specialist"],
+            "Lab Report": ["Laboratory Specialist", "Scientific Writer", "Experimental Research Analyst"],
+            "Code": ["Software Developer", "Programming Expert", "Code Implementation Specialist"],
+            "Math Solving": ["Mathematics Expert", "Quantitative Problem Solver", "Mathematical Modeling Specialist"],
+            "Literature Review": ["Literature Analysis Expert", "Research Literature Specialist", "Bibliographic Consultant"],
+            "Essay": ["Essay Writing Expert", "Composition Specialist", "Academic Writing Consultant"],
+            "Article": ["Article Writer", "Content Specialist", "Publication Expert"],
+            "Creative Writing": ["Creative Content Developer", "Narrative Specialist", "Creative Writing Consultant"],
+            "Content Writing": ["Content Strategist", "Content Development Expert", "Digital Content Specialist"],
+            "Editing": ["Professional Editor", "Content Refinement Specialist", "Editorial Consultant"],
+            "Outline": ["Structure Development Specialist", "Outline Design Expert", "Framework Consultant"],
+            "Presentation": ["Presentation Designer", "Visual Communication Expert", "Slide Deck Specialist"],
+            "Proposal": ["Proposal Development Expert", "Grant Writing Specialist", "Project Proposal Consultant"],
+            "Personal Statement": ["Personal Narrative Specialist", "Admissions Document Expert", "Application Document Consultant"],
+            "Application Essay": ["Admissions Consultant", "Application Strategy Expert", "Personal Branding Specialist"],
+            "Annotated Bibliography": ["Bibliographic Research Specialist", "Citation Analysis Expert", "Research Documentation Consultant"],
+            "Coursework": ["Academic Coursework Specialist", "Curriculum Expert", "Academic Assignment Consultant"],
+            "Excel Assignment": ["Excel Modeling Expert", "Data Visualization Specialist", "Spreadsheet Analysis Consultant"]
+        }
+        
+        # ✅ Subject-specific education and expertise
+        education_by_subject = {
+            "Engineering": ["Ph.D. in Engineering", "Master of Engineering", "B.Sc. in Engineering with Honors"],
+            "Computer Science": ["Ph.D. in Computer Science", "M.Sc. in Computer Science", "B.Sc. in Computer Science with Honors"],
+            "Mathematics": ["Ph.D. in Mathematics", "M.Sc. in Applied Mathematics", "B.Sc. in Mathematics with Honors"],
+            "Nursing": ["Doctor of Nursing Practice (DNP)", "Master of Science in Nursing (MSN)", "B.Sc. in Nursing with Clinical Distinction"],
+            "Biology": ["Ph.D. in Biological Sciences", "M.Sc. in Biology", "B.Sc. in Biology with Research Honors"],
+            "Physics": ["Ph.D. in Physics", "M.Sc. in Applied Physics", "B.Sc. in Physics with Honors"],
+            "Economics": ["Ph.D. in Economics", "Master of Economics", "B.A. in Economics with Honors"],
+            "Business": ["MBA with Specialization", "Master of Business Administration", "B.B.A. with Honors"],
+            "Law": ["Juris Doctor (J.D.)", "Master of Laws (LL.M.)", "Bachelor of Laws (LL.B.)"],
+            "Psychology": ["Ph.D. in Psychology", "M.Sc. in Clinical Psychology", "B.A. in Psychology with Honors"],
+            "Finance": ["Ph.D. in Finance", "Master of Finance", "B.Sc. in Finance with Honors"],
+            "Marketing": ["Ph.D. in Marketing", "Master of Marketing", "B.B.A. in Marketing with Honors"],
+            "Operations Management": ["Ph.D. in Operations Management", "M.Sc. in Operations Research", "B.B.A. in Operations Management"],
+            "Criminal Justice": ["Ph.D. in Criminal Justice", "Master of Criminal Justice", "B.A. in Criminal Justice with Honors"],
+            "Statistics": ["Ph.D. in Statistics", "M.Sc. in Applied Statistics", "B.Sc. in Statistics with Honors"],
+            "Operations Research": ["Ph.D. in Operations Research", "M.Sc. in Operations Research", "B.Sc. in Mathematics with OR Specialization"],
+            "Data Analysis": ["Ph.D. in Data Science", "M.Sc. in Analytics", "B.Sc. in Data Science with Honors"],
+            "Chemistry": ["Ph.D. in Chemistry", "M.Sc. in Chemistry", "B.Sc. in Chemistry with Honors"],
+            "Environmental Science": ["Ph.D. in Environmental Science", "M.Sc. in Environmental Studies", "B.Sc. in Environmental Science with Honors"],
+            "Information Technology": ["Ph.D. in Information Technology", "M.Sc. in IT", "B.Sc. in Information Technology with Honors"],
+            "Web Development": ["Master of Web Development", "B.Sc. in Computer Science with Web Development Focus", "Full Stack Development Certification"],
+            "Algebra": ["Ph.D. in Mathematics (Algebraic Specialization)", "M.Sc. in Pure Mathematics", "B.Sc. in Mathematics with Honors"],
+            "English": ["Ph.D. in English Literature", "M.A. in English", "B.A. in English with Honors"],
+            "History": ["Ph.D. in History", "M.A. in Historical Studies", "B.A. in History with Honors"],
+            "Literature": ["Ph.D. in Comparative Literature", "M.A. in Literature", "B.A. in Literature with Honors"],
+            "Sociology": ["Ph.D. in Sociology", "M.A. in Sociological Studies", "B.A. in Sociology with Honors"],
+            "Journalism": ["Ph.D. in Journalism", "Master of Journalism", "B.A. in Journalism with Honors"],
+            "Communications": ["Ph.D. in Communications", "M.A. in Communication Studies", "B.A. in Communications with Honors"],
+            "Public Relations": ["Ph.D. in Public Relations", "M.A. in PR & Strategic Communications", "B.A. in Public Relations with Honors"],
+            "Creative Writing": ["M.F.A. in Creative Writing", "M.A. in Creative Writing", "B.A. in English with Creative Writing Focus"],
+            "Digital Media": ["Ph.D. in Digital Media", "M.A. in Digital Media Studies", "B.A. in Digital Media with Honors"],
+            "Research Methods": ["Ph.D. in Research Methodology", "M.Sc. in Research Methods", "B.Sc. with Research Methods Focus"],
+            "Education": ["Ed.D. in Education", "M.Ed. in Educational Leadership", "B.Ed. with Honors"]
+        }
+        
+        # Default for subjects not in the list
+        default_education = ["Ph.D. in the Field", "Master's Degree", "Bachelor's Degree with Honors"]
+        
+        # ✅ Expertise templates by project type
+        expertise_templates = {
+            "Dissertation": [
+                "{years} years of experience guiding doctoral candidates through dissertation research and writing",
+                "Specialist in {subject} dissertation methodology and research design with {years} years of experience",
+                "Expert dissertation advisor with {years} years of experience in {subject} research methods"
+            ],
+            "Research Paper": [
+                "Published researcher with {years} years of experience in {subject} studies",
+                "Research specialist with {papers} published papers in peer-reviewed {subject} journals",
+                "{subject} research expert with {years} years of academic and industry experience"
+            ],
+            "Essay": [
+                "Professional {subject} essay writer with {years} years of experience in academic writing",
+                "Experienced {subject} content specialist with expertise in argumentative and analytical essays",
+                "Academic writing expert specializing in {subject} essays and critical analysis"
+            ],
+            "Code": [
+                "Software developer with {years} years of professional coding experience in {subject}",
+                "{subject} programmer with expertise in multiple programming languages and frameworks",
+                "Technical developer specializing in {subject} with {years} years of industry experience"
+            ]
+        }
+        # Default expertise template for project types not specifically listed
+        default_expertise_templates = [
+            "Specialist in {subject} with {years} years of professional experience",
+            "Experienced {subject} professional with expertise in {project_type}",
+            "{subject} expert with {years} years of academic and industry experience"
+        ]
+        
+        # ✅ Professional biography templates
+        biography_templates = [
+            "{name} is a seasoned professional with {years} years of experience in {subject}. With a {education} and professional background in {industry}, {pronoun} has successfully completed over {projects} projects in {project_type}. {pronoun_cap} specializes in {specialty} and has a proven track record of delivering high-quality work that exceeds client expectations.",
+            
+            "With {years} years of dedicated experience in {subject}, {name} brings exceptional expertise to every {project_type} project. Holding a {education}, {pronoun} has developed specialized knowledge in {specialty}. {pronoun_cap} has worked with clients ranging from students to industry professionals, completing more than {projects} successful projects.",
+            
+            "{name} is a {subject} expert with a {education} and {years} years of practical experience. {pronoun_cap} has extensive experience in {project_type} development, having completed {projects}+ projects with outstanding client satisfaction. {pronoun_cap} is known for {specialty} and delivering results that consistently exceed expectations.",
+            
+            "As an experienced {subject} specialist with a {education}, {name} has dedicated {years} years to mastering the complexities of {project_type}. {pronoun_cap} has successfully guided {projects}+ clients through their projects, specializing in {specialty}. {pronoun_cap} brings a methodical approach and attention to detail to every project."
+        ]
+        
+        # ✅ Language combinations
+        language_options = [
+            "English, Spanish",
+            "English, French, German",
+            "English, Mandarin",
+            "English, Arabic",
+            "English, Russian",
+            "English, Portuguese",
+            "English, Japanese",
+            "English, Hindi",
+            "English, Italian",
+            "English only (native)"
+        ]
+        
+        # Industries by subject
+        industries = {
+            "Engineering": ["aerospace", "automotive", "construction", "energy"],
+            "Computer Science": ["software development", "IT consulting", "cybersecurity", "tech startups"],
+            "Business": ["management consulting", "corporate strategy", "entrepreneurship"],
+            "Law": ["legal practice", "corporate law", "intellectual property"],
+            "Psychology": ["clinical practice", "research psychology", "organizational psychology"],
+            "Economics": ["economic consulting", "financial analysis", "policy research"]
+        }
+        # Default industries for subjects not in the list
+        default_industries = ["academic research", "professional consulting", "education", "private practice"]
+
+        # ✅ Specialties by project type and subject
+        specialties = {
+            "Dissertation": {
+                "Engineering": ["structural analysis methodologies", "engineering design optimization", "systems engineering approaches"],
+                "Psychology": ["qualitative research methods", "experimental psychology design", "longitudinal study methodologies"]
+            },
+            "Research Paper": {
+                "Economics": ["econometric analysis", "economic policy evaluation", "market structure analysis"],
+                "Business": ["strategic management research", "organizational behavior studies", "market research methodologies"]
+            }
+        }
+        # Default specialties
+        default_specialties = ["comprehensive research methodologies", "detailed analytical approaches", "clear and concise communication"]
+
         experts_created = 0
         for service in services:
-            # Get the associated project type and subject
-            project_type = ProjectType.query.get(service.project_type_id)
-            subject = Subject.query.get(service.subject_id)
-            
-            if not project_type or not subject:
-                logger.error(f"❌ Missing project type or subject for service {service.title}")
-                continue
+            # Extract project type and subject from service title
+            service_parts = service.title.split(" - ")
+            if len(service_parts) >= 2:
+                project_type = service_parts[0]
+                subject = service_parts[1]
+            else:
+                # Fallback if title format is different
+                project_type = service.project_type.name if hasattr(service, 'project_type') and hasattr(service.project_type, 'name') else "General"
+                subject = service.subject.name if hasattr(service, 'subject') and hasattr(service.subject, 'name') else "General"
                 
-            logger.info(f"Processing service: {service.title} (Project: {project_type.name}, Subject: {subject.name})")
-            
-            # Check existing experts count for this service
-            existing_experts = (
-                Expert.query
-                .join(expert_services)
-                .filter(expert_services.c.service_id == service.id)
-                .count()
-            )
-
-            if existing_experts >= 3:
-                logger.info(f"✅ Service '{service.title}' already has {existing_experts} experts.")
-                continue
-
-            num_to_assign = 3 - existing_experts
-            logger.info(f"🔹 Assigning {num_to_assign} experts to '{service.title}'")
+            logger.info(f"🔹 Creating experts for service: {service.title}")
             used_pics_male, used_pics_female = set(), set()
 
-            for i in range(num_to_assign):
+            # ✅ Create exactly 3 experts for this service
+            for i in range(3):
                 is_male = choice([True, False])
-
+                
+                # Generate professional name
                 if is_male:
                     first_name = choice(male_first_names)
+                    pronoun = "he"
+                    pronoun_cap = "He"
                     available_pics = list(set(profile_pics_male) - used_pics_male)
                     if not available_pics:
                         used_pics_male.clear()
@@ -327,6 +469,8 @@ def generate_experts():
                     used_pics_male.add(profile_picture)
                 else:
                     first_name = choice(female_first_names)
+                    pronoun = "she"
+                    pronoun_cap = "She"
                     available_pics = list(set(profile_pics_female) - used_pics_female)
                     if not available_pics:
                         used_pics_female.clear()
@@ -337,48 +481,134 @@ def generate_experts():
                 last_name = choice(last_names)
                 full_name = f"{first_name} {last_name}"
                 
-                # Craft a more specific title and expertise based on the service
-                expert_title = f"{project_type.name} Specialist in {subject.name}"
-                expert_expertise = f"Expert in {project_type.name} for {subject.name}"
-                expert_description = f"{full_name} specializes in {project_type.name} work related to {subject.name}."
-
-                # ✅ Create a new user for the expert
+                # ✅ Generate a professional username
+                username_options = [
+                    f"{first_name.lower()}.{last_name.lower()}",
+                    f"{first_name.lower()}{last_name.lower()}",
+                    f"{first_name[0].lower()}{last_name.lower()}",
+                    f"{last_name.lower()}.{first_name.lower()}",
+                    f"prof.{last_name.lower()}"
+                ]
+                
+                # Add a number to username to ensure uniqueness if needed
+                username_base = choice(username_options)
+                username = username_base
+                
+                # Check if username exists and add a number if it does
+                existing_user = User.query.filter_by(username=username).first()
+                if existing_user:
+                    # Hash the name to get a consistent but unique number
+                    name_hash = int(hashlib.md5(full_name.encode()).hexdigest(), 16) % 1000
+                    username = f"{username_base}{name_hash}"
+                
+                # Create the user
                 new_user = User(
-                    username=full_name.lower().replace(' ', '_'),
+                    username=username,
                     is_admin=False
                 )
                 db.session.add(new_user)
-                db.session.flush()  # Get ID without committing
-
-                # ✅ Create a new expert profile
+                db.session.commit()
+                
+                # ✅ Generate professional title
+                if project_type in professional_titles:
+                    title = f"{choice(professional_titles[project_type])} in {subject}"
+                else:
+                    title = f"{subject} Specialist"
+                
+                # ✅ Generate education background
+                if subject in education_by_subject:
+                    education = choice(education_by_subject[subject])
+                else:
+                    education = choice(default_education)
+                
+                # ✅ Generate experience years and projects count
+                years_experience = randint(5, 20)
+                projects_completed = randint(50, 500)
+                papers_published = randint(5, 25)
+                
+                # ✅ Generate expertise description
+                if project_type in expertise_templates:
+                    expertise_template = choice(expertise_templates[project_type])
+                else:
+                    expertise_template = choice(default_expertise_templates)
+                
+                expertise = expertise_template.format(
+                    subject=subject,
+                    years=years_experience,
+                    papers=papers_published,
+                    project_type=project_type
+                )
+                
+                # ✅ Generate industry
+                if subject in industries:
+                    industry = choice(industries[subject])
+                else:
+                    industry = choice(default_industries)
+                
+                # ✅ Generate specialty
+                if project_type in specialties and subject in specialties[project_type]:
+                    specialty = choice(specialties[project_type][subject])
+                else:
+                    specialty = choice(default_specialties)
+                
+                # ✅ Generate biography
+                biography_template = choice(biography_templates)
+                biography = biography_template.format(
+                    name=full_name,
+                    years=years_experience,
+                    subject=subject,
+                    education=education,
+                    industry=industry,
+                    pronoun=pronoun,
+                    pronoun_cap=pronoun_cap,
+                    projects=projects_completed,
+                    project_type=project_type,
+                    specialty=specialty
+                )
+                
+                # ✅ Generate languages
+                languages = choice(language_options)
+                
+                # ✅ Generate random ratings and success rate
+                rating_avg = round(uniform(4.5, 5.0), 1)
+                total_reviews = randint(10, 100)
+                success_rate = round(uniform(92.0, 99.5), 1)
+                
+                # ✅ Generate description
+                description = f"Experienced {subject} specialist with a focus on {project_type}. {pronoun_cap} has helped clients achieve exceptional results through meticulous attention to detail and expert knowledge."
+                
+                # ✅ Create the expert profile
                 expert = Expert(
                     id=new_user.id,
                     name=full_name,
-                    title=expert_title,
-                    expertise=expert_expertise,
-                    description=expert_description,
-                    biography=f"Highly skilled professional with years of experience in {subject.name}.",
-                    education=f"PhD in {subject.name}",
-                    languages="English, French",
+                    title=title,
+                    expertise=expertise,
+                    description=description,
+                    biography=biography,
+                    education=education,
+                    languages=languages,
                     profile_picture=profile_picture,
+                    rating_avg=rating_avg,
+                    total_reviews=total_reviews,
+                    success_rate=success_rate,
+                    is_ai_free=True  # Assuming all experts are AI-free by default
                 )
-                
-                # Add project type and subject to the expert
-                expert.project_types.append(project_type)
-                expert.subjects.append(subject)
-                
+
+                # ✅ Link expert to correct project type and subject
+                expert.project_types.append(service.project_type)
+                expert.subjects.append(service.subject)
+
                 db.session.add(expert)
-                db.session.flush()
+                db.session.commit()
 
                 # ✅ Assign expert to the service
                 expert.services.append(service)
-                
-                logger.info(f"✅ Created expert: {full_name} for '{service.title}' with image {profile_picture}")
-            
-            # Commit all changes for this service at once
-            db.session.commit()
+                db.session.commit()
+                experts_created += 1
 
-        logger.info(f"✅ Successfully assigned experts to services!")
+                logger.info(f"✅ Created expert: {full_name} (username: {username}) for '{service.title}'")
+
+        logger.info(f"✅ Successfully assigned {experts_created} experts!")
         return True
 
     except Exception as e:
@@ -391,3 +621,4 @@ if __name__ == "__main__":
         success = generate_experts()
         if not success:
             logger.error("Expert generation failed!")
+
