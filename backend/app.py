@@ -1572,7 +1572,10 @@ def search_experts():
                     "education": expert.education,
                     "biography": expert.biography,
                     "description": expert.description,
-                    "languages": expert.languages
+                    "languages": expert.languages,
+                    "isAiFree": expert.is_ai_free,
+                    "successRate": expert.success_rate,
+                    "totalReviews": expert.total_reviews
                 } for expert in experts
             ]
         }
