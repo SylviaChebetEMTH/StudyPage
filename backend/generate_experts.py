@@ -105,53 +105,31 @@
 
 #         experts_created = 0
 #         for service in services:
-#             # ✅ Strictly filter experts based on matching subject & project type
-#             matched_experts = Expert.query.filter(
-#                 Expert.project_types.any(id=service.project_type_id),
-#                 Expert.subjects.any(id=service.subject_id)
-#             ).all()
-            
-#             existing_experts = (
-#                 Expert.query
-#                 .join(expert_services)
-#                 .filter(expert_services.c.service_id == service.id)
-#                 .count()
-#             )
-
-#             if existing_experts >= 3:
-#                 logger.info(f"✅ Service '{service.title}' already has {existing_experts} experts.")
-#                 continue
-
-#             num_to_assign = 3 - existing_experts
-#             assigned_experts = set()
-#             logger.info(f"🔹 Assigning {num_to_assign} experts to '{service.title}'")
+#             logger.info(f"🔹 Creating experts for service: {service.title}")
 #             used_pics_male, used_pics_female = set(), set()
 
-#             # ✅ Reuse existing matched experts before creating new ones
-#             while len(assigned_experts) < num_to_assign:
+#             # ✅ Create exactly 3 experts for this service
+#             for _ in range(3):
 #                 is_male = choice([True, False])
+#                 if is_male:
+#                     first_name = choice(male_first_names)
+#                     available_pics = list(set(profile_pics_male) - used_pics_male)
+#                     if not available_pics:
+#                         used_pics_male.clear()
+#                         available_pics = profile_pics_male
+#                     profile_picture = choice(available_pics)
+#                     used_pics_male.add(profile_picture)
+#                 else:
+#                     first_name = choice(female_first_names)
+#                     available_pics = list(set(profile_pics_female) - used_pics_female)
+#                     if not available_pics:
+#                         used_pics_female.clear()
+#                         available_pics = profile_pics_female
+#                     profile_picture = choice(available_pics)
+#                     used_pics_female.add(profile_picture)
 
-                # if is_male:
-                #     first_name = choice(male_first_names)
-                #     available_pics = list(set(profile_pics_male) - used_pics_male)
-                #     if not available_pics:
-                #         used_pics_male.clear()
-                #         available_pics = profile_pics_male
-                #     profile_picture = choice(available_pics)
-                #     used_pics_male.add(profile_picture)
-                # else:
-                #     first_name = choice(female_first_names)
-                #     available_pics = list(set(profile_pics_female) - used_pics_female)
-                #     if not available_pics:
-                #         used_pics_female.clear()
-                #         available_pics = profile_pics_female
-                #     profile_picture = choice(available_pics)
-                #     used_pics_female.add(profile_picture)
-
-                # last_name = choice(last_names)
-                # full_name = f"{first_name} {last_name}"
-
-#                 # ✅ Create a new user for the expert
+#                 last_name = choice(last_names)
+#                 full_name = f"{first_name} {last_name}"
 #                 new_user = User(
 #                     username=full_name,
 #                     is_admin=False
@@ -159,7 +137,7 @@
 #                 db.session.add(new_user)
 #                 db.session.commit()
 
-#                 # ✅ Create a new expert profile
+#                 # ✅ Create a new expert profile linked to the correct project_type & subject
 #                 expert = Expert(
 #                     id=new_user.id,
 #                     name=full_name,
@@ -171,17 +149,22 @@
 #                     languages="English, French",
 #                     profile_picture=profile_picture,
 #                 )
+
+#                 # ✅ Link expert to correct project type and subject
+#                 expert.project_types.append(service.project_type)
+#                 expert.subjects.append(service.subject)
+
 #                 db.session.add(expert)
 #                 db.session.commit()
 
 #                 # ✅ Assign expert to the service
 #                 expert.services.append(service)
 #                 db.session.commit()
-#                 assigned_experts.add(expert)
+#                 experts_created += 1
 
-#                 logger.info(f"✅ Created expert: {full_name} for '{service.title}' with image {profile_picture}")
+#                 logger.info(f"✅ Created expert: {full_name} for '{service.title}'")
 
-#         logger.info(f"✅ Successfully assigned experts to services!")
+#         logger.info(f"✅ Successfully assigned {experts_created} experts!")
 #         return True
 
 #     except Exception as e:
@@ -197,10 +180,11 @@
 
 
 
+
 from random import choice, sample
 from flask import current_app
 from app import db, app
-from models import Expert, Service, expert_services, User
+from models import Expert, Service, expert_services, User, ProjectType,Subject
 import logging
 
 # Set up logging
@@ -304,12 +288,35 @@ def generate_experts():
 
         experts_created = 0
         for service in services:
-            logger.info(f"🔹 Creating experts for service: {service.title}")
+            # Get the associated project type and subject
+            project_type = ProjectType.query.get(service.project_type_id)
+            subject = Subject.query.get(service.subject_id)
+            
+            if not project_type or not subject:
+                logger.error(f"❌ Missing project type or subject for service {service.title}")
+                continue
+                
+            logger.info(f"Processing service: {service.title} (Project: {project_type.name}, Subject: {subject.name})")
+            
+            # Check existing experts count for this service
+            existing_experts = (
+                Expert.query
+                .join(expert_services)
+                .filter(expert_services.c.service_id == service.id)
+                .count()
+            )
+
+            if existing_experts >= 3:
+                logger.info(f"✅ Service '{service.title}' already has {existing_experts} experts.")
+                continue
+
+            num_to_assign = 3 - existing_experts
+            logger.info(f"🔹 Assigning {num_to_assign} experts to '{service.title}'")
             used_pics_male, used_pics_female = set(), set()
 
-            # ✅ Create exactly 3 experts for this service
-            for _ in range(3):
+            for i in range(num_to_assign):
                 is_male = choice([True, False])
+
                 if is_male:
                     first_name = choice(male_first_names)
                     available_pics = list(set(profile_pics_male) - used_pics_male)
@@ -329,41 +336,49 @@ def generate_experts():
 
                 last_name = choice(last_names)
                 full_name = f"{first_name} {last_name}"
+                
+                # Craft a more specific title and expertise based on the service
+                expert_title = f"{project_type.name} Specialist in {subject.name}"
+                expert_expertise = f"Expert in {project_type.name} for {subject.name}"
+                expert_description = f"{full_name} specializes in {project_type.name} work related to {subject.name}."
+
+                # ✅ Create a new user for the expert
                 new_user = User(
-                    username=full_name,
+                    username=full_name.lower().replace(' ', '_'),
                     is_admin=False
                 )
                 db.session.add(new_user)
-                db.session.commit()
+                db.session.flush()  # Get ID without committing
 
-                # ✅ Create a new expert profile linked to the correct project_type & subject
+                # ✅ Create a new expert profile
                 expert = Expert(
                     id=new_user.id,
                     name=full_name,
-                    title=f"{service.title} Specialist",
-                    expertise=f"Expert in {service.title}",
-                    description=f"{full_name} specializes in {service.title}.",
-                    biography="Highly skilled professional with years of experience.",
-                    education="PhD in relevant field",
+                    title=expert_title,
+                    expertise=expert_expertise,
+                    description=expert_description,
+                    biography=f"Highly skilled professional with years of experience in {subject.name}.",
+                    education=f"PhD in {subject.name}",
                     languages="English, French",
                     profile_picture=profile_picture,
                 )
-
-                # ✅ Link expert to correct project type and subject
-                expert.project_types.append(service.project_type)
-                expert.subjects.append(service.subject)
-
+                
+                # Add project type and subject to the expert
+                expert.project_types.append(project_type)
+                expert.subjects.append(subject)
+                
                 db.session.add(expert)
-                db.session.commit()
+                db.session.flush()
 
                 # ✅ Assign expert to the service
                 expert.services.append(service)
-                db.session.commit()
-                experts_created += 1
+                
+                logger.info(f"✅ Created expert: {full_name} for '{service.title}' with image {profile_picture}")
+            
+            # Commit all changes for this service at once
+            db.session.commit()
 
-                logger.info(f"✅ Created expert: {full_name} for '{service.title}'")
-
-        logger.info(f"✅ Successfully assigned {experts_created} experts!")
+        logger.info(f"✅ Successfully assigned experts to services!")
         return True
 
     except Exception as e:
