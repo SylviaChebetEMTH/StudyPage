@@ -343,7 +343,7 @@ const UserProfile = ({ authToken }) => {
         >
           <div className="flex flex-col h-full">
             {/* User Profile Section */}
-            <div className="p-6 bg-gray-900 text-white">
+            <div className="p-6 bg-gray-900 md:bg-gray-800 text-white">
               <div className="flex items-center space-x-4">
                 <Link
                   to="/updateprofile"
