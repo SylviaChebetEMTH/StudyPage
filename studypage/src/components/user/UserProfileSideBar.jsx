@@ -333,7 +333,7 @@ const UserProfile = ({ authToken }) => {
         />
       </button>
 
-      <div className="flex flex-col md:flex-row pt-16 md:pt-0">
+      <div className="flex flex-col md:flex-row  md:pt-0  ">
         {/* Sidebar */}
         <aside
           id="sidebar"
@@ -412,7 +412,7 @@ const UserProfile = ({ authToken }) => {
 
         {/* Main Content */}
         <main className="flex-1 p-6 md:p-8 pt-4 md:ml-0">
-          <div className="bg-white rounded-lg shadow-md p-6 min-h-screen">
+          <div className="bg-white rounded-lg shadow-md min-h-screen">
             <Outlet />
           </div>
         </main>
