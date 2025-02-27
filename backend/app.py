@@ -969,66 +969,88 @@ def request_expert():
     data = request.form
     files = request.files.getlist('attachments')
 
-    deadline_str = data.get('deadline') 
-    deadline_str = data.get('deadline') 
+    # Extract and validate basic fields
+    deadline_str = data.get('deadline')
     try:
         deadline = datetime.strptime(deadline_str, "%Y-%m-%d")
     except ValueError:
         return jsonify({"error": "Invalid deadline format. Use YYYY-MM-DD."}), 400
 
+    try:
+        expert_id = int(data.get('expert_id'))
+        project_type_id = int(data.get('project_type')) if data.get('project_type') else None
+        subject_id = int(data.get('subject')) if data.get('subject') else None
+        number_of_pages = int(data.get('number_of_pages')) if data.get('number_of_pages') else None
+    except (ValueError, TypeError):
+        return jsonify({"error": "Invalid project_type, subject, number_of_pages, or expert ID."}), 400
+
+    # Check if expert exists
+    expert = Expert.query.get(expert_id)
+    if not expert:
+        return jsonify({"error": "Expert does not exist"}), 400
+
     # Save the project request
     project = ProjectRequest(
         project_title=data.get('project_title'),
         project_description=data.get('project_description'),
-        project_type_id=data.get('project_type'),
-        subject_id=data.get('subject'),
+        project_type_id=project_type_id,
+        subject_id=subject_id,
         deadline=deadline,
-        expert_id=data.get('expert_id'),
+        expert_id=expert_id,
         user_id=get_jwt_identity(),
-        number_of_pages=data.get('number_of_pages')
+        number_of_pages=number_of_pages
     )
     db.session.add(project)
     db.session.commit()
 
+    if not project.id:
+        return jsonify({"error": "Failed to save project request."}), 500
+
+    # Handle attachments
     attachments = []
     for file in files:
-        filename = secure_filename(file.filename)
-        # file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        # file.save(file_path)
-        upload_result = cloudinary.uploader.upload(file, resource_type="raw")
-        # file_url = url_for('serve_file', filename=filename, _external=True)
-        file_url = upload_result['secure_url']
-        attachments.append(file_url)
+        if file and allowed_file(file.filename):
+            upload_result = cloudinary.uploader.upload(file, resource_type="raw")
+            file_url = upload_result['secure_url']
+            attachments.append(file_url)
+        else:
+            return jsonify({"error": f"Invalid file: {file.filename}"}), 400
+
     project.attachments = ','.join(attachments)
     db.session.commit()
 
+    # Check if conversation already exists
     conversation = Conversation.query.filter_by(
-        
         client_id=get_jwt_identity(),
-        expert_id=data.get('expert_id'),
+        expert_id=expert_id,
     ).first()
-
 
     if not conversation:
         conversation = Conversation(
             client_id=get_jwt_identity(),
-            expert_id=data.get('expert_id'),
+            expert_id=expert_id,
             project_id=project.id
         )
         db.session.add(conversation)
         db.session.commit()
 
+    # Create initial message
     message = MessageModel(
         conversation_id=conversation.id,
         sender_id=get_jwt_identity(),
-        content=f"New project submitted: {project.project_title}\nDescription: {project.project_description}\nDeadline: {project.deadline.strftime('%Y-%m-%d')}",
+        content=(
+            f"New project submitted: {project.project_title}\n"
+            f"Description: {project.project_description}\n"
+            f"Deadline: {project.deadline.strftime('%Y-%m-%d')}"
+        ),
         attachments=project.attachments,
-        receiver_id=data.get('expert_id'),
-        expert_id=data.get('expert_id')
+        receiver_id=expert_id,
+        expert_id=expert_id
     )
     db.session.add(message)
     db.session.commit()
 
+    # Prepare and send email (consider removing file attachments here if they're links)
     email_subject = "New Project Request Submitted"
     email_body = f"""
     A new project has been submitted with the following details:
@@ -1043,9 +1065,98 @@ def request_expert():
         subject=email_subject,
         body=email_body,
         recipients=['shadybett540@gmail.com', 'studypage001@gmail.com'],
-        attachments=[os.path.join(app.config['UPLOAD_FOLDER'], filename) for filename in attachments]
+        attachments=[]  # Set to empty, or adapt if needed
     )
-    return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
+
+    return jsonify({
+        'message': 'Project submitted successfully',
+        'conversation_id': conversation.id
+    }), 201
+
+
+# @app.route('/request_expert', methods=['POST'])
+# @jwt_required()
+# def request_expert():
+#     data = request.form
+#     files = request.files.getlist('attachments')
+
+#     deadline_str = data.get('deadline') 
+#     deadline_str = data.get('deadline') 
+#     try:
+#         deadline = datetime.strptime(deadline_str, "%Y-%m-%d")
+#     except ValueError:
+#         return jsonify({"error": "Invalid deadline format. Use YYYY-MM-DD."}), 400
+
+#     # Save the project request
+#     project = ProjectRequest(
+#         project_title=data.get('project_title'),
+#         project_description=data.get('project_description'),
+#         project_type_id=data.get('project_type'),
+#         subject_id=data.get('subject'),
+#         deadline=deadline,
+#         expert_id=data.get('expert_id'),
+#         user_id=get_jwt_identity(),
+#         number_of_pages=data.get('number_of_pages')
+#     )
+#     db.session.add(project)
+#     db.session.commit()
+
+#     attachments = []
+#     for file in files:
+#         filename = secure_filename(file.filename)
+#         # file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+#         # file.save(file_path)
+#         upload_result = cloudinary.uploader.upload(file, resource_type="raw")
+#         # file_url = url_for('serve_file', filename=filename, _external=True)
+#         file_url = upload_result['secure_url']
+#         attachments.append(file_url)
+#     project.attachments = ','.join(attachments)
+#     db.session.commit()
+
+#     conversation = Conversation.query.filter_by(
+        
+#         client_id=get_jwt_identity(),
+#         expert_id=data.get('expert_id'),
+#     ).first()
+
+
+#     if not conversation:
+#         conversation = Conversation(
+#             client_id=get_jwt_identity(),
+#             expert_id=data.get('expert_id'),
+#             project_id=project.id
+#         )
+#         db.session.add(conversation)
+#         db.session.commit()
+
+#     message = MessageModel(
+#         conversation_id=conversation.id,
+#         sender_id=get_jwt_identity(),
+#         content=f"New project submitted: {project.project_title}\nDescription: {project.project_description}\nDeadline: {project.deadline.strftime('%Y-%m-%d')}",
+#         attachments=project.attachments,
+#         receiver_id=data.get('expert_id'),
+#         expert_id=data.get('expert_id')
+#     )
+#     db.session.add(message)
+#     db.session.commit()
+
+#     email_subject = "New Project Request Submitted"
+#     email_body = f"""
+#     A new project has been submitted with the following details:
+
+#     Title: {project.project_title}
+#     Description: {project.project_description}
+#     Deadline: {project.deadline.strftime('%Y-%m-%d')}
+#     Attachments: {', '.join(attachments)}
+#     """
+
+#     send_email_with_mime(
+#         subject=email_subject,
+#         body=email_body,
+#         recipients=['shadybett540@gmail.com', 'studypage001@gmail.com'],
+#         attachments=[os.path.join(app.config['UPLOAD_FOLDER'], filename) for filename in attachments]
+#     )
+#     return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
 @app.route('/conversationsadmin/<int:conversation_id>/messages', methods=['POST'])
 @jwt_required()
 def admn_send_message(conversation_id):
