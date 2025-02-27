@@ -200,9 +200,8 @@
 from random import choice, sample
 from flask import current_app
 from app import db, app
-from models import Expert, Service, expert_services, User, ProjectType, Subject, expert_subjects, expert_project_types
+from models import Expert, Service, expert_services, User
 import logging
-from sqlalchemy.exc import SQLAlchemyError
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -305,164 +304,79 @@ def generate_experts():
 
         experts_created = 0
         for service in services:
-            logger.info(f"🔍 Processing service: {service.title} (ID: {service.id})")
+            # ✅ Strictly match experts to their relevant services
+            matched_experts = Expert.query.filter(
+                Expert.project_types.any(id=service.project_type_id),
+                Expert.subjects.any(id=service.subject_id)
+            ).all()
             
-            # Verify service has valid project type and subject
-            if not service.project_type_id or not service.subject_id:
-                logger.error(f"❌ Service {service.id} is missing project_type_id or subject_id")
-                continue
-                
-            # Get the project type and subject for this service
-            project_type = ProjectType.query.get(service.project_type_id)
-            subject = Subject.query.get(service.subject_id)
-            
-            if not project_type or not subject:
-                logger.error(f"❌ Could not find project type {service.project_type_id} or subject {service.subject_id} for service {service.id}")
-                continue
-                
-            logger.info(f"📋 Service details: Project Type: {project_type.name} (ID: {project_type.id}), Subject: {subject.name} (ID: {subject.id})")
-            
-            # Check how many experts are already assigned to this service
-            existing_experts_count = db.session.query(expert_services).filter(
-                expert_services.c.service_id == service.id
-            ).count()
-            
-            logger.info(f"👤 Service has {existing_experts_count} existing experts")
-             
-            # If we already have 3 experts, skip to the next service
-            if existing_experts_count >= 3:
-                logger.info(f"✅ Service '{service.title}' already has {existing_experts_count} experts - skipping")
-                continue
-                
-            # Determine how many more experts we need
-            num_experts_needed = 3 - existing_experts_count
-            logger.info(f"➕ Need to create {num_experts_needed} more experts for this service")
-            
-            # Create new experts for this service
-            for i in range(num_experts_needed):
-                try:
-                    # Start a nested transaction
-                    nested = db.session.begin_nested()
-                    
-                    # Generate expert details
-                    is_male = choice([True, False])
-                    
-                    if is_male:
-                        first_name = choice(male_first_names)
-                        profile_picture = choice(profile_pics_male)
-                    else:
-                        first_name = choice(female_first_names)
-                        profile_picture = choice(profile_pics_female)
-                        
-                    last_name = choice(last_names)
-                    full_name = f"{first_name} {last_name}"
-                    username = f"{first_name.lower()}_{last_name.lower()}_{service.id}"
-                    
-                    logger.info(f"🧑‍🎓 Creating expert: {full_name} for service '{service.title}'")
-                    
-                    # Create user
-                    try:
-                        user = User(
-                            username=username,
-                            is_admin=False
-                        )
-                        db.session.add(user)
-                        db.session.flush()  # Get the ID without committing
-                        
-                        # Create expert
-                        expert = Expert(
-                            id=user.id,
-                            name=full_name,
-                            title=f"{project_type.name} Specialist in {subject.name}",
-                            expertise=f"Expert in {project_type.name} for {subject.name}",
-                            description=f"Specialized in providing {project_type.name} services in the field of {subject.name}.",
-                            biography=f"Professional with extensive experience in {subject.name}, specializing in {project_type.name} projects.",
-                            education=f"PhD in {subject.name}",
-                            languages="English",
-                            profile_picture=profile_picture
-                        )
-                        db.session.add(expert)
-                        db.session.flush()
-                        
-                        # Use ORM approach first, with error handling as backup
-                        try:
-                            expert.project_types.append(project_type)
-                            expert.subjects.append(subject)
-                            expert.services.append(service)
-                            db.session.flush()
-                        except SQLAlchemyError as e:
-                            logger.warning(f"ORM relationship adding failed, trying direct SQL: {str(e)}")
-                            # If ORM fails, try direct SQL
-                            try:
-                                # Check if relationships already exist to avoid duplicates
-                                existing_pt = db.session.query(expert_project_types).filter_by(
-                                    expert_id=expert.id, project_type_id=project_type.id
-                                ).first()
-                                
-                                if not existing_pt:
-                                    db.session.execute(
-                                        expert_project_types.insert().values(
-                                            expert_id=expert.id,
-                                            project_type_id=project_type.id
-                                        )
-                                    )
-                                
-                                existing_subj = db.session.query(expert_subjects).filter_by(
-                                    expert_id=expert.id, subject_id=subject.id
-                                ).first()
-                                
-                                if not existing_subj:
-                                    db.session.execute(
-                                        expert_subjects.insert().values(
-                                            expert_id=expert.id,
-                                            subject_id=subject.id
-                                        )
-                                    )
-                                
-                                existing_serv = db.session.query(expert_services).filter_by(
-                                    expert_id=expert.id, service_id=service.id
-                                ).first()
-                                
-                                if not existing_serv:
-                                    db.session.execute(
-                                        expert_services.insert().values(
-                                            expert_id=expert.id,
-                                            service_id=service.id
-                                        )
-                                    )
-                            except SQLAlchemyError as e2:
-                                logger.error(f"Direct SQL also failed: {str(e2)}")
-                                raise
-                        
-                        # Commit this nested transaction
-                        nested.commit()
-                        experts_created += 1
-                        logger.info(f"✅ Created expert {full_name} (ID: {expert.id}) for service '{service.title}'")
-                        
-                    except SQLAlchemyError as e:
-                        nested.rollback()
-                        logger.error(f"❌ Error creating expert: {str(e)}")
-                        continue
-                        
-                except Exception as e:
-                    logger.error(f"❌ Unexpected error during expert creation: {str(e)}")
-                    continue
-            
-            # Commit after processing each service
-            try:
-                db.session.commit()
-                logger.info(f"💾 Committed changes for service '{service.title}'")
-            except SQLAlchemyError as e:
-                db.session.rollback()
-                logger.error(f"❌ Error committing service changes: {str(e)}")
+            existing_experts = (
+                Expert.query
+                .join(expert_services)
+                .filter(expert_services.c.service_id == service.id)
+                .count()
+            )
 
-        logger.info(f"✨ Expert generation completed. Created {experts_created} new experts!")
-        return experts_created > 0
-        
+            if existing_experts >= 3:
+                logger.info(f"✅ Service '{service.title}' already has {existing_experts} experts.")
+                continue
+
+            num_to_assign = 3 - existing_experts
+            assigned_experts = set()
+            logger.info(f"🔹 Assigning {num_to_assign} experts to '{service.title}'")
+            
+            # ✅ First, try to use already matched experts
+            for expert in matched_experts:
+                if len(assigned_experts) >= num_to_assign:
+                    break
+                if expert not in assigned_experts and service not in expert.services:
+                    expert.services.append(service)
+                    db.session.commit()
+                    assigned_experts.add(expert)
+                    logger.info(f"✅ Assigned existing expert {expert.name} to '{service.title}'")
+
+            # ✅ If not enough matched experts, create new ones
+            while len(assigned_experts) < num_to_assign:
+                is_male = choice([True, False])
+                first_name = choice(male_first_names if is_male else female_first_names)
+                last_name = choice(last_names)
+                full_name = f"{first_name} {last_name}"
+
+                # ✅ Create a new user for the expert
+                new_user = User(
+                    username=full_name,
+                    is_admin=False
+                )
+                db.session.add(new_user)
+                db.session.commit()
+
+                # ✅ Create a new expert profile
+                expert = Expert(
+                    id=new_user.id,
+                    name=full_name,
+                    title=f"{service.title} Specialist",
+                    expertise=f"Expert in {service.title}",
+                    description=f"{full_name} specializes in {service.title}.",
+                    biography="Highly skilled professional with years of experience.",
+                    education="PhD in relevant field",
+                    languages="English, French",
+                    profile_picture="https://example.com/profile.jpg",
+                )
+                db.session.add(expert)
+                db.session.commit()
+
+                # ✅ Assign expert to the service
+                expert.services.append(service)
+                db.session.commit()
+                assigned_experts.add(expert)
+
+                logger.info(f"✅ Created expert: {full_name} for '{service.title}'")
+
+        logger.info(f"✅ Successfully assigned experts to services!")
+        return True
+
     except Exception as e:
         logger.error(f"❌ Error during expert generation: {str(e)}")
-        import traceback
-        logger.error(traceback.format_exc())
         db.session.rollback()
         return False
 
@@ -470,6 +384,4 @@ if __name__ == "__main__":
     with app.app_context():
         success = generate_experts()
         if not success:
-            logger.error("❌ Expert generation failed!")
-        else:
-            logger.info("✅ Expert generation succeeded!")
+            logger.error("Expert generation failed!")
