@@ -115,15 +115,15 @@
 //           <span>Request Service</span>
 //           <FontAwesomeIcon icon={faArrowRight} />
 //         </button>
-//         {currentUser && (
-//           <button
-//             onClick={() => setShowChatModal(true)}
-//             className="w-full bg-blue-900 text-white py-2 px-4 rounded-lg hover:bg-blue-500 transition-colors duration-300 flex items-center justify-center gap-2 mt-2"
-//           >
-//             <span>Chat</span>
-//             <IoMdChatbubbles />
-//           </button>
-//         )}
+        // {currentUser && (
+        //   <button
+        //     onClick={() => setShowChatModal(true)}
+        //     className="w-full bg-blue-900 text-white py-2 px-4 rounded-lg hover:bg-blue-500 transition-colors duration-300 flex items-center justify-center gap-2 mt-2"
+        //   >
+        //     <span>Chat</span>
+        //     <IoMdChatbubbles />
+        //   </button>
+        // )}
 //       </div>
 //       <ExpertDetailModal
 //         expert={expert}
@@ -158,10 +158,11 @@ import ChatModal from './ChatModal';
 import ExpertDetailModal from './admin/ExpertDetailModal';
 import { UserContext } from './contexts/userContext';
 
-const ExpertCard = ({ expert, onHire, currentUser }) => {
+const ExpertCard = ({ expert, onHire }) => {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showChatModal, setShowChatModal] = useState(false);
-  const { authToken } = useContext(UserContext);
+  const { authToken,currentUser } = useContext(UserContext);
+  // console.log('this is the expert',expert)
 
   const renderStars = (rating) => {
     return (
@@ -214,7 +215,7 @@ const ExpertCard = ({ expert, onHire, currentUser }) => {
             </span>
           </div>
           <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
-            {expert.successRate || "98%"} Success
+            {expert.successRate || "98%"} % Success Rate
           </span>
         </div>
 
