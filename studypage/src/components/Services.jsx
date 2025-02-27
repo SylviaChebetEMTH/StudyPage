@@ -37,37 +37,6 @@ const Services = () => {
       <div className="h-4 bg-gray-300 rounded w-full"></div>
     </div>
   );
-
-  // Function to fetch services from the backend
-  // const fetchServices = async () => {
-    // const storedServices = localStorage.getItem('service');
-    // if (storedServices) {
-    //   setServices(JSON.parse(storedServices));
-    //   setLoading(false);
-    //   return;
-    // }
-  //   try {
-  //     const response = await fetch(`${API_URL}/services`, {
-  //       method: 'GET',
-  //       headers: { 'Content-Type': 'application/json' },
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok');
-  //     }
-
-  //     const data = await response.json();
-  //     console.log('services retrieved',data.services)
-  //     const servicesArray = Array.isArray(data.services) ? data.services : []; 
-  //     setServices(servicesArray);
-  //     localStorage.setItem('services', JSON.stringify(servicesArray));
-  //   } catch (error) {
-  //     console.error('Error fetching services:', error);
-  //     setError('Failed to fetch services.');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const fetchServices = async (projectTypeId = null, subjectId = null) => {
     setLoading(true);
   
@@ -186,7 +155,7 @@ const Services = () => {
               <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded">
                 ${service.price_per_page} per page
               </span>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" onClick={() => move(service.project_type_id,service.id,service.subject_id)} >
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" onClick={() => move(service.project_type_id,service.subject_id, service.id)} >
                 Request Service
               </button>
             </div>
