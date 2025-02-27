@@ -976,17 +976,17 @@ def request_expert():
     except ValueError:
         return jsonify({"error": "Invalid deadline format. Use YYYY-MM-DD."}), 400
 
+    # Save the project request
     project = ProjectRequest(
         project_title=data.get('project_title'),
         project_description=data.get('project_description'),
-        project_type_id=int(data.get('project_type')) if data.get('project_type') else None,
-        subject_id=int(data.get('subject')) if data.get('subject') else None,
+        project_type_id=data.get('project_type'),
+        subject_id=data.get('subject'),
         deadline=deadline,
         expert_id=data.get('expert_id'),
         user_id=get_jwt_identity(),
-        number_of_pages=int(data.get('number_of_pages')) if data.get('number_of_pages') else None
+        number_of_pages=data.get('number_of_pages')
     )
-
     db.session.add(project)
     db.session.commit()
 
@@ -1001,20 +1001,15 @@ def request_expert():
         attachments.append(file_url)
     project.attachments = ','.join(attachments)
     db.session.commit()
-    print(f"✅ Project created with ID: {project.id}")
-
-    # Check expert existence
-    expert = Expert.query.get(data.get('expert_id'))
-    if not expert:
-        return jsonify({"error": "Expert does not exist."}), 400
 
     conversation = Conversation.query.filter_by(
+        
         client_id=get_jwt_identity(),
         expert_id=data.get('expert_id'),
     ).first()
 
+
     if not conversation:
-        print(f"✅ No conversation found, creating new one for project {project.id}")
         conversation = Conversation(
             client_id=get_jwt_identity(),
             expert_id=data.get('expert_id'),
@@ -1022,48 +1017,6 @@ def request_expert():
         )
         db.session.add(conversation)
         db.session.commit()
-
-    # Save the project request
-    # project = ProjectRequest(
-    #     project_title=data.get('project_title'),
-    #     project_description=data.get('project_description'),
-    #     project_type_id=data.get('project_type', type=int),
-    #     subject_id=data.get('subject', type=int),
-    #     deadline=deadline,
-    #     expert_id=data.get('expert_id'),
-    #     user_id=get_jwt_identity(),
-    #     number_of_pages=data.get('number_of_pages')
-    # )
-    # db.session.add(project)
-    # db.session.commit()
-
-    # attachments = []
-    # for file in files:
-    #     filename = secure_filename(file.filename)
-    #     # file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    #     # file.save(file_path)
-    #     upload_result = cloudinary.uploader.upload(file, resource_type="raw")
-    #     # file_url = url_for('serve_file', filename=filename, _external=True)
-    #     file_url = upload_result['secure_url']
-    #     attachments.append(file_url)
-    # project.attachments = ','.join(attachments)
-    # db.session.commit()
-
-    # conversation = Conversation.query.filter_by(
-        
-    #     client_id=get_jwt_identity(),
-    #     expert_id=data.get('expert_id'),
-    # ).first()
-
-
-    # if not conversation:
-    #     conversation = Conversation(
-    #         client_id=get_jwt_identity(),
-    #         expert_id=data.get('expert_id'),
-    #         project_id=project.id
-    #     )
-    #     db.session.add(conversation)
-    #     db.session.commit()
 
     message = MessageModel(
         conversation_id=conversation.id,
