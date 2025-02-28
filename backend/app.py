@@ -29,6 +29,7 @@ from dotenv import load_dotenv
 from gevent import monkey
 monkey.patch_all()
 load_dotenv()
+from flask_cors import cross_origin
 
 import requests
 import smtplib
@@ -713,7 +714,6 @@ def verify_password():
     else:
         return jsonify({"success": False, "error": "Incorrect password"}), 401
 
-
 @app.route('/update_profile', methods=['PUT'])
 @jwt_required()
 def update_profile():
@@ -1161,6 +1161,7 @@ def request_expert():
 #     return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
 @app.route('/conversationsadmin/<int:conversation_id>/messages', methods=['POST'])
 @jwt_required()
+@cross_origin(origin="https://www.studypage.cloud", supports_credentials=True)
 def admn_send_message(conversation_id):
     expert = Expert.query.get(experts_id)
     try:
@@ -1346,10 +1347,6 @@ def send_message(conversation_id):
             attachments=attachment_paths
         )
         return jsonify(message.to_dict()), 201
-    except Exception as e:
-        traceback.print_exc()
-        return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
-
     except Exception as e:
         traceback.print_exc()
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
