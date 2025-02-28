@@ -967,7 +967,7 @@ def submit_project(project_id):
 @jwt_required()
 def request_expert():
     data = request.form
-    files = request.files.getlist('attachments')
+    files = request.files.getlist('attachments') + request.files.getlist('attachments[]')
 
     # Extract and validate basic fields
     deadline_str = data.get('deadline')
