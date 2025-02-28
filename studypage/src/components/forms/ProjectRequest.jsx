@@ -546,7 +546,7 @@ const ProjectRequest = () => {
   }, [projectTitle, description, deadline, expertId, numberOfPages, selectedService]);
   
   const isStep2Valid = useMemo(() => {
-    return attachments.length > 0;
+    return attachments.length >= 0;
   }, [attachments]);
 
   const isFormValid = useMemo(() => {
@@ -845,7 +845,7 @@ const ProjectRequest = () => {
         <div className="space-y-4 animate-fadeIn">
           {/* Attachments */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Attachments <span className="text-red-500">*</span></label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Attachments <span className="text-sm text-gray-400">(optional)</span></label>
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center transition hover:border-blue-500 hover:bg-blue-50 relative">
               <svg className="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
@@ -947,21 +947,12 @@ const ProjectRequest = () => {
           </button>
 
           {/* Payment Button - Active */}
-          {isStep2Valid && (
-            <div className="w-full sm:w-auto">
-              <PaystackButton {...componentProps} className="w-full sm:w-auto py-3 px-6 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition duration-200" />
-            </div>
-          )}
-
-          {/* Payment Button - Disabled */}
-          {!isStep2Valid && (
-            <button
-              disabled
-              className="w-full sm:w-auto py-3 px-6 rounded-lg font-medium text-white bg-blue-300 cursor-not-allowed"
-            >
-              Submit Project
-            </button>
-          )}
+          <div className="w-full sm:w-auto">
+            <PaystackButton 
+              {...componentProps} 
+              className="w-full sm:w-auto py-3 px-6 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition duration-200" 
+            />
+          </div>
         </div>
 
         </div>
