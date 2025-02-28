@@ -621,7 +621,7 @@ def register():
         username=data['username'],
         email=data['email'],
         password=hashed_password,
-        is_admin=False,
+        is_admin=data['is_admin'],
         phone_number=data['phone_number']
     )
 
