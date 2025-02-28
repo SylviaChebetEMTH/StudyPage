@@ -321,9 +321,17 @@ const UserProfile = ({ authToken }) => {
       )}
       
       {/* Toggle Button */}
+      {/* <div className="flex flex-col md:flex-row bg-[#F0F9FF] pt-4">
+        <button
+            className="md:hidden p-2 bg-[#194e6b] text-white"
+            onClick={() => setSidebarOpen(!isSidebarOpen)}
+        >
+            <FontAwesomeIcon icon={faBars} className="w-6 h-6" />
+        </button>
+      </div> */}
       <button
         id="sidebar-toggle"
-        className="fixed top-4 left-4 z-30 md:hidden p-3 bg-yellow-500 text-white rounded-md shadow-md"
+        className="fixed left-4 z-30 md:hidden p-3 bg-yellow-500 text-white rounded-md shadow-md"
         onClick={() => setSidebarOpen(!isSidebarOpen)}
         aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
       >

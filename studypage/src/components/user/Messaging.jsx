@@ -81,7 +81,7 @@ const Messaging = () => {
       {/* Mobile Menu Button */}
       <button 
         onClick={toggleSidebar}
-        className="lg:hidden fixed top-4 left-4 z-50 p-3 rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-lg"
+        className="lg:hidden fixed top-10 left-4 z-50 p-3 rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition-colors shadow-lg"
       >
         {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
