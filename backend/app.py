@@ -1161,6 +1161,7 @@ def request_expert():
 #     return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
 @app.route('/conversationsadmin/<int:conversation_id>/messages', methods=['POST'])
 @jwt_required()
+
 @cross_origin(origin='http://localhost:3001',supports_credentials=True)
 def admn_send_message(conversation_id):
     converse = Conversation.query.get_or_404(conversation_id)
