@@ -598,6 +598,7 @@ const ProjectRequest = () => {
         formData.append("receiver_type", "expert");
 
         attachments.forEach((file) => formData.append("attachments[]", file));
+        console.log('here is the form data before sending', attachments)
 
         const projectResponse = await fetch(`${API_URL}/request_expert`, {
           method: "POST",
