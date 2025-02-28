@@ -91,7 +91,7 @@ export default function Login() {
     try {
       const user = await login(email, password);
       if (user) {
-        localStorage.setItem("isAdmin", user.is_admin);
+        // localStorage.setItem("isAdmin", user.is_admin);
         
         // Delay to ensure UI update before navigation
         await new Promise(resolve => setTimeout(resolve, 500));

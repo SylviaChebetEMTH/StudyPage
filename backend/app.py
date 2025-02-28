@@ -21,6 +21,7 @@ from datetime import datetime
 from flask import url_for
 import os
 import re
+import json
 import random
 import cloudinary
 import cloudinary.uploader
@@ -244,12 +245,19 @@ def handle_options():
 def get_messages(conversation_id):
     try:
         conversation = Conversation.query.get_or_404(conversation_id)
-        messages = [message.to_dict() for message in conversation.messages]
-        return jsonify(messages), 200
+        messages_with_attachments = []
+
+        for message in conversation.messages:
+            message_data = message.to_dict()
+            message_data['attachments'] = json.loads(message.attachments or "[]")
+            messages_with_attachments.append(message_data)
+
+        return jsonify(messages_with_attachments), 200
+
     except Exception as e:
-        # Log the error for debugging
         app.logger.error(f"Error fetching messages: {e}")
         return jsonify({"error": "An unexpected error occurred."}), 500
+
 
 PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
 # PAYSTACK_SECRET_KEY =os.environ.get('PAYSTACK_SECRET_KEY')
@@ -1016,7 +1024,7 @@ def request_expert():
         else:
             return jsonify({"error": f"Invalid file: {file.filename}"}), 400
 
-    project.attachments = ','.join(attachments)
+    project.attachments = json.dumps(attachments)
     db.session.commit()
 
     # Check if conversation already exists
@@ -1312,7 +1320,7 @@ def send_message(conversation_id):
             sender_id=sender_id,
             receiver_id=conversation.client_id if sender_id != conversation.client_id else conversation.expert_id,
             content=content,
-            attachments=', '.join(attachments) if attachments else None
+            attachments='||'.join(attachments) if attachments else None
         )
         db.session.add(message)
         db.session.commit()

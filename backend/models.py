@@ -218,7 +218,7 @@ class Message(db.Model):
  
            'expert': self.expert.name if self.expert else None,
             'content': self.content,
-            'attachments': self.attachments.split(', ') if self.attachments else [],
+            'attachments': self.attachments.split('||') if self.attachments else [],
             'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
             'read': self.read,
         }
