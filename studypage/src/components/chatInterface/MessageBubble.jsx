@@ -1,9 +1,26 @@
-
 import React from "react";
 import classNames from "classnames";
 
 const MessageBubble = ({ message, activeUser }) => {
-  console.log('Here is the message',message)
+  // Parse the attachments properly
+  const parseAttachments = () => {
+    if (!message.attachments || !message.attachments.length) return [];
+    
+    try {
+      // If it's a stringified JSON array (as shown in your console log)
+      if (typeof message.attachments[0] === 'string' && message.attachments[0].startsWith('[')) {
+        return JSON.parse(message.attachments[0]);
+      }
+      // If it's already an array of attachment URLs
+      return message.attachments;
+    } catch (error) {
+      console.error("Error parsing attachments:", error);
+      return [];
+    }
+  };
+
+  const attachments = parseAttachments();
+
   const isSender =
     activeUser &&
     message &&
@@ -25,10 +42,10 @@ const MessageBubble = ({ message, activeUser }) => {
   );
 
   const renderMessageContent = () => {
-    if (message.attachments && message.attachments.length > 0) {
+    if (attachments && attachments.length > 0) {
       return (
         <div className="space-y-2">
-          {message.attachments.map((attachment, index) => (
+          {attachments.map((attachment, index) => (
             attachment.endsWith(".png") || attachment.endsWith(".jpg") ? (
               <div key={index} className="relative group">
                 <img
@@ -43,9 +60,9 @@ const MessageBubble = ({ message, activeUser }) => {
               <a
                 key={index}
                 href={attachment}
-                target={!isSender ? "_blank" : undefined}
+                target="_blank"
                 download={isSender ? attachment.split("/").pop() : undefined}
-                rel={!isSender ? "noopener noreferrer" : undefined}
+                rel="noopener noreferrer"
                 className={classNames(
                   "flex items-center space-x-2 p-2 rounded-lg transition-colors duration-200",
                   {
