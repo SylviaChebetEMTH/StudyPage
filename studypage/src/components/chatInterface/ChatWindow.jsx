@@ -412,6 +412,7 @@ const useConversation = (conversationId) => {
       }
 
       const data = await response.json();
+      console.log('fetched data',data)
       setMessages(data);
       setError(null);
     } catch (err) {

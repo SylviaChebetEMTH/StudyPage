@@ -245,19 +245,13 @@ def handle_options():
 def get_messages(conversation_id):
     try:
         conversation = Conversation.query.get_or_404(conversation_id)
-        messages_with_attachments = []
-
-        for message in conversation.messages:
-            message_data = message.to_dict()
-            message_data['attachments'] = json.loads(message.attachments or "[]")
-            messages_with_attachments.append(message_data)
-
-        return jsonify(messages_with_attachments), 200
-
+        messages = [message.to_dict() for message in conversation.messages]
+        attachments = json.loads(messages.attachments or "[]")
+        return jsonify(messages,attachments), 200
     except Exception as e:
+        # Log the error for debugging
         app.logger.error(f"Error fetching messages: {e}")
         return jsonify({"error": "An unexpected error occurred."}), 500
-
 
 PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
 # PAYSTACK_SECRET_KEY =os.environ.get('PAYSTACK_SECRET_KEY')
