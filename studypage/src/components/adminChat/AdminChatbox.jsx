@@ -39,7 +39,8 @@ const AdminChatBox = ({ conversationId, conversationDetails }) => {
   const sendMessage = async (conversationId, content, attachments) => {
     const formData = new FormData();
     formData.append('content', content);
-    formData.append('sender_type', 'admin');
+    formData.append('experts_id', content);
+    // formData.append('sender_type', 'admin');
     attachments.forEach(file => formData.append('attachments', file));
   
     try {

@@ -1,7 +1,7 @@
 from flask import Flask,make_response, jsonify, request, send_from_directory, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from functools import wraps
 import traceback
 from sqlalchemy.orm import joinedload
@@ -29,7 +29,7 @@ from dotenv import load_dotenv
 from gevent import monkey
 monkey.patch_all()
 load_dotenv()
-from flask_cors import cross_origin
+
 
 import requests
 import smtplib
@@ -1161,7 +1161,7 @@ def request_expert():
 #     return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
 @app.route('/conversationsadmin/<int:conversation_id>/messages', methods=['POST'])
 @jwt_required()
-@cross_origin(origin="https://www.studypage.cloud", supports_credentials=True)
+@cross_origin(origin='http://localhost:3001',supports_credentials=True)
 def admn_send_message(conversation_id):
     expert = Expert.query.get(experts_id)
     try:
