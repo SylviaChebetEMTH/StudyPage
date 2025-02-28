@@ -1016,7 +1016,7 @@ def request_expert():
         else:
             return jsonify({"error": f"Invalid file: {file.filename}"}), 400
 
-    project.attachments = ','.join(attachments)
+    project.attachments = '||'.join(attachments)
     db.session.commit()
 
     # Check if conversation already exists
@@ -1312,7 +1312,7 @@ def send_message(conversation_id):
             sender_id=sender_id,
             receiver_id=conversation.client_id if sender_id != conversation.client_id else conversation.expert_id,
             content=content,
-            attachments=', '.join(attachments) if attachments else None
+            attachments='||'.join(attachments) if attachments else None
         )
         db.session.add(message)
         db.session.commit()

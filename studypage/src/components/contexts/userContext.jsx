@@ -108,7 +108,7 @@ export const UserProvider = ({ children }) => {
         localStorage.setItem("token", res.access_token);
         localStorage.setItem("refresh_token", res.refresh_token);
         toast.success("Login successful");
-        nav("/");
+        // nav("/");
       } else {
         toast.error(res.message || "Invalid credentials");
       }
