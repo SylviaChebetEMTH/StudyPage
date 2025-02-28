@@ -246,8 +246,8 @@ def get_messages(conversation_id):
     try:
         conversation = Conversation.query.get_or_404(conversation_id)
         messages = [message.to_dict() for message in conversation.messages]
-        attachments = json.loads(messages.attachments or "[]")
-        return jsonify(messages,attachments), 200
+        # attachments = json.loads(messages.attachments or "[]")
+        return jsonify(messages), 200
     except Exception as e:
         # Log the error for debugging
         app.logger.error(f"Error fetching messages: {e}")
