@@ -1163,6 +1163,8 @@ def request_expert():
 @jwt_required()
 @cross_origin(origin='http://localhost:3001',supports_credentials=True)
 def admn_send_message(conversation_id):
+    converse = Conversation.query.get_or_404(conversation_id)
+    experts_id = converse.expert_id
     expert = Expert.query.get(experts_id)
     try:
         sender_id = get_jwt_identity()
