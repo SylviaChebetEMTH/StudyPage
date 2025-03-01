@@ -64,15 +64,126 @@
 
 // export default AdminSidebar;
 
+// import React, { useEffect, useState, useContext } from "react";
+// import { FileIcon } from "lucide-react";
+// import { UserContext } from "../contexts/userContext";
+// import { Link } from "react-router-dom"; // Added Link import
+
+// const AdminSidebar = ({ onSelectConversation }) => {
+//   const [conversations, setConversations] = useState([]);
+//   const { authToken } = useContext(UserContext);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const fetchConversations = async () => {
+//       setLoading(true);
+
+//       try {
+//         const response = await fetch("https://studypage.onrender.com/admin/conversations", {
+//           headers: { Authorization: `Bearer ${authToken}` },
+//         });
+
+//         if (!response.ok) {
+//           throw new Error(`HTTP error! status: ${response.status}`);
+//         }
+
+//         const data = await response.json();
+//         // Sort conversations by last message timestamp
+//         const sortedData = data.sort((a, b) => {
+//           const timeA = a.last_timestamp ? new Date(a.last_timestamp) : new Date(a.created_at);
+//           const timeB = b.last_timestamp ? new Date(b.last_timestamp) : new Date(b.created_at);
+//           return timeB - timeA;
+//         });
+//         setConversations(sortedData);
+//       } catch (error) {
+//         console.error("Error fetching conversations:", error);
+//         setConversations([]);
+//       }
+//       setLoading(false);
+//     };
+
+//     fetchConversations();
+//   }, [authToken]);
+
+//   // Format timestamp to a readable format
+//   const formatTime = (timestamp) => {
+//     if (!timestamp) return "";
+//     const date = new Date(timestamp);
+//     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+//   };
+
+//   return (
+//     <div className="w-full md:w-80 bg-gray-800 border-r border-gray-700 flex flex-col h-screen">
+//       <div className="p-4 border-b border-gray-700">
+//         <h1 className="text-gray-100 text-xl font-semibold">Conversations</h1>
+//       </div>
+//       <div className="overflow-y-auto flex-grow space-y-2 p-3">
+//         {loading ? (
+//           <div className="flex flex-col items-center justify-center h-full text-gray-400">
+//             <div className="w-8 h-8 border-4 border-t-blue-500 border-blue-200 rounded-full animate-spin mb-4"></div>
+//             <p>Loading conversations...</p>
+//           </div>
+//         ) : (
+//           conversations.length > 0 ? (
+//             conversations.map((conv) => (
+//               <div
+//                 key={conv.conversation_id}
+//                 className="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 cursor-pointer transition-colors duration-200"
+//                 onClick={() =>
+//                   onSelectConversation({
+//                     conversationId: conv.conversation_id,
+//                     client: conv.client,
+//                     expert: conv.expert,
+//                   })
+//                 }
+//               >
+//                 <div className="flex items-center justify-between mb-2">
+//                   <div className="flex-1">
+//                     <p className="text-gray-200 font-medium">
+//                       <span className="text-yellow-400">{conv.client}</span> → <span className="text-blue-400">{conv.expert}</span>
+//                     </p>
+//                   </div>
+//                   <span className="text-xs text-gray-400">
+//                     {formatTime(conv.last_timestamp || conv.created_at)}
+//                   </span>
+//                 </div>
+                
+//                 <div className="text-gray-300 text-sm truncate flex items-center gap-2">
+//                   {conv.is_file && <FileIcon className="w-4 h-4 flex-shrink-0 text-gray-400" />}
+//                   <p className="truncate">{conv.last_message || "No messages yet"}</p>
+//                 </div>
+//               </div>
+//             ))
+//           ) : (
+//             <div className="flex flex-col items-center justify-center h-full text-gray-400 p-4">
+//               <p className="text-center mb-2">No conversations yet</p>
+//               <p className="text-sm text-gray-500">
+//                 Start a new chat at the{" "}
+//                 <Link to="/expertspage" className="text-blue-400 hover:underline">
+//                   expert's page
+//                 </Link>
+//               </p>
+//             </div>
+//           )
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default AdminSidebar;
+
+
 import React, { useEffect, useState, useContext } from "react";
-import { FileIcon } from "lucide-react";
+import { FileIcon, X } from "lucide-react";
 import { UserContext } from "../contexts/userContext";
-import { Link } from "react-router-dom"; // Added Link import
+import { Link } from "react-router-dom";
 
 const AdminSidebar = ({ onSelectConversation }) => {
   const [conversations, setConversations] = useState([]);
   const { authToken } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -112,11 +223,33 @@ const AdminSidebar = ({ onSelectConversation }) => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+  // Filter conversations based on search term
+  const filteredConversations = conversations.filter(conv => 
+    conv.client?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    conv.expert?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    conv.last_message?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="w-full md:w-80 bg-gray-800 border-r border-gray-700 flex flex-col h-screen">
-      <div className="p-4 border-b border-gray-700">
-        <h1 className="text-gray-100 text-xl font-semibold">Conversations</h1>
+    <div className="flex flex-col h-full bg-gray-800 border-r border-gray-700 overflow-hidden">
+      <div className="p-3 border-b border-gray-700 flex justify-between items-center">
+        <h1 className="text-gray-100 text-lg font-semibold">Conversations</h1>
+        <button className="md:hidden text-gray-400 hover:text-white" onClick={() => onSelectConversation(null)}>
+          <X size={20} />
+        </button>
       </div>
+      
+      {/* Search bar */}
+      <div className="p-3 border-b border-gray-700">
+        <input
+          type="text"
+          placeholder="Search conversations..."
+          className="w-full bg-gray-700 text-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      
       <div className="overflow-y-auto flex-grow space-y-2 p-3">
         {loading ? (
           <div className="flex flex-col items-center justify-center h-full text-gray-400">
@@ -124,8 +257,8 @@ const AdminSidebar = ({ onSelectConversation }) => {
             <p>Loading conversations...</p>
           </div>
         ) : (
-          conversations.length > 0 ? (
-            conversations.map((conv) => (
+          filteredConversations.length > 0 ? (
+            filteredConversations.map((conv) => (
               <div
                 key={conv.conversation_id}
                 className="p-3 bg-gray-700 rounded-lg hover:bg-gray-600 cursor-pointer transition-colors duration-200"
@@ -139,7 +272,7 @@ const AdminSidebar = ({ onSelectConversation }) => {
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex-1">
-                    <p className="text-gray-200 font-medium">
+                    <p className="text-gray-200 font-medium text-sm">
                       <span className="text-yellow-400">{conv.client}</span> → <span className="text-blue-400">{conv.expert}</span>
                     </p>
                   </div>
@@ -156,13 +289,19 @@ const AdminSidebar = ({ onSelectConversation }) => {
             ))
           ) : (
             <div className="flex flex-col items-center justify-center h-full text-gray-400 p-4">
-              <p className="text-center mb-2">No conversations yet</p>
-              <p className="text-sm text-gray-500">
-                Start a new chat at the{" "}
-                <Link to="/expertspage" className="text-blue-400 hover:underline">
-                  expert's page
-                </Link>
-              </p>
+              {searchTerm ? (
+                <p className="text-center mb-2">No results found for "{searchTerm}"</p>
+              ) : (
+                <>
+                  <p className="text-center mb-2">No conversations yet</p>
+                  <p className="text-sm text-gray-500">
+                    Start a new chat at the{" "}
+                    <Link to="/expertspage" className="text-blue-400 hover:underline">
+                      expert's page
+                    </Link>
+                  </p>
+                </>
+              )}
             </div>
           )
         )}
