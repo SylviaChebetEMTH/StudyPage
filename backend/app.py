@@ -1075,7 +1075,6 @@ def request_expert():
         'conversation_id': conversation.id
     }), 201
 
-
 # @app.route('/request_expert', methods=['POST'])
 # @jwt_required()
 # def request_expert():
@@ -1286,7 +1285,7 @@ def send_message(conversation_id):
                 db.session.add(conversation)
                 db.session.commit()
             conversation_id = conversation.id
-            
+
         conversation = Conversation.query.get_or_404(conversation_id)
 
         content = request.form.get('content','').strip()
