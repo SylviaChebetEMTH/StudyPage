@@ -430,7 +430,7 @@ const useConversation = (conversationId) => {
   return { messages, setMessages, error, loading, fetchMessages };
 };
 
-const ChatWindow = ({ activeUser, auth, teacher, pic, isInModal, teach }) => {
+const ChatWindow = ({ activeUser,teacher, pic, isInModal, teach }) => {
   const [chatActiveUser, setChatActiveUser] = useState(activeUser || null);
   const { authToken } = useContext(UserContext);
   console.log('teacher dot id',teacher)
@@ -464,7 +464,8 @@ const ChatWindow = ({ activeUser, auth, teacher, pic, isInModal, teach }) => {
 
       const formData = new FormData();
       formData.append("content", content);
-      formData.append("expert_id", activeUser.id);
+      formData.append("expert_id", activeUser.id || activeUser.expert_id );
+      console.log('this form data before sending', formData)
       // formData.append("sender_type", "user");
       attachments.forEach((file) => formData.append("attachments", file));
 
@@ -472,7 +473,7 @@ const ChatWindow = ({ activeUser, auth, teacher, pic, isInModal, teach }) => {
         `https://studypage.onrender.com/conversations/${conversationId}/messages`,
         {
           method: "POST",
-          headers: { Authorization: `Bearer ${authToken || auth}` },
+          headers: { Authorization: `Bearer ${authToken}` },
           body: formData,
         }
       );
