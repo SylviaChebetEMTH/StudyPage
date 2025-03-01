@@ -1286,12 +1286,8 @@ def send_message(conversation_id):
                 db.session.add(conversation)
                 db.session.commit()
             conversation_id = conversation.id
-            conversation = Conversation.query.get_or_404(conversation_id)
-            return jsonify({'conversation_id': conversation_id}), 201
-            # print(f"Creating message with: conversation_id={conversation_id}, sender_id={sender_id}, content='{content}', attachments={files}")
-        else:
-            conversation = Conversation.query.get_or_404(conversation_id)
-            print(f"Creating message with: conversation_id={conversation_id}, sender_id={sender_id}, content='{content}', attachments={files}")
+            
+        conversation = Conversation.query.get_or_404(conversation_id)
 
         content = request.form.get('content','').strip()
         files = request.files.getlist('attachments')
