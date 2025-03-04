@@ -622,7 +622,7 @@ def register():
         username=data['username'],
         email=data['email'],
         password=hashed_password,
-        is_admin=data['is_admin'],
+        is_admin=False,
         phone_number=data['phone_number']
     )
 
