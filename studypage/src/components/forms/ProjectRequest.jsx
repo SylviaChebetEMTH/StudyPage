@@ -435,7 +435,7 @@ const ProjectRequest = () => {
   const navigate = useNavigate();
 
   const API_URL = "https://studypage.onrender.com";
-  const publicKey = "pk_test_00e40d5cd3e321a68b22aad7e1c42a62f8587d4c";
+  const publicKey = "pk_live_9d093b52e09ff0b847d1e490f6ad1f1add87c150";
   const email = currentUser?.email || "";
   const [paymentRef] = useState(`ref_${Math.floor(Math.random() * 1000000000)}`);
 
@@ -640,7 +640,7 @@ const ProjectRequest = () => {
     () => ({
       email,
       amount: totalPrice * 100,
-      currency: "KES",
+      currency: "USD",
       metadata: { name: projectTitle, phone: currentUser?.phone || "N/A" },
       publicKey,
       text: isLoading ? "Processing..." : "Submit Project",
