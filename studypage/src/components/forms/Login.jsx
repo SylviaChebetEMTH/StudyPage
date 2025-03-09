@@ -1,15 +1,15 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { UserContext } from "../contexts/userContext";
 import { useNavigate } from "react-router-dom";
-import { useGoogleLogin } from "@react-oauth/google";
+// import { useGoogleLogin } from "@react-oauth/google";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import googleIcon from '../assets/googleIcon.png';
+// import googleIcon from '../assets/googleIcon.png';
 import loginImage from "../assets/login.png";
 import loginVideo from '../assets/loginVideo.mp4';
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
@@ -24,60 +24,60 @@ export default function Login() {
   console.log("setAuthToken:", setAuthToken);
   console.log("setCurrentUser :", setCurrentUser);
 
-  const handleGoogleSignup = useGoogleLogin({
-    onSuccess: async (response) => {
-      try {
-        const { access_token } = response;
-        const { data } = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
-          headers: { Authorization: `Bearer ${access_token}` },
-        });
+  // const handleGoogleSignup = useGoogleLogin({
+  //   onSuccess: async (response) => {
+  //     try {
+  //       const { access_token } = response;
+  //       const { data } = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+  //         headers: { Authorization: `Bearer ${access_token}` },
+  //       });
 
-        // Prepare the user data from Google response
-        const user = {
-          email: data.email,
-          username: data.given_name || data.email,
-        };
-        console.log("Before setting user:", user);
+  //       // Prepare the user data from Google response
+  //       const user = {
+  //         email: data.email,
+  //         username: data.given_name || data.email,
+  //       };
+  //       console.log("Before setting user:", user);
 
-        // Send the user data to your backend to handle signup/login
-        const res = await axios.post("https://studypage.onrender.com/auth/google", user);
+  //       // Send the user data to your backend to handle signup/login
+  //       const res = await axios.post("https://studypage.onrender.com/auth/google", user);
 
-        if (res.data.success) {
-          // Check if the user is an existing user or a new user
-          if (res.data.authToken) {
-            // If the user has an auth token, they are an existing user
-            setAuthToken(res.data.authToken); // Set the auth token in context
-            setCurrentUser(res.data); // Set the current user in context
-            localStorage.setItem('token', res.data.authToken);
-            // alert("Logged in successfully!");
+  //       if (res.data.success) {
+  //         // Check if the user is an existing user or a new user
+  //         if (res.data.authToken) {
+  //           // If the user has an auth token, they are an existing user
+  //           setAuthToken(res.data.authToken); // Set the auth token in context
+  //           setCurrentUser(res.data); // Set the current user in context
+  //           localStorage.setItem('token', res.data.authToken);
+  //           // alert("Logged in successfully!");
 
-            // Save user data to localStorage or context for future use (authentication state)
-            localStorage.setItem('user_id', res.data.user_id);
-            localStorage.setItem('email', res.data.email);
-            localStorage.setItem('username', res.data.username);
-            localStorage.setItem('is_admin', res.data.is_admin);
+  //           // Save user data to localStorage or context for future use (authentication state)
+  //           localStorage.setItem('user_id', res.data.user_id);
+  //           localStorage.setItem('email', res.data.email);
+  //           localStorage.setItem('username', res.data.username);
+  //           localStorage.setItem('is_admin', res.data.is_admin);
 
-            // Navigate user based on their role
-            if (res.data.is_admin) {
-              navigate("/admin/dashboard");
-            } else {
-              navigate("/");
-            }
-          } else {
-            // If no auth token exists, it means the user is new
-            toast.error("Check your email to set your password.");
-          }
-        } else {
-          // Handle any other failure cases
-          toast.error("An error occurred. Please try again.");
-        }
-      } catch (error) {
-        console.error("Google Signup failed:", error);
-        toast.error("Google Signup failed. Please try again.");
-      }
-    },
-    onError: () => console.error("Google Login Failed"),
-  });
+  //           // Navigate user based on their role
+  //           if (res.data.is_admin) {
+  //             navigate("/admin/dashboard");
+  //           } else {
+  //             navigate("/");
+  //           }
+  //         } else {
+  //           // If no auth token exists, it means the user is new
+  //           toast.error("Check your email to set your password.");
+  //         }
+  //       } else {
+  //         // Handle any other failure cases
+  //         toast.error("An error occurred. Please try again.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Google Signup failed:", error);
+  //       toast.error("Google Signup failed. Please try again.");
+  //     }
+  //   },
+  //   onError: () => console.error("Google Login Failed"),
+  // });
 
   const handleNavigateToForgotPassword = () => {
     navigate("/forgot-password");
@@ -224,13 +224,13 @@ export default function Login() {
               <div className="mt-6 text-center text-gray-500">or</div>
   
               {/* Social Login */}
-              <button
+              {/* <button
                 onClick={handleGoogleSignup}
                 className="mt-4 flex items-center justify-center py-2 px-3 w-full border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-800 transition"
               >
                 <img src={googleIcon} alt="Google" className="w-5 h-5 mr-2" />
                 Log in with Google
-              </button>
+              </button> */}
   
               <div className="text-center mt-4 text-sm text-gray-400">
                 Don't have an account?{" "}
