@@ -43,9 +43,11 @@ def seed_database():
     print("✅ Database seeding complete!")
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()  
-        seed_database()  
+    should_seed = os.environ.get("SEED_DB", "false").lower() == "true"
+    if should_seed:
+        with app.app_context():
+            db.create_all()  
+            seed_database()  
     
     # Get port from environment variable or use default
     port = int(os.environ.get('PORT', 8000))
@@ -55,8 +57,8 @@ if __name__ == '__main__':
         app,
         host='0.0.0.0',
         port=port,
-        debug=True,
-        use_reloader=True
+        debug=False,
+        use_reloader=False
     )
 
 
