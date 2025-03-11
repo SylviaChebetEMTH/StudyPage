@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import homeVideo from './assets/homeVideo.mp4';
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Footer from "./Footer";
 
 export default function Home() {
   useEffect(() => {
@@ -15,7 +16,6 @@ export default function Home() {
     <div className="homepage-container">
       <section className="bg-gray-900 flex flex-col lg:flex-row items-center justify-between px-10 py-16">
         <div className="lg:w-1/2 space-y-6">
-          {/* <h4 className="text-yellow-500 uppercase font-medium" data-aos="flip-up" data-aos-duration="1000" data-aos-delay="0">Study Central</h4> */}
           <h1 className="text-5xl lg:text-6xl text-white font-bold" data-aos="flip-up" data-aos-duration="1000" data-aos-delay="0">
             DESIGNING THE FUTURE <span className="text-yellow-500">TODAY</span>
           </h1>
@@ -26,7 +26,7 @@ export default function Home() {
               <button className="bg-yellow-500 hover:bg-yellow-600 mt-10 text-white font-semibold py-3 px-6 rounded-md shadow-md">
                 Request Service
               </button>
-            </Link>
+          </Link>
         </div>
         <div className="md:w-1/2 relative lg:w-1/2 mt-8 lg:mt-0">
           <div className="bg-orange-800 w-full h-full absolute -z-10 rounded-md translate-x-6 translate-y-6"></div>
@@ -44,7 +44,6 @@ export default function Home() {
           </video>
         </div>
       </section>
-
 
       <section className="py-12 px-4 md:px-8 bg-gray-50">
         <div className="max-w-screen-lg mx-auto text-center">
@@ -155,6 +154,7 @@ export default function Home() {
 
         </div>
       </section>
+      <Footer/>
     </div>
   );
 }

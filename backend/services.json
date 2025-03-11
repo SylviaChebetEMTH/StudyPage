@@ -2,8 +2,8 @@
     {
         "title": "Dissertation - Engineering",
         "description": "Professional Dissertation assistance in Engineering",
-        "base_price": 35.0,
-        "price_per_page": 49.0,
+        "base_price": 10.0,
+        "price_per_page": 15.0,
         "project_type_id": 1,
         "subject_id": 20,
         "unit": "Dissertation"
@@ -11,8 +11,8 @@
     {
         "title": "Dissertation - Computer Science",
         "description": "Professional Dissertation assistance in Computer Science",
-        "base_price": 35.0,
-        "price_per_page": 49.0,
+        "base_price": 10.0,
+        "price_per_page": 15.0,
         "project_type_id": 1,
         "subject_id": 12,
         "unit": "Dissertation"
@@ -20,8 +20,8 @@
     {
         "title": "Dissertation - Mathematics",
         "description": "Professional Dissertation assistance in Mathematics",
-        "base_price": 35.0,
-        "price_per_page": 49.0,
+        "base_price": 10.0,
+        "price_per_page": 15.0,
         "project_type_id": 1,
         "subject_id": 37,
         "unit": "Dissertation"
@@ -29,8 +29,8 @@
     {
         "title": "Dissertation - Nursing",
         "description": "Professional Dissertation assistance in Nursing",
-        "base_price": 32.5,
-        "price_per_page": 45.5,
+        "base_price": 9.0,
+        "price_per_page": 14.0,
         "project_type_id": 1,
         "subject_id": 39,
         "unit": "Dissertation"
@@ -38,8 +38,8 @@
     {
         "title": "Thesis - Nursing",
         "description": "Professional Thesis assistance in Nursing",
-        "base_price": 26.0,
-        "price_per_page": 39.0,
+        "base_price": 8.0,
+        "price_per_page": 12.0,
         "project_type_id": 2,
         "subject_id": 39,
         "unit": "Thesis"
@@ -47,8 +47,8 @@
     {
         "title": "Thesis - Biology",
         "description": "Professional Thesis assistance in Biology",
-        "base_price": 24.0,
-        "price_per_page": 36.0,
+        "base_price": 7.5,
+        "price_per_page": 11.5,
         "project_type_id": 2,
         "subject_id": 8,
         "unit": "Thesis"
@@ -56,8 +56,8 @@
     {
         "title": "Thesis - Physics",
         "description": "Professional Thesis assistance in Physics",
-        "base_price": 28.0,
-        "price_per_page": 42.0,
+        "base_price": 8.5,
+        "price_per_page": 13.0,
         "project_type_id": 2,
         "subject_id": 43,
         "unit": "Thesis"
@@ -65,8 +65,8 @@
     {
         "title": "Research Paper - Economics",
         "description": "Professional Research Paper assistance in Economics",
-        "base_price": 18.0,
-        "price_per_page": 30.0,
+        "base_price": 7.0,
+        "price_per_page": 11.0,
         "project_type_id": 3,
         "subject_id": 18,
         "unit": "Research Paper"
@@ -74,8 +74,8 @@
     {
         "title": "Research Paper - Business",
         "description": "Professional Research Paper assistance in Business",
-        "base_price": 18.0,
-        "price_per_page": 30.0,
+        "base_price": 7.0,
+        "price_per_page": 11.0,
         "project_type_id": 3,
         "subject_id": 9,
         "unit": "Research Paper"
@@ -83,8 +83,8 @@
     {
         "title": "Research Paper - Law",
         "description": "Professional Research Paper assistance in Law",
-        "base_price": 19.5,
-        "price_per_page": 32.5,
+        "base_price": 7.5,
+        "price_per_page": 12.0,
         "project_type_id": 3,
         "subject_id": 33,
         "unit": "Research Paper"
@@ -92,8 +92,8 @@
     {
         "title": "Research Paper - Psychology",
         "description": "Professional Research Paper assistance in Psychology",
-        "base_price": 15.0,
-        "price_per_page": 25.0,
+        "base_price": 6.0,
+        "price_per_page": 10.0,
         "project_type_id": 3,
         "subject_id": 45,
         "unit": "Research Paper"
@@ -101,8 +101,8 @@
     {
         "title": "Business Plan - Finance",
         "description": "Professional Business Plan assistance in Finance",
-        "base_price": 23.4,
-        "price_per_page": 36.4,
+        "base_price": 8.0,
+        "price_per_page": 13.0,
         "project_type_id": 4,
         "subject_id": 25,
         "unit": "Business Plan"
@@ -110,8 +110,8 @@
     {
         "title": "Business Plan - Marketing",
         "description": "Professional Business Plan assistance in Marketing",
-        "base_price": 21.6,
-        "price_per_page": 33.6,
+        "base_price": 7.5,
+        "price_per_page": 12.0,
         "project_type_id": 4,
         "subject_id": 36,
         "unit": "Business Plan"
@@ -119,8 +119,8 @@
     {
         "title": "Business Plan - Operations Management",
         "description": "Professional Business Plan assistance in Operations Management",
-        "base_price": 21.6,
-        "price_per_page": 33.6,
+        "base_price": 7.5,
+        "price_per_page": 12.0,
         "project_type_id": 4,
         "subject_id": 40,
         "unit": "Business Plan"
@@ -128,8 +128,8 @@
     {
         "title": "Case Study - Criminal Justice",
         "description": "Professional Case Study assistance in Criminal Justice",
-        "base_price": 19.5,
-        "price_per_page": 32.5,
+        "base_price": 7.5,
+        "price_per_page": 12.0,
         "project_type_id": 5,
         "subject_id": 14,
         "unit": "Case Study"
@@ -137,8 +137,8 @@
     {
         "title": "Case Study - Business",
         "description": "Professional Case Study assistance in Business",
-        "base_price": 18.0,
-        "price_per_page": 30.0,
+        "base_price": 7.0,
+        "price_per_page": 11.0,
         "project_type_id": 5,
         "subject_id": 9,
         "unit": "Case Study"
@@ -146,8 +146,8 @@
     {
         "title": "Case Study - Law",
         "description": "Professional Case Study assistance in Law",
-        "base_price": 19.5,
-        "price_per_page": 32.5,
+        "base_price": 7.5,
+        "price_per_page": 12.0,
         "project_type_id": 5,
         "subject_id": 33,
         "unit": "Case Study"
@@ -155,8 +155,8 @@
     {
         "title": "Technical Report - Engineering",
         "description": "Professional Technical Report assistance in Engineering",
-        "base_price": 21.0,
-        "price_per_page": 35.0,
+        "base_price": 8.0,
+        "price_per_page": 12.5,
         "project_type_id": 6,
         "subject_id": 20,
         "unit": "Technical Report"
@@ -164,8 +164,8 @@
     {
         "title": "Technical Report - Computer Science",
         "description": "Professional Technical Report assistance in Computer Science",
-        "base_price": 21.0,
-        "price_per_page": 35.0,
+        "base_price": 8.0,
+        "price_per_page": 12.5,
         "project_type_id": 6,
         "subject_id": 12,
         "unit": "Technical Report"
@@ -173,8 +173,8 @@
     {
         "title": "Technical Report - Physics",
         "description": "Professional Technical Report assistance in Physics",
-        "base_price": 21.0,
-        "price_per_page": 35.0,
+        "base_price": 8.0,
+        "price_per_page": 12.5,
         "project_type_id": 6,
         "subject_id": 43,
         "unit": "Technical Report"
@@ -182,8 +182,8 @@
     {
         "title": "Data Analysis - Statistics",
         "description": "Professional Data Analysis assistance in Statistics",
-        "base_price": 28.0,
-        "price_per_page": 42.0,
+        "base_price": 9.0,
+        "price_per_page": 14.0,
         "project_type_id": 7,
         "subject_id": 51,
         "unit": "Data Analysis"
@@ -191,8 +191,8 @@
     {
         "title": "Data Analysis - Operations Research",
         "description": "Professional Data Analysis assistance in Operations Research",
-        "base_price": 28.0,
-        "price_per_page": 42.0,
+        "base_price": 9.0,
+        "price_per_page": 14.0,
         "project_type_id": 7,
         "subject_id": 41,
         "unit": "Data Analysis"
@@ -200,8 +200,8 @@
     {
         "title": "Data Analysis - Data Analysis",
         "description": "Professional Data Analysis assistance in Data Analysis",
-        "base_price": 26.0,
-        "price_per_page": 39.0,
+        "base_price": 8.5,
+        "price_per_page": 13.0,
         "project_type_id": 7,
         "subject_id": 16,
         "unit": "Data Analysis"
@@ -209,8 +209,8 @@
     {
         "title": "Lab Report - Biology",
         "description": "Professional Lab Report assistance in Biology",
-        "base_price": 18.0,
-        "price_per_page": 30.0,
+        "base_price": 7.0,
+        "price_per_page": 11.0,
         "project_type_id": 8,
         "subject_id": 8,
         "unit": "Lab Report"
@@ -218,8 +218,8 @@
     {
         "title": "Lab Report - Chemistry",
         "description": "Professional Lab Report assistance in Chemistry",
-        "base_price": 19.5,
-        "price_per_page": 32.5,
+        "base_price": 7.5,
+        "price_per_page": 12.0,
         "project_type_id": 8,
         "subject_id": 10,
         "unit": "Lab Report"
@@ -227,8 +227,8 @@
     {
         "title": "Lab Report - Environmental Science",
         "description": "Professional Lab Report assistance in Environmental Science",
-        "base_price": 18.0,
-        "price_per_page": 30.0,
+        "base_price": 7.0,
+        "price_per_page": 11.0,
         "project_type_id": 8,
         "subject_id": 23,
         "unit": "Lab Report"
@@ -236,8 +236,8 @@
     {
         "title": "Code - Computer Science",
         "description": "Professional Code assistance in Computer Science",
-        "base_price": 35.0,
-        "price_per_page": 49.0,
+        "base_price": 10.0,
+        "price_per_page": 15.0,
         "project_type_id": 9,
         "subject_id": 12,
         "unit": "Code"
@@ -245,8 +245,8 @@
     {
         "title": "Code - Information Technology",
         "description": "Professional Code assistance in Information Technology",
-        "base_price": 35.0,
-        "price_per_page": 49.0,
+        "base_price": 10.0,
+        "price_per_page": 15.0,
         "project_type_id": 9,
         "subject_id": 29,
         "unit": "Code"
@@ -254,8 +254,8 @@
     {
         "title": "Code - Web Development",
         "description": "Professional Code assistance in Web Development",
-        "base_price": 35.0,
-        "price_per_page": 49.0,
+        "base_price": 10.0,
+        "price_per_page": 15.0,
         "project_type_id": 9,
         "subject_id": 55,
         "unit": "Code"
@@ -263,8 +263,8 @@
     {
         "title": "Math Solving - Mathematics",
         "description": "Professional Math Solving assistance in Mathematics",
-        "base_price": 28.0,
-        "price_per_page": 42.0,
+        "base_price": 9.0,
+        "price_per_page": 14.0,
         "project_type_id": 10,
         "subject_id": 37,
         "unit": "Math Solving"
@@ -272,8 +272,8 @@
     {
         "title": "Math Solving - Statistics",
         "description": "Professional Math Solving assistance in Statistics",
-        "base_price": 28.0,
-        "price_per_page": 42.0,
+        "base_price": 9.0,
+        "price_per_page": 14.0,
         "project_type_id": 10,
         "subject_id": 51,
         "unit": "Math Solving"
@@ -281,8 +281,8 @@
     {
         "title": "Math Solving - Algebra",
         "description": "Professional Math Solving assistance in Algebra",
-        "base_price": 28.0,
-        "price_per_page": 42.0,
+        "base_price": 9.0,
+        "price_per_page": 14.0,
         "project_type_id": 10,
         "subject_id": 2,
         "unit": "Math Solving"
@@ -290,8 +290,8 @@
     {
         "title": "Literature Review - English",
         "description": "Professional Literature Review assistance in English",
-        "base_price": 12.0,
-        "price_per_page": 22.0,
+        "base_price": 5.0,
+        "price_per_page": 9.0,
         "project_type_id": 11,
         "subject_id": 21,
         "unit": "Literature Review"
@@ -299,8 +299,8 @@
     {
         "title": "Literature Review - History",
         "description": "Professional Literature Review assistance in History",
-        "base_price": 12.0,
-        "price_per_page": 22.0,
+        "base_price": 5.0,
+        "price_per_page": 9.0,
         "project_type_id": 11,
         "subject_id": 28,
         "unit": "Literature Review"
@@ -308,8 +308,8 @@
     {
         "title": "Literature Review - Literature",
         "description": "Professional Literature Review assistance in Literature",
-        "base_price": 12.0,
-        "price_per_page": 22.0,
+        "base_price": 5.0,
+        "price_per_page": 9.0,
         "project_type_id": 11,
         "subject_id": 34,
         "unit": "Literature Review"
@@ -317,8 +317,8 @@
     {
         "title": "Essay - English",
         "description": "Professional Essay assistance in English",
-        "base_price": 8.0,
-        "price_per_page": 15.0,
+        "base_price": 4.0,
+        "price_per_page": 7.5,
         "project_type_id": 12,
         "subject_id": 21,
         "unit": "Essay"
@@ -326,8 +326,8 @@
     {
         "title": "Essay - History",
         "description": "Professional Essay assistance in History",
-        "base_price": 8.0,
-        "price_per_page": 15.0,
+        "base_price": 4.0,
+        "price_per_page": 7.5,
         "project_type_id": 12,
         "subject_id": 28,
         "unit": "Essay"
@@ -335,8 +335,8 @@
     {
         "title": "Essay - Sociology",
         "description": "Professional Essay assistance in Sociology",
-        "base_price": 8.0,
-        "price_per_page": 15.0,
+        "base_price": 4.0,
+        "price_per_page": 7.5,
         "project_type_id": 12,
         "subject_id": 50,
         "unit": "Essay"
@@ -344,8 +344,8 @@
     {
         "title": "Article - Journalism",
         "description": "Professional Article assistance in Journalism",
-        "base_price": 8.0,
-        "price_per_page": 15.0,
+        "base_price": 4.0,
+        "price_per_page": 7.5,
         "project_type_id": 13,
         "subject_id": 32,
         "unit": "Article"
@@ -353,8 +353,8 @@
     {
         "title": "Article - Communications",
         "description": "Professional Article assistance in Communications",
-        "base_price": 8.0,
-        "price_per_page": 15.0,
+        "base_price": 4.0,
+        "price_per_page": 7.5,
         "project_type_id": 13,
         "subject_id": 11,
         "unit": "Article"
@@ -362,8 +362,8 @@
     {
         "title": "Article - Public Relations",
         "description": "Professional Article assistance in Public Relations",
-        "base_price": 8.0,
-        "price_per_page": 15.0,
+        "base_price": 4.0,
+        "price_per_page": 7.5,
         "project_type_id": 13,
         "subject_id": 47,
         "unit": "Article"
@@ -371,8 +371,8 @@
     {
         "title": "Creative Writing - English",
         "description": "Professional Creative Writing assistance in English",
-        "base_price": 10.0,
-        "price_per_page": 18.0,
+        "base_price": 5.0,
+        "price_per_page": 9.0,
         "project_type_id": 14,
         "subject_id": 21,
         "unit": "Creative Writing"
@@ -380,8 +380,8 @@
     {
         "title": "Creative Writing - Literature",
         "description": "Professional Creative Writing assistance in Literature",
-        "base_price": 10.0,
-        "price_per_page": 18.0,
+        "base_price": 5.0,
+        "price_per_page": 9.0,
         "project_type_id": 14,
         "subject_id": 34,
         "unit": "Creative Writing"
@@ -389,8 +389,8 @@
     {
         "title": "Content Writing - Marketing",
         "description": "Professional Content Writing assistance in Marketing",
-        "base_price": 9.6,
-        "price_per_page": 18.0,
+        "base_price": 4.5,
+        "price_per_page": 8.5,
         "project_type_id": 15,
         "subject_id": 36,
         "unit": "Content Writing"
@@ -398,8 +398,8 @@
     {
         "title": "Content Writing - Communications",
         "description": "Professional Content Writing assistance in Communications",
-        "base_price": 8.0,
-        "price_per_page": 15.0,
+        "base_price": 4.0,
+        "price_per_page": 7.5,
         "project_type_id": 15,
         "subject_id": 11,
         "unit": "Content Writing"
@@ -407,8 +407,8 @@
     {
         "title": "Content Writing - Digital Media",
         "description": "Professional Content Writing assistance in Digital Media",
-        "base_price": 8.0,
-        "price_per_page": 15.0,
+        "base_price": 4.0,
+        "price_per_page": 7.5,
         "project_type_id": 15,
         "subject_id": 17,
         "unit": "Content Writing"
@@ -416,8 +416,8 @@
     {
         "title": "Editing - English",
         "description": "Professional Editing assistance in English",
-        "base_price": 5.0,
-        "price_per_page": 12.0,
+        "base_price": 3.0,
+        "price_per_page": 6.0,
         "project_type_id": 16,
         "subject_id": 21,
         "unit": "Editing"
@@ -425,8 +425,8 @@
     {
         "title": "Editing - Journalism",
         "description": "Professional Editing assistance in Journalism",
-        "base_price": 5.0,
-        "price_per_page": 12.0,
+        "base_price": 3.0,
+        "price_per_page": 6.0,
         "project_type_id": 16,
         "subject_id": 32,
         "unit": "Editing"
@@ -434,8 +434,8 @@
     {
         "title": "Outline - English",
         "description": "Professional Outline assistance in English",
-        "base_price": 1.0,
-        "price_per_page": 1.0,
+        "base_price": 3.0,
+        "price_per_page": 6.0,
         "project_type_id": 17,
         "subject_id": 21,
         "unit": "Outline"
@@ -443,8 +443,8 @@
     {
         "title": "Outline - History",
         "description": "Professional Outline assistance in History",
-        "base_price": 1.0,
-        "price_per_page": 1.0,
+        "base_price": 3.0,
+        "price_per_page": 6.0,
         "project_type_id": 17,
         "subject_id": 28,
         "unit": "Outline"
@@ -452,8 +452,8 @@
     {
         "title": "Outline - Research Methods",
         "description": "Professional Outline assistance in Research Methods",
-        "base_price": 1.0,
-        "price_per_page": 1.0,
+        "base_price": 3.0,
+        "price_per_page": 6.0,
         "project_type_id": 17,
         "subject_id": 48,
         "unit": "Outline"
@@ -461,8 +461,8 @@
     {
         "title": "Presentation - Business",
         "description": "Professional Presentation assistance in Business",
-        "base_price": 14.4,
-        "price_per_page": 24.0,
+        "base_price": 6.0,
+        "price_per_page": 10.0,
         "project_type_id": 18,
         "subject_id": 9,
         "unit": "Presentation"
@@ -470,8 +470,8 @@
     {
         "title": "Presentation - Education",
         "description": "Professional Presentation assistance in Education",
-        "base_price": 12.0,
-        "price_per_page": 20.0,
+        "base_price": 5.0,
+        "price_per_page": 9.0,
         "project_type_id": 18,
         "subject_id": 19,
         "unit": "Presentation"
@@ -479,8 +479,8 @@
     {
         "title": "Presentation - Public Relations",
         "description": "Professional Presentation assistance in Public Relations",
-        "base_price": 12.0,
-        "price_per_page": 20.0,
+        "base_price": 5.0,
+        "price_per_page": 9.0,
         "project_type_id": 18,
         "subject_id": 47,
         "unit": "Presentation"
@@ -488,8 +488,8 @@
     {
         "title": "Proposal - Business",
         "description": "Professional Proposal assistance in Business",
-        "base_price": 14.4,
-        "price_per_page": 26.4,
+        "base_price": 6.0,
+        "price_per_page": 10.5,
         "project_type_id": 19,
         "subject_id": 9,
         "unit": "Proposal"
@@ -497,8 +497,8 @@
     {
         "title": "Proposal - Education",
         "description": "Professional Proposal assistance in Education",
-        "base_price": 12.0,
-        "price_per_page": 22.0,
+        "base_price": 5.0,
+        "price_per_page": 9.0,
         "project_type_id": 19,
         "subject_id": 19,
         "unit": "Proposal"
@@ -506,8 +506,8 @@
     {
         "title": "Proposal - Research Methods",
         "description": "Professional Proposal assistance in Research Methods",
-        "base_price": 12.0,
-        "price_per_page": 22.0,
+        "base_price": 5.0,
+        "price_per_page": 9.0,
         "project_type_id": 19,
         "subject_id": 48,
         "unit": "Proposal"
@@ -515,8 +515,8 @@
     {
         "title": "Personal Statement - Education",
         "description": "Professional Personal Statement assistance in Education",
-        "base_price": 15.0,
-        "price_per_page": 25.0,
+        "base_price": 6.0,
+        "price_per_page": 10.0,
         "project_type_id": 20,
         "subject_id": 19,
         "unit": "Personal Statement"
@@ -524,8 +524,8 @@
     {
         "title": "Personal Statement - Law",
         "description": "Professional Personal Statement assistance in Law",
-        "base_price": 19.5,
-        "price_per_page": 32.5,
+        "base_price": 7.5,
+        "price_per_page": 12.0,
         "project_type_id": 20,
         "subject_id": 33,
         "unit": "Personal Statement"
@@ -533,8 +533,8 @@
     {
         "title": "Application Essay - Education",
         "description": "Professional Application Essay assistance in Education",
-        "base_price": 15.0,
-        "price_per_page": 25.0,
+        "base_price": 6.0,
+        "price_per_page": 10.0,
         "project_type_id": 21,
         "subject_id": 19,
         "unit": "Application Essay"
@@ -542,8 +542,8 @@
     {
         "title": "Application Essay - Law",
         "description": "Professional Application Essay assistance in Law",
-        "base_price": 19.5,
-        "price_per_page": 32.5,
+        "base_price": 7.5,
+        "price_per_page": 12.0,
         "project_type_id": 21,
         "subject_id": 33,
         "unit": "Application Essay"
@@ -551,8 +551,8 @@
     {
         "title": "Application Essay - Business",
         "description": "Professional Application Essay assistance in Business",
-        "base_price": 18.0,
-        "price_per_page": 30.0,
+        "base_price": 7.0,
+        "price_per_page": 11.0,
         "project_type_id": 21,
         "subject_id": 9,
         "unit": "Application Essay"
@@ -560,8 +560,8 @@
     {
         "title": "Annotated Bibliography - English",
         "description": "Professional Annotated Bibliography assistance in English",
-        "base_price": 10.0,
-        "price_per_page": 18.0,
+        "base_price": 5.0,
+        "price_per_page": 9.0,
         "project_type_id": 22,
         "subject_id": 21,
         "unit": "Annotated Bibliography"
@@ -569,8 +569,8 @@
     {
         "title": "Annotated Bibliography - History",
         "description": "Professional Annotated Bibliography assistance in History",
-        "base_price": 10.0,
-        "price_per_page": 18.0,
+        "base_price": 5.0,
+        "price_per_page": 9.0,
         "project_type_id": 22,
         "subject_id": 28,
         "unit": "Annotated Bibliography"
@@ -578,8 +578,8 @@
     {
         "title": "Annotated Bibliography - Research Methods",
         "description": "Professional Annotated Bibliography assistance in Research Methods",
-        "base_price": 10.0,
-        "price_per_page": 18.0,
+        "base_price": 5.0,
+        "price_per_page": 9.0,
         "project_type_id": 22,
         "subject_id": 48,
         "unit": "Annotated Bibliography"
@@ -587,8 +587,8 @@
     {
         "title": "Coursework - Mathematics",
         "description": "Professional Coursework assistance in Mathematics",
-        "base_price": 16.8,
-        "price_per_page": 28.0,
+        "base_price": 7.0,
+        "price_per_page": 11.0,
         "project_type_id": 23,
         "subject_id": 37,
         "unit": "Coursework"
@@ -596,8 +596,8 @@
     {
         "title": "Coursework - Physics",
         "description": "Professional Coursework assistance in Physics",
-        "base_price": 16.8,
-        "price_per_page": 28.0,
+        "base_price": 7.0,
+        "price_per_page": 11.0,
         "project_type_id": 23,
         "subject_id": 43,
         "unit": "Coursework"
@@ -605,8 +605,8 @@
     {
         "title": "Coursework - Engineering",
         "description": "Professional Coursework assistance in Engineering",
-        "base_price": 16.8,
-        "price_per_page": 28.0,
+        "base_price": 7.0,
+        "price_per_page": 11.0,
         "project_type_id": 23,
         "subject_id": 20,
         "unit": "Coursework"
@@ -614,8 +614,8 @@
     {
         "title": "Excel Assignment - Finance",
         "description": "Professional Excel Assignment assistance in Finance",
-        "base_price": 19.5,
-        "price_per_page": 32.5,
+        "base_price": 7.5,
+        "price_per_page": 12.0,
         "project_type_id": 24,
         "subject_id": 25,
         "unit": "Excel Assignment"
@@ -623,8 +623,8 @@
     {
         "title": "Excel Assignment - Economics",
         "description": "Professional Excel Assignment assistance in Economics",
-        "base_price": 18.0,
-        "price_per_page": 30.0,
+        "base_price": 7.0,
+        "price_per_page": 11.0,
         "project_type_id": 24,
         "subject_id": 18,
         "unit": "Excel Assignment"
@@ -632,8 +632,8 @@
     {
         "title": "Excel Assignment - Statistics",
         "description": "Professional Excel Assignment assistance in Statistics",
-        "base_price": 21.0,
-        "price_per_page": 35.0,
+        "base_price": 8.0,
+        "price_per_page": 12.5,
         "project_type_id": 24,
         "subject_id": 51,
         "unit": "Excel Assignment"
