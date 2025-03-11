@@ -22,6 +22,7 @@ def seed_database():
     )
     admin1.set_password('admin_password')
 
+
     project_types = [
         ProjectType(name='Annotated Bibliography'),
         ProjectType(name='Application Essay'),

@@ -6,7 +6,6 @@ import twitterIcon from './assets/twitterIcon.png';
 import youtubeIcon from './assets/youtubeIcon.png';
 import AOS from "aos";
 import "aos/dist/aos.css";
-
 const Footer = () => {
   useEffect(() => {
     AOS.init();

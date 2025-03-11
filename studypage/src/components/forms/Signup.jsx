@@ -240,7 +240,7 @@ export default function SignUp() {
                         Sign up
                       </button>
                     </div>
-                    <div className="mt-6 text-center">
+                    {/* <div className="mt-6 text-center">
                       <div className="text-gray-500">or</div>
                       <div className="flex items-center justify-center mt-4 space-x-4 ">
                         <button
@@ -249,7 +249,7 @@ export default function SignUp() {
                           Sign up with Google
                         </button>
                       </div>
-                    </div>
+                    </div> */}
 
                   </form>
 

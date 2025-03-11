@@ -12,13 +12,14 @@ const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
     expert_name: teacher.name,
     profilePicture: teacher.profilePicture
   });
-
+  console.log("teacher's details",teacher)
   // Store teacher profile picture in localStorage
   useEffect(() => {
     localStorage.setItem('teacherpic', teacher.profilePicture);
   }, [teacher.profilePicture]);
 
   // Fetch conversation ID if it exists
+  console.log('hey psss teacher',teacher)
   useEffect(() => {
     const fetchConversationId = async () => {
       try {
@@ -32,19 +33,24 @@ const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
 
         if (!response.ok) {
           throw new Error("Failed to fetch conversation ID");
-        }
-
-        const data = await response.json();
-        if (data.length > 0) {
-          setConversationId(data[0].id);
-        }
-      } catch (error) {
-        console.error("Error fetching conversation ID:", error);
       }
-    };
 
-    fetchConversationId();
-  }, [teacher.id, authToken]);
+      const data = await response.json();
+      console.log('Fetched conversation ID:', data);
+
+      if (data.length > 0) {
+          setConversationId(data[0].id);  // ✅ Set real conversation ID
+      } else {
+          setConversationId(-1);  // ✅ Explicitly set to -1 if no conversation exists
+      }
+  } catch (error) {
+      console.error("Error fetching conversation ID:", error);
+      setConversationId(-1);  // ✅ Fail-safe: assume new conversation if fetch fails
+  }
+};
+
+fetchConversationId();
+}, [teacher.id, authToken]);
 
   return (  
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -53,7 +59,7 @@ const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
         <div className="flex-shrink-0 flex justify-between items-center p-4 border-b border-gray-700 bg-gray-900">
           <div className="flex items-center">
             <img 
-              src={teacher.profilePicture} 
+              src={teacher.profile_picture} 
               alt={teacher.name} 
               className="w-10 h-10 rounded-full mr-3"
             />
@@ -72,15 +78,15 @@ const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
 
         {/* Chat Window Container - Takes remaining height */}
         <div className="flex-1 overflow-auto">
-          <ChatWindow 
-            activeUser={{ ...activeUser, conversationId }} 
-            auth={authToken}
-            pic={teach}
-            teacher={teacher}
-            curreUser={curUser}
-            isInModal={true}
-            converseId={conversationId}
-          />
+        <ChatWindow 
+          activeUser={{ ...activeUser, conversationId }} 
+          auth={authToken}
+          // pic={teach}
+          teacher={teacher}
+          curreUser={curUser}
+          isInModal={true}
+          conversationId={conversationId} // Changed from converseId to conversationId for consistency
+        />
         </div>
       </div>
     </div>

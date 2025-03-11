@@ -11,12 +11,13 @@ const Services = () => {
   const [selectedProjectType, setSelectedProjectType] = useState("");
   const [visibleCount, setVisibleCount] = useState(6);
   const navigate = useNavigate()
-
+  
   const API_URL = 'https://studypage.onrender.com';
 
-  const move = (projectTypeId, subjectId)=> {
-    localStorage.setItem("selectedProjectType", projectTypeId);
-    localStorage.setItem("selectedSubject", subjectId);
+  const move = (projectTypeId, subjectId, serviceId)=> {
+    localStorage.setItem("selectedProjectTypeId", projectTypeId);
+    localStorage.setItem("serviceId", serviceId);
+    localStorage.setItem("selectedSubjectId", subjectId);
     navigate('/expertspage')
   }
 
@@ -36,28 +37,28 @@ const Services = () => {
       <div className="h-4 bg-gray-300 rounded w-full"></div>
     </div>
   );
-
-  // Function to fetch services from the backend
-  const fetchServices = async () => {
-    const storedServices = localStorage.getItem('service');
-    if (storedServices) {
-      setServices(JSON.parse(storedServices));
-      setLoading(false);
-      return;
-    }
+  const fetchServices = async (projectTypeId = null, subjectId = null) => {
+    setLoading(true);
+  
+    // Construct query parameters dynamically
+    const queryParams = new URLSearchParams();
+    if (projectTypeId) queryParams.append("project_type", projectTypeId);
+    if (subjectId) queryParams.append("subject", subjectId);
+  
     try {
-      const response = await fetch(`${API_URL}/services`, {
+      const response = await fetch(`${API_URL}/services?${queryParams.toString()}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
-
+  
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
+  
       const data = await response.json();
-      console.log('services retrieved',data.services)
-      const servicesArray = Array.isArray(data.services) ? data.services : []; 
+      console.log('Services retrieved:', data.services);
+  
+      const servicesArray = Array.isArray(data.services) ? data.services : [];
       setServices(servicesArray);
       localStorage.setItem('services', JSON.stringify(servicesArray));
     } catch (error) {
@@ -66,8 +67,7 @@ const Services = () => {
     } finally {
       setLoading(false);
     }
-  };
-
+  };  
   useEffect(() => {
     fetchServices();
   }, []);
@@ -155,7 +155,7 @@ const Services = () => {
               <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded">
                 ${service.price_per_page} per page
               </span>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" onClick={() => move(service.project_type_id, service.subject_id)} >
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" onClick={() => move(service.project_type_id,service.subject_id, service.id)} >
                 Request Service
               </button>
             </div>

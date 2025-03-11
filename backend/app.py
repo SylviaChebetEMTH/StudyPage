@@ -1,11 +1,12 @@
 from flask import Flask,make_response, jsonify, request, send_from_directory, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from functools import wraps
 import traceback
+from sqlalchemy.orm import joinedload
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, create_refresh_token, get_jwt, verify_jwt_in_request, decode_token
-from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject, Message as MessageModel, Conversation, Comment
+from models import db, User, Expert, Service, ProjectRequest, ProjectType, Subject, Message as MessageModel, Conversation, Comment, expert_subjects, expert_project_types, expert_services
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_mail import Mail, Message
@@ -20,6 +21,7 @@ from datetime import datetime
 from flask import url_for
 import os
 import re
+import json
 import random
 import cloudinary
 import cloudinary.uploader
@@ -27,6 +29,7 @@ from dotenv import load_dotenv
 from gevent import monkey
 monkey.patch_all()
 load_dotenv()
+
 
 import requests
 import smtplib
@@ -244,14 +247,15 @@ def get_messages(conversation_id):
     try:
         conversation = Conversation.query.get_or_404(conversation_id)
         messages = [message.to_dict() for message in conversation.messages]
+        # attachments = json.loads(messages.attachments or "[]")
         return jsonify(messages), 200
     except Exception as e:
         # Log the error for debugging
         app.logger.error(f"Error fetching messages: {e}")
         return jsonify({"error": "An unexpected error occurred."}), 500
 
-PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
-# PAYSTACK_SECRET_KEY =os.environ.get('PAYSTACK_SECRET_KEY')
+# PAYSTACK_SECRET_KEY ="sk_test_e43f7706b3578021e3dc09d1ad730bf60c2e33c8"
+PAYSTACK_SECRET_KEY =os.environ.get('PAYSTACK_SECRET_KEY')
 @app.route('/verify-payment', methods=['POST'])
 def verify_payment():
     """
@@ -317,14 +321,14 @@ def get_expert_comments(expert_id):
     })
 
 @app.route('/experts', methods=['DELETE'])
-def delete_all_subjects():
+def delete_all_experts():
     try:
-        num_deleted = Subject.query.delete()  # Deletes all records
+        num_deleted = Expert.query.delete()  # Deletes all records
         db.session.commit()
-        return jsonify({"message": f"✅ {num_deleted} subjects deleted successfully!"}), 200
+        return jsonify({"message": f"✅ {num_deleted} experts deleted successfully!"}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({"message": "Failed to delete subjects.", "error": str(e)}), 500
+        return jsonify({"message": "Failed to delete experts.", "error": str(e)}), 500
 
 @app.route('/experts/<int:expert_id>/comments/<int:currentUser_id>', methods=['POST'])
 # @jwt_required()
@@ -710,7 +714,6 @@ def verify_password():
     else:
         return jsonify({"success": False, "error": "Incorrect password"}), 401
 
-
 @app.route('/update_profile', methods=['PUT'])
 @jwt_required()
 def update_profile():
@@ -966,68 +969,90 @@ def submit_project(project_id):
 @jwt_required()
 def request_expert():
     data = request.form
-    files = request.files.getlist('attachments')
+    files = request.files.getlist('attachments') + request.files.getlist('attachments[]')
 
-    deadline_str = data.get('deadline') 
-    deadline_str = data.get('deadline') 
+    # Extract and validate basic fields
+    deadline_str = data.get('deadline')
     try:
         deadline = datetime.strptime(deadline_str, "%Y-%m-%d")
     except ValueError:
         return jsonify({"error": "Invalid deadline format. Use YYYY-MM-DD."}), 400
 
+    try:
+        expert_id = int(data.get('expert_id'))
+        project_type_id = int(data.get('project_type')) if data.get('project_type') else None
+        subject_id = int(data.get('subject')) if data.get('subject') else None
+        number_of_pages = int(data.get('number_of_pages')) if data.get('number_of_pages') else None
+    except (ValueError, TypeError):
+        return jsonify({"error": "Invalid project_type, subject, number_of_pages, or expert ID."}), 400
+
+    # Check if expert exists
+    expert = Expert.query.get(expert_id)
+    if not expert:
+        return jsonify({"error": "Expert does not exist"}), 400
+
     # Save the project request
     project = ProjectRequest(
         project_title=data.get('project_title'),
         project_description=data.get('project_description'),
-        project_type_id=data.get('project_type'),
-        subject_id=data.get('subject'),
+        project_type_id=project_type_id,
+        subject_id=subject_id,
         deadline=deadline,
-        expert_id=data.get('expert_id'),
+        expert_id=expert_id,
         user_id=get_jwt_identity(),
-        number_of_pages=data.get('number_of_pages')
+        number_of_pages=number_of_pages
     )
     db.session.add(project)
     db.session.commit()
 
+    if not project.id:
+        return jsonify({"error": "Failed to save project request."}), 500
+
+    # Handle attachments
     attachments = []
     for file in files:
-        filename = secure_filename(file.filename)
-        # file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        # file.save(file_path)
-        upload_result = cloudinary.uploader.upload(file, resource_type="raw")
-        # file_url = url_for('serve_file', filename=filename, _external=True)
-        file_url = upload_result['secure_url']
-        attachments.append(file_url)
-    project.attachments = ','.join(attachments)
+        if file and allowed_file(file.filename):
+            upload_result = cloudinary.uploader.upload(file, resource_type="raw")
+            file_url = upload_result['secure_url']
+            attachments.append(file_url)
+        else:
+            return jsonify({"error": f"Invalid file: {file.filename}"}), 400
+
+    project.attachments = json.dumps(attachments)
     db.session.commit()
 
+    # Check if conversation already exists
     conversation = Conversation.query.filter_by(
-        
         client_id=get_jwt_identity(),
-        expert_id=data.get('expert_id'),
+        expert_id=expert_id,
     ).first()
-
 
     if not conversation:
         conversation = Conversation(
             client_id=get_jwt_identity(),
-            expert_id=data.get('expert_id'),
+            expert_id=expert_id,
             project_id=project.id
         )
         db.session.add(conversation)
         db.session.commit()
 
+    # Create initial message
     message = MessageModel(
         conversation_id=conversation.id,
         sender_id=get_jwt_identity(),
-        content=f"New project submitted: {project.project_title}\nDescription: {project.project_description}\nDeadline: {project.deadline.strftime('%Y-%m-%d')}",
+        content=(
+            f"New project submitted: {project.project_title}\n"
+            f"Description: {project.project_description}\n"
+            f"Deadline: {project.deadline.strftime('%Y-%m-%d')}"
+        ),
         attachments=project.attachments,
-        receiver_id=data.get('expert_id'),
-        expert_id=data.get('expert_id')
+        receiver_id=expert_id,
+        expert_id=expert_id
     )
     db.session.add(message)
     db.session.commit()
 
+    # Prepare and send email (consider removing file attachments here if they're links)
     email_subject = "New Project Request Submitted"
     email_body = f"""
     A new project has been submitted with the following details:
@@ -1042,12 +1067,105 @@ def request_expert():
         subject=email_subject,
         body=email_body,
         recipients=['shadybett540@gmail.com', 'studypage001@gmail.com'],
-        attachments=[os.path.join(app.config['UPLOAD_FOLDER'], filename) for filename in attachments]
+        attachments=[]  # Set to empty, or adapt if needed
     )
-    return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
+
+    return jsonify({
+        'message': 'Project submitted successfully',
+        'conversation_id': conversation.id
+    }), 201
+
+# @app.route('/request_expert', methods=['POST'])
+# @jwt_required()
+# def request_expert():
+#     data = request.form
+#     files = request.files.getlist('attachments')
+
+#     deadline_str = data.get('deadline') 
+#     deadline_str = data.get('deadline') 
+#     try:
+#         deadline = datetime.strptime(deadline_str, "%Y-%m-%d")
+#     except ValueError:
+#         return jsonify({"error": "Invalid deadline format. Use YYYY-MM-DD."}), 400
+
+#     # Save the project request
+#     project = ProjectRequest(
+#         project_title=data.get('project_title'),
+#         project_description=data.get('project_description'),
+#         project_type_id=data.get('project_type'),
+#         subject_id=data.get('subject'),
+#         deadline=deadline,
+#         expert_id=data.get('expert_id'),
+#         user_id=get_jwt_identity(),
+#         number_of_pages=data.get('number_of_pages')
+#     )
+#     db.session.add(project)
+#     db.session.commit()
+
+#     attachments = []
+#     for file in files:
+#         filename = secure_filename(file.filename)
+#         # file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+#         # file.save(file_path)
+#         upload_result = cloudinary.uploader.upload(file, resource_type="raw")
+#         # file_url = url_for('serve_file', filename=filename, _external=True)
+#         file_url = upload_result['secure_url']
+#         attachments.append(file_url)
+#     project.attachments = ','.join(attachments)
+#     db.session.commit()
+
+#     conversation = Conversation.query.filter_by(
+        
+#         client_id=get_jwt_identity(),
+#         expert_id=data.get('expert_id'),
+#     ).first()
+
+
+#     if not conversation:
+#         conversation = Conversation(
+#             client_id=get_jwt_identity(),
+#             expert_id=data.get('expert_id'),
+#             project_id=project.id
+#         )
+#         db.session.add(conversation)
+#         db.session.commit()
+
+#     message = MessageModel(
+#         conversation_id=conversation.id,
+#         sender_id=get_jwt_identity(),
+#         content=f"New project submitted: {project.project_title}\nDescription: {project.project_description}\nDeadline: {project.deadline.strftime('%Y-%m-%d')}",
+#         attachments=project.attachments,
+#         receiver_id=data.get('expert_id'),
+#         expert_id=data.get('expert_id')
+#     )
+#     db.session.add(message)
+#     db.session.commit()
+
+#     email_subject = "New Project Request Submitted"
+#     email_body = f"""
+#     A new project has been submitted with the following details:
+
+#     Title: {project.project_title}
+#     Description: {project.project_description}
+#     Deadline: {project.deadline.strftime('%Y-%m-%d')}
+#     Attachments: {', '.join(attachments)}
+#     """
+
+#     send_email_with_mime(
+#         subject=email_subject,
+#         body=email_body,
+#         recipients=['shadybett540@gmail.com', 'studypage001@gmail.com'],
+#         attachments=[os.path.join(app.config['UPLOAD_FOLDER'], filename) for filename in attachments]
+#     )
+#     return jsonify({'message': 'Project submitted successfully', 'conversation_id': conversation.id}), 201
 @app.route('/conversationsadmin/<int:conversation_id>/messages', methods=['POST'])
 @jwt_required()
+
+@cross_origin(origin='http://localhost:3001',supports_credentials=True)
 def admn_send_message(conversation_id):
+    converse = Conversation.query.get_or_404(conversation_id)
+    experts_id = converse.expert_id
+    expert = Expert.query.get(experts_id)
     try:
         sender_id = get_jwt_identity()
 
@@ -1055,8 +1173,9 @@ def admn_send_message(conversation_id):
         recievers_id = conversation.client_id
         receivers_email = User.query.get(recievers_id).email
         experts_id = conversation.expert_id
-        experts_name = User.query.get(experts_id).username
-        experts_email = User.query.get(experts_id).email
+        experts_name = expert.user.username
+        # experts_name = User.query.get(experts_id).username
+        # experts_email = User.query.get(experts_id).email
 
         content = request.form.get('content')
         files = request.files.getlist('attachments')
@@ -1092,10 +1211,10 @@ def admn_send_message(conversation_id):
 
         sender = User.query.get(sender_id)
         email_subject = "New Message Notification"
+                # Sender: {experts_name} (Email: {experts_email})
         email_body = f"""
         A new message has been sent by expert {experts_name}.
 
-        Sender: {experts_name} (Email: {experts_email})
         Content: {content or 'No content'}
         Attachments: {', '.join(attachments) if attachments else 'None'}
 
@@ -1166,12 +1285,8 @@ def send_message(conversation_id):
                 db.session.add(conversation)
                 db.session.commit()
             conversation_id = conversation.id
-            conversation = Conversation.query.get_or_404(conversation_id)
-            return jsonify({'conversation_id': conversation_id}), 201
-            # print(f"Creating message with: conversation_id={conversation_id}, sender_id={sender_id}, content='{content}', attachments={files}")
-        else:
-            conversation = Conversation.query.get_or_404(conversation_id)
-            print(f"Creating message with: conversation_id={conversation_id}, sender_id={sender_id}, content='{content}', attachments={files}")
+
+        conversation = Conversation.query.get_or_404(conversation_id)
 
         content = request.form.get('content','').strip()
         files = request.files.getlist('attachments')
@@ -1198,7 +1313,7 @@ def send_message(conversation_id):
             sender_id=sender_id,
             receiver_id=conversation.client_id if sender_id != conversation.client_id else conversation.expert_id,
             content=content,
-            attachments=', '.join(attachments) if attachments else None
+            attachments='||'.join(attachments) if attachments else None
         )
         db.session.add(message)
         db.session.commit()
@@ -1230,10 +1345,6 @@ def send_message(conversation_id):
             attachments=attachment_paths
         )
         return jsonify(message.to_dict()), 201
-    except Exception as e:
-        traceback.print_exc()
-        return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
-
     except Exception as e:
         traceback.print_exc()
         return jsonify({'error': f'An unexpected error occurred: {str(e)}'}), 500
@@ -1475,124 +1586,192 @@ def get_expert(id):
 @app.route("/experts", methods=["POST"])
 def add_expert():
     data = request.get_json()
-    project_type_id = data.get("project_type_id")  # Only 1 project type per expert
+
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+
+    service_id = data.get("service_id")
     profile_picture = data.get("profile_picture")
 
+    if not service_id:
+        return jsonify({"error": "Service ID is required"}), 400
     if not profile_picture:
         return jsonify({"error": "Profile picture is required"}), 400
 
-    # Get project type and its related subjects
-    project_type = ProjectType.query.get(project_type_id)
-    if not project_type:
-        return jsonify({"error": "Invalid project type"}), 400
+    try:
+        # Get service and validate
+        service = Service.query.get(service_id)
+        if not service:
+            return jsonify({"error": "Invalid service ID"}), 400
 
-    related_subjects = Subject.query.filter(Subject.id.in_(
-        [s.id for s in project_type.subjects]
-    )).all()
-
-    all_subjects = list(related_subjects)
-    random.shuffle(all_subjects)
-
-    num_experts_per_type = 3
-    subjects_per_expert = len(all_subjects) // num_experts_per_type
-    remainder = len(all_subjects) % num_experts_per_type 
-
-    assigned_subjects = []
-    for i in range(num_experts_per_type):
-        start_index = i * subjects_per_expert
-        end_index = start_index + subjects_per_expert
-        expert_subjects = all_subjects[start_index:end_index]
-
-        if remainder > 0:
-            expert_subjects.append(all_subjects[-remainder])
-            remainder -= 1
-
-        assigned_subjects.append(expert_subjects)
-
-    experts = []
-    for i in range(num_experts_per_type):
-        expert = Expert(
-            name=f"Expert {i+1} for {project_type.name}",
-            title=f"{project_type.name} Specialist",
-            expertise=f"Expert in {', '.join([s.name for s in assigned_subjects[i]])}",
-            description=f"Highly skilled in {project_type.name} for {', '.join([s.name for s in assigned_subjects[i]])}.",
-            biography="Experienced professional with years of expertise.",
-            education="PhD in relevant field",
-            languages="English",
-            profile_picture=profile_picture,
-            project_type=project_type,
-            subjects=assigned_subjects[i]
+        new_user = User(
+            username=data.get('name'),
+            is_admin=False
         )
+        db.session.add(new_user)
+        db.session.commit()
+        expert = Expert(
+            id=new_user.id,
+            name=data.get("name", "Expert"),
+            title=f"{service.title} Specialist",
+            expertise=f"Expert in {service.title}",
+            description=data.get("description", f"Expert in {service.title}"),
+            biography=data.get("biography", "Experienced professional."),
+            education=data.get("education", "PhD in relevant field"),
+            languages=data.get("languages", "English"),
+            profile_picture=profile_picture,
+            user=new_user
+        )
+        # Associate expert with the service
+        expert.services.append(service)
+
         db.session.add(expert)
-        experts.append(expert)
+        db.session.commit()
 
-    db.session.commit()
+        return jsonify({
+            "message": "Expert added successfully!",
+            "expert": {
+                "name": expert.name,
+                "service": service.title
+            }
+        }), 201
 
-    return jsonify({"message": "Experts added successfully!", "experts": [e.name for e in experts]}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Failed to create expert: {str(e)}"}), 500
 
 @app.route("/experts/search", methods=["GET"])
 def search_experts():
-    project_type_id = request.args.get("project_type_id", type=int)
-    subject_id = request.args.get("subject_id", type=int)
+    try:
+        # Get query parameters
+        service_id = request.args.get("service_id", type=int)
 
-    experts = Expert.query.filter(
-        Expert.project_type_id == project_type_id,
-        Expert.subjects.any(id=subject_id)
-    ).limit(3).all()
+        if not service_id:
+            return jsonify({"error": "Service ID is required"}), 400
 
-    if not experts:
-        return jsonify({"message": "No experts available for this category."}), 404
+        # Validate service
+        service = Service.query.get(service_id)
+        if not service:
+            return jsonify({"error": "Invalid service ID"}), 400
 
-    return jsonify([
-        {
-            "id": expert.id,
-            "name": expert.name,
-            "title": expert.title,
-            "profile_picture": expert.profile_picture,
-            "expertise": expert.expertise
-        } for expert in experts
-    ])
+        # Query experts linked to this service
+        experts = (
+            Expert.query
+            .join(expert_services)
+            .filter(expert_services.c.service_id == service_id)
+            .order_by(Expert.id)
+            .limit(3)
+            .all()
+        )
 
-# @app.route("/experts", methods=["POST"])
-# def add_expert():
-#     data = request.get_json()
-#     project_type_id = data.get("project_type_id")
-#     subject_id = data.get("subject_id")
+        if not experts:
+            return jsonify({"error": "No experts available for this service"}), 404
 
-#     print(f"Received project_type_id: {project_type_id}, subject_id: {subject_id}")  # Debug log
+        # Format response
+        response = {
+            "service": service.title,
+            "experts": [
+                {
+                    "id": expert.id,
+                    "name": expert.name,
+                    "title": expert.title,
+                    "profile_picture": expert.profile_picture,
+                    "expertise": expert.expertise,
+                    "education": expert.education,
+                    "biography": expert.biography,
+                    "description": expert.description,
+                    "languages": expert.languages,
+                    "isAiFree": expert.is_ai_free,
+                    "successRate": expert.success_rate,
+                    "totalReviews": expert.total_reviews
+                } for expert in experts
+            ]
+        }
 
-#     if len(project_type_id) > 5 or len(subject_id) > 5:
-#         return {"message": "You can select up to 5 project types and 5 subjects."}, 400
-    
-#     profile_picture = data.get("profile_picture")
-#     if not profile_picture:
-#         return jsonify({"error": "Profile picture is required"}), 400
+        return jsonify(response), 200
 
-#     project_type = ProjectType.query.get(project_type_id)
-#     subject = Subject.query.get(subject_id)
+    except Exception as e:
+        return jsonify({"error": "Server error", "message": str(e)}), 500
 
-#     if not project_type or not subject:
-#         return jsonify({"error": "Invalid project type or subject"}), 400
-    
-#     # Create and save the expert
-#     new_expert = Expert(
-#         name=data["name"],
-#         title=data["title"],
-#         expertise=data["expertise"],
-#         description=data["description"],
-#         biography=data["biography"],
-#         education=data["education"],
-#         languages=data["languages"],
-#         profile_picture=profile_picture,
-#         project_type=project_type,
-#         subject=subject
-#     )
 
-#     db.session.add(new_expert)
-#     db.session.commit()
+# @app.route("/experts/search", methods=["GET"])
+# def search_experts():
+#     try:
+#         # Get query parameters
+#         project_type_id = request.args.get("project_type_id", type=int)
+#         subject_id = request.args.get("subject_id", type=int)
 
-#     return jsonify({"message": "Expert added successfully!"}), 201
+#         # Validate required parameters
+#         if not project_type_id or not subject_id:
+#             return jsonify({
+#                 "error": "Missing required parameters",
+#                 "details": {
+#                     "project_type_id": "Required" if not project_type_id else None,
+#                     "subject_id": "Required" if not subject_id else None
+#                 }
+#             }), 400
 
+#         # Verify project type and subject exist
+#         project_type = ProjectType.query.get(project_type_id)
+#         subject = Subject.query.get(subject_id)
+
+#         if not project_type or not subject:
+#             return jsonify({
+#                 "error": "Invalid selection",
+#                 "message": "Invalid project type or subject ID"
+#             }), 400
+
+#         # Query experts who are linked to both the project type and subject
+#         experts = (
+#             Expert.query
+#             .join(expert_project_types)  # Join expert-project association table
+#             .join(expert_subjects)  # Join expert-subject association table
+#             .filter(
+#                 expert_project_types.c.project_type_id == project_type_id,  
+#                 expert_subjects.c.subject_id == subject_id
+#             )
+#             .options(
+#                 joinedload(Expert.project_types),  # Eager load project types
+#                 joinedload(Expert.subjects)  # Eager load subjects
+#             )
+#             .order_by(Expert.id)
+#             .limit(3)
+#             .all()
+#         )
+
+#         if not experts:
+#             return jsonify({
+#                 "error": "Not found",
+#                 "message": "No experts available for this category"
+#             }), 404
+
+#         # Format response
+#         response = {
+#             "experts": [
+#                 {
+#                     "id": expert.id,
+#                     "name": expert.name,
+#                     "title": expert.title,
+#                     "profile_picture": expert.profile_picture,
+#                     "expertise": expert.expertise,
+#                     "project_types": [pt.name for pt in expert.project_types],
+#                     "subjects": [sub.name for sub in expert.subjects]
+#                 } for expert in experts
+#             ],
+#             "meta": {
+#                 "count": len(experts),
+#                 "project_type_id": project_type_id,
+#                 "subject_id": subject_id
+#             }
+#         }
+
+#         return jsonify(response), 200
+
+#     except Exception as e:
+#         return jsonify({
+#             "error": "Server error",
+#             "message": str(e)
+#         }), 500
 
 @app.route('/experts/<int:id>', methods=['PATCH'])
 @jwt_required()
@@ -2155,4 +2334,9 @@ api.add_resource(Projects, '/projects')
 
 if __name__ == '__main__':
     socketio.run(app,debug=True)
-    
+
+#cloud_name dliyoq5nf
+#cloudinary_api_key 729815478551777
+#cloudinary_api_secret SIAh1rVO5qGtgrCrnxq3Jg2QFns
+# database_url postgresql://study_b3sy_user:Re1YO53KgRQRbrnz1GIxoPgSLxc70wZk@dpg-cuso4k7noe9s7391d5tg-a/study_b3sy
+# flask db init && flask db migrate -m "Reset migrations" && flask db upgrade && python server.py && python generate_experts.py

@@ -384,20 +384,24 @@ import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
 
 // Custom hook for managing conversations
-const useConversation = (authToken, conversationId, auth, converseId) => {
+const useConversation = (conversationId) => {
   const [messages, setMessages] = useState([]);
+  const { authToken } = useContext(UserContext);
+  console.log('fetched auth', authToken)
+  console.log('fetched id', conversationId)
+ 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const fetchMessages = async () => {
-    if (!conversationId) return;
+    if (!conversationId || conversationId === -1) return;
 
     setLoading(true);
     try {
       const response = await fetch(
-        `https://studypage.onrender.com/conversations/${conversationId || converseId}/messages`,
+        `https://studypage.onrender.com/conversations/${conversationId}/messages`,
         {
-          headers: { Authorization: `Bearer ${authToken || auth}` },
+          headers: { Authorization: `Bearer ${authToken}` },  
         }
       );
 
@@ -408,6 +412,7 @@ const useConversation = (authToken, conversationId, auth, converseId) => {
       }
 
       const data = await response.json();
+      console.log('fetched data',data)
       setMessages(data);
       setError(null);
     } catch (err) {
@@ -425,11 +430,13 @@ const useConversation = (authToken, conversationId, auth, converseId) => {
   return { messages, setMessages, error, loading, fetchMessages };
 };
 
-const ChatWindow = ({ activeUser, currentUser, auth, teacher, pic, isInModal, teach }) => {
+const ChatWindow = ({ activeUser,teacher, pic, isInModal, teach }) => {
   const [chatActiveUser, setChatActiveUser] = useState(activeUser || null);
   const { authToken } = useContext(UserContext);
+  console.log('teacher dot id',teacher)
+  
+  // THIS IS THE FIXED LINE - Only pass the conversation ID to useConversation
   const { messages, setMessages, loading, fetchMessages } = useConversation(
-    authToken || auth,
     chatActiveUser?.conversationId
   );
 
@@ -448,6 +455,7 @@ const ChatWindow = ({ activeUser, currentUser, auth, teacher, pic, isInModal, te
   }, [activeUser]);
 
   const sendMessage = async (conversationId, content, attachments) => {
+    console.log('fetched conversationid',conversationId)
     try {
       if (!conversationId) {
         console.warn("⚠️ Cannot send message: No conversation ID.");
@@ -456,13 +464,16 @@ const ChatWindow = ({ activeUser, currentUser, auth, teacher, pic, isInModal, te
 
       const formData = new FormData();
       formData.append("content", content);
+      formData.append("expert_id", activeUser.id || activeUser.expert_id );
+      console.log('this form data before sending', formData)
+      // formData.append("sender_type", "user");
       attachments.forEach((file) => formData.append("attachments", file));
 
       const response = await fetch(
         `https://studypage.onrender.com/conversations/${conversationId}/messages`,
         {
           method: "POST",
-          headers: { Authorization: `Bearer ${authToken || auth}` },
+          headers: { Authorization: `Bearer ${authToken}` },
           body: formData,
         }
       );
