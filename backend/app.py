@@ -833,20 +833,24 @@ def add_user():
 
 @app.route('/experts', methods=['GET'])
 def get_experts():
-    experts = Expert.query.all()  # Fetch all experts from the database
+    experts = Expert.query.all()
     output = []
 
     for expert in experts:
         success_rate_str = f"{expert.success_rate:.1f}%" if expert.success_rate is not None else "0.0%"
+        
+        # Extracting project types and subjects correctly
+        project_types = [ptype.name for ptype in expert.project_types] if expert.project_types else []
+        subjects = [sub.name for sub in expert.subjects] if expert.subjects else []
+
         comments = []
-        for comment in expert.comments:
-            comment_data = {
-                'id': comment.id,
-                'content': comment.content,
-                'created_at': comment.created_at.isoformat(),
-                # 'user_name': comment.user.username  
-            }
-            comments.append(comment_data)
+        if hasattr(expert, 'comments'):  # Ensure relationship exists
+            for comment in expert.comments:
+                comments.append({
+                    'id': comment.id,
+                    'content': comment.content,
+                    'created_at': comment.created_at.isoformat(),
+                })
 
         expert_data = {
             'id': expert.id,
@@ -857,8 +861,8 @@ def get_experts():
             'biography': expert.biography,
             'education': expert.education,
             'languages': expert.languages,
-            'projectType': expert.project_types.name if expert.project_types else None,  # Corrected to use `project_type`
-            'subject': expert.subjects.name if expert.subjects else None,  # Corrected to use `subject`
+            'projectTypes': project_types,  # Fixed attribute
+            'subjects': subjects,  # Fixed attribute
             'profilePicture': expert.profile_picture,
             'rating': expert.rating_avg,
             'totalReviews': expert.total_reviews,
@@ -869,6 +873,7 @@ def get_experts():
         output.append(expert_data)
 
     return jsonify({'experts': output})
+
 
 @app.route('/comments/<int:comment_id>', methods=['PATCH'])
 @jwt_required()
