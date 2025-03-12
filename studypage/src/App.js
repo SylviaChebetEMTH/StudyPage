@@ -44,6 +44,7 @@ import { SocketProvider } from "./components/contexts/SocketContext";
 // import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ContactUs from "./components/ContactUs";
+import ExpertsPage from "./components/ExpertsPage";
 
 function AppContent() {
   const { currentUser } = useContext(UserContext);
@@ -108,6 +109,7 @@ function AppContent() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/footer" element={<Footer />} />
                 <Route path="/hireexpert" element={<ProjectRequest />} />
+                <Route path="/all_experts" element={<ExpertsPage />} />
                 {/* <Route path="/projects" element={<Projects />} /> */}
                 <Route path="/chat" element={<Chat />} />
                 {/* <Route path="/adminchat" element={<AdminPanel />} /> */}

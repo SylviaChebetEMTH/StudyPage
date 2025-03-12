@@ -80,14 +80,14 @@ export const NavBar = () => {
                         >
                             Services
                         </Link>
-                        {/* <Link
-                            to="/expertspage"
+                        <Link
+                            to="/all_experts"
                             className="text-white hover:text-yellow-400 py-2 md:py-0"
                             currentUser={currentUser}
                             onClick={handleLinkClick}
                         >
                             Our Experts
-                        </Link> */}
+                        </Link>
                         <Link
                             to="/about"
                             className="text-white hover:text-yellow-400 py-2 md:py-0"
