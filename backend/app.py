@@ -857,8 +857,8 @@ def get_experts():
             'biography': expert.biography,
             'education': expert.education,
             'languages': expert.languages,
-            'projectType': expert.project_type.name if expert.project_type else None,  # Corrected to use `project_type`
-            'subject': expert.subject.name if expert.subject else None,  # Corrected to use `subject`
+            'projectType': expert.project_types.name if expert.project_types else None,  # Corrected to use `project_type`
+            'subject': expert.subjects.name if expert.subjects else None,  # Corrected to use `subject`
             'profilePicture': expert.profile_picture,
             'rating': expert.rating_avg,
             'totalReviews': expert.total_reviews,
