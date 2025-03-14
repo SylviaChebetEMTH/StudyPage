@@ -61,21 +61,44 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 #     engineio_logger=True  # Enable Engine.IO logging
 # )
 
-@socketio.on_error()
-def error_handler(e):
-    print(f"SocketIO error: {str(e)}")
-
 @socketio.on('connect')
 def handle_connect():
-    print("Client connected")
-
-@socketio.on('disconnect')
-def handle_disconnect():
-    print("Client disconnected")
+    print('Client connected')
 
 @socketio.on('user_connected')
-def handle_user_connection(data):
-    print(f"User connected: {data}")
+def handle_user_connected(data):
+    user_id = data.get('user_id')
+    if user_id:
+        # Associate socket with user
+        join_room(f"user_{user_id}")
+        # Update online users
+        online_users.add(user_id)
+        emit('user_status', {'online_users': list(online_users)}, broadcast=True)
+
+@socketio.on('join_conversation')
+def handle_join_conversation(data):
+    conversation_id = data.get('conversationId')
+    if conversation_id:
+        join_room(f"conversation_{conversation_id}")
+        print(f"User joined conversation: {conversation_id}")
+
+@socketio.on('message_sent')
+def handle_message_sent(data):
+    conversation_id = data.get('conversation_id')
+    message = data.get('message')
+    
+    if conversation_id and message:
+        # Broadcast to all users in the conversation
+        emit('new_message', message, room=f"conversation_{conversation_id}")
+
+@socketio.on('typing')
+def handle_typing(data):
+    conversation_id = data.get('conversation_id')
+    user = data.get('user')
+    
+    if conversation_id and user:
+        # Broadcast typing status to all users in the conversation except sender
+        emit('typing', data, room=f"conversation_{conversation_id}", include_self=False)
 cloudinary.config(
     cloud_name=os.environ.get('cloud_name'),
     api_secret=os.environ.get('cloudinary_api_secret'),
@@ -1322,7 +1345,7 @@ def send_message(conversation_id):
         )
         db.session.add(message)
         db.session.commit()
-        socketio.emit('new_message', {
+        socketio.emit('new_message', room=f"conversation_{conversation_id}", json={
             'conversation_id': conversation_id,
             'sender_id': sender_id,
             'receiver_id': message.receiver_id,

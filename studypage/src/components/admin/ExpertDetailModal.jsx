@@ -351,7 +351,7 @@ const ExpertDetailModal = ({ expert, isOpen, onClose, currentUser }) => {
           <div className="md:w-1/3 lg:w-1/4 bg-gradient-to-b from-gray-50 to-white p-4 md:p-6 flex flex-col">
             <div className="relative w-full pt-[100%] rounded-lg overflow-hidden mb-4 shadow-md">
               <img
-                src={expert.profile_picture}
+                src={expert.profile_picture || expert.profilePicture }
                 alt={expert.name}
                 className="absolute inset-0 w-full h-full object-cover"
               />

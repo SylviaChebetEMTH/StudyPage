@@ -14,22 +14,45 @@ const ExpertsPage = () => {
 
   useEffect(() => {
     const fetchAllExperts = async () => {
+      // ✅ Retrieve and parse localStorage data correctly
+      const all_experts = localStorage.getItem("experts");
+      
+      if (all_experts) {
+        try {
+          const parsedExperts = JSON.parse(all_experts);
+          console.log('expa',parsedExperts)
+          setExperts(parsedExperts);
+          setFilteredExperts(parsedExperts);
+          setLoading(false);
+          return;
+        } catch (error) {
+          console.error("Error parsing localStorage data:", error);
+          localStorage.removeItem("experts"); // Remove corrupted data
+        }
+      }
+  
+      setError(null);
       try {
         const response = await fetch(`${API_URL}/experts`);
-        
+  
         if (!response.ok) {
-          throw new Error('Failed to fetch experts');
+          throw new Error("Failed to fetch experts");
         }
-        
+  
         const data = await response.json();
         console.log("API Response:", data);
-        
+  
         if (!data.experts || data.experts.length === 0) {
-          throw new Error("No experts available.");
+          setExperts([]);
+          setFilteredExperts([]);
+          return;
         }
-        
+  
         setExperts(data.experts);
         setFilteredExperts(data.experts);
+  
+        // ✅ Store correctly as JSON string
+        localStorage.setItem("experts", JSON.stringify(data.experts));
       } catch (error) {
         console.error("Error fetching experts:", error.message);
         setError(error.message);
@@ -37,9 +60,9 @@ const ExpertsPage = () => {
         setLoading(false);
       }
     };
-    
+  
     fetchAllExperts();
-  }, []);
+  }, []); // ✅ Empty dependency array to prevent infinite loop
 
   useEffect(() => {
     if (searchTerm.trim() === '') {
@@ -85,7 +108,7 @@ const ExpertsPage = () => {
             <div className="max-w-md mx-auto relative">
               <input
                 type="text"
-                placeholder="Search by name, expertise, or subject..."
+                placeholder="Search by name or subject..."
                 className="w-full px-4 py-2 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}

@@ -187,7 +187,7 @@ const ExpertCard = ({ expert, onHire }) => {
       {/* Image Container with Gradient Overlay */}
       <div className="relative h-48 md:h-52 overflow-hidden">
         <img
-          src={expert.profile_picture}
+          src={expert.profile_picture || expert.profilePicture }
           alt={expert.name}
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
         />
