@@ -134,6 +134,10 @@ export const SocketProvider = ({ children }) => {
     const newSocket = io('https://studypage.onrender.com', {
       withCredentials: true,
       transports: ['websocket'],
+      reconnection: true,             // Add this
+      reconnectionAttempts: 5,        // Add this
+      reconnectionDelay: 1000,        // Add this
+      timeout: 10000  
     });
 
     setSocket(newSocket);

@@ -388,7 +388,7 @@ const ChatWindow = ({ activeUser, teacher, pic, isInModal, teach }) => {
         }
       );
 
-      if (!response.ok) {
+      if (!response.ok) { 
         throw new Error("Failed to send message");
       }
 
