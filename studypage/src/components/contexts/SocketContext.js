@@ -134,9 +134,9 @@ export const SocketProvider = ({ children }) => {
     const newSocket = io('https://studypage.onrender.com', {
       withCredentials: true,
       transports: ['websocket'],
-      reconnection: true,             // Add this
-      reconnectionAttempts: 5,        // Add this
-      reconnectionDelay: 1000,        // Add this
+      reconnection: true,
+      reconnectionAttempts: 5,       
+      reconnectionDelay: 1000,        
       timeout: 10000  
     });
 
@@ -164,7 +164,18 @@ export const SocketProvider = ({ children }) => {
       clearInterval(keepAliveInterval);
     });
 
+    newSocket.on('connect_error', (error) => {
+      console.error('Socket connection error:', error);
+      // Implement retry or notify user
+    });
+    
+    newSocket.on('reconnect', (attemptNumber) => {
+      console.log(`Socket reconnected after ${attemptNumber} attempts`);
+      // Re-join rooms and update status
+    });
+
     newSocket.on('new_message', (data) => {
+      console.log('Received new message:', data);
       if (data.receiver_id === currentUser?.id) {
         if (data.conversationId !== activeConversation) {
           setUnreadCounts(prev => ({
@@ -236,6 +247,26 @@ export const SocketProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    if (socket) {
+        console.log("🟢 WebSocket connected:", socket);
+
+        socket.on('connect', () => console.log("✅ Socket connected!"));
+        socket.on('disconnect', () => console.log("🚨 Socket disconnected!"));
+        socket.on('connect_error', (err) => console.log("❌ Connection error:", err));
+        socket.on('reconnect_attempt', () => console.log("🔄 Attempting to reconnect..."));
+        socket.on('new_message', (data) => console.log("📩 New message received:", data));
+
+        return () => {
+            socket.off('connect');
+            socket.off('disconnect');
+            socket.off('connect_error');
+            socket.off('reconnect_attempt');
+            socket.off('new_message');
+        };
+    }
+}, [socket]);
+
+  useEffect(() => {
     if (socket && activeConversation) {
       socket.emit('join_conversation', { conversationId: activeConversation });
     }
@@ -243,6 +274,7 @@ export const SocketProvider = ({ children }) => {
 
   // Join a conversation room
   const joinConversation = (conversationId) => {
+    console.log(`Attempting to join conversation: ${conversationId}`);
     if (socket && conversationId) {
       socket.emit('join_conversation', { conversationId });
       setActiveConversation(conversationId);

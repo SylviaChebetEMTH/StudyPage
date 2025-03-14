@@ -286,15 +286,17 @@ const AdminChatBox = ({ conversationId, conversationDetails, isInModal = false }
     const handleNewMessage = (data) => {
       console.log('New message received:', data);
       // If the message is from the current conversation
-      if (data.conversation_id === conversationId) {
-        // Check if message already exists to prevent duplicates
-        setMessages(prevMessages => {
-          const messageExists = prevMessages.some(msg => msg.id === data.id);
-          if (messageExists) return prevMessages;
-          return [...prevMessages, data];
-        });
-      }
-    };
+      const messageData = data.message || data;
+      if (messageData.conversation_id === conversationId || 
+        messageData.conversation_id === conversationId) {
+      // Check if message already exists to prevent duplicates
+      setMessages(prevMessages => {
+        const messageExists = prevMessages.some(msg => msg.id === messageData.id);
+        if (messageExists) return prevMessages;
+        return [...prevMessages, messageData];
+      });
+    }
+  };
 
     socket.on('new_message', handleNewMessage);
 
@@ -320,29 +322,30 @@ const AdminChatBox = ({ conversationId, conversationDetails, isInModal = false }
   };
   
   // Handle typing indicator
-  const handleTyping = () => {
-    if (!conversationId) return;
-    
-    // Only send typing status if not already marked as typing
-    if (!isTyping) {
-      setIsTyping(true);
-      // Send typing status through socket - use admin name or a default
-      sendTypingStatus(
-        conversationId, 
-        'Admin'
-      );
-    }
-    
-    // Clear any existing timeout
-    if (typingTimeoutRef.current) {
-      clearTimeout(typingTimeoutRef.current);
-    }
-    
-    // Set a new timeout to reset typing status after 3 seconds of inactivity
-    typingTimeoutRef.current = setTimeout(() => {
-      setIsTyping(false);
-    }, 3000);
-  };
+// In both ChatWindow.jsx and AdminChatBox.jsx
+const handleTyping = () => {
+  if (!conversationId) return;
+  
+  const conversation = conversationId;
+  const username = conversationDetails.expert_name || conversationDetails.name || 'Admin';
+  
+  // Only send typing status if not already marked as typing
+  if (!isTyping) {
+    setIsTyping(true);
+    // Send typing status through socket
+    sendTypingStatus(conversation, username);
+  }
+  
+  // Clear any existing timeout
+  if (typingTimeoutRef.current) {
+    clearTimeout(typingTimeoutRef.current);
+  }
+  
+  // Set a new timeout to reset typing status after 3 seconds of inactivity
+  typingTimeoutRef.current = setTimeout(() => {
+    setIsTyping(false);
+  }, 3000);
+};
   
   // Clean up the typing timeout on unmount
   useEffect(() => {
