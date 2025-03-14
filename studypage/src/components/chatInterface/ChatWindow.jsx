@@ -215,7 +215,11 @@ const ChatWindow = ({ activeUser, teacher, pic, isInModal, teach }) => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isTyping, setIsTyping] = useState(false);
+  
+  // Use a ref instead of state for tracking message IDs to avoid render cycles
+  const processedMessageIds = useRef(new Set());
   const typingTimeoutRef = useRef(null);
+  const pendingLocalMessages = useRef(new Map());
 
   // Add refs for scrolling
   const messagesEndRef = useRef(null);
@@ -247,10 +251,18 @@ const ChatWindow = ({ activeUser, teacher, pic, isInModal, teach }) => {
       }
 
       const data = await response.json();
+      console.log('this is data', data);
       
       if (data.length < 20) {
         setHasMore(false);
       }
+
+      // Track all received message IDs
+      data.forEach(msg => {
+        if (msg.id) {
+          processedMessageIds.current.add(msg.id);
+        }
+      });
 
       if (append && pageNum > 1) {
         // When loading more, prepend to existing messages
@@ -269,13 +281,16 @@ const ChatWindow = ({ activeUser, teacher, pic, isInModal, teach }) => {
     }
   };
 
-  
   // Initial data load
   useEffect(() => {
     if (chatActiveUser?.conversationId) {
       fetchMessages();
       // Join socket room for this conversation
       joinConversation(chatActiveUser.conversationId);
+      
+      // Reset message tracking when conversation changes
+      processedMessageIds.current = new Set();
+      pendingLocalMessages.current = new Map();
     }
   }, [chatActiveUser?.conversationId, authToken]);
 
@@ -287,21 +302,49 @@ const ChatWindow = ({ activeUser, teacher, pic, isInModal, teach }) => {
       console.log('New message received:', data);
       const messageData = data.message || data;
       
-      // Only add messages from others or system messages
+      // Only process messages for the current conversation
       if (messageData.conversation_id === chatActiveUser.conversationId) {
-        // Check if message already exists to prevent duplicates
-        setMessages(prevMessages => {
-          // Check by ID and also by content+timestamp to catch duplicate optimistic updates
-          const messageExists = prevMessages.some(msg => 
-            msg.id === messageData.id || 
-            (msg.sender_id === messageData.sender_id && 
-             msg.content === messageData.content &&
-             Math.abs(new Date(msg.created_at) - new Date(messageData.created_at)) < 5000)
-          );
+        // Skip if we've already processed this message ID
+        if (messageData.id && processedMessageIds.current.has(messageData.id)) {
+          console.log('Skipping already processed message:', messageData.id);
+          return;
+        }
+        
+        // Remove from pending if this message was locally sent
+        if (messageData.id && pendingLocalMessages.current.has(messageData.content)) {
+          console.log('Replacing pending message with server version');
+          const tempId = pendingLocalMessages.current.get(messageData.content);
+          pendingLocalMessages.current.delete(messageData.content);
           
-          if (messageExists) return prevMessages;
-          return [...prevMessages, messageData];
-        });
+          // Replace the temporary message with the server version
+          setMessages(prevMessages => 
+            prevMessages.map(msg => 
+              msg.temp_id === tempId ? messageData : msg
+            )
+          );
+        } else {
+          // Check for content-based duplicates for messages without IDs
+          setMessages(prevMessages => {
+            const isDuplicate = prevMessages.some(msg => 
+              msg.sender_id === messageData.sender_id &&
+              msg.content === messageData.content &&
+              Math.abs(new Date(msg.created_at || Date.now()) - 
+                      new Date(messageData.created_at || Date.now())) < 5000
+            );
+            
+            if (isDuplicate) {
+              console.log('Skipping duplicate message content');
+              return prevMessages;
+            }
+            
+            return [...prevMessages, messageData];
+          });
+        }
+        
+        // Add to processed set to prevent future duplicates
+        if (messageData.id) {
+          processedMessageIds.current.add(messageData.id);
+        }
       }
     };
 
@@ -326,30 +369,29 @@ const ChatWindow = ({ activeUser, teacher, pic, isInModal, teach }) => {
   }, [activeUser]);
 
   // Handle typing indicator
-// In both ChatWindow.jsx and AdminChatBox.jsx
-const handleTyping = () => {
-  if (!chatActiveUser?.conversationId) return;
-  
-  const conversation = chatActiveUser.conversationId;
-  const username = chatActiveUser?.expert_name || chatActiveUser?.name || 'User';
-  
-  // Only send typing status if not already marked as typing
-  if (!isTyping) {
-    setIsTyping(true);
-    // Send typing status through socket
-    sendTypingStatus(conversation, username);
-  }
-  
-  // Clear any existing timeout
-  if (typingTimeoutRef.current) {
-    clearTimeout(typingTimeoutRef.current);
-  }
-  
-  // Set a new timeout to reset typing status after 3 seconds of inactivity
-  typingTimeoutRef.current = setTimeout(() => {
-    setIsTyping(false);
-  }, 3000);
-};
+  const handleTyping = () => {
+    if (!chatActiveUser?.conversationId) return;
+    
+    const conversation = chatActiveUser.conversationId;
+    const username = chatActiveUser?.expert_name || chatActiveUser?.name || 'User';
+    
+    // Only send typing status if not already marked as typing
+    if (!isTyping) {
+      setIsTyping(true);
+      // Send typing status through socket
+      sendTypingStatus(conversation, username);
+    }
+    
+    // Clear any existing timeout
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+    
+    // Set a new timeout to reset typing status after 3 seconds of inactivity
+    typingTimeoutRef.current = setTimeout(() => {
+      setIsTyping(false);
+    }, 3000);
+  };
 
   // Clean up the typing timeout on unmount
   useEffect(() => {
@@ -375,6 +417,7 @@ const handleTyping = () => {
       }
     }
   };
+  const tempId = () => `temp-${Date.now()}-${Math.random()}`;
 
   const sendMessage = async (conversationId, content, attachments) => {
     try {
@@ -384,6 +427,28 @@ const handleTyping = () => {
       }
 
       setSendingMessage(true);
+      
+      // Create a temporary ID for this message
+      const tempId = `temp-${Date.now()}`;
+      
+      // Add to UI immediately with temporary ID
+      const optimisticMessage = {
+        temp_id: tempId,
+        conversation_id: conversationId,
+        sender_id: activeUser.id || activeUser.expert_id,
+        content: content,
+        created_at: new Date().toISOString(),
+        attachments: [],
+        sender: {
+          name: activeUser.expert_name || activeUser.name
+        }
+      };
+      
+      // Add to pending map to track this message
+      pendingLocalMessages.current.set(content, tempId);
+      
+      // Add optimistically to UI
+      setMessages(prevMessages => [...prevMessages, optimisticMessage]);
 
       const formData = new FormData();
       formData.append("content", content);
@@ -405,8 +470,18 @@ const handleTyping = () => {
 
       const data = await response.json();
       
-      // Optimistically add the message to the UI
-      setMessages(prev => [...prev, data]);
+      // Track this message ID to prevent duplication
+      if (data.id) {
+        processedMessageIds.current.add(data.id);
+      }
+      
+      // Remove from pending and update with real data
+      pendingLocalMessages.current.delete(content);
+      
+      // Replace temporary message with real one from server
+      setMessages(prev => 
+        prev.map(msg => msg.temp_id === tempId ? { ...data, temp_id: tempId } : msg)
+      );
       
       // Emit socket event for real-time update
       if (socket) {
@@ -426,6 +501,11 @@ const handleTyping = () => {
     } catch (error) {
       console.error("❌ Error sending message:", error);
       setError("Failed to send message. Please try again.");
+      
+      // Remove failed message from UI
+      setMessages(prev => prev.filter(msg => msg.temp_id !== tempId));
+      
+      pendingLocalMessages.current.delete(content);
     } finally {
       setSendingMessage(false);
     }
