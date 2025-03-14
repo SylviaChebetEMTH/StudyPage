@@ -133,14 +133,57 @@
 
 // export default MessageBubble;
 
+// {
+//   "conversationId": 28,
+//   "expert_id": 13960,
+//   "expert_name": "Aurora Clark",
+//   "profilePicture": "https://t4.ftcdn.net/jpg/05/50/81/29/240_F_550812955_gEsXs9EtB1CUxQD9Bnspgko8AHAwxp8f.jpg",
+//   "isAdmin": false
+// }
 
+// {
+//   "expert_name": "Aurora Clark",
+//   "expert_id": 13960,
+//   "conversationId": 28,
+//   "client_name": "bett",
+//   "client_id": 1,
+//   "message": "nksd",
+//   "timestamp": "2025-03-14T15:40:32.623830",
+//   "condition": false,
+//   "unread_count": 7,
+//   "isAdmin": false
+// }
+
+// { message in
+//   "attachments": [],
+//   "content": "nksd",
+//   "conversation_id": 28,
+//   "expert": null,
+//   "id": 207,
+//   "read": false,
+//   "receiver": "bett",
+//   "sender": "adminuser",
+//   "timestamp": "2025-03-14 15:40:32"
+// }
+
+// {
+//   "attachments": [],
+//   "content": "nksd",
+//   "conversation_id": 28,
+//   "expert": null,
+//   "id": 207,
+//   "read": true,
+//   "receiver": "bett",
+//   "sender": "adminuser",
+//   "timestamp": "2025-03-14 15:40:32"
+// }
 
 import React from "react";
 import classNames from "classnames";
 
 const MessageBubble = ({ message, activeUser }) => {
-  // console.log('message', message);
-  // console.log('activeUser', activeUser);
+  console.log('message in mess bubble', message);
+  console.log('activeUser in mess bubble', activeUser);
   
   // Parse the attachments properly
   const parseAttachments = () => {
@@ -163,18 +206,30 @@ const MessageBubble = ({ message, activeUser }) => {
 
   // Determine if the current message is from the active user (sender)
   const isFromCurrentUser = () => {
-    // If active user is admin and message is from adminuser
-    if (activeUser.isAdmin && message.sender === "adminuser") {
+    // Check if we're dealing with admin
+    const isAdminUser = activeUser.isAdmin === true;
+    
+    // Get the relevant user names from activeUser (handling both data structures)
+    const currentExpertName = activeUser.expert_name;
+    const currentClientName = activeUser.client_name;
+    
+    // Check if the message is from admin
+    if (isAdminUser && message.sender === "adminuser") {
       return true;
     }
     
-    // If active user is client and message is from the client
-    if (activeUser.client_name && message.sender === activeUser.client_name) {
+    // Check if message is from the currently active client
+    if (currentClientName && message.sender === currentClientName) {
       return true;
     }
     
-    // If active user is expert and message is from the expert
-    if (activeUser.expert_name && message.sender === activeUser.expert_name) {
+    // Check if message is from the currently active expert
+    if (currentExpertName && message.sender === currentExpertName) {
+      return true;
+    }
+    
+    // For the other chat section where sender might match the active user in different ways
+    if (message.sender === activeUser.expert_name) {
       return true;
     }
     
