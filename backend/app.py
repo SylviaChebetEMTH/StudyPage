@@ -14,7 +14,7 @@ from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignat
 from flask_migrate import Migrate
 from flask_restful import Resource,Api
 from flask_mail import Mail, Message as MessageInstance 
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room, leave_room
 import cloudinary.uploader
 from random import uniform, randint
 from datetime import datetime
@@ -72,8 +72,8 @@ def handle_user_connected(data):
         # Associate socket with user
         join_room(f"user_{user_id}")
         # Update online users
-        online_users.add(user_id)
-        emit('user_status', {'online_users': list(online_users)}, broadcast=True)
+        # online_users.add(user_id)
+        # emit('user_status', {'online_users': list(online_users)}, broadcast=True)
 
 @socketio.on('join_conversation')
 def handle_join_conversation(data):
@@ -1345,12 +1345,13 @@ def send_message(conversation_id):
         )
         db.session.add(message)
         db.session.commit()
-        socketio.emit('new_message', room=f"conversation_{conversation_id}", json={
+        data_dict = {
             'conversation_id': conversation_id,
             'sender_id': sender_id,
             'receiver_id': message.receiver_id,
             'message': message.to_dict()
-        })
+        }
+        socketio.emit('new_message', data_dict, room=f"conversation_{conversation_id}")
 
         sender = User.query.get(sender_id)
         email_subject = "New Message Notification"
