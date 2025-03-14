@@ -244,11 +244,11 @@ const ChatWindow = ({ activeUser, teacher, pic, isInModal, teach }) => {
         }
       );
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`🚨 Error fetching messages: ${response.status} - ${errorText}`);
-        throw new Error(`Failed to fetch messages: ${response.status}`);
-      }
+      // if (!response.ok) {
+      //   const errorText = await response.text();
+      //   console.error(`🚨 Error fetching messages: ${response.status} - ${errorText}`);
+      //   throw new Error(`Failed to fetch messages: ${response.status}`);
+      // }
 
       const data = await response.json();
       console.log('this is data', data);
@@ -593,7 +593,7 @@ const ChatWindow = ({ activeUser, teacher, pic, isInModal, teach }) => {
               </div>
             )}
             
-            {error && (
+            {/* {error && (
               <div className="bg-red-500 bg-opacity-20 border border-red-500 text-red-100 p-3 rounded-md">
                 <p>{error}</p>
                 <button 
@@ -603,7 +603,7 @@ const ChatWindow = ({ activeUser, teacher, pic, isInModal, teach }) => {
                   Try again
                 </button>
               </div>
-            )}
+            )} */}
             
             {/* Typing indicator */}
             {typingPeople.length > 0 && (

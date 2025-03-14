@@ -59,7 +59,7 @@ fetchConversationId();
         <div className="flex-shrink-0 flex justify-between items-center p-4 border-b border-gray-700 bg-gray-900">
           <div className="flex items-center">
             <img 
-              src={teacher.profile_picture} 
+              src={teacher.profile_picture || teacher.profilePicture}  
               alt={teacher.name} 
               className="w-10 h-10 rounded-full mr-3"
             />
