@@ -203,7 +203,7 @@ import MessageBubble from "./MessageBubble";
 import { IoMdChatbubbles } from "react-icons/io";
 import { FiRefreshCw } from "react-icons/fi";
 
-const ChatWindow = ({ activeUser, teacher, pic, isInModal, teach }) => {
+const ChatWindow = ({ activeUser, teacher, pic, isInModal, teach,iscurrentUser }) => {
   const [chatActiveUser, setChatActiveUser] = useState(activeUser || null);
   const { authToken } = useContext(UserContext);
   const { socket, joinConversation, typingUsers, sendTypingStatus } = useSocket();
@@ -577,9 +577,10 @@ const ChatWindow = ({ activeUser, teacher, pic, isInModal, teach }) => {
               <>
               {messages.map((message, index) => (
                 <MessageBubble
-                  key={`${message.id}-${message.created_at || index}`} // Ensure uniqueness
+                  key={`${message.id}-${message.created_at || index}`}
                   message={message}
-                  activeUser={{ ...chatActiveUser, isAdmin: false }}
+                  activeUser={{ ...chatActiveUser }}
+                  // iscurrentUser
                 />
               ))}
               </>
