@@ -13,7 +13,6 @@ service_subject = db.Table('service_subject',
     db.Column('service_id', db.Integer, db.ForeignKey('services.id'), primary_key=True),
     db.Column('subject_id', db.Integer, db.ForeignKey('subjects.id'), primary_key=True)
 )
-
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
