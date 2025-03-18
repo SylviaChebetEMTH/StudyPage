@@ -79,12 +79,13 @@ fetchConversationId();
         {/* Chat Window Container - Takes remaining height */}
         <div className="flex-1 overflow-auto">
         <ChatWindow 
-          activeUser={{ ...activeUser, conversationId }} 
+          activeUser={{ activeUser, conversationId }} 
           auth={authToken}
           // pic={teach}
           teacher={teacher}
           curreUser={curUser}
           isInModal={true}
+          // isCurrentUser={true}
           conversationId={conversationId} // Changed from converseId to conversationId for consistency
         />
         </div>
