@@ -702,7 +702,6 @@ def get_current_user():
 
 
 BLACKLIST = set()
-# @jwt.token_in_blocklist_loader
 def check_if_token_in_blocklist(jwt_header, decrypted_token):
     jti = decrypted_token["jti"]
     return jti in BLACKLIST
