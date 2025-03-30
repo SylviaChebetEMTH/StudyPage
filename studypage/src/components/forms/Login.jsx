@@ -93,7 +93,6 @@ export default function Login() {
       if (user) {
         // localStorage.setItem("isAdmin", user.is_admin);
         
-        // Delay to ensure UI update before navigation
         await new Promise(resolve => setTimeout(resolve, 500));
   
         if (user.is_admin) {
