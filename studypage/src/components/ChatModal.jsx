@@ -6,6 +6,7 @@ import { UserContext } from './contexts/userContext';
 const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
   const { authToken } = useContext(UserContext);
   const [conversationId, setConversationId] = useState(-1);
+  // console.log('olaola','teacher', teacher.id, 'curUser', curUser,'teach', teach);
   const [activeUser, setActiveUser] = useState({
     conversationId: -1,
     expert_id: teacher.id,
