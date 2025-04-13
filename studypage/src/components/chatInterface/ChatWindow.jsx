@@ -195,274 +195,282 @@
 
 
 
-import React, { useState, useEffect, useContext, useRef } from "react";
-import { UserContext } from "../contexts/userContext";
-import { useSocket } from "../contexts/SocketContext";
-import MessageInput from "./MessageInput";
-import MessageBubble from "./MessageBubble";
-import { IoMdChatbubbles } from "react-icons/io";
-import { FiRefreshCw } from "react-icons/fi";
+  import React, { useState, useEffect, useContext, useRef } from "react";
+  import { UserContext } from "../contexts/userContext";
+  import { useSocket } from "../contexts/SocketContext";
+  import MessageInput from "./MessageInput";
+  import MessageBubble from "./MessageBubble";
+  import { IoMdChatbubbles } from "react-icons/io";
+  import { FiRefreshCw } from "react-icons/fi";
 
-const ChatWindow = ({ activeUser, teacher, pic, isInModal, teach,iscurrentUser }) => {
-  const [chatActiveUser, setChatActiveUser] = useState(activeUser || null);
-  const { authToken } = useContext(UserContext);
-  const { socket, joinConversation, typingUsers, sendTypingStatus } = useSocket();
-  const [messages, setMessages] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [sendingMessage, setSendingMessage] = useState(false);
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [isTyping, setIsTyping] = useState(false);
-  
-  // Use a ref instead of state for tracking message IDs to avoid render cycles
-  const processedMessageIds = useRef(new Set());
-  const typingTimeoutRef = useRef(null);
-  const pendingLocalMessages = useRef(new Map());
+  const ChatWindow = ({ activeUser, teacher, pic, isInModal, teach,iscurrentUser }) => {
+    console.log('This is the active user', activeUser)
+    const [chatActiveUser, setChatActiveUser] = useState(activeUser || null);
+    const { authToken } = useContext(UserContext);
+    const { socket, joinConversation, typingUsers, sendTypingStatus } = useSocket();
+    const [messages, setMessages] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [sendingMessage, setSendingMessage] = useState(false);
+    const [isFetchingMore, setIsFetchingMore] = useState(false);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [isTyping, setIsTyping] = useState(false);
+    
+    // Use a ref instead of state for tracking message IDs to avoid render cycles
+    const processedMessageIds = useRef(new Set());
+    const typingTimeoutRef = useRef(null);
+    const pendingLocalMessages = useRef(new Map());
 
-  // Add refs for scrolling
-  const messagesEndRef = useRef(null);
-  const messagesContainerRef = useRef(null);
+    // Add refs for scrolling
+    const messagesEndRef = useRef(null);
+    const messagesContainerRef = useRef(null);
 
-  // Fetch messages function
-  const fetchMessages = async (pageNum = 1, append = false) => {
-    if (!chatActiveUser?.conversationId) return;
+    // Fetch messages function
+    const fetchMessages = async (pageNum = 1, append = false) => {
+      if (!chatActiveUser?.conversationId) return;
 
-    const fetchingMore = pageNum > 1;
-    if (fetchingMore) {
-      setIsFetchingMore(true);
-    } else {
-      setLoading(true);
-    }
-
-    try {
-      const response = await fetch(
-        `https://studypage.onrender.com/conversations/${chatActiveUser.conversationId}/messages?page=${pageNum}&limit=20`,
-        {
-          headers: { Authorization: `Bearer ${authToken}` },  
-        }
-      );
-
-      // if (!response.ok) {
-      //   const errorText = await response.text();
-      //   console.error(`🚨 Error fetching messages: ${response.status} - ${errorText}`);
-      //   throw new Error(`Failed to fetch messages: ${response.status}`);
-      // }
-
-      const data = await response.json();
-      console.log('this is data', data);
-      
-      if (data.length < 20) {
-        setHasMore(false);
-      }
-
-      // Track all received message IDs
-      data.forEach(msg => {
-        if (msg.id) {
-          processedMessageIds.current.add(msg.id);
-        }
-      });
-
-      if (append && pageNum > 1) {
-        // When loading more, prepend to existing messages
-        setMessages(prevMessages => [...data, ...prevMessages]);
+      const fetchingMore = pageNum > 1;
+      if (fetchingMore) {
+        setIsFetchingMore(true);
       } else {
-        setMessages(data);
+        setLoading(true);
       }
-      
-      setError(null);
-    } catch (err) {
-      console.error("❌ Error fetching messages:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-      setIsFetchingMore(false);
-    }
-  };
 
-  // Initial data load
-  useEffect(() => {
-    if (chatActiveUser?.conversationId) {
-      fetchMessages();
-      // Join socket room for this conversation
-      joinConversation(chatActiveUser.conversationId);
-      
-      // Reset message tracking when conversation changes
-      processedMessageIds.current = new Set();
-      pendingLocalMessages.current = new Map();
-    }
-  }, [chatActiveUser?.conversationId, authToken]);
+      try {
+        const response = await fetch(
+          `https://studypage.onrender.com/conversations/${chatActiveUser.conversationId}/messages?page=${pageNum}&limit=20`,
+          {
+            headers: { Authorization: `Bearer ${authToken}` },  
+          }
+        );
 
-  // Socket event for real-time messages
-  useEffect(() => {
-    if (!socket || !chatActiveUser?.conversationId) return;
+        // if (!response.ok) {
+        //   const errorText = await response.text();
+        //   console.error(`🚨 Error fetching messages: ${response.status} - ${errorText}`);
+        //   throw new Error(`Failed to fetch messages: ${response.status}`);
+        // }
 
-    const handleNewMessage = (data) => {
-      console.log('New message received:', data);
-      const messageData = data.message || data;
-      
-      // Only process messages for the current conversation
-      if (messageData.conversation_id === chatActiveUser.conversationId) {
-        // Skip if we've already processed this message ID
-        if (messageData.id && processedMessageIds.current.has(messageData.id)) {
-          console.log('Skipping already processed message:', messageData.id);
-          return;
-        }
+        const data = await response.json();
+        console.log('this is data', data);
         
-        // Remove from pending if this message was locally sent
-        if (messageData.id && pendingLocalMessages.current.has(messageData.content)) {
-          console.log('Replacing pending message with server version');
-          const tempId = pendingLocalMessages.current.get(messageData.content);
-          pendingLocalMessages.current.delete(messageData.content);
-          
-          // Replace the temporary message with the server version
-          setMessages(prevMessages => 
-            prevMessages.map(msg => 
-              msg.temp_id === tempId ? messageData : msg
-            )
-          );
+        if (data.length < 20) {
+          setHasMore(false);
+        }
+
+        // Track all received message IDs
+        data.forEach(msg => {
+          if (msg.id) {
+            processedMessageIds.current.add(msg.id);
+          }
+        });
+
+        if (append && pageNum > 1) {
+          // When loading more, prepend to existing messages
+          setMessages(prevMessages => [...data, ...prevMessages]);
         } else {
-          // Check for content-based duplicates for messages without IDs
-          setMessages(prevMessages => {
-            const isDuplicate = prevMessages.some(msg => 
-              msg.sender_id === messageData.sender_id &&
-              msg.content === messageData.content &&
-              Math.abs(new Date(msg.created_at || Date.now()) - 
-                      new Date(messageData.created_at || Date.now())) < 5000
-            );
-            
-            if (isDuplicate) {
-              console.log('Skipping duplicate message content');
-              return prevMessages;
-            }
-            
-            return [...prevMessages, messageData];
-          });
+          setMessages(data);
         }
         
-        // Add to processed set to prevent future duplicates
-        if (messageData.id) {
-          processedMessageIds.current.add(messageData.id);
-        }
+        setError(null);
+      } catch (err) {
+        console.error("❌ Error fetching messages:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+        setIsFetchingMore(false);
       }
     };
 
-    socket.on('new_message', handleNewMessage);
+    // Initial data load
+    useEffect(() => {
+      if (chatActiveUser?.conversationId) {
+        fetchMessages();
+        // Join socket room for this conversation
+        joinConversation(chatActiveUser.conversationId);
+        
+        // Reset message tracking when conversation changes
+        processedMessageIds.current = new Set();
+        pendingLocalMessages.current = new Map();
+      }
+    }, [chatActiveUser?.conversationId, authToken]);
 
-    return () => {
-      socket.off('new_message', handleNewMessage);
-    };
-  }, [socket, chatActiveUser?.conversationId]);
+    // Socket event for real-time messages
+    useEffect(() => {
+      if (!socket || !chatActiveUser?.conversationId) return;
 
-  // Auto-scroll when new messages arrive
-  useEffect(() => {
-    // Only auto-scroll if we're not fetching older messages
-    if (!isFetchingMore && messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages, isFetchingMore]);
+      const handleNewMessage = (data) => {
+        console.log('New message received:', data);
+        const messageData = data.message || data;
+        
+        // Only process messages for the current conversation
+        if (messageData.conversation_id === chatActiveUser.conversationId) {
+          // Skip if we've already processed this message ID
+          if (messageData.id && processedMessageIds.current.has(messageData.id)) {
+            console.log('Skipping already processed message:', messageData.id);
+            return;
+          }
+          
+          // Remove from pending if this message was locally sent
+          if (messageData.id && pendingLocalMessages.current.has(messageData.content)) {
+            console.log('Replacing pending message with server version');
+            const tempId = pendingLocalMessages.current.get(messageData.content);
+            pendingLocalMessages.current.delete(messageData.content);
+            
+            // Replace the temporary message with the server version
+            setMessages(prevMessages => 
+              prevMessages.map(msg => 
+                msg.temp_id === tempId ? messageData : msg
+              )
+            );
+          } else {
+            // Check for content-based duplicates for messages without IDs
+            setMessages(prevMessages => {
+              const isDuplicate = prevMessages.some(msg => 
+                msg.sender_id === messageData.sender_id &&
+                msg.content === messageData.content &&
+                Math.abs(new Date(msg.created_at || Date.now()) - 
+                        new Date(messageData.created_at || Date.now())) < 5000
+              );
+              
+              if (isDuplicate) {
+                console.log('Skipping duplicate message content');
+                return prevMessages;
+              }
+              
+              return [...prevMessages, messageData];
+            });
+          }
+          
+          // Add to processed set to prevent future duplicates
+          if (messageData.id) {
+            processedMessageIds.current.add(messageData.id);
+          }
+        }
+      };
 
-  // Sync `activeUser` changes with `chatActiveUser`
-  useEffect(() => {
-    setChatActiveUser(activeUser);
-  }, [activeUser]);
+      socket.on('new_message', handleNewMessage);
 
-  // Handle typing indicator
-  const handleTyping = () => {
-    if (!chatActiveUser?.conversationId) return;
-    
-    const conversation = chatActiveUser.conversationId;
-    const username = chatActiveUser?.expert_name || chatActiveUser?.name || 'User';
-    
-    // Only send typing status if not already marked as typing
-    if (!isTyping) {
-      setIsTyping(true);
-      // Send typing status through socket
-      sendTypingStatus(conversation, username);
-    }
-    
-    // Clear any existing timeout
-    if (typingTimeoutRef.current) {
-      clearTimeout(typingTimeoutRef.current);
-    }
-    
-    // Set a new timeout to reset typing status after 3 seconds of inactivity
-    typingTimeoutRef.current = setTimeout(() => {
-      setIsTyping(false);
-    }, 3000);
-  };
+      return () => {
+        socket.off('new_message', handleNewMessage);
+      };
+    }, [socket, chatActiveUser?.conversationId]);
 
-  // Clean up the typing timeout on unmount
-  useEffect(() => {
-    return () => {
+    // Auto-scroll when new messages arrive
+    useEffect(() => {
+      // Only auto-scroll if we're not fetching older messages
+      if (!isFetchingMore && messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }, [messages, isFetchingMore]);
+
+    // Sync `activeUser` changes with `chatActiveUser`
+    useEffect(() => {
+      setChatActiveUser(activeUser);
+    }, [activeUser]);
+
+    // Handle typing indicator
+    const handleTyping = () => {
+      if (!chatActiveUser?.conversationId) return;
+      
+      const conversation = chatActiveUser.conversationId;
+      const username = chatActiveUser?.expert_name || chatActiveUser?.name || 'User';
+      
+      // Only send typing status if not already marked as typing
+      if (!isTyping) {
+        setIsTyping(true);
+        // Send typing status through socket
+        sendTypingStatus(conversation, username);
+      }
+      
+      // Clear any existing timeout
       if (typingTimeoutRef.current) {
         clearTimeout(typingTimeoutRef.current);
       }
+      
+      // Set a new timeout to reset typing status after 3 seconds of inactivity
+      typingTimeoutRef.current = setTimeout(() => {
+        setIsTyping(false);
+      }, 3000);
     };
-  }, []);
 
-  // Handle scroll to load more messages
-  const handleScroll = () => {
-    if (messagesContainerRef.current) {
-      const { scrollTop } = messagesContainerRef.current;
-      
-      // If user has scrolled to the top and we have more messages to fetch
-      if (scrollTop < 100 && !isFetchingMore && hasMore) {
-        setPage(prevPage => {
-          const newPage = prevPage + 1;
-          fetchMessages(newPage, true);
-          return newPage;
-        });
-      }
-    }
-  };
-  const tempId = () => `temp-${Date.now()}-${Math.random()}`;
-
-  const sendMessage = async (conversationId, content, attachments) => {
-    try {
-      if (!conversationId) {
-        console.warn("⚠️ Cannot send message: No conversation ID.");
-        return;
-      }
-
-      setSendingMessage(true);
-      
-      // Create a temporary ID for this message
-      const tempId = `temp-${Date.now()}`;
-      
-      // Add to UI immediately with temporary ID
-      const optimisticMessage = {
-        temp_id: tempId,
-        conversation_id: conversationId,
-        sender_id: activeUser.id || activeUser.expert_id,
-        content: content,
-        created_at: new Date().toISOString(),
-        attachments: [],
-        sender: {
-          name: activeUser.expert_name || activeUser.name
+    // Clean up the typing timeout on unmount
+    useEffect(() => {
+      return () => {
+        if (typingTimeoutRef.current) {
+          clearTimeout(typingTimeoutRef.current);
         }
       };
-      
-      // Add to pending map to track this message
-      pendingLocalMessages.current.set(content, tempId);
-      
-      // Add optimistically to UI
-      setMessages(prevMessages => [...prevMessages, optimisticMessage]);
+    }, []);
 
-      const formData = new FormData();
-      formData.append("content", content);
-      formData.append("expert_id", activeUser.id || activeUser.expert_id);
-      attachments.forEach((file) => formData.append("attachments", file));
-
-      const response = await fetch(
-        `https://studypage.onrender.com/conversations/${conversationId}/messages`,
-        {
-          method: "POST",
-          headers: { Authorization: `Bearer ${authToken}` },
-          body: formData,
+    // Handle scroll to load more messages
+    const handleScroll = () => {
+      if (messagesContainerRef.current) {
+        const { scrollTop } = messagesContainerRef.current;
+        
+        // If user has scrolled to the top and we have more messages to fetch
+        if (scrollTop < 100 && !isFetchingMore && hasMore) {
+          setPage(prevPage => {
+            const newPage = prevPage + 1;
+            fetchMessages(newPage, true);
+            return newPage;
+          });
         }
-      );
+      }
+    };
+    const tempId = () => `temp-${Date.now()}-${Math.random()}`;
+
+    const sendMessage = async (conversationId, content, attachments) => {
+      try {
+        if (!conversationId) {
+          console.warn("⚠️ Cannot send message: No conversation ID.");
+          return;
+        }
+
+        setSendingMessage(true);
+        
+        // Create a temporary ID for this message
+        const tempId = `temp-${Date.now()}`;
+        
+        // Add to UI immediately with temporary ID
+        const optimisticMessage = {
+          temp_id: tempId,
+          conversation_id: conversationId,
+          sender_id: activeUser.id || activeUser.expert_id,
+          content: content,
+          created_at: new Date().toISOString(),
+          attachments: [],
+          sender: {
+            name: activeUser.expert_name || activeUser.name
+          }
+        };
+        
+        // Add to pending map to track this message
+        pendingLocalMessages.current.set(content, tempId);
+        
+        // Add optimistically to UI
+        setMessages(prevMessages => [...prevMessages, optimisticMessage]);
+
+        const formData = new FormData();
+        // Check if activeUser has the proper structure
+        const userObj = activeUser.activeUser || activeUser;
+        if (!("expert_id" in userObj) && !("id" in userObj)) {
+          console.error("Invalid user object: missing expert_id and id");
+          return;
+        }
+
+        formData.append("content", content);
+        formData.append("expert_id", userObj.expert_id || userObj.id);
+        attachments.forEach((file) => formData.append("attachments", file));
+
+        const response = await fetch(
+          `https://studypage.onrender.com/conversations/${conversationId}/messages`,
+          {
+            method: "POST",
+            headers: { Authorization: `Bearer ${authToken}` },
+            body: formData,
+          }
+        );
 
       if (!response.ok) { 
         throw new Error("Failed to send message");
