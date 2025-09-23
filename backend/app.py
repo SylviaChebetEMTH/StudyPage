@@ -60,7 +60,6 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 #     logger=True,  # Enable logging for debugging
 #     engineio_logger=True  # Enable Engine.IO logging
 # )
-
 @socketio.on('connect')
 def handle_connect():
     print('Client connected')
