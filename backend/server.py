@@ -44,7 +44,14 @@ def seed_database():
 
 if __name__ == '__main__':
     should_seed = os.environ.get("SEED_DB", "false").lower() == "true"
-    if should_seed:
+    should_deploy = os.environ.get("DEPLOY", "false").lower() == "true"
+    
+    if should_deploy:
+        # Run full deployment with experts and services
+        from deploy import main as deploy_main
+        deploy_main()
+    elif should_seed:
+        # Run basic seeding only
         with app.app_context():
             db.create_all()  
             seed_database()  
