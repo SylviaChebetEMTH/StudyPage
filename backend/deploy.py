@@ -8,7 +8,7 @@ import os
 import json
 from app import app, db
 from models import ProjectType, Subject, Service, User, Expert
-from generate_services import generate_services_data
+from generate_services_data import generate_services_data
 from generate_experts import generate_experts
 
 def create_database():

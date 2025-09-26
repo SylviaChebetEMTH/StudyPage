@@ -1,0 +1,2 @@
+# This file is here to help Render detect the Python version
+# The actual requirements are in backend/requirements.txt
