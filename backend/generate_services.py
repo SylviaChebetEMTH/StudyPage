@@ -238,7 +238,7 @@ DEFAULT_SUBJECT_MULTIPLIER = 1.0
 
 # ✅ Generate IDs
 project_id_map = {name: i+1 for i, name in enumerate(project_types.keys())}
-subject_id_map = {name: i+1 for i, name in subject_multipliers.keys()}
+subject_id_map = {name: i+1 for i, name in enumerate(subject_multipliers.keys())}
 
 # ✅ Generate Services
 services = []
