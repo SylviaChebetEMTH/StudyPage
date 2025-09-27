@@ -190,7 +190,7 @@ const AdminSidebar = ({ onSelectConversation }) => {
       setLoading(true);
 
       try {
-        const response = await fetch("https://studypage.onrender.com/admin/conversations", {
+        const response = await fetch("https://studypage-h2eu.onrender.com/admin/conversations", {
           headers: { Authorization: `Bearer ${authToken}` },
         });
 

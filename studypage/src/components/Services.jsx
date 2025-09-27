@@ -12,7 +12,7 @@ const Services = () => {
   const [visibleCount, setVisibleCount] = useState(6);
   const navigate = useNavigate()
   
-  const API_URL = 'https://studypage.onrender.com';
+  const API_URL = 'https://studypage-h2eu.onrender.com';
 
   const move = (projectTypeId, subjectId, serviceId)=> {
     localStorage.setItem("selectedProjectTypeId", projectTypeId);

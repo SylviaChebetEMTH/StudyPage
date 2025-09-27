@@ -409,7 +409,7 @@ const ExpertDetailModal = ({ expert, isOpen, onClose, currentUser }) => {
   const fetchComments = async () => {
     setLoadingComments(true);
     try {
-      const response = await fetch(`https://studypage.onrender.com/experts/${expert.id}/comments`);
+      const response = await fetch(`https://studypage-h2eu.onrender.com/experts/${expert.id}/comments`);
       const data = await response.json();
       setComments(data.comments || []);
     } catch (error) {
@@ -430,7 +430,7 @@ const ExpertDetailModal = ({ expert, isOpen, onClose, currentUser }) => {
 
     setLoading(true);
     try {
-      const response = await fetch(`https://studypage.onrender.com/experts/${expert.id}/comments/${currentUser.id}`, {
+      const response = await fetch(`https://studypage-h2eu.onrender.com/experts/${expert.id}/comments/${currentUser.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -434,7 +434,7 @@ const ProjectRequest = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const API_URL = "https://studypage.onrender.com";
+  const API_URL = "https://studypage-h2eu.onrender.com";
   const publicKey = "pk_live_9d093b52e09ff0b847d1e490f6ad1f1add87c150";
   const email = currentUser?.email || "";
   const [paymentRef] = useState(`ref_${Math.floor(Math.random() * 1000000000)}`);

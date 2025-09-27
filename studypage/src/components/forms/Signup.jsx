@@ -42,7 +42,7 @@ export default function SignUp() {
         };
 
         // Send the user data to your backend to handle signup/login
-        const res = await axios.post("https://studypage.onrender.com/auth/google", user);
+        const res = await axios.post("https://studypage-h2eu.onrender.com/auth/google", user);
         toast.error("Check your email to set your password.");
         if (res.data.is_admin) {
           navigate("/admin/dashboard");

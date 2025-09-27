@@ -239,7 +239,7 @@
 
       try {
         const response = await fetch(
-          `https://studypage.onrender.com/conversations/${chatActiveUser.conversationId}/messages?page=${pageNum}&limit=20`,
+          `https://studypage-h2eu.onrender.com/conversations/${chatActiveUser.conversationId}/messages?page=${pageNum}&limit=20`,
           {
             headers: { Authorization: `Bearer ${authToken}` },  
           }
@@ -464,7 +464,7 @@
         attachments.forEach((file) => formData.append("attachments", file));
 
         const response = await fetch(
-          `https://studypage.onrender.com/conversations/${conversationId}/messages`,
+          `https://studypage-h2eu.onrender.com/conversations/${conversationId}/messages`,
           {
             method: "POST",
             headers: { Authorization: `Bearer ${authToken}` },

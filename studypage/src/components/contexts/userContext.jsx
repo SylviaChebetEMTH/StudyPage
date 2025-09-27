@@ -192,7 +192,7 @@ const fetchWithAuth = async (url, options = {}) => {
 
   if (response.status === 401) {
     const refreshToken = localStorage.getItem("refresh_token");
-    const refreshResponse = await fetch("https://studypage.onrender.com/refresh", {
+    const refreshResponse = await fetch("https://studypage-h2eu.onrender.com/refresh", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -226,7 +226,7 @@ export const UserProvider = ({ children }) => {
     if (authToken) {
       try {
         setLoading(true);
-        const response = await fetchWithAuth("https://studypage.onrender.com/current_user", {
+        const response = await fetchWithAuth("https://studypage-h2eu.onrender.com/current_user", {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
@@ -270,7 +270,7 @@ export const UserProvider = ({ children }) => {
 
   const signup = (username, email, phone_number = "", password) => {
     setLoading(true);
-    fetch("https://studypage.onrender.com/register", {
+    fetch("https://studypage-h2eu.onrender.com/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, email, phone_number, password }),
@@ -292,7 +292,7 @@ export const UserProvider = ({ children }) => {
     setLoading(true);
   
     try {
-      const response = await fetch("https://studypage.onrender.com/login", {
+      const response = await fetch("https://studypage-h2eu.onrender.com/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -306,7 +306,7 @@ export const UserProvider = ({ children }) => {
         toast.success("Login successful");
         
         // Fetch user data and navigate based on admin status
-        const userResponse = await fetch("https://studypage.onrender.com/current_user", {
+        const userResponse = await fetch("https://studypage-h2eu.onrender.com/current_user", {
           method: "GET",
           headers: { 
             "Content-Type": "application/json",

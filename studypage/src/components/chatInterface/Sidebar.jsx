@@ -14,7 +14,7 @@ const Sidebar = ({ setActiveUser }) => {
     const fetchConversations = async () => {
       setLoading(true); // Start loading
       try {
-        const response = await fetch("https://studypage.onrender.com/conversations", {
+        const response = await fetch("https://studypage-h2eu.onrender.com/conversations", {
           headers: { Authorization: `Bearer ${authToken}` },
         });
         const data = await response.json();

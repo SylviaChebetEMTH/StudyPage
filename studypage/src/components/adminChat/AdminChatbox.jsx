@@ -234,7 +234,7 @@ const AdminChatBox = ({ conversationId, conversationDetails, isInModal = false }
     
     try {
       const response = await fetch(
-        `https://studypage.onrender.com/conversations/${conversationId}/messages?page=${pageNum}&limit=20`, 
+        `https://studypage-h2eu.onrender.com/conversations/${conversationId}/messages?page=${pageNum}&limit=20`, 
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }
@@ -370,7 +370,7 @@ const handleTyping = () => {
     setSendingMessage(true);
     
     try {
-      const response = await fetch(`https://studypage.onrender.com/conversationsadmin/${conversationId}/messages`, {
+      const response = await fetch(`https://studypage-h2eu.onrender.com/conversationsadmin/${conversationId}/messages`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`,
