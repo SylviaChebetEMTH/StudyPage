@@ -45,9 +45,6 @@ if __name__ == '__main__':
     # Set the database URL from environment variable
     database_url = os.environ.get('DATABASE_URL') or os.environ.get('database_url')
     if database_url:
-        # Convert postgresql:// to postgresql+psycopg:// for psycopg3
-        if database_url.startswith('postgresql://'):
-            database_url = database_url.replace('postgresql://', 'postgresql+psycopg://', 1)
         app.config['SQLALCHEMY_DATABASE_URI'] = database_url
         print(f"🔗 Using database: {database_url[:50]}...")
     else:
