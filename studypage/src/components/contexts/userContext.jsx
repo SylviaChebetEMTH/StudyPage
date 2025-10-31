@@ -301,7 +301,6 @@ export const UserProvider = ({ children }) => {
             const userResponse = await fetch("https://studypage-76hu.onrender.com/current_user", {
               method: "GET",
               headers: { 
-                "Content-Type": "application/json",
                 "Authorization": `Bearer ${loginData.access_token}`
               },
             });
@@ -315,8 +314,11 @@ export const UserProvider = ({ children }) => {
               // Return user data so component can handle navigation
               return { success: true, user: userData };
             } else {
-              toast.error("Error fetching user data");
-              return { success: false, error: "Error fetching user data" };
+              // Log the actual error for debugging
+              console.error("Error fetching user data:", userData);
+              const errorMessage = userData?.msg || userData?.message || userData?.error || "Error fetching user data";
+              toast.error(errorMessage);
+              return { success: false, error: errorMessage };
             }
           } else {
             const errorMessage = loginData.message || "Auto-login failed. Please log in manually.";
@@ -364,7 +366,6 @@ export const UserProvider = ({ children }) => {
         const userResponse = await fetch("https://studypage-76hu.onrender.com/current_user", {
           method: "GET",
           headers: { 
-            "Content-Type": "application/json",
             "Authorization": `Bearer ${res.access_token}`
           },
         });
@@ -378,8 +379,11 @@ export const UserProvider = ({ children }) => {
           // Return user data so component can handle navigation
           return { success: true, user: userData };
         } else {
-          toast.error("Error fetching user data");
-          return { success: false, error: "Error fetching user data" };
+          // Log the actual error for debugging
+          console.error("Error fetching user data:", userData);
+          const errorMessage = userData?.msg || userData?.message || userData?.error || "Error fetching user data";
+          toast.error(errorMessage);
+          return { success: false, error: errorMessage };
         }
       } else {
         // Return error so component can handle it

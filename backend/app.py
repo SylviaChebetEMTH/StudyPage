@@ -686,17 +686,24 @@ def refresh():
 @app.route("/current_user", methods=["GET"])
 @jwt_required()
 def get_current_user():
-    current_user_id = get_jwt_identity()
-    current_user = User.query.get(current_user_id)
-    if current_user:
-        return jsonify({
-            "id": current_user.id, 
-            "username": current_user.username, 
-            "email": current_user.email,
-            "is_admin": current_user.is_admin
-        }), 200
-    else:
-        return jsonify({"message": "User not found"}), 404
+    try:
+        current_user_id = get_jwt_identity()
+        if not current_user_id:
+            return jsonify({"message": "Invalid token"}), 401
+        
+        current_user = User.query.get(current_user_id)
+        if current_user:
+            return jsonify({
+                "id": current_user.id, 
+                "username": current_user.username, 
+                "email": current_user.email,
+                "is_admin": current_user.is_admin
+            }), 200
+        else:
+            return jsonify({"message": "User not found"}), 404
+    except Exception as e:
+        print(f"Error in get_current_user: {e}")
+        return jsonify({"message": "Error fetching user data", "error": str(e)}), 500
 
 
 
