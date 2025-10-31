@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ClipLoader from 'react-spinners/ClipLoader';
 import ExpertCard from './ExpertCard';
 
 const ExpertsPage = () => {
@@ -39,16 +38,11 @@ const ExpertsPage = () => {
           
           if (cacheAge < CACHE_EXPIRY) {
             const parsedExperts = JSON.parse(cached);
-            console.log(`Loading ${parsedExperts.length} experts from cache (age: ${Math.round(cacheAge / 1000)}s)`);
             if (Array.isArray(parsedExperts) && parsedExperts.length > 0) {
               setExperts(parsedExperts);
               setLoading(false);
               return;
-            } else {
-              console.warn('Cached experts is not a valid array or is empty');
             }
-          } else {
-            console.log(`Cache expired (age: ${Math.round(cacheAge / 1000)}s), fetching fresh data`);
           }
         }
       } catch (error) {
@@ -67,23 +61,14 @@ const ExpertsPage = () => {
       }
   
       const data = await response.json();
-      
-      // Debug: Log the response structure
-      console.log('Experts API response:', {
-        hasExperts: !!data.experts,
-        count: data.experts?.length,
-        firstExpert: data.experts?.[0]
-      });
   
       if (!data.experts || data.experts.length === 0) {
-        console.warn('No experts returned from API');
         setExperts([]);
         setLoading(false);
         return;
       }
   
       setExperts(data.experts);
-      console.log(`Loaded ${data.experts.length} experts`);
   
       // Store in cache with timestamp
       try {
@@ -119,11 +104,6 @@ const ExpertsPage = () => {
 
   // Memoized filtered and sorted experts
   const filteredAndSortedExperts = useMemo(() => {
-    // Debug: Log experts count
-    if (experts.length === 0) {
-      console.warn('Experts array is empty in filter memo');
-    }
-    
     let filtered = experts;
     
     // Apply search filter
@@ -173,8 +153,6 @@ const ExpertsPage = () => {
         
         return false;
       });
-      
-      console.log(`Filtered ${filtered.length} experts from ${experts.length} for search: "${debouncedSearchTerm}"`);
     }
     
     // Apply sorting
@@ -198,14 +176,15 @@ const ExpertsPage = () => {
   const totalPages = Math.ceil(filteredAndSortedExperts.length / EXPERTS_PER_PAGE);
 
 
-  if (loading && experts.length === 0) {
-    return (
-      <div className="flex flex-col justify-center items-center h-screen bg-slate-200">
-        <ClipLoader size={60} color={'#4A90E2'} />
-        <p className="mt-4 text-gray-600">Loading experts...</p>
-      </div>
-    );
-  }
+  // Remove full-screen loader - show skeleton instead
+  // if (loading && experts.length === 0) {
+  //   return (
+  //     <div className="flex flex-col justify-center items-center h-screen bg-slate-200">
+  //       <ClipLoader size={60} color={'#4A90E2'} />
+  //       <p className="mt-4 text-gray-600">Loading experts...</p>
+  //     </div>
+  //   );
+  // }
   
   return (
     <div className="sm:p-0 sm:bg-slate-200 sm:min-h-screen flex flex-col h-screen sm:block">
@@ -288,7 +267,22 @@ const ExpertsPage = () => {
       
       {/* Experts Section - Scrollable on mobile, normal on desktop */}
       <div className="flex-grow overflow-y-auto bg-slate-200 sm:overflow-visible sm:flex-none">
-        {filteredAndSortedExperts.length > 0 ? (
+        {loading && experts.length === 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+            {[...Array(EXPERTS_PER_PAGE)].map((_, i) => (
+              <div key={i} className="bg-white rounded-xl overflow-hidden shadow-md animate-pulse">
+                <div className="h-48 md:h-52 bg-gray-300"></div>
+                <div className="p-4 space-y-3">
+                  <div className="h-6 bg-gray-300 rounded w-3/4"></div>
+                  <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+                  <div className="h-4 bg-gray-300 rounded w-full"></div>
+                  <div className="h-4 bg-gray-300 rounded w-2/3"></div>
+                  <div className="h-10 bg-gray-300 rounded"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : filteredAndSortedExperts.length > 0 ? (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
               {paginatedExperts.map((expert) => (

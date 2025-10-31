@@ -151,20 +151,21 @@
 
 
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, memo } from 'react';
 import { IoMdChatbubbles } from 'react-icons/io';
 import { Star, ArrowRight, Briefcase, GraduationCap, Globe } from 'lucide-react';
 import ChatModal from './ChatModal';
 import ExpertDetailModal from './admin/ExpertDetailModal';
 import { UserContext } from './contexts/userContext';
 
-const ExpertCard = ({ expert, onHire }) => {
+const ExpertCard = memo(({ expert, onHire }) => {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showChatModal, setShowChatModal] = useState(false);
   const { authToken,currentUser } = useContext(UserContext);
   // console.log('this is the expert',expert)
 
-  const renderStars = (rating) => {
+  const renderStars = React.useMemo(() => {
+    const rating = expert.rating || 0;
     return (
       <div className="flex items-center gap-1">
         {[1, 2, 3, 4, 5].map((star) => (
@@ -178,9 +179,12 @@ const ExpertCard = ({ expert, onHire }) => {
         ))}
       </div>
     );
-  };
+  }, [expert.rating]);
 
-  const expertiseArray = expert.expertise?.split(',').slice(0, 3) || [];
+  const expertiseArray = React.useMemo(() => 
+    expert.expertise?.split(',').slice(0, 3) || [], 
+    [expert.expertise]
+  );
 
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full border border-gray-100">
@@ -190,6 +194,8 @@ const ExpertCard = ({ expert, onHire }) => {
           src={expert.profile_picture || expert.profilePicture }
           alt={expert.name}
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+          loading="lazy"
+          decoding="async"
         />
         {expert.isAiFree && (
           <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 shadow-lg">
@@ -209,7 +215,7 @@ const ExpertCard = ({ expert, onHire }) => {
         {/* Rating Section */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {renderStars(expert.rating || 4.5)}
+            {renderStars}
             <span className="text-xs text-gray-500">
               ({expert.totalReviews || 24})
             </span>
@@ -300,6 +306,8 @@ const ExpertCard = ({ expert, onHire }) => {
       )}
     </div>
   );
-};
+});
+
+ExpertCard.displayName = 'ExpertCard';
 
 export default ExpertCard;

@@ -1,0 +1,20 @@
+# Development override file
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+version: '3.8'
+
+services:
+  backend:
+    build:
+      target: builder  # Use builder stage for dev
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+    volumes:
+      - ./backend:/app
+      - ./backend/uploads:/app/uploads
+    command: python deploy_with_data.py  # Use dev server
+    ports:
+      - "5000:5000"
+      - "8000:8000"  # Debug port
+

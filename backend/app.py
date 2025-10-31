@@ -398,6 +398,23 @@ def test():
     """A simple test endpoint to ensure the server is running."""
     return jsonify({"message": "Server is running!"})
 
+@app.route('/health', methods=['GET'])
+def health():
+    """Health check endpoint for Docker and monitoring."""
+    try:
+        # Quick database connectivity check
+        db.session.execute(db.text('SELECT 1'))
+        return jsonify({
+            "status": "healthy",
+            "database": "connected"
+        }), 200
+    except Exception as e:
+        return jsonify({
+            "status": "unhealthy",
+            "database": "disconnected",
+            "error": str(e)
+        }), 503
+
 # @app.route('/messages', methods=['GET'])
 # def get_messages():
 #     messages = Message.query.all()  # Get all messages from the database
