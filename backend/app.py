@@ -420,7 +420,8 @@ def google_signup():
         print("User with this email already exists. Logging in...")
         # Automatically log in the user
         session['user_id'] = existing_user.id
-        access_token = create_access_token(identity=existing_user.id)
+        # PyJWT 2.10+ requires 'sub' claim to be a string
+        access_token = create_access_token(identity=str(existing_user.id))
         return jsonify({
             'success': True,
             'authToken': access_token,
@@ -564,8 +565,8 @@ def forgot_password():
 @jwt_required()  # Ensure the request is coming from a valid user (admin)
 def get_admin_messages():
     # Get the current logged-in user (admin in this case)
-    current_user_id = get_jwt_identity()
-    current_user = User.query.get(current_user_id)
+    user_id = get_current_user_id()
+    current_user = User.query.get(user_id)
 
     if not current_user or not current_user.is_admin:
         return jsonify({'error': 'Admin user is not authenticated or found'}), 403
@@ -585,8 +586,8 @@ def get_admin_messages():
 @app.route("/usermessages", methods=["GET"])
 @jwt_required()  # Ensure the user is logged in
 def get_user_messages():
-    current_user_id = get_jwt_identity()  # Retrieve the current logged-in user's ID
-    current_user = User.query.get(current_user_id)  # Fetch the user from the database
+    user_id = get_current_user_id()  # Retrieve the current logged-in user's ID
+    current_user = User.query.get(user_id)  # Fetch the user from the database
 
     if not current_user:
         return jsonify({"message": "User not found"}), 404
@@ -613,11 +614,16 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def get_current_user_id():
+    """Helper function to get current user ID from JWT and convert to int."""
+    user_id = get_jwt_identity()
+    return int(user_id) if isinstance(user_id, str) else user_id
+
 def admin_required(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        current_user = get_jwt_identity()
-        user = User.query.filter_by(id=current_user).first()
+        user_id = get_current_user_id()
+        user = User.query.filter_by(id=user_id).first()
         if not user.is_admin:
             return jsonify({'message': 'Admin access required'}), 403
         return fn(*args, **kwargs)
@@ -664,8 +670,9 @@ def login():
 
     # Check if the user exists and the password is correct
     if user and bcrypt.check_password_hash(user.password, password):
-        access_token = create_access_token(identity=user.id)
-        refresh_token = create_refresh_token(identity=user.id)
+        # PyJWT 2.10+ requires 'sub' claim to be a string
+        access_token = create_access_token(identity=str(user.id))
+        refresh_token = create_refresh_token(identity=str(user.id))
 
         # Return tokens and the user's role
         return jsonify({
@@ -680,18 +687,19 @@ def login():
 @jwt_required(refresh=True)
 def refresh():
     current_user_id = get_jwt_identity()
-    new_access_token = create_access_token(identity=current_user_id)
+    # PyJWT 2.10+ requires 'sub' claim to be a string
+    new_access_token = create_access_token(identity=str(current_user_id))
     return jsonify({"access_token": new_access_token}), 200
 
 @app.route("/current_user", methods=["GET"])
 @jwt_required()
 def get_current_user():
     try:
-        current_user_id = get_jwt_identity()
-        if not current_user_id:
+        user_id = get_current_user_id()
+        if not user_id:
             return jsonify({"message": "Invalid token"}), 401
         
-        current_user = User.query.get(current_user_id)
+        current_user = User.query.get(user_id)
         if current_user:
             return jsonify({
                 "id": current_user.id, 
@@ -701,8 +709,13 @@ def get_current_user():
             }), 200
         else:
             return jsonify({"message": "User not found"}), 404
+    except ValueError as e:
+        print(f"Error converting user_id to int: {e}")
+        return jsonify({"message": "Invalid user ID format"}), 400
     except Exception as e:
+        import traceback
         print(f"Error in get_current_user: {e}")
+        print(f"Traceback: {traceback.format_exc()}")
         return jsonify({"message": "Error fetching user data", "error": str(e)}), 500
 
 
@@ -726,8 +739,8 @@ def verify_password():
     existing_password = data.get('existing_password', None)
 
     # Get the current user's ID from the JWT
-    current_user_id = get_jwt_identity()
-    current_user = User.query.get(current_user_id)
+    user_id = get_current_user_id()
+    current_user = User.query.get(user_id)
 
     if not current_user:
         return jsonify({"success": False, "error": "User  not found"}), 404
@@ -746,8 +759,8 @@ def verify_password():
 @jwt_required()
 def update_profile():
     # Get the current user's ID from the JWT token
-    current_user_id = get_jwt_identity()
-    current_user = User.query.get(current_user_id)
+    user_id = get_current_user_id()
+    current_user = User.query.get(user_id)
 
     if not current_user:
         return jsonify({"error": "User not found"}), 404
@@ -1032,7 +1045,7 @@ def request_expert():
         subject_id=subject_id,
         deadline=deadline,
         expert_id=expert_id,
-        user_id=get_jwt_identity(),
+        user_id=get_current_user_id(),
         number_of_pages=number_of_pages
     )
     db.session.add(project)
@@ -1200,7 +1213,7 @@ def admn_send_message(conversation_id):
     experts_id = converse.expert_id
     expert = Expert.query.get(experts_id)
     try:
-        sender_id = get_jwt_identity()
+        sender_id = get_current_user_id()
 
         conversation = Conversation.query.get_or_404(conversation_id)
         recievers_id = conversation.client_id
@@ -1271,7 +1284,7 @@ def admn_send_message(conversation_id):
 @jwt_required()
 def create_conversation():
     data = request.get_json()
-    sender_id = get_jwt_identity()
+    sender_id = get_current_user_id()
     
     conversation = Conversation(
         client_id=sender_id,
@@ -1292,7 +1305,7 @@ def create_conversation():
 @jwt_required()
 def send_message(conversation_id):
     try:
-        sender_id = get_jwt_identity()
+        sender_id = get_current_user_id()
         content = request.form.get('content','').strip()
         files    = request.files.getlist('attachments')
 
