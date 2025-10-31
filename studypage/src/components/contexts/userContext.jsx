@@ -192,7 +192,7 @@ const fetchWithAuth = async (url, options = {}) => {
 
   if (response.status === 401) {
     const refreshToken = localStorage.getItem("refresh_token");
-    const refreshResponse = await fetch("https://studypage-h2eu.onrender.com/refresh", {
+    const refreshResponse = await fetch("https://studypage-76hu.onrender.com/refresh", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -226,7 +226,7 @@ export const UserProvider = ({ children }) => {
     if (authToken) {
       try {
         setLoading(true);
-        const response = await fetchWithAuth("https://studypage-h2eu.onrender.com/current_user", {
+        const response = await fetchWithAuth("https://studypage-76hu.onrender.com/current_user", {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
@@ -268,31 +268,87 @@ export const UserProvider = ({ children }) => {
     }
   }, [authToken, isInitialLoad]);
 
-  const signup = (username, email, phone_number = "", password) => {
+  const signup = async (username, email, phone_number = "", password) => {
     setLoading(true);
-    fetch("https://studypage-h2eu.onrender.com/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, phone_number, password }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.success) {
-          toast.success(res.success);
-          nav("/login");
-        } else {
-          toast.error(res.message || "Something went wrong");
+    try {
+      const registerResponse = await fetch("https://studypage-76hu.onrender.com/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, phone_number, password }),
+      });
+
+      const registerData = await registerResponse.json();
+
+      if (registerResponse.ok && registerData.success) {
+        toast.success(registerData.success || "User registered successfully");
+        
+        // Automatically log in the user after successful signup
+        try {
+          const loginResponse = await fetch("https://studypage-76hu.onrender.com/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const loginData = await loginResponse.json();
+
+          if (loginResponse.ok && loginData.access_token) {
+            // Store tokens
+            localStorage.setItem("token", loginData.access_token);
+            localStorage.setItem("refresh_token", loginData.refresh_token);
+
+            // Fetch user data
+            const userResponse = await fetch("https://studypage-76hu.onrender.com/current_user", {
+              method: "GET",
+              headers: { 
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${loginData.access_token}`
+              },
+            });
+
+            const userData = await userResponse.json();
+
+            if (userResponse.ok) {
+              setCurrentUser(userData);
+              setAuthToken(loginData.access_token);
+              
+              // Return user data so component can handle navigation
+              return { success: true, user: userData };
+            } else {
+              toast.error("Error fetching user data");
+              return { success: false, error: "Error fetching user data" };
+            }
+          } else {
+            const errorMessage = loginData.message || "Auto-login failed. Please log in manually.";
+            toast.error(errorMessage);
+            return { success: false, error: errorMessage };
+          }
+        } catch (loginError) {
+          console.error("Auto-login failed:", loginError);
+          const errorMessage = "Registration successful, but auto-login failed. Please log in manually.";
+          toast.error(errorMessage);
+          return { success: false, error: errorMessage };
         }
-      })
-      .catch(() => toast.error("Something went wrong"))
-      .finally(() => setLoading(false));
+      } else {
+        const errorMessage = registerData.error || registerData.message || "Something went wrong";
+        toast.error(errorMessage);
+        return { success: false, error: errorMessage };
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      const errorMessage = "Network error. Please check your connection and try again.";
+      toast.error(errorMessage);
+      return { success: false, error: errorMessage };
+    } finally {
+      setLoading(false);
+    }
   };
 
   const login = async (email, password) => {
     setLoading(true);
   
     try {
-      const response = await fetch("https://studypage-h2eu.onrender.com/login", {
+      const response = await fetch("https://studypage-76hu.onrender.com/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -303,10 +359,9 @@ export const UserProvider = ({ children }) => {
       if (response.ok && res.access_token) {
         localStorage.setItem("token", res.access_token);
         localStorage.setItem("refresh_token", res.refresh_token);
-        toast.success("Login successful");
         
-        // Fetch user data and navigate based on admin status
-        const userResponse = await fetch("https://studypage-h2eu.onrender.com/current_user", {
+        // Fetch user data
+        const userResponse = await fetch("https://studypage-76hu.onrender.com/current_user", {
           method: "GET",
           headers: { 
             "Content-Type": "application/json",
@@ -318,19 +373,23 @@ export const UserProvider = ({ children }) => {
         
         if (userResponse.ok) {
           setCurrentUser(userData);
-          setAuthToken(res.access_token); // Set this after getting user data
+          setAuthToken(res.access_token);
           
-          // Navigate based on admin status
-          nav(userData.is_admin ? "/admin/dashboard" : "/");
+          // Return user data so component can handle navigation
+          return { success: true, user: userData };
         } else {
           toast.error("Error fetching user data");
+          return { success: false, error: "Error fetching user data" };
         }
       } else {
-        toast.error(res.message || "Invalid credentials");
+        // Return error so component can handle it
+        const errorMessage = res.message || "Invalid email or password";
+        return { success: false, error: errorMessage };
       }
     } catch (error) {
       console.error("Login request failed:", error);
-      toast.error("Network error. Please try again.");
+      const errorMessage = "Network error. Please check your connection and try again.";
+      return { success: false, error: errorMessage };
     } finally {
       setLoading(false);
     }

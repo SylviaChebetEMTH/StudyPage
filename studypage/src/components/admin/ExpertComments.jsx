@@ -7,7 +7,7 @@ const ExpertComments = ({ expert, comments, authToken, onCommentUpdate, onCommen
 
   const handleEditComment = async (commentId) => {
     try {
-      const response = await fetch(`https://studypage-h2eu.onrender.com/comments/${commentId}`, {
+      const response = await fetch(`https://studypage-76hu.onrender.com/comments/${commentId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const ExpertComments = ({ expert, comments, authToken, onCommentUpdate, onCommen
 
   const handleDeleteComment = async (commentId) => {
     try {
-      const response = await fetch(`https://studypage-h2eu.onrender.com/comments/${commentId}`, {
+      const response = await fetch(`https://studypage-76hu.onrender.com/comments/${commentId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${authToken}`

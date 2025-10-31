@@ -42,7 +42,7 @@ export default function SignUp() {
         };
 
         // Send the user data to your backend to handle signup/login
-        const res = await axios.post("https://studypage-h2eu.onrender.com/auth/google", user);
+        const res = await axios.post("https://studypage-76hu.onrender.com/auth/google", user);
         toast.error("Check your email to set your password.");
         if (res.data.is_admin) {
           navigate("/admin/dashboard");
@@ -76,10 +76,23 @@ export default function SignUp() {
     // }
 
     try {
-      await signup(username, email, phone_number, password);
+      const result = await signup(username, email, phone_number, password);
+      
+      if (result && result.success) {
+        // Signup and auto-login successful - navigate based on user role
+        if (result.user?.is_admin) {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/");
+        }
+      } else {
+        // Signup failed - show error message
+        const errorMessage = result?.error || "Signup failed. Please try again.";
+        setError(errorMessage);
+      }
     } catch (error) {
       console.error('Error during signup:', error);
-      setError('Something went wrong');
+      setError('An unexpected error occurred. Please try again.');
     }
   };
   const handleGoHome = () => {

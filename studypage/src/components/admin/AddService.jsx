@@ -17,7 +17,7 @@ function AddServicePage() {
   useEffect(() => {
     const fetchProjectTypes = async () => {
       try {
-        const response = await fetch("https://studypage-h2eu.onrender.com/project-types", {
+        const response = await fetch("https://studypage-76hu.onrender.com/project-types", {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -38,7 +38,7 @@ function AddServicePage() {
 
     const fetchSubjects = async () => {
       try {
-        const response = await fetch("https://studypage-h2eu.onrender.com/subjects", {
+        const response = await fetch("https://studypage-76hu.onrender.com/subjects", {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -92,7 +92,7 @@ function AddServicePage() {
     };
 
     try {
-      const response = await fetch("https://studypage-h2eu.onrender.com/services", {
+      const response = await fetch("https://studypage-76hu.onrender.com/services", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${authToken}`,

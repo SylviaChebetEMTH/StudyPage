@@ -115,7 +115,7 @@ const ExpertSelectionPage = () => {
   const navigate = useNavigate();
   const { currentUser } = useContext(UserContext);
   const location = useLocation();
-  const API_URL = 'https://studypage-h2eu.onrender.com';
+  const API_URL = 'https://studypage-76hu.onrender.com';
   
   // Extract the selected project type and subject from history/state
   // const { projectTypeId, subjectId } = location.state || {};

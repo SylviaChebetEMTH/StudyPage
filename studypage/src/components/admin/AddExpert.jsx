@@ -22,7 +22,7 @@ function AddExpertPage() {
   useEffect(() => {
     const fetchProjectTypes = async () => {
       try {
-        const response = await fetch("https://studypage-h2eu.onrender.com/project-types", {
+        const response = await fetch("https://studypage-76hu.onrender.com/project-types", {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -43,7 +43,7 @@ function AddExpertPage() {
 
     const fetchSubjects = async () => {
       try {
-        const response = await fetch("https://studypage-h2eu.onrender.com/subjects", { // Adjust endpoint as needed
+        const response = await fetch("https://studypage-76hu.onrender.com/subjects", { // Adjust endpoint as needed
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -143,7 +143,7 @@ function AddExpertPage() {
     };
 
     try {
-      const response = await fetch("https://studypage-h2eu.onrender.com/experts", {
+      const response = await fetch("https://studypage-76hu.onrender.com/experts", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${authToken}`,

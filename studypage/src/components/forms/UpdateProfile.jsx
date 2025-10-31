@@ -43,7 +43,7 @@ const UpdateProfile = () => {
             setLoading(true);
 
             const response = await axios.put(
-                'https://studypage-h2eu.onrender.com/update_profile',
+                'https://studypage-76hu.onrender.com/update_profile',
                 { username, password, phone_number, email },
                 {
                     headers: {

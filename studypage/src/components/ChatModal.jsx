@@ -25,7 +25,7 @@ const ChatModal = ({ auth, curUser, teacher, onClose, teach }) => {
     const fetchConversationId = async () => {
       try {
         const response = await fetch(
-          `https://studypage-h2eu.onrender.com/conversationsid/${teacher.id}`,
+          `https://studypage-76hu.onrender.com/conversationsid/${teacher.id}`,
           {
             method: "GET",
             headers: { Authorization: `Bearer ${authToken}` }

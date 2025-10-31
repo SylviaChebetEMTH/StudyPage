@@ -8,7 +8,7 @@ const Sidebar = ({ setActiveUser }) => {
 
   useEffect(() => {
     const fetchConversations = async () => {
-      const response = await fetch("https://studypage-h2eu.onrender.com/conversations", {
+      const response = await fetch("https://studypage-76hu.onrender.com/conversations", {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       const data = await response.json();

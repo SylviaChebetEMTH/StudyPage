@@ -16,7 +16,7 @@ function ProjectTypes() {
 
   const fetchProjectTypes = async () => {
     try {
-      const response = await axios.get('https://studypage-h2eu.onrender.com/project-types');
+      const response = await axios.get('https://studypage-76hu.onrender.com/project-types');
       setProjectTypes(response.data);
     } catch (error) {
       console.error("Error fetching project types:", error);
@@ -28,7 +28,7 @@ function ProjectTypes() {
     if (newProjectType.trim() === "") return;
 
     try {
-      const response = await axios.post('https://studypage-h2eu.onrender.com/project-types', {
+      const response = await axios.post('https://studypage-76hu.onrender.com/project-types', {
         name: newProjectType
       });
       setProjectTypes([...projectTypes, response.data]);
@@ -43,7 +43,7 @@ function ProjectTypes() {
     if (editName.trim() === "") return;
 
     try {
-      const response = await axios.put(`https://studypage-h2eu.onrender.com/project-types/${id}`, {
+      const response = await axios.put(`https://studypage-76hu.onrender.com/project-types/${id}`, {
         name: editName
       });
       setProjectTypes(
@@ -58,7 +58,7 @@ function ProjectTypes() {
   // Delete a project type
   const handleDeleteProjectType = async (id) => {
     try {
-      await axios.delete(`https://studypage-h2eu.onrender.com/project-types/${id}`);
+      await axios.delete(`https://studypage-76hu.onrender.com/project-types/${id}`);
       setProjectTypes(projectTypes.filter((pt) => pt.id !== id));
     } catch (error) {
       console.error("Error deleting project type:", error);

@@ -20,7 +20,7 @@ export default function AllExperts() {
 
 
   const fetchData = () => {
-    fetch("https://studypage-h2eu.onrender.com/experts")
+    fetch("https://studypage-76hu.onrender.com/experts")
       .then((response) => response.json())
       .then((data) => {
         if (Array.isArray(data.experts)) {
@@ -53,7 +53,7 @@ export default function AllExperts() {
   useEffect(() => {
     const fetchProjectTypes = async () => {
       try {
-        const response = await fetch("https://studypage-h2eu.onrender.com/project-types", {
+        const response = await fetch("https://studypage-76hu.onrender.com/project-types", {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -74,7 +74,7 @@ export default function AllExperts() {
 
     const fetchSubjects = async () => {
       try {
-        const response = await fetch("https://studypage-h2eu.onrender.com/subjects", {
+        const response = await fetch("https://studypage-76hu.onrender.com/subjects", {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -146,7 +146,7 @@ export default function AllExperts() {
       }
     }
 
-    fetch(`https://studypage-h2eu.onrender.com/experts/${expertId}`, {
+    fetch(`https://studypage-76hu.onrender.com/experts/${expertId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -229,7 +229,7 @@ export default function AllExperts() {
     setIsLoading(true);
 
     const token = authToken || localStorage.getItem("access_token");
-    fetch(`https://studypage-h2eu.onrender.com/experts/${expertId}`, {
+    fetch(`https://studypage-76hu.onrender.com/experts/${expertId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

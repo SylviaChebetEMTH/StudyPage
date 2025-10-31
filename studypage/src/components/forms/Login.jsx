@@ -13,16 +13,12 @@ import loginVideo from '../assets/loginVideo.mp4';
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
-  const { setAuthToken, setCurrentUser } = useContext(UserContext);
   const { login, loading } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
-  // const [loading, setLoading] = useState(false);
-
-  console.log("setAuthToken:", setAuthToken);
-  console.log("setCurrentUser :", setCurrentUser);
 
   // const handleGoogleSignup = useGoogleLogin({
   //   onSuccess: async (response) => {
@@ -85,27 +81,32 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // setLoading(true);
-    console.log("Loading state set to true");
-  
+    setError(""); // Clear previous errors
+    
+    // Basic validation
+    if (!email || !password) {
+      setError("Please enter both email and password");
+      return;
+    }
+
     try {
-      const user = await login(email, password);
-      if (user) {
-        // localStorage.setItem("isAdmin", user.is_admin);
-        
-        await new Promise(resolve => setTimeout(resolve, 500));
-  
-        if (user.is_admin) {
+      const result = await login(email, password);
+      
+      if (result && result.success) {
+        // Login successful - navigate based on user role
+        if (result.user?.is_admin) {
           navigate("/admin/dashboard");
         } else {
           navigate("/");
         }
+      } else {
+        // Login failed - show error message
+        const errorMessage = result?.error || "Login failed. Please try again.";
+        setError(errorMessage);
       }
     } catch (error) {
-      console.error("Login failed:", error);
-    } finally {
-      // setLoading(false);
-      console.log("Loading state set to false");
+      console.error("Login error:", error);
+      setError("An unexpected error occurred. Please try again.");
     }
   };
   
@@ -149,6 +150,13 @@ export default function Login() {
   
             {/* Login Form */}
             <form className="space-y-4" onSubmit={handleSubmit}>
+              {/* Error Message */}
+              {error && (
+                <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg text-sm">
+                  {error}
+                </div>
+              )}
+
               {/* Email Input */}
               <div>
                 <label htmlFor="email" className="text-sm font-medium text-gray-400">Email address</label>
@@ -158,7 +166,10 @@ export default function Login() {
                   type="email"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setError(""); // Clear error when user starts typing
+                  }}
                   className="mt-1 block w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-white"
                   placeholder="Your Email"
                 />
@@ -173,7 +184,10 @@ export default function Login() {
                   type={showPassword ? "text" : "password"}
                   required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setError(""); // Clear error when user starts typing
+                  }}
                   className="mt-1 block w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-white"
                   placeholder="Password"
                 />
@@ -188,11 +202,10 @@ export default function Login() {
   
               {/* Login Button */}
               <button
-                type="button" // Prevents form submission interfering
+                type="submit"
                 disabled={loading}
-                onClick={handleSubmit}
                 className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center transition ${
-                  loading ? "bg-yellow-500 cursor-not-allowed" : "bg-yellow-400 hover:bg-yellow-500"
+                  loading ? "bg-yellow-500 cursor-not-allowed opacity-75" : "bg-yellow-400 hover:bg-yellow-500"
                 }`}
               >
                 {loading ? (

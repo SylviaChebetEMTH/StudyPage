@@ -10,7 +10,7 @@ const ExpertsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredExperts, setFilteredExperts] = useState([]);
   const navigate = useNavigate();
-  const API_URL = 'https://studypage-h2eu.onrender.com';
+  const API_URL = 'https://studypage-76hu.onrender.com';
 
   useEffect(() => {
     const fetchAllExperts = async () => {

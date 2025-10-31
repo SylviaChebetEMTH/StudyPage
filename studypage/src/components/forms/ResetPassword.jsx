@@ -43,7 +43,7 @@ const ResetPassword = () => {
     }
 
     try {
-      const response = await axios.post(`https://studypage-h2eu.onrender.com/reset_password/${token}`, {
+      const response = await axios.post(`https://studypage-76hu.onrender.com/reset_password/${token}`, {
         new_password: newPassword,
       });
 
