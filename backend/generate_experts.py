@@ -183,7 +183,6 @@
 
 
 from random import choice, sample
-from flask import current_app
 from app import db, app
 from models import Expert, Service, expert_services, User
 import logging
@@ -439,6 +438,18 @@ def generate_experts():
 
         experts_created = 0
         for service in services:
+            # ✅ Check if this service already has experts assigned (3 experts per service)
+            # Use proper join query for many-to-many relationship
+            existing_experts_for_service = Expert.query.join(
+                expert_services
+            ).filter(
+                expert_services.c.service_id == service.id
+            ).count()
+            
+            if existing_experts_for_service >= 3:
+                logger.info(f"⏭️  Service '{service.title}' already has {existing_experts_for_service} experts. Skipping.")
+                continue
+            
             # Extract project type and subject from service title
             service_parts = service.title.split(" - ")
             if len(service_parts) >= 2:
@@ -452,8 +463,12 @@ def generate_experts():
             logger.info(f"🔹 Creating experts for service: {service.title}")
             used_pics_male, used_pics_female = set(), set()
 
-            # ✅ Create exactly 3 experts for this service
-            for i in range(3):
+            # ✅ Calculate how many experts we still need for this service
+            experts_needed = 3 - existing_experts_for_service
+            logger.info(f"📊 Service needs {experts_needed} more experts (has {existing_experts_for_service}, needs 3 total)")
+
+            # ✅ Create the remaining experts needed for this service
+            for i in range(experts_needed):
                 is_male = choice([True, False])
                 
                 # Generate professional name

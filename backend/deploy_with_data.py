@@ -78,6 +78,19 @@ def seed_experts():
     """Generate and seed expert data."""
     print("🧑‍🏫 Generating and seeding experts...")
     with app.app_context():
+        # Check if experts already exist
+        existing_experts_count = Expert.query.count()
+        force_regen = os.environ.get("FORCE_REGEN_EXPERTS", "false").lower() == "true"
+        
+        if existing_experts_count > 0 and not force_regen:
+            print(f"ℹ️ Found {existing_experts_count} existing experts. Skipping generation.")
+            print("💡 Set FORCE_REGEN_EXPERTS=true to regenerate experts.")
+            return
+        
+        if force_regen and existing_experts_count > 0:
+            print(f"⚠️ Force regeneration enabled. Found {existing_experts_count} existing experts.")
+            print("🔄 Regenerating experts...")
+        
         generate_experts()  # This function handles its own session adds/commits
         print("✅ Experts seeded!")
 
