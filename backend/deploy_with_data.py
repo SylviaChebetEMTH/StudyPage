@@ -8,11 +8,13 @@ from generate_services_data import generate_services_data
 from generate_experts import generate_experts
 
 def create_database():
-    """Create all database tables"""
-    print("🗄️ Creating database tables...")
+    """Create all database tables (if migrations haven't already created them)"""
+    print("🗄️ Checking database tables...")
     with app.app_context():
+        # Use create_all() as a safety net - migrations should handle table creation
+        # but this ensures tables exist even if migrations fail
         db.create_all()
-        print("✅ Database tables created!")
+        print("✅ Database tables verified!")
 
 def seed_project_types_and_subjects():
     """Seed database with project types and subjects if they don't exist."""
