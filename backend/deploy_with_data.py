@@ -117,8 +117,19 @@ def create_admin_user():
         else:
             print(f"ℹ️ Admin user '{admin_username}' already exists.")
 
+def seed_all_data():
+    """Seed all data without starting the server."""
+    print("🌱 Seeding database data...")
+    with app.app_context():
+        create_database()
+        seed_project_types_and_subjects()
+        seed_services()
+        seed_experts()
+        create_admin_user()
+        print("✅ Database seeding complete!")
+
 def main():
-    """Main deployment function"""
+    """Main deployment function - seeds data and starts server"""
     print("🚀 Starting full deployment with data seeding...")
     
     # Set the database URL from environment variable
@@ -129,13 +140,9 @@ def main():
     else:
         print("⚠️ No DATABASE_URL found, using default SQLite")
     
-    with app.app_context():
-        create_database()
-        seed_project_types_and_subjects()
-        seed_services()
-        seed_experts()
-        create_admin_user()
-        print("🚀 Full deployment script finished!")
+    # Seed data
+    seed_all_data()
+    print("🚀 Full deployment script finished!")
     
     # Get port from environment variable or use default
     port = int(os.environ.get('PORT', 8000))

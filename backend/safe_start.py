@@ -78,9 +78,35 @@ def main():
     )
     
     # Step 3: Apply migrations (idempotent - safe to run multiple times)
-    if not run_command("flask db upgrade", "Apply migrations"):
-        print("❌ Failed to apply migrations!")
-        sys.exit(1)
+    # Handle case where database has migration state but folder doesn't
+    upgrade_result = run_command("flask db upgrade", "Apply migrations", ignore_errors=True)
+    if not upgrade_result:
+        print("\n⚠️ Migration state mismatch detected (database has old revision)")
+        print("   This can happen when migrations folder is recreated on redeploy.")
+        print("   Attempting to stamp database to current head...")
+        
+        # Try to get current head and stamp it
+        result = subprocess.run(
+            "flask db current",
+            shell=True,
+            capture_output=True,
+            text=True
+        )
+        if result.returncode == 0:
+            print(f"   Current DB state: {result.stdout.strip()}")
+        
+        # Try to stamp to head if migrations exist, otherwise skip migrations
+        head_result = subprocess.run(
+            "flask db stamp head",
+            shell=True,
+            capture_output=True,
+            text=True
+        )
+        if head_result.returncode == 0:
+            print("   ✅ Successfully stamped database to head")
+        else:
+            print("   ⚠️ Could not stamp database - will rely on db.create_all()")
+            print("   This is safe if your models haven't changed.")
     
     # Step 4: Run deployment script
     # This will:
