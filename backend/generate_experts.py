@@ -623,11 +623,43 @@ def generate_experts():
 
                 logger.info(f"✅ Created expert: {full_name} (username: {username}) for '{service.title}'")
 
+        # ✅ VALIDATION: Ensure every service has exactly 3 experts
+        logger.info("\n🔍 Validating expert assignments...")
+        services_with_issues = []
+        all_services = Service.query.all()
+        
+        for service in all_services:
+            expert_count = Expert.query.join(
+                expert_services
+            ).filter(
+                expert_services.c.service_id == service.id
+            ).count()
+            
+            if expert_count < 3:
+                services_with_issues.append({
+                    'service': service.title,
+                    'id': service.id,
+                    'experts': expert_count,
+                    'needed': 3 - expert_count
+                })
+        
+        if services_with_issues:
+            logger.error(f"\n❌ VALIDATION FAILED: {len(services_with_issues)} services are missing experts!")
+            for issue in services_with_issues:
+                logger.error(f"   ⚠️  Service '{issue['service']}' (ID: {issue['id']}) has only {issue['experts']} experts (needs {issue['needed']} more)")
+            logger.error("\n❌ Expert generation incomplete! Some services are missing experts.")
+            logger.error("   Rolling back changes...")
+            db.session.rollback()
+            return False
+        
+        logger.info(f"✅ Validation passed! All {len(all_services)} services have exactly 3 experts.")
         logger.info(f"✅ Successfully assigned {experts_created} experts!")
         return True
 
     except Exception as e:
         logger.error(f"❌ Error during expert generation: {str(e)}")
+        import traceback
+        logger.error(traceback.format_exc())
         db.session.rollback()
         return False
 

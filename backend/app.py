@@ -2016,7 +2016,23 @@ def get_services():
 
     print(f"Query: {query}")
 
-    services = query.all()
+    all_services = query.all()
+    
+    # ✅ Filter to only return services that have at least 1 expert
+    # This prevents users from seeing services without available experts
+    services_with_experts = []
+    for service in all_services:
+        expert_count = Expert.query.join(
+            expert_services
+        ).filter(
+            expert_services.c.service_id == service.id
+        ).count()
+        
+        if expert_count > 0:
+            services_with_experts.append(service)
+        else:
+            print(f"⚠️  Filtering out service '{service.title}' (ID: {service.id}) - no experts assigned")
+    
     return jsonify({
         "services": [
             {
@@ -2028,7 +2044,7 @@ def get_services():
                 'project_type_id': service.project_type_id,
                 'subject_id': service.subject_id,
                 'unit': service.unit
-            } for service in services
+            } for service in services_with_experts
         ] 
     }), 200
 

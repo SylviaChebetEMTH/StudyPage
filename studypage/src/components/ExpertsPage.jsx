@@ -220,7 +220,13 @@ const ExpertsPage = () => {
         </div>
         <div className="flex flex-row items-center justify-between px-4 sm:px-6 mb-2 gap-3">
           <h2 className="text-base sm:text-lg font-medium text-gray-700 whitespace-nowrap">
-            <span className="font-semibold text-gray-900">{filteredAndSortedExperts.length}</span> Expert{filteredAndSortedExperts.length !== 1 ? 's' : ''} Available
+            {loading && experts.length === 0 ? (
+              <span className="font-semibold text-gray-900">Loading experts...</span>
+            ) : (
+              <>
+                <span className="font-semibold text-gray-900">{filteredAndSortedExperts.length}</span> Expert{filteredAndSortedExperts.length !== 1 ? 's' : ''} Available
+              </>
+            )}
           </h2>
           
           {/* Sort and Filter Controls */}
